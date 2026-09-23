@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -905,7 +905,7 @@
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" label="Como chegou" options="{{ originOptions }}" value="{{ nf.origem }}" onChange="{{ nfOn.origem }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
         </div>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço de instalação" value="{{ nf.end }}" onChange="{{ nfOn.end }}" icon="map-pin" full-width="{{ true }}" hint-size="100%,70px"></x-import>
-        <div style="display:flex; justify-content:flex-end; gap:8px; padding-top:6px">
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeNew }}" hint-size="100px,44px">Cancelar</x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveNew }}" hint-size="160px,44px">Salvar orçamento</x-import>
         </div>

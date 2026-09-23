@@ -1093,9 +1093,11 @@ function Dialog({
       position: "absolute",
       inset: 0,
       zIndex: 40,
-      display: "grid",
-      placeItems: "center",
-      padding: 24,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "max(12px, min(24px, 4vw))",
+      overflow: "hidden",
       background: "var(--surface-overlay)",
       backdropFilter: "var(--blur-overlay)"
     }
@@ -1106,6 +1108,9 @@ function Dialog({
     style: {
       width: "100%",
       maxWidth: width,
+      maxHeight: "100%",
+      display: "flex",
+      flexDirection: "column",
       background: "var(--surface-card)",
       borderRadius: "var(--radius-xl)",
       boxShadow: "var(--shadow-xl)",
@@ -1118,6 +1123,7 @@ function Dialog({
       display: "flex",
       alignItems: "flex-start",
       gap: 12,
+      flex: "0 0 auto",
       padding: "20px 20px 0"
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -1147,6 +1153,11 @@ function Dialog({
     onClick: onClose
   }) : null), /*#__PURE__*/React.createElement("div", {
     style: {
+      flex: "1 1 auto",
+      minHeight: 0,
+      overflowY: "auto",
+      overscrollBehavior: "contain",
+      WebkitOverflowScrolling: "touch",
       padding: "18px 20px"
     }
   }, children), footer ? /*#__PURE__*/React.createElement("div", {
@@ -1154,6 +1165,7 @@ function Dialog({
       display: "flex",
       justifyContent: "flex-end",
       gap: 8,
+      flex: "0 0 auto",
       padding: "14px 20px",
       background: "var(--gray-50)",
       borderTop: "1px solid var(--border-subtle)"
