@@ -253,7 +253,7 @@
         <sc-if value="{{ isOrcamentos }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid; gap:20px">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap">
-              <div style="display:flex; gap:32px; flex-wrap:wrap">
+              <div style="display:flex; gap:12px 32px; flex-wrap:wrap">
                 <div style="display:grid; gap:2px">
                   <span style="font:var(--type-caption); color:var(--text-muted)">Em aberto</span>
                   <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ openCount }}</span>
@@ -269,6 +269,47 @@
               </div>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNew }}" hint-size="160px,44px">Novo orçamento</x-import>
             </div>
+            <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; gap:24px">
+                <sc-for list="{{ columns }}" as="col" hint-placeholder-count="7">
+                  <section style="display:grid; gap:10px">
+                    <div style="display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding:0 2px 8px; border-bottom:2px solid {{ col.line }}">
+                      <div style="display:flex; align-items:center; gap:8px; min-width:0">
+                        <span style="font:var(--type-section); color:var(--text-strong)">{{ col.label }}</span>
+                        <span style="font:var(--type-caption); font-size:11px; background:var(--gray-200); color:var(--text-muted); border-radius:var(--radius-pill); padding:1px 8px">{{ col.count }}</span>
+                      </div>
+                      <span style="font:var(--type-caption); color:var(--text-subtle); font-variant-numeric:tabular-nums; white-space:nowrap">{{ col.total }}</span>
+                    </div>
+                    <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
+                      <div onClick="{{ c.open }}" style="background:var(--surface-card); border-radius:var(--radius-md); box-shadow:var(--shadow-sm), var(--ring-card); padding:14px; display:grid; gap:10px; cursor:pointer; transition:box-shadow 140ms, transform 140ms" style-hover="box-shadow:var(--shadow-lg), var(--ring-card); transform:translateY(-2px)">
+                        <div style="display:flex; justify-content:space-between; gap:8px">
+                          <span style="font:var(--type-mono); font-size:12px; color:var(--text-muted)">{{ c.id }}</span>
+                          <span style="font:var(--type-caption); color:var(--text-subtle)">{{ c.age }}</span>
+                        </div>
+                        <div style="display:grid; gap:2px">
+                          <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ c.cli }}</span>
+                          <span style="font:var(--type-caption); color:var(--text-muted)">{{ c.prod }}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px">
+                          <span style="font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ c.valorFmt }}</span>
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="neutral" size="sm" icon="{{ c.origemIcon }}" hint-size="80px,20px">{{ c.origem }}</x-import>
+                        </div>
+                        <sc-if value="{{ c.hasInst }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; align-items:center; gap:6px; font:var(--type-caption); font-weight:600; color:var(--navy-500); padding-top:8px; border-top:1px solid var(--border-subtle)">
+                            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+                            <span>{{ c.inst }}</span>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ col.empty }}" hint-placeholder-val="{{ false }}">
+                      <span style="font:var(--type-caption); color:var(--text-subtle); padding:0 2px">Nenhum orçamento nesta etapa.</span>
+                    </sc-if>
+                  </section>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
             <div style="overflow-x:auto; margin:0 -24px; padding:0 24px 12px">
               <div style="display:flex; gap:16px; align-items:flex-start; min-width:max-content">
                 <sc-for list="{{ columns }}" as="col" hint-placeholder-count="7">
@@ -309,6 +350,7 @@
                 </sc-for>
               </div>
             </div>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -317,8 +359,32 @@
           <div style="display:grid; gap:16px">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ cliTabs }}" active="{{ cliF }}" onSelect="{{ onCliF }}" hint-size="420px,40px"></x-import>
-              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.SearchField" placeholder="Buscar por nome, bairro ou equipamento" shortcut="{{ null }}" value="{{ cliQ }}" onChange="{{ onCliQ }}" width="320px" hint-size="320px,44px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.SearchField" placeholder="Buscar por nome, bairro ou equipamento" shortcut="{{ null }}" value="{{ cliQ }}" onChange="{{ onCliQ }}" width="{{ searchW }}" hint-size="320px,44px"></x-import>
             </div>
+            <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
+                <sc-for list="{{ cliRows }}" as="c" hint-placeholder-count="8">
+                  <div onClick="{{ c.open }}" style="display:grid; gap:10px; padding:14px 16px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                    <div style="display:flex; align-items:center; gap:12px; min-width:0">
+                      <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ c.ini }}</span>
+                      <div style="display:grid; gap:1px; flex:1; min-width:0">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ c.nome }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-muted)">{{ c.equip }}</span>
+                      </div>
+                      <span style="display:inline-flex; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="chevron-right" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; padding-left:52px">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ c.atone }}" dot="{{ true }}" size="sm" hint-size="140px,20px">{{ c.alerta }}</x-import>
+                      <span style="font:var(--type-caption); color:var(--text-subtle); font-variant-numeric:tabular-nums">{{ c.bairro }} · {{ c.totalFmt }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ cliEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:32px 16px; text-align:center; font:var(--type-ui); color:var(--text-muted)">Nenhum cliente encontrado. Confira a grafia ou limpe a busca.</div>
+                </sc-if>
+              </x-import>
+            </sc-if>
+            <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
               <div style="overflow-x:auto">
                 <div style="min-width:820px">
@@ -346,6 +412,7 @@
                 </div>
               </div>
             </x-import>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -409,10 +476,22 @@
               </sc-for>
             </div>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:16px 20px; border-bottom:1px solid var(--border-subtle)">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:{{ cardHeadPad }}; border-bottom:1px solid var(--border-subtle)">
                 <span style="font:var(--type-section); color:var(--text-strong)">Lançamentos de setembro</span>
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ finTabs }}" active="{{ finF }}" onSelect="{{ onFinF }}" hint-size="300px,40px"></x-import>
               </div>
+              <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+                <sc-for list="{{ finRows }}" as="f" hint-placeholder-count="10">
+                  <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-subtle)">
+                    <div style="display:grid; gap:2px; min-width:0">
+                      <span style="font:var(--type-ui); color:var(--text-strong)">{{ f.desc }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted); font-variant-numeric:tabular-nums">{{ f.d }} · {{ f.cat }} · {{ f.forma }}</span>
+                    </div>
+                    <span style="flex:0 0 auto; font:var(--type-ui); font-weight:600; color:{{ f.color }}; font-variant-numeric:tabular-nums; white-space:nowrap">{{ f.valor }}</span>
+                  </div>
+                </sc-for>
+              </sc-if>
+              <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
               <div style="overflow-x:auto">
                 <div style="min-width:720px">
                   <div style="display:grid; grid-template-columns:72px minmax(0,2.4fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr); gap:16px; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
@@ -429,6 +508,7 @@
                   </sc-for>
                 </div>
               </div>
+              </sc-if>
             </x-import>
           </div>
         </sc-if>
@@ -1256,7 +1336,7 @@ class Component extends DCLogic {
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
       openMenu:()=>this.setState({menuOpen:true}),closeMenu:()=>this.setState({menuOpen:false}),
-      barY:mobile&&s.barHidden?'-100%':'0',mainPad:mobile?'76px 16px 24px':'24px',onMainScroll:e=>this.onMainScroll(e),
+      barY:mobile&&s.barHidden?'-100%':'0',searchW:mobile?'100%':'320px',cardHeadPad:mobile?'14px 16px':'16px 20px',mainPad:mobile?'76px 16px 24px':'24px',onMainScroll:e=>this.onMainScroll(e),
       userName:admin?'Helena Duarte':'Rogério Tavares',userInitials:admin?'HD':'RT',
       brandSub:admin?'Administração':'Casa do Aquecedor',navGroups,
       accountName:admin?'Equipe Nortiq':'Casa do Aquecedor',accountSub:admin?'Acesso administrativo':'Plano Profissional',accountIcon:admin?'shield':'store',

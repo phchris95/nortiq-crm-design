@@ -1879,11 +1879,13 @@ function Tabs({
   return /*#__PURE__*/React.createElement("div", _extends({}, rest, {
     style: {
       display: "inline-flex",
+      flexWrap: "wrap",
+      maxWidth: "100%",
       alignItems: "center",
       gap: pill ? 4 : 20,
       padding: pill ? 4 : 0,
       background: pill ? "var(--surface-sunken)" : "transparent",
-      borderRadius: pill ? "var(--radius-pill)" : 0,
+      borderRadius: pill ? 22 : 0,
       borderBottom: pill ? "none" : "1px solid var(--border-subtle)",
       ...style
     }
