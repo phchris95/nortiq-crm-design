@@ -50,9 +50,12 @@
 </sc-if>
 
 <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
-<div style="position:relative; height:100vh; display:flex; overflow:hidden; background:var(--surface-app); font-family:var(--font-sans)">
+<div style="position:relative; height:100dvh; display:flex; overflow:hidden; background:var(--surface-app); font-family:var(--font-sans)">
 
-  <aside style="width:{{ sideW }}; flex:0 0 auto; height:100%; box-sizing:border-box; background:var(--surface-nav); border-right:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:20px; padding:20px 14px; overflow:hidden; transition:width 220ms cubic-bezier(.2,.8,.25,1)">
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMenu }}" style="position:absolute; inset:0; z-index:35; background:var(--surface-overlay); backdrop-filter:blur(4px)"></div>
+  </sc-if>
+  <aside id="menu-lateral" aria-label="Menu" style="position:{{ asidePos }}; left:0; top:0; z-index:40; transform:{{ asideTx }}; visibility:{{ asideVis }}; box-shadow:{{ asideShadow }}; width:{{ sideW }}; max-width:86vw; flex:0 0 auto; height:100%; box-sizing:border-box; background:var(--surface-nav); border-right:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:20px; padding:20px 14px; overflow:hidden; transition:width 220ms cubic-bezier(.2,.8,.25,1), transform 240ms cubic-bezier(.2,.8,.25,1), visibility 240ms">
     <div style="display:flex; align-items:center; gap:10px; padding:0 6px; min-height:36px">
       <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="Nortiq" width="28" height="28" style="display:block"></span>
       <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
@@ -60,6 +63,9 @@
           <span style="font-family:var(--font-display); font-weight:700; font-size:17px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
           <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap">{{ brandSub }}</span>
         </div>
+      </sc-if>
+      <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+        <span style="margin-left:auto"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="x" label="Fechar menu" variant="ghost" onClick="{{ closeMenu }}" hint-size="44px,44px"></x-import></span>
       </sc-if>
     </div>
     <nav style="display:grid; gap:18px; flex:1; align-content:start; overflow-y:auto; overflow-x:hidden">
@@ -94,16 +100,30 @@
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="log-out" full-width="{{ true }}" onClick="{{ logout }}" hint-size="100%,34px">Sair</x-import>
       </div>
     </sc-if>
+    <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
     <button type="button" onClick="{{ toggleSide }}" title="{{ toggleLabel }}" style="display:flex; align-items:center; gap:10px; min-height:44px; padding:0 12px; border:none; background:transparent; cursor:pointer; border-radius:var(--radius-sm); color:var(--text-muted); font:var(--type-ui)" style-hover="background:var(--surface-hover)">
       <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
       <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span style="white-space:nowrap">{{ toggleLabel }}</span></sc-if>
     </button>
+    </sc-if>
   </aside>
 
-  <div style="flex:1; min-width:0; display:flex; flex-direction:column; height:100%">
-    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.TopBar" title="{{ pageTitle }}" subtitle="{{ pageSub }}" user="{{ user }}" hint-size="100%,64px"></x-import>
-    <main style="flex:1; overflow-y:auto">
-      <div style="max-width:1440px; margin:0 auto; padding:24px; display:grid; gap:24px; box-sizing:border-box">
+  <div style="position:relative; flex:1; min-width:0; display:flex; flex-direction:column; height:100%">
+    <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.TopBar" title="{{ pageTitle }}" subtitle="{{ pageSub }}" user="{{ user }}" hint-size="100%,64px"></x-import>
+    </sc-if>
+    <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+      <header style="position:absolute; top:0; left:0; right:0; z-index:20; height:60px; box-sizing:border-box; display:flex; align-items:center; gap:8px; padding:0 12px 0 6px; background:var(--surface-nav); border-bottom:1px solid var(--border-subtle); transform:translateY({{ barY }}); transition:transform 220ms cubic-bezier(.2,.8,.25,1)">
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="menu" label="Abrir menu" variant="ghost" onClick="{{ openMenu }}" hint-size="44px,44px"></x-import>
+        <div style="display:grid; gap:1px; flex:1; min-width:0">
+          <span style="font:var(--type-section); font-family:var(--font-display); color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ pageTitle }}</span>
+          <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ pageSub }}</span>
+        </div>
+        <span title="{{ userName }}" style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ userInitials }}</span>
+      </header>
+    </sc-if>
+    <main onScroll="{{ onMainScroll }}" style="flex:1; overflow-y:auto; overscroll-behavior:contain">
+      <div style="max-width:1440px; margin:0 auto; padding:{{ mainPad }}; display:grid; gap:24px; box-sizing:border-box">
 
         <!-- INÍCIO -->
         <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
@@ -331,8 +351,8 @@
 
         <!-- TAREFAS -->
         <sc-if value="{{ isTarefas }}" hint-placeholder-val="{{ false }}">
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:16px; align-items:start">
-            <div style="display:grid; gap:16px; grid-column:span 2; min-width:0">
+          <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start">
+            <div style="display:grid; gap:16px; flex:2 1 460px; min-width:0">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ taskTabs }}" active="{{ taskF }}" onSelect="{{ onTaskF }}" hint-size="300px,40px"></x-import>
               <sc-for list="{{ taskGroups }}" as="g" hint-placeholder-count="3">
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
@@ -362,6 +382,7 @@
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.EmptyState" icon="calendar-check" title="Nada por aqui" description="Quando você concluir uma tarefa, ela aparece nesta lista." hint-size="100%,220px"></x-import>
               </sc-if>
             </div>
+            <div style="flex:1 1 280px; min-width:0">
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,260px">
               <div style="display:grid; gap:14px">
                 <div style="display:flex; align-items:center; gap:10px">
@@ -375,6 +396,7 @@
                 <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Retornos e instalações com horário entram na agenda do celular, com lembrete 30 minutos antes.</span>
               </div>
             </x-import>
+            </div>
           </div>
         </sc-if>
 
@@ -1025,12 +1047,35 @@ const brl=(v,dec)=>'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits
 const fmtTel=t=>t?`(${t.slice(0,2)}) ${t.slice(2,7)}-${t.slice(7)}`:'';
 const first=n=>n.startsWith('Condomínio')?'Marcos':n.startsWith('Restaurante')?'pessoal':n.startsWith('Pousada')?'pessoal':n.split(' ')[0];
 const ini=n=>n.split(' ').filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const MOBILE_MQ='(max-width: 767px)';
 const emptyNf=()=>({cli:'',tel:'',prod:PRODUCTS[0][0],valor:String(PRODUCTS[0][1]),pag:'PIX à vista',origem:'Instagram',end:''});
 
 class Component extends DCLogic {
   state={view:null,page:'inicio',apage:'a-geral',collapsed:null,drawer:null,orcs:ORCS.map(o=>({...o})),tasks:TASKS.map(t=>({done:false,...t})),
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
-    showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432};
+    showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432,
+    mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
+
+  componentDidMount(){
+    if(!window.matchMedia) return;
+    this._mq=window.matchMedia(MOBILE_MQ);
+    this._onMq=e=>this.setState({mobile:e.matches,menuOpen:false,barHidden:false});
+    if(this._mq.addEventListener) this._mq.addEventListener('change',this._onMq); else this._mq.addListener(this._onMq);
+    this._onKey=e=>{ if(e.key==='Escape'&&this.state.menuOpen) this.setState({menuOpen:false}); };
+    window.addEventListener('keydown',this._onKey);
+  }
+  componentWillUnmount(){
+    if(this._mq){ if(this._mq.removeEventListener) this._mq.removeEventListener('change',this._onMq); else this._mq.removeListener(this._onMq); }
+    if(this._onKey) window.removeEventListener('keydown',this._onKey);
+  }
+  // Mobile: hide the top bar while scrolling down, bring it back when scrolling up.
+  onMainScroll(e){
+    if(!this.state.mobile) return;
+    const y=e.currentTarget.scrollTop, last=this._lastY||0; this._lastY=y;
+    let hide=this.state.barHidden;
+    if(y<60) hide=false; else if(y-last>6) hide=true; else if(last-y>6) hide=false;
+    if(hide!==this.state.barHidden) this.setState({barHidden:hide});
+  }
 
   componentDidUpdate(pp){ if(pp.visao!==this.props.visao) this.setState({view:null,drawer:null}); if(pp.menuRecolhido!==this.props.menuRecolhido) this.setState({collapsed:null}); }
 
@@ -1073,11 +1118,12 @@ class Component extends DCLogic {
   renderVals(){
     const s=this.state;
     const view=s.view ?? (this.props.visao ?? 'loja');
-    const collapsed=s.collapsed ?? (this.props.menuRecolhido ?? false);
+    const mobile=!!s.mobile;
+    const collapsed=mobile?false:(s.collapsed ?? (this.props.menuRecolhido ?? false));
     const expanded=!collapsed;
     const admin=view==='admin';
     const page=admin?s.apage:s.page;
-    const go=p=>(e)=>{ if(e&&e.preventDefault) e.preventDefault(); this.setState(admin?{apage:p,drawer:null}:{page:p,drawer:null}); };
+    const go=p=>(e)=>{ if(e&&e.preventDefault) e.preventDefault(); this.setState(admin?{apage:p,drawer:null,menuOpen:false,barHidden:false}:{page:p,drawer:null,menuOpen:false,barHidden:false}); };
     const orcs=s.orcs;
     const openStages=['solicitado','enviado','negociando'];
     const openO=orcs.filter(o=>openStages.includes(o.stage));
@@ -1207,10 +1253,15 @@ class Component extends DCLogic {
 
     return {
       isLogin:view==='login',isApp:view!=='login',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
+      mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
+      asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
+      openMenu:()=>this.setState({menuOpen:true}),closeMenu:()=>this.setState({menuOpen:false}),
+      barY:mobile&&s.barHidden?'-100%':'0',mainPad:mobile?'76px 16px 24px':'24px',onMainScroll:e=>this.onMainScroll(e),
+      userName:admin?'Helena Duarte':'Rogério Tavares',userInitials:admin?'HD':'RT',
       brandSub:admin?'Administração':'Casa do Aquecedor',navGroups,
       accountName:admin?'Equipe Nortiq':'Casa do Aquecedor',accountSub:admin?'Acesso administrativo':'Plano Profissional',accountIcon:admin?'shield':'store',
       toggleSide:()=>this.setState({collapsed:expanded}),toggleLabel:expanded?'Recolher menu':'Expandir menu',toggleIcon:expanded?'panel-left-close':'panel-left-open',
-      logout:()=>this.setState({view:'login',drawer:null}),
+      logout:()=>this.setState({view:'login',drawer:null,menuOpen:false}),
       loginLoja:()=>this.setState({view:'loja',page:'inicio'}),loginAdmin:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'admin',apage:'a-geral'});},
       pageTitle:(TITLES[page]||[''])[0],pageSub:(TITLES[page]||['',''])[1],
       user:admin?{name:'Helena Duarte',role:'Operações · Nortiq',initials:'HD'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
