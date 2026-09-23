@@ -1503,6 +1503,7 @@ function Select({
     style: {
       display: "grid",
       gap: 6,
+      minWidth: 0,
       width: fullWidth ? "100%" : undefined
     }
   }, label ? /*#__PURE__*/React.createElement("label", {
@@ -1517,6 +1518,7 @@ function Select({
       position: "relative",
       display: "flex",
       alignItems: "center",
+      minWidth: 0,
       height: h,
       background: disabled ? "var(--surface-sunken)" : "var(--surface-card)",
       border: `1px solid ${focus ? "var(--border-focus)" : "var(--border-default)"}`,
@@ -1534,7 +1536,12 @@ function Select({
       appearance: "none",
       WebkitAppearance: "none",
       flex: 1,
+      minWidth: 0,
+      width: "100%",
       height: "100%",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
       padding: "0 34px 0 12px",
       border: "none",
       outline: "none",
