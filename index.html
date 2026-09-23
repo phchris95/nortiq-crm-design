@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Nortiq CRM</title>
+  <link rel="stylesheet" href="ds/tokens/fonts.css">
+  <link rel="stylesheet" href="ds/tokens/colors.css">
+  <link rel="stylesheet" href="ds/tokens/typography.css">
+  <link rel="stylesheet" href="ds/tokens/spacing.css">
+  <link rel="stylesheet" href="ds/tokens/radii.css">
+  <link rel="stylesheet" href="ds/tokens/elevation.css">
+  <link rel="stylesheet" href="ds/tokens/motion.css">
+  <link rel="stylesheet" href="ds/tokens/base.css">
+  <link rel="stylesheet" href="ds/styles.css">
+  <script src="ds/ds_bundle.js"></script>
+  <style>html,body{margin:0;height:100%;background:var(--surface-app);color:var(--text-body)}a{color:var(--text-link);text-decoration:none}a:hover{color:var(--text-link-hover);text-decoration:underline}</style>
+</helmet>
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh; display:grid; place-items:center; padding:24px; background:var(--surface-app); font-family:var(--font-sans)">
+    <div style="width:100%; max-width:420px; display:grid; gap:24px">
+      <div style="display:flex; align-items:center; gap:10px; justify-content:center">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="" width="32" height="32" style="display:block"></span>
+        <span style="font-family:var(--font-display); font-weight:700; font-size:26px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
+      </div>
+      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="100%,420px">
+        <div style="display:grid; gap:18px">
+          <div style="display:grid; gap:4px">
+            <span style="font:var(--type-title); color:var(--text-strong)">Entre na conta da sua loja</span>
+            <span style="font:var(--type-caption); color:var(--text-muted)">Cada loja tem um endereço e um acesso só dela.</span>
+          </div>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="casadoaquecedor" suffix=".nortiq.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail" value="rogerio@casadoaquecedor.com.br" icon="mail" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Senha" type="password" value="nortiq2026" icon="lock" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ loginLoja }}" hint-size="100%,52px">Entrar</x-import>
+        </div>
+      </x-import>
+      <div style="display:flex; justify-content:center; gap:6px; font:var(--type-caption); color:var(--text-muted)">
+        <span>Equipe Nortiq?</span>
+        <a href="#" onClick="{{ loginAdmin }}">Acessar a administração</a>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative; height:100vh; display:flex; overflow:hidden; background:var(--surface-app); font-family:var(--font-sans)">
+
+  <aside style="width:{{ sideW }}; flex:0 0 auto; height:100%; box-sizing:border-box; background:var(--surface-nav); border-right:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:20px; padding:20px 14px; overflow:hidden; transition:width 220ms cubic-bezier(.2,.8,.25,1)">
+    <div style="display:flex; align-items:center; gap:10px; padding:0 6px; min-height:36px">
+      <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="Nortiq" width="28" height="28" style="display:block"></span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid; min-width:0">
+          <span style="font-family:var(--font-display); font-weight:700; font-size:17px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
+          <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap">{{ brandSub }}</span>
+        </div>
+      </sc-if>
+    </div>
+    <nav style="display:grid; gap:18px; flex:1; align-content:start; overflow-y:auto; overflow-x:hidden">
+      <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="2">
+        <div style="display:grid; gap:2px">
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+            <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-disabled); padding:0 10px 6px; white-space:nowrap">{{ g.label }}</span>
+          </sc-if>
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+            <button type="button" title="{{ it.label }}" onClick="{{ it.go }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:44px; padding:0 12px; border:none; cursor:pointer; text-align:left; border-radius:var(--radius-sm); font:var(--type-ui); background:{{ it.bg }}; color:{{ it.fg }}; font-weight:{{ it.fw }}; transition:background 140ms" style-hover="background:{{ it.hoverBg }}">
+              <span style="display:inline-flex; color:{{ it.ic }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+              <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+                <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ it.label }}</span>
+              </sc-if>
+              <sc-if value="{{ it.hasBadge }}" hint-placeholder-val="{{ false }}">
+                <span style="font:var(--type-caption); font-size:11px; background:{{ it.badgeBg }}; color:{{ it.badgeFg }}; border-radius:var(--radius-pill); padding:1px 7px">{{ it.badge }}</span>
+              </sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </sc-for>
+    </nav>
+    <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid; gap:10px; padding:12px; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+        <div style="display:flex; align-items:center; gap:10px">
+          <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-pill); background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ accountIcon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+          <div style="display:grid; min-width:0">
+            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ accountName }}</span>
+            <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap">{{ accountSub }}</span>
+          </div>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="log-out" full-width="{{ true }}" onClick="{{ logout }}" hint-size="100%,34px">Sair</x-import>
+      </div>
+    </sc-if>
+    <button type="button" onClick="{{ toggleSide }}" title="{{ toggleLabel }}" style="display:flex; align-items:center; gap:10px; min-height:44px; padding:0 12px; border:none; background:transparent; cursor:pointer; border-radius:var(--radius-sm); color:var(--text-muted); font:var(--type-ui)" style-hover="background:var(--surface-hover)">
+      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span style="white-space:nowrap">{{ toggleLabel }}</span></sc-if>
+    </button>
+  </aside>
+
+  <div style="flex:1; min-width:0; display:flex; flex-direction:column; height:100%">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.TopBar" title="{{ pageTitle }}" subtitle="{{ pageSub }}" user="{{ user }}" hint-size="100%,64px"></x-import>
+    <main style="flex:1; overflow-y:auto">
+      <div style="max-width:1440px; margin:0 auto; padding:24px; display:grid; gap:24px; box-sizing:border-box">
+
+        <!-- INÍCIO -->
+        <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; gap:24px">
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap">
+              <div style="display:grid; gap:4px">
+                <span style="font:var(--type-title-xl); letter-spacing:-0.015em; color:var(--text-strong)">Bom dia, Rogério</span>
+                <span style="font:var(--type-body); color:var(--text-muted)">Terça-feira, 22 de setembro. Você tem {{ tasksTodayCount }} retornos para hoje.</span>
+              </div>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNewFromHome }}" hint-size="160px,44px">Novo orçamento</x-import>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+              <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" delta="{{ k.delta }}" tone="{{ k.tone }}" onClick="{{ k.go }}" style="cursor:pointer" hint-size="100%,132px"></x-import>
+              </sc-for>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap:16px; align-items:start">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,420px">
+                <div style="display:grid; gap:4px">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Manutenções e garantias vencendo</span>
+                    <a href="#" onClick="{{ goClientesDue }}" style="font:var(--type-caption); font-weight:600">Ver clientes</a>
+                  </div>
+                  <span style="font:var(--type-caption); color:var(--text-muted)">Clientes antigos com motivo para receber uma mensagem agora.</span>
+                  <div style="display:grid; margin-top:10px">
+                    <sc-for list="{{ dueList }}" as="r" hint-placeholder-count="5">
+                      <div style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; padding:12px 0; border-top:1px solid var(--border-subtle)">
+                        <div onClick="{{ r.open }}" style="display:flex; gap:12px; align-items:center; min-width:0; cursor:pointer">
+                          <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:var(--radius-sm); background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ r.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                          <div style="display:grid; gap:2px; min-width:0">
+                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ r.nome }}</span>
+                            <span style="font:var(--type-caption); color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.equip }}</span>
+                            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
+                              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ r.tone }}" dot="{{ true }}" size="sm" hint-size="120px,20px">{{ r.tipo }}</x-import>
+                              <span style="font:var(--type-caption); color:var(--text-subtle)">{{ r.quando }}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="message-circle" onClick="{{ r.wa }}" hint-size="110px,34px">Avisar</x-import>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </x-import>
+
+              <div style="display:grid; gap:16px">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
+                  <div style="display:grid; gap:14px">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Meta de setembro</span>
+                      <a href="#" onClick="{{ goMetas }}" style="font:var(--type-caption); font-weight:600">Detalhes</a>
+                    </div>
+                    <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap">
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:38px; line-height:1.08; letter-spacing:-0.03em; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ metaPctFmt }}</span>
+                      <span style="font:var(--type-ui); color:var(--text-muted)">{{ metaRealFmt }} de {{ metaAlvoFmt }}</span>
+                    </div>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ metaReal }}" max="{{ metaAlvo }}" show-value="{{ false }}" height="{{ 10 }}" caption="{{ metaCaption }}" hint-size="100%,32px"></x-import>
+                  </div>
+                </x-import>
+
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,260px">
+                  <div style="display:grid; gap:4px">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Instalações desta semana</span>
+                      <span style="font:var(--type-caption); color:var(--text-subtle)">21 a 27/09</span>
+                    </div>
+                    <div style="display:grid; margin-top:8px">
+                      <sc-for list="{{ weekInst }}" as="w" hint-placeholder-count="4">
+                        <div onClick="{{ w.open }}" style="display:grid; grid-template-columns:64px minmax(0,1fr); gap:12px; align-items:center; padding:10px 8px; margin:0 -8px; border-radius:var(--radius-sm); cursor:pointer" style-hover="background:var(--surface-hover)">
+                          <div style="display:grid; text-align:center; padding:6px 0; border-radius:var(--radius-sm); box-shadow:var(--ring-card)">
+                            <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">{{ w.dow }}</span>
+                            <span style="font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--text-strong)">{{ w.day }}</span>
+                          </div>
+                          <div style="display:grid; gap:2px; min-width:0">
+                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ w.hora }} · {{ w.cli }}</span>
+                            <span style="font:var(--type-caption); color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ w.prod }}</span>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </x-import>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap:16px; align-items:start">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,260px">
+                <div style="display:grid; gap:14px">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Orçamentos por etapa</span>
+                    <a href="#" onClick="{{ goOrcamentos }}" style="font:var(--type-caption); font-weight:600">Abrir funil</a>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(118px, 1fr)); gap:8px">
+                    <sc-for list="{{ funnel }}" as="f" hint-placeholder-count="7">
+                      <div onClick="{{ f.go }}" style="display:grid; gap:4px; padding:12px; border-radius:var(--radius-md); box-shadow:var(--ring-card); cursor:pointer" style-hover="background:var(--surface-hover)">
+                        <span style="font:var(--type-caption); color:var(--text-muted); min-height:34px">{{ f.label }}</span>
+                        <span style="font-family:var(--font-display); font-weight:700; font-size:30px; line-height:1.08; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ f.count }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-subtle); font-variant-numeric:tabular-nums">{{ f.total }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,260px">
+                <div style="display:grid; gap:4px">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Retornos de hoje</span>
+                    <a href="#" onClick="{{ goTarefas }}" style="font:var(--type-caption); font-weight:600">Todas as tarefas</a>
+                  </div>
+                  <div style="display:grid; margin-top:8px">
+                    <sc-for list="{{ todayTasks }}" as="t" hint-placeholder-count="4">
+                      <div style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; padding:10px 0; border-top:1px solid var(--border-subtle)">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ t.t }}" description="{{ t.sub }}" checked="{{ t.done }}" onChange="{{ t.toggle }}" hint-size="100%,44px"></x-import>
+                        <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap">{{ t.when }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </x-import>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ORÇAMENTOS -->
+        <sc-if value="{{ isOrcamentos }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:20px">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap">
+              <div style="display:flex; gap:32px; flex-wrap:wrap">
+                <div style="display:grid; gap:2px">
+                  <span style="font:var(--type-caption); color:var(--text-muted)">Em aberto</span>
+                  <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ openCount }}</span>
+                </div>
+                <div style="display:grid; gap:2px">
+                  <span style="font:var(--type-caption); color:var(--text-muted)">Valor em negociação</span>
+                  <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ openTotal }}</span>
+                </div>
+                <div style="display:grid; gap:2px">
+                  <span style="font:var(--type-caption); color:var(--text-muted)">Fechados no mês</span>
+                  <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ wonTotal }}</span>
+                </div>
+              </div>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNew }}" hint-size="160px,44px">Novo orçamento</x-import>
+            </div>
+            <div style="overflow-x:auto; margin:0 -24px; padding:0 24px 12px">
+              <div style="display:flex; gap:16px; align-items:flex-start; min-width:max-content">
+                <sc-for list="{{ columns }}" as="col" hint-placeholder-count="7">
+                  <div style="width:272px; flex:0 0 272px; display:grid; gap:10px">
+                    <div style="display:grid; gap:2px; padding:4px 4px 8px; border-bottom:2px solid {{ col.line }}">
+                      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ col.label }}</span>
+                        <span style="font:var(--type-caption); font-size:11px; background:var(--gray-200); color:var(--text-muted); border-radius:var(--radius-pill); padding:1px 8px">{{ col.count }}</span>
+                      </div>
+                      <span style="font:var(--type-caption); color:var(--text-subtle); font-variant-numeric:tabular-nums">{{ col.total }}</span>
+                    </div>
+                    <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
+                      <div onClick="{{ c.open }}" style="background:var(--surface-card); border-radius:var(--radius-md); box-shadow:var(--shadow-sm), var(--ring-card); padding:14px; display:grid; gap:10px; cursor:pointer; transition:box-shadow 140ms, transform 140ms" style-hover="box-shadow:var(--shadow-lg), var(--ring-card); transform:translateY(-2px)">
+                        <div style="display:flex; justify-content:space-between; gap:8px">
+                          <span style="font:var(--type-mono); font-size:12px; color:var(--text-muted)">{{ c.id }}</span>
+                          <span style="font:var(--type-caption); color:var(--text-subtle)">{{ c.age }}</span>
+                        </div>
+                        <div style="display:grid; gap:2px">
+                          <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ c.cli }}</span>
+                          <span style="font:var(--type-caption); color:var(--text-muted)">{{ c.prod }}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px">
+                          <span style="font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ c.valorFmt }}</span>
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="neutral" size="sm" icon="{{ c.origemIcon }}" hint-size="80px,20px">{{ c.origem }}</x-import>
+                        </div>
+                        <sc-if value="{{ c.hasInst }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; align-items:center; gap:6px; font:var(--type-caption); font-weight:600; color:var(--navy-500); padding-top:8px; border-top:1px solid var(--border-subtle)">
+                            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+                            <span>{{ c.inst }}</span>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ col.empty }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding:20px 12px; text-align:center; font:var(--type-caption); color:var(--text-subtle); border-radius:var(--radius-md); box-shadow:var(--ring-card)">Nenhum orçamento nesta etapa.</div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- CLIENTES -->
+        <sc-if value="{{ isClientes }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:16px">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ cliTabs }}" active="{{ cliF }}" onSelect="{{ onCliF }}" hint-size="420px,40px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.SearchField" placeholder="Buscar por nome, bairro ou equipamento" shortcut="{{ null }}" value="{{ cliQ }}" onChange="{{ onCliQ }}" width="320px" hint-size="320px,44px"></x-import>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
+              <div style="overflow-x:auto">
+                <div style="min-width:820px">
+                  <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.5fr); gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
+                    <span>Cliente</span><span>Equipamento principal</span><span>Última compra</span><span style="text-align:right">Total comprado</span><span>Próximo contato</span>
+                  </div>
+                  <sc-for list="{{ cliRows }}" as="c" hint-placeholder-count="8">
+                    <div onClick="{{ c.open }}" style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.5fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); cursor:pointer; min-height:44px" style-hover="background:var(--surface-hover)">
+                      <div style="display:flex; align-items:center; gap:10px; min-width:0">
+                        <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ c.ini }}</span>
+                        <div style="display:grid; min-width:0">
+                          <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ c.nome }}</span>
+                          <span style="font:var(--type-caption); color:var(--text-subtle)">{{ c.bairro }}</span>
+                        </div>
+                      </div>
+                      <span style="font:var(--type-ui); color:var(--text-body)">{{ c.equip }}</span>
+                      <span style="font:var(--type-ui); color:var(--text-body); font-variant-numeric:tabular-nums">{{ c.ultima }}</span>
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); text-align:right; font-variant-numeric:tabular-nums">{{ c.totalFmt }}</span>
+                      <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ c.atone }}" dot="{{ true }}" hint-size="140px,24px">{{ c.alerta }}</x-import></div>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ cliEmpty }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:40px 20px; text-align:center; font:var(--type-ui); color:var(--text-muted)">Nenhum cliente encontrado. Confira a grafia ou limpe a busca.</div>
+                  </sc-if>
+                </div>
+              </div>
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- TAREFAS -->
+        <sc-if value="{{ isTarefas }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:16px; align-items:start">
+            <div style="display:grid; gap:16px; grid-column:span 2; min-width:0">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ taskTabs }}" active="{{ taskF }}" onSelect="{{ onTaskF }}" hint-size="300px,40px"></x-import>
+              <sc-for list="{{ taskGroups }}" as="g" hint-placeholder-count="3">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
+                  <div style="display:grid; gap:4px">
+                    <div style="display:flex; align-items:center; gap:8px">
+                      <span style="font:var(--type-section); color:{{ g.color }}">{{ g.label }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-subtle)">{{ g.count }}</span>
+                    </div>
+                    <div style="display:grid; margin-top:6px">
+                      <sc-for list="{{ g.items }}" as="t" hint-placeholder-count="3">
+                        <div style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; padding:10px 0; border-top:1px solid var(--border-subtle)">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ t.t }}" description="{{ t.sub }}" checked="{{ t.done }}" onChange="{{ t.toggle }}" hint-size="100%,44px"></x-import>
+                          <div style="display:flex; align-items:center; gap:8px">
+                            <sc-if value="{{ t.cal }}" hint-placeholder-val="{{ false }}">
+                              <span title="Na Google Agenda" style="display:inline-flex; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar-check" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+                            </sc-if>
+                            <span style="font:var(--type-caption); color:{{ t.whenColor }}; white-space:nowrap; font-weight:600">{{ t.when }}</span>
+                            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="chevron-right" label="Abrir" variant="ghost" size="sm" onClick="{{ t.open }}" hint-size="34px,34px"></x-import>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </x-import>
+              </sc-for>
+              <sc-if value="{{ taskEmpty }}" hint-placeholder-val="{{ false }}">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.EmptyState" icon="calendar-check" title="Nada por aqui" description="Quando você concluir uma tarefa, ela aparece nesta lista." hint-size="100%,220px"></x-import>
+              </sc-if>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,260px">
+              <div style="display:grid; gap:14px">
+                <div style="display:flex; align-items:center; gap:10px">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:var(--radius-sm); background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar-sync" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+                  <div style="display:grid">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Google Agenda</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ gcalSub }}</span>
+                  </div>
+                </div>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Enviar tarefas e instalações para a agenda" checked="{{ gcal }}" onChange="{{ toggleGcal }}" hint-size="100%,32px"></x-import>
+                <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Retornos e instalações com horário entram na agenda do celular, com lembrete 30 minutos antes.</span>
+              </div>
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- FATURAMENTO -->
+        <sc-if value="{{ isFaturamento }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:16px">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+              <sc-for list="{{ finKpis }}" as="k" hint-placeholder-count="3">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" hint-size="100%,132px"></x-import>
+              </sc-for>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:16px 20px; border-bottom:1px solid var(--border-subtle)">
+                <span style="font:var(--type-section); color:var(--text-strong)">Lançamentos de setembro</span>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ finTabs }}" active="{{ finF }}" onSelect="{{ onFinF }}" hint-size="300px,40px"></x-import>
+              </div>
+              <div style="overflow-x:auto">
+                <div style="min-width:720px">
+                  <div style="display:grid; grid-template-columns:72px minmax(0,2.4fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr); gap:16px; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
+                    <span>Data</span><span>Descrição</span><span>Categoria</span><span>Forma</span><span style="text-align:right">Valor</span>
+                  </div>
+                  <sc-for list="{{ finRows }}" as="f" hint-placeholder-count="10">
+                    <div style="display:grid; grid-template-columns:72px minmax(0,2.4fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+                      <span style="color:var(--text-muted); font-variant-numeric:tabular-nums">{{ f.d }}</span>
+                      <span style="color:var(--text-strong)">{{ f.desc }}</span>
+                      <span style="color:var(--text-body)">{{ f.cat }}</span>
+                      <span style="color:var(--text-muted)">{{ f.forma }}</span>
+                      <span style="text-align:right; font-weight:600; color:{{ f.color }}; font-variant-numeric:tabular-nums">{{ f.valor }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- METAS -->
+        <sc-if value="{{ isMetas }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap:16px; align-items:start">
+            <div style="grid-column:1 / -1; min-width:0">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,320px">
+              <div style="display:grid; gap:20px">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px 24px; flex-wrap:wrap">
+                  <div style="display:grid; gap:4px">
+                    <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Meta de vendas · setembro</span>
+                    <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap">
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:48px; line-height:1.08; letter-spacing:-0.03em; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ metaRealFmt }}</span>
+                      <span style="font:var(--type-body); color:var(--text-muted)">de {{ metaAlvoFmt }}</span>
+                    </div>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Meta do mês" prefix="R$" type="number" value="{{ metaAlvo }}" onChange="{{ onMeta }}" hint="Ajuste quando quiser" wrapper-style="{{ metaInputStyle }}" hint-size="200px,90px"></x-import>
+                </div>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ metaReal }}" max="{{ metaAlvo }}" show-value="{{ false }}" height="{{ 14 }}" hint-size="100%,14px"></x-import>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:16px">
+                  <sc-for list="{{ metaFacts }}" as="m" hint-placeholder-count="4">
+                    <div style="display:grid; gap:2px">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">{{ m.label }}</span>
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ m.value }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </x-import>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,320px">
+              <div style="display:grid; gap:16px">
+                <span style="font:var(--type-section); color:var(--text-strong)">Meses anteriores</span>
+                <sc-for list="{{ metaHist }}" as="h" hint-placeholder-count="5">
+                  <div style="display:grid; gap:6px">
+                    <div style="display:flex; justify-content:space-between; gap:8px; font:var(--type-ui)">
+                      <span style="color:var(--text-strong); font-weight:600">{{ h.mes }}</span>
+                      <span style="color:var(--text-muted); font-variant-numeric:tabular-nums">{{ h.caption }}</span>
+                    </div>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ h.real }}" max="{{ h.alvo }}" tone="{{ h.tone }}" show-value="{{ false }}" hint-size="100%,8px"></x-import>
+                  </div>
+                </sc-for>
+              </div>
+            </x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,320px">
+              <div style="display:grid; gap:4px">
+                <span style="font:var(--type-section); color:var(--text-strong)">De onde veio a receita</span>
+                <span style="font:var(--type-caption); color:var(--text-muted)">Setembro, até hoje</span>
+                <div style="display:grid; margin-top:8px">
+                  <sc-for list="{{ metaSources }}" as="s" hint-placeholder-count="3">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 0; border-top:1px solid var(--border-subtle)">
+                      <div style="display:grid">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ s.label }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-subtle)">{{ s.sub }}</span>
+                      </div>
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ s.value }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- CONFIGURAÇÕES -->
+        <sc-if value="{{ isConfig }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:20px">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" items="{{ cfgTabs }}" active="{{ cfgTab }}" onSelect="{{ onCfgTab }}" hint-size="100%,44px"></x-import>
+            <sc-if value="{{ cfgPerfil }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" style="max-width:760px" hint-size="100%,360px">
+                <div style="display:grid; gap:18px">
+                  <span style="font:var(--type-section); color:var(--text-strong)">Seu perfil</span>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Nome" default-value="Rogério Tavares" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Função" default-value="Proprietário" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail" default-value="rogerio@casadoaquecedor.com.br" icon="mail" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="WhatsApp para atender clientes" default-value="(12) 99640-2218" icon="message-circle" hint="As mensagens saem deste número" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:12px">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveProfile }}" hint-size="140px,44px">Salvar alterações</x-import>
+                    <sc-if value="{{ profileSaved }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); color:var(--status-success-fg); font-weight:600">Alterações salvas.</span></sc-if>
+                  </div>
+                </div>
+              </x-import>
+            </sc-if>
+            <sc-if value="{{ cfgPlano }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap:16px; align-items:start">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" tone="dark" padding="{{ 24 }}" hint-size="100%,300px">
+                  <div style="display:grid; gap:16px">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px">
+                      <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--gray-300)">Seu plano</span>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" dot="{{ true }}" hint-size="80px,24px">Em dia</x-import>
+                    </div>
+                    <div style="display:grid; gap:2px">
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:#fff">Profissional</span>
+                      <span style="font:var(--type-body); color:var(--gray-300)">R$ 149,00 por mês · desde março de 2025</span>
+                    </div>
+                    <div style="display:grid; gap:8px; font:var(--type-ui); color:var(--gray-200)">
+                      <span>Próxima cobrança em 01/10 no cartão final 4821</span>
+                      <span>Até 5 usuários · clientes ilimitados · Google Agenda</span>
+                    </div>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" hint-size="140px,44px">Mudar de plano</x-import>
+                  </div>
+                </x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,300px">
+                  <div style="display:grid; gap:18px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Uso do plano</span>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" label="Usuários" value="{{ 3 }}" max="{{ 5 }}" hint-size="100%,32px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" label="Mensagens automáticas no mês" value="{{ 214 }}" max="{{ 500 }}" hint-size="100%,32px"></x-import>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Usuários: Rogério (proprietário), Jefferson e Alan (instaladores).</span>
+                  </div>
+                </x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" style="grid-column:1 / -1" hint-size="100%,260px">
+                  <div style="padding:16px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-section); color:var(--text-strong)">Faturas</div>
+                  <sc-for list="{{ invoices }}" as="i" hint-placeholder-count="4">
+                    <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) auto; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+                      <span style="color:var(--text-strong); font-weight:600">{{ i.mes }}</span>
+                      <span style="color:var(--text-muted)">{{ i.data }}</span>
+                      <span style="color:var(--text-strong); font-variant-numeric:tabular-nums">R$ 149,00</span>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" dot="{{ true }}" hint-size="60px,24px">Pago</x-import>
+                    </div>
+                  </sc-for>
+                </x-import>
+              </div>
+            </sc-if>
+            <sc-if value="{{ cfgConta }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" style="max-width:760px" hint-size="100%,420px">
+                <div style="display:grid; gap:18px">
+                  <div style="display:grid; gap:4px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Dados da loja</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Aparecem nos orçamentos enviados e nas mensagens para clientes.</span>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Nome da loja" default-value="Casa do Aquecedor" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Razão social" default-value="R. Tavares Aquecedores e Hidráulica Ltda." full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="CNPJ" default-value="34.218.907/0001-52" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Instagram" default-value="@casadoaquecedor.sjc" icon="instagram" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" default-value="Av. Andrômeda, 1.520 · Jardim Satélite · São José dos Campos/SP" full-width="{{ true }}" wrapper-style="{{ fullRow }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço de acesso" value="casadoaquecedor" suffix=".nortiq.com.br" read-only="{{ true }}" hint="Só a sua equipe entra por aqui" full-width="{{ true }}" wrapper-style="{{ fullRow }}" hint-size="100%,90px"></x-import>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveProfile }}" style="justify-self:start" hint-size="140px,44px">Salvar alterações</x-import>
+                </div>
+              </x-import>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- ADMIN · VISÃO GERAL -->
+        <sc-if value="{{ isAGeral }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:16px">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+              <sc-for list="{{ adminKpis }}" as="k" hint-placeholder-count="4">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" delta="{{ k.delta }}" tone="{{ k.tone }}" hint-size="100%,132px"></x-import>
+              </sc-for>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,360px">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--border-subtle)">
+                <div style="display:grid">
+                  <span style="font:var(--type-section); color:var(--text-strong)">Cobranças de setembro</span>
+                  <span style="font:var(--type-caption); color:var(--text-muted)">Faturas geradas em 01/09 · vencimento em 10/09</span>
+                </div>
+                <a href="#" onClick="{{ goAContas }}" style="font:var(--type-caption); font-weight:600">Todas as contas</a>
+              </div>
+              <div style="overflow-x:auto">
+                <div style="min-width:720px">
+                  <sc-for list="{{ charges }}" as="c" hint-placeholder-count="6">
+                    <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr) 150px; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+                      <div style="display:grid; min-width:0">
+                        <span style="font-weight:600; color:var(--text-strong)">{{ c.nome }}</span>
+                        <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ c.fatura }}</span>
+                      </div>
+                      <span style="color:var(--text-muted)">{{ c.plano }}</span>
+                      <span style="color:var(--text-strong); font-variant-numeric:tabular-nums">{{ c.valor }}</span>
+                      <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ c.tone }}" dot="{{ true }}" hint-size="120px,24px">{{ c.status }}</x-import></div>
+                      <div style="display:flex; justify-content:flex-end">
+                        <sc-if value="{{ c.canRemind }}" hint-placeholder-val="{{ false }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="send" onClick="{{ c.remind }}" hint-size="130px,34px">Reenviar</x-import>
+                        </sc-if>
+                        <sc-if value="{{ c.reminded }}" hint-placeholder-val="{{ false }}">
+                          <span style="font:var(--type-caption); color:var(--text-muted)">Reenviada agora</span>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ADMIN · CONTAS -->
+        <sc-if value="{{ isAContas }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:16px">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ accTabs }}" active="{{ accF }}" onSelect="{{ onAccF }}" hint-size="520px,40px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.SearchField" placeholder="Buscar conta" shortcut="{{ null }}" value="{{ accQ }}" onChange="{{ onAccQ }}" width="260px" hint-size="260px,44px"></x-import>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
+              <div style="overflow-x:auto">
+                <div style="min-width:900px">
+                  <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) 80px minmax(0,1fr) minmax(0,1.3fr); gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
+                    <span>Conta</span><span>Cidade</span><span>Plano</span><span style="text-align:right">Usuários</span><span>Cliente desde</span><span>Pagamento</span>
+                  </div>
+                  <sc-for list="{{ accRows }}" as="a" hint-placeholder-count="10">
+                    <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) 80px minmax(0,1fr) minmax(0,1.3fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px">
+                      <div style="display:grid; min-width:0">
+                        <span style="font-weight:600; color:var(--text-strong)">{{ a.nome }}</span>
+                        <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ a.slug }}.nortiq.com.br</span>
+                      </div>
+                      <span style="color:var(--text-body)">{{ a.cidade }}</span>
+                      <span style="color:var(--text-body)">{{ a.plano }}</span>
+                      <span style="text-align:right; color:var(--text-body); font-variant-numeric:tabular-nums">{{ a.users }}</span>
+                      <span style="color:var(--text-muted)">{{ a.desde }}</span>
+                      <div style="display:grid; gap:2px; justify-items:start">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ a.tone }}" dot="{{ true }}" hint-size="100px,24px">{{ a.status }}</x-import>
+                        <span style="font:var(--type-caption); color:var(--text-subtle)">{{ a.nota }}</span>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ADMIN · PLANOS -->
+        <sc-if value="{{ isAPlanos }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap:16px; align-items:start">
+            <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,360px">
+                <div style="display:grid; gap:16px">
+                  <div style="display:grid; gap:4px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">{{ p.nome }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ p.para }}</span>
+                  </div>
+                  <div style="display:flex; align-items:baseline; gap:6px">
+                    <span style="font-family:var(--font-display); font-weight:700; font-size:38px; letter-spacing:-0.03em; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ p.preco }}</span>
+                    <span style="font:var(--type-ui); color:var(--text-muted)">por mês</span>
+                  </div>
+                  <div style="display:grid; gap:8px">
+                    <sc-for list="{{ p.itens }}" as="i" hint-placeholder-count="4">
+                      <div style="display:flex; gap:8px; align-items:center; font:var(--type-ui); color:var(--text-body)">
+                        <span style="display:inline-flex; color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="check" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+                        <span>{{ i }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-top:16px; border-top:1px solid var(--border-subtle)">
+                    <div style="display:grid; gap:2px">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Contas ativas</span>
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong)">{{ p.contas }}</span>
+                    </div>
+                    <div style="display:grid; gap:2px">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Receita mensal</span>
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ p.mrr }}</span>
+                    </div>
+                  </div>
+                </div>
+              </x-import>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- DRAWER -->
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; inset:0; z-index:30; display:flex; justify-content:flex-end">
+      <div onClick="{{ closeDrawer }}" style="position:absolute; inset:0; background:var(--surface-overlay); backdrop-filter:blur(8px)"></div>
+      <div style="position:relative; width:min(1000px, 100%); height:100%; background:var(--surface-app); box-shadow:var(--shadow-xl); display:flex; flex-direction:column">
+        <div style="display:flex; align-items:flex-start; gap:12px; padding:18px 24px; background:var(--surface-card); border-bottom:1px solid var(--border-subtle)">
+          <div style="display:grid; gap:6px; flex:1; min-width:0">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+              <span style="font:var(--type-mono); font-size:12px; color:var(--text-muted)">{{ d.kicker }}</span>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ d.tone }}" dot="{{ true }}" hint-size="100px,24px">{{ d.status }}</x-import>
+            </div>
+            <span style="font:var(--type-title); color:var(--text-strong)">{{ d.title }}</span>
+            <span style="font:var(--type-caption); color:var(--text-muted)">{{ d.sub }}</span>
+          </div>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="x" label="Fechar" variant="ghost" onClick="{{ closeDrawer }}" hint-size="44px,44px"></x-import>
+        </div>
+
+        <div style="flex:1; min-height:0; overflow-y:auto; display:flex; flex-wrap:wrap; align-content:flex-start">
+          <div style="flex:1 1 420px; min-width:0; padding:20px 24px; display:grid; gap:16px; align-content:start">
+
+            <sc-if value="{{ d.isOrc }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,140px">
+                <div style="display:grid; gap:14px">
+                  <div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Etapa do orçamento</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ d.stageNote }}</span>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:6px">
+                    <sc-for list="{{ d.steps }}" as="st" hint-placeholder-count="6">
+                      <div style="display:grid; gap:6px">
+                        <span style="height:6px; border-radius:var(--radius-pill); background:{{ st.bar }}"></span>
+                        <span style="font:var(--type-caption); font-size:11px; line-height:1.3; color:{{ st.fg }}; font-weight:{{ st.fw }}">{{ st.label }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end">
+                    <sc-if value="{{ d.hasNext }}" hint-placeholder-val="{{ true }}">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon-right="arrow-right" onClick="{{ d.advance }}" hint-size="220px,44px">{{ d.nextLabel }}</x-import>
+                    </sc-if>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" dc-props="{{ d.selectProps }}" aria-label="Mudar etapa" full-width="{{ false }}" hint-size="220px,44px"></x-import>
+                    <sc-if value="{{ d.canLose }}" hint-placeholder-val="{{ true }}">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" icon="circle-x" onClick="{{ d.lose }}" hint-size="160px,44px">Marcar como perdido</x-import>
+                    </sc-if>
+                  </div>
+                </div>
+              </x-import>
+            </sc-if>
+
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,240px">
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:18px 20px">
+                <sc-for list="{{ d.fields }}" as="f" hint-placeholder-count="6">
+                  <div style="display:flex; gap:10px; align-items:flex-start; min-width:0; grid-column:{{ f.span }}">
+                    <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-sm); background:var(--gray-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ f.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                    <div style="display:grid; gap:2px; min-width:0">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">{{ f.label }}</span>
+                      <span style="font:var(--type-ui); font-size:{{ f.size }}; font-weight:600; color:var(--text-strong); line-height:1.35; font-variant-numeric:tabular-nums">{{ f.value }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </x-import>
+
+            <sc-if value="{{ d.hasObs }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" tone="sunken" padding="{{ 16 }}" hint-size="100%,80px">
+                <div style="display:grid; gap:4px">
+                  <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Anotações</span>
+                  <span style="font:var(--type-body); font-size:14px; color:var(--text-body)">{{ d.obs }}</span>
+                </div>
+              </x-import>
+            </sc-if>
+
+            <sc-if value="{{ d.hasCli }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="user" icon-right="arrow-up-right" onClick="{{ d.openCli }}" style="justify-self:start" hint-size="200px,44px">Ver ficha do cliente</x-import>
+            </sc-if>
+
+            <sc-if value="{{ d.isCli }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; gap:16px">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,160px">
+                  <div style="display:grid; gap:12px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Equipamentos instalados</span>
+                    <sc-for list="{{ d.equips }}" as="e" hint-placeholder-count="1">
+                      <div style="display:grid; gap:10px; padding:14px; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ e.nome }}</span>
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; font:var(--type-caption)">
+                          <div style="display:grid"><span style="color:var(--text-muted)">Instalado em</span><span style="color:var(--text-strong); font-weight:600">{{ e.inst }}</span></div>
+                          <div style="display:grid"><span style="color:var(--text-muted)">Garantia</span><span style="color:var(--text-strong); font-weight:600">{{ e.garantia }}</span></div>
+                          <div style="display:grid"><span style="color:var(--text-muted)">Manutenção</span><span style="color:var(--text-strong); font-weight:600">{{ e.manut }}</span></div>
+                        </div>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ d.noEquips }}" hint-placeholder-val="{{ false }}">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Ainda não comprou com a loja. Os equipamentos aparecem aqui depois da instalação.</span>
+                    </sc-if>
+                  </div>
+                </x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,220px">
+                  <div style="display:grid; gap:12px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Histórico com a loja</span>
+                    <div style="display:grid">
+                      <sc-for list="{{ d.hist }}" as="h" hint-placeholder-count="3">
+                        <div style="display:grid; grid-template-columns:24px minmax(0,1fr); gap:12px">
+                          <div style="display:grid; justify-items:center; grid-template-rows:auto 1fr">
+                            <span style="width:10px; height:10px; margin-top:4px; border-radius:50%; background:{{ h.dot }}; box-shadow:0 0 0 3px var(--gray-0)"></span>
+                            <span style="width:1px; background:var(--border-subtle)"></span>
+                          </div>
+                          <div style="display:grid; gap:2px; padding-bottom:16px">
+                            <div style="display:flex; gap:8px; align-items:baseline; flex-wrap:wrap">
+                              <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ h.t }}</span>
+                              <span style="font:var(--type-caption); color:var(--text-subtle)">{{ h.d }}</span>
+                            </div>
+                            <span style="font:var(--type-caption); color:var(--text-muted); font-size:13px">{{ h.txt }}</span>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </x-import>
+                <sc-if value="{{ d.hasLinked }}" hint-placeholder-val="{{ false }}">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,120px">
+                    <div style="display:grid; gap:8px">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Orçamentos</span>
+                      <sc-for list="{{ d.linked }}" as="l" hint-placeholder-count="1">
+                        <div onClick="{{ l.open }}" style="display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:12px; align-items:center; padding:10px 8px; margin:0 -8px; border-radius:var(--radius-sm); cursor:pointer" style-hover="background:var(--surface-hover)">
+                          <div style="display:grid; min-width:0">
+                            <span style="font:var(--type-mono); font-size:12px; color:var(--text-muted)">{{ l.id }}</span>
+                            <span style="font:var(--type-ui); color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ l.prod }}</span>
+                          </div>
+                          <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ l.valor }}</span>
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ l.tone }}" dot="{{ true }}" size="sm" hint-size="100px,20px">{{ l.stage }}</x-import>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </x-import>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+
+          <!-- Comunicação: painel preparado para receber conversa multicanal -->
+          <section aria-label="Comunicação com o cliente" style="flex:1 1 360px; max-width:100%; min-height:560px; box-sizing:border-box; display:flex; flex-direction:column; background:var(--surface-card); border-left:1px solid var(--border-subtle)">
+            <div style="padding:16px 20px 12px; display:grid; gap:12px; border-bottom:1px solid var(--border-subtle)">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px">
+                <span style="font:var(--type-section); color:var(--text-strong)">Comunicação</span>
+                <span style="font:var(--type-caption); color:var(--text-subtle); font-variant-numeric:tabular-nums">{{ d.telFmt }}</span>
+              </div>
+              <div role="tablist" style="display:flex; gap:6px; flex-wrap:wrap">
+                <span role="tab" aria-selected="true" style="display:inline-flex; align-items:center; gap:6px; min-height:34px; padding:0 12px; border-radius:var(--radius-pill); background:var(--navy-100); color:var(--navy-700); font:var(--type-ui); font-weight:600">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="message-circle" size="{{ 15 }}" hint-size="15px,15px"></x-import>WhatsApp
+                </span>
+                <span role="tab" aria-disabled="true" style="display:inline-flex; align-items:center; gap:6px; min-height:34px; padding:0 12px; border-radius:var(--radius-pill); box-shadow:var(--ring-card); color:var(--text-disabled); font:var(--type-ui)">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="instagram" size="{{ 15 }}" hint-size="15px,15px"></x-import>Instagram
+                </span>
+                <span role="tab" aria-disabled="true" style="display:inline-flex; align-items:center; gap:6px; min-height:34px; padding:0 12px; border-radius:var(--radius-pill); box-shadow:var(--ring-card); color:var(--text-disabled); font:var(--type-ui)">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="mail" size="{{ 15 }}" hint-size="15px,15px"></x-import>E-mail
+                </span>
+              </div>
+            </div>
+
+            <div style="flex:1; min-height:160px; overflow-y:auto; padding:16px 20px; display:flex; flex-direction:column; gap:10px">
+              <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Registro de contatos</span>
+              <sc-for list="{{ d.log }}" as="m" hint-placeholder-count="1">
+                <div style="display:grid; gap:4px; padding:10px 12px; border-radius:var(--radius-md); background:var(--gray-100); max-width:92%; align-self:flex-end">
+                  <span style="font:var(--type-caption); color:var(--text-body); font-size:13px; line-height:1.45">{{ m.body }}</span>
+                  <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">{{ m.meta }}</span>
+                </div>
+              </sc-for>
+              <sc-if value="{{ d.noLog }}" hint-placeholder-val="{{ true }}">
+                <div style="flex:1; display:grid; place-items:center; text-align:center; padding:16px">
+                  <div style="display:grid; gap:8px; justify-items:center; max-width:260px">
+                    <span style="display:inline-flex; color:var(--text-disabled)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="messages-square" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+                    <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Nenhum contato registrado ainda. Cada mensagem aberta no WhatsApp fica anotada aqui.</span>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="padding:14px 20px 18px; display:grid; gap:10px; border-top:1px solid var(--border-subtle)">
+              <div style="display:flex; gap:6px; flex-wrap:wrap">
+                <sc-for list="{{ d.tpls }}" as="tp" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ tp.pick }}" style="min-height:34px; padding:0 12px; border:none; border-radius:var(--radius-pill); cursor:pointer; font:var(--type-caption); font-weight:600; background:{{ tp.bg }}; color:{{ tp.fg }}; box-shadow:{{ tp.ring }}">{{ tp.label }}</button>
+                </sc-for>
+              </div>
+              <label style="display:grid; gap:6px">
+                <span style="font:var(--type-caption); font-weight:600; color:var(--text-body)">Mensagem</span>
+                <textarea value="{{ draft }}" onChange="{{ onDraft }}" rows="5" style="resize:vertical; box-sizing:border-box; width:100%; padding:10px 12px; border:1px solid var(--border-default); border-radius:var(--radius-sm); font:var(--type-body); font-size:14px; color:var(--text-strong); background:var(--surface-card); outline:none" style-focus="border-color:var(--border-focus); box-shadow:var(--focus-ring)"></textarea>
+              </label>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="dark" icon="message-circle" icon-right="arrow-up-right" full-width="{{ true }}" onClick="{{ sendWa }}" hint-size="100%,44px">Abrir no WhatsApp</x-import>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- NOVO ORÇAMENTO -->
+  <sc-if value="{{ showNew }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo orçamento" description="Anote o pedido agora. Os detalhes podem ser completados depois." width="{{ 620 }}" onClose="{{ closeNew }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Nome do cliente" value="{{ nf.cli }}" onChange="{{ nfOn.cli }}" error="{{ nfErr.cli }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="WhatsApp" value="{{ nf.tel }}" onChange="{{ nfOn.tel }}" placeholder="(12) 99999-0000" icon="message-circle" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" label="Produto de interesse" options="{{ productOptions }}" value="{{ nf.prod }}" onChange="{{ nfOn.prod }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Valor com instalação" prefix="R$" type="number" value="{{ nf.valor }}" onChange="{{ nfOn.valor }}" error="{{ nfErr.valor }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" label="Forma de pagamento" options="{{ payOptions }}" value="{{ nf.pag }}" onChange="{{ nfOn.pag }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" label="Como chegou" options="{{ originOptions }}" value="{{ nf.origem }}" onChange="{{ nfOn.origem }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço de instalação" value="{{ nf.end }}" onChange="{{ nfOn.end }}" icon="map-pin" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:flex; justify-content:flex-end; gap:8px; padding-top:6px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeNew }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveNew }}" hint-size="160px,44px">Salvar orçamento</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;visao&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;loja&quot;,&quot;admin&quot;,&quot;login&quot;],&quot;default&quot;:&quot;loja&quot;,&quot;tsType&quot;:&quot;'loja'|'admin'|'login'&quot;,&quot;section&quot;:&quot;Demonstração&quot;},&quot;menuRecolhido&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demonstração&quot;},&quot;kpiDestaque&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;manutencoes&quot;,&quot;receita&quot;],&quot;default&quot;:&quot;manutencoes&quot;,&quot;tsType&quot;:&quot;'manutencoes'|'receita'&quot;,&quot;section&quot;:&quot;Início&quot;}}">
+const PRODUCTS=[
+ ['Aquecedor a gás Rinnai REU-E210 FEHB 21 L digital',4290,'flame'],
+ ['Aquecedor a gás Rinnai REU-1602 FEH 32 L',5980,'flame'],
+ ['Aquecedor a gás Bosch Therm 4400 F 20 L',3690,'flame'],
+ ['Aquecedor a gás Lorenzetti LZ 2000DE 20 L',2380,'flame'],
+ ['Aquecedor a gás Lorenzetti LZ 1600D 15 L',1790,'flame'],
+ ['Aquecedor a gás Komeco KO 20DI 20 L',2150,'flame'],
+ ['Aquecedor a gás Komeco KO 15D 15 L',1890,'flame'],
+ ['Kit aquecedor solar 200 L + 2 coletores',5260,'sun'],
+ ['Kit aquecedor solar 400 L + 4 coletores 2,0 m²',8750,'sun'],
+ ['Boiler Soletrol 300 L baixa pressão + 3 coletores',6420,'sun'],
+ ['Pressurizador Rowa Press 20',1580,'fan'],
+ ['Bomba Schneider BC-92 1 cv',2890,'fan'],
+ ["Caixa d'água Fortlev 1.000 L + registros e conexões",1140,'container']
+];
+const PAYS=['PIX à vista','PIX à vista (5% de desconto)','Cartão em 3× sem juros','Cartão em 6× sem juros','Cartão em 10× sem juros','Cartão em 12×','Boleto 30/60 dias','Boleto 30/60/90 dias','Dinheiro'];
+const ORIGINS=['Instagram','WhatsApp','Loja','Indicação'];
+const ORIGIN_ICON={Instagram:'instagram',WhatsApp:'message-circle',Loja:'store',Indicação:'users'};
+const STAGES=[
+ {id:'solicitado',label:'Orçamento solicitado',tone:'neutral'},
+ {id:'enviado',label:'Enviado',tone:'info'},
+ {id:'negociando',label:'Negociando',tone:'warning'},
+ {id:'fechada',label:'Venda fechada',tone:'success'},
+ {id:'agendada',label:'Instalação agendada',tone:'info'},
+ {id:'concluido',label:'Concluído',tone:'success'},
+ {id:'perdido',label:'Perdido',tone:'danger'}
+];
+const SJC=' · São José dos Campos/SP';
+const ORCS=[
+ {id:'ORC-0431',cli:'Juliana Prado',tel:'12988124410',prod:PRODUCTS[0][0],valor:4290,pag:'Cartão em 10× sem juros',end:'Rua Humaitá, 318 · Jardim Esplanada'+SJC,origem:'Instagram',stage:'solicitado',criado:'22/09',dias:0,inst:'',obs:'Pediu pelo direct depois do vídeo do REU-E210. Casa com 3 banheiros, hoje usa chuveiro elétrico.'},
+ {id:'ORC-0430',cli:'Carlos Mendonça',tel:'12997310022',prod:PRODUCTS[8][0],valor:8750,pag:'PIX à vista (5% de desconto)',end:'Rua das Paineiras, 77 · Urbanova'+SJC,origem:'Indicação',stage:'solicitado',criado:'21/09',dias:1,inst:'',obs:'Indicado pela Marta Oliveira. Precisa de visita técnica para ver o telhado.'},
+ {id:'ORC-0429',cli:'Patrícia Nogueira',tel:'12991457830',prod:'Pressurizador Rowa Press 20 + instalação',valor:1680,pag:'PIX à vista',end:'Av. Cidade Jardim, 1.240, ap. 52 · Jardim Satélite'+SJC,origem:'WhatsApp',stage:'solicitado',criado:'21/09',dias:1,inst:'',obs:'Pouca pressão no chuveiro do andar de cima.'},
+ {id:'ORC-0426',cli:'Eduardo Siqueira',tel:'12988770145',prod:PRODUCTS[3][0],valor:2380,pag:'Cartão em 6× sem juros',end:'Rua Paraibuna, 455 · Centro · Jacareí/SP',origem:'Instagram',stage:'enviado',criado:'18/09',dias:4,inst:'',obs:'Orçamento enviado em 18/09. Sem resposta desde então.'},
+ {id:'ORC-0424',cli:'Fernanda Lopes',tel:'12996034418',prod:PRODUCTS[5][0],valor:2150,pag:'Boleto 30/60 dias',end:'Rua Siqueira Campos, 190 · Vila Adyana'+SJC,origem:'Loja',stage:'enviado',criado:'17/09',dias:3,inst:'',obs:''},
+ {id:'ORC-0423',cli:'Condomínio Residencial Aquarius',tel:'12981120907',prod:'2 bombas Schneider BC-92 1 cv + quadro de comando',valor:6940,pag:'Boleto 30/60/90 dias',end:'Av. Salmão, 900 · Parque Residencial Aquarius'+SJC,origem:'Indicação',stage:'enviado',criado:'16/09',dias:5,inst:'',obs:'Contato: Marcos Rezende, síndico. Aprovação depende da assembleia de 30/09.'},
+ {id:'ORC-0421',cli:'Ricardo Almeida',tel:'12997751203',prod:PRODUCTS[2][0],valor:3690,pag:'Cartão em 10× sem juros',end:'Rua Ana Gonçalves da Cunha, 62 · Vila Ema'+SJC,origem:'Instagram',stage:'negociando',criado:'12/09',dias:6,inst:'',obs:'Pediu desconto para pagar à vista. A margem permite até 4%.'},
+ {id:'ORC-0419',cli:'Aline Barbosa',tel:'12992284476',prod:PRODUCTS[9][0],valor:6420,pag:'PIX à vista',end:'Estrada do Bom Jesus, 1.800 · Chácaras Pousada do Vale'+SJC,origem:'Instagram',stage:'negociando',criado:'10/09',dias:8,inst:'',obs:'Comparando com orçamento de outra loja. Quer instalar ainda em outubro.'},
+ {id:'ORC-0418',cli:'Luciana Farias',tel:'12988402291',prod:PRODUCTS[1][0],valor:5980,pag:'Cartão em 12×',end:'Rua Ipê Amarelo, 25 · Jardim Aquarius'+SJC,origem:'WhatsApp',stage:'negociando',criado:'09/09',dias:3,inst:'',obs:'Casa nova, obra em fase de acabamento.'},
+ {id:'ORC-0415',cli:'Gustavo Rangel',tel:'12991183365',prod:PRODUCTS[6][0],valor:1890,pag:'PIX à vista',end:'Rua Sebastião Hummel, 410 · Centro'+SJC,origem:'Instagram',stage:'fechada',criado:'05/09',dias:3,inst:'',obs:'Pagamento confirmado. Falta agendar a instalação.'},
+ {id:'ORC-0412',cli:'Débora Castilho',tel:'12996617740',prod:PRODUCTS[0][0],valor:4180,pag:'Cartão em 10× sem juros',end:'Rua Corifeu de Azevedo Marques, 88 · Vila Betânia'+SJC,origem:'Loja',stage:'fechada',criado:'02/09',dias:2,inst:'',obs:'Quer instalar depois que o pintor sair, a partir de 29/09.'},
+ {id:'ORC-0403',cli:'Márcio Pinheiro',tel:'12992760381',prod:PRODUCTS[10][0],valor:1580,pag:'PIX à vista',end:'Rua Euclides Miragaia, 700, casa 3 · Centro'+SJC,origem:'WhatsApp',stage:'agendada',criado:'20/08',dias:3,inst:'Qua, 23/09 · 08:00',obs:''},
+ {id:'ORC-0409',cli:'Paulo Henrique Souza',tel:'12997026658',prod:PRODUCTS[7][0],valor:5260,pag:'PIX à vista',end:'Rua Tulipas, 140 · Jardim das Indústrias'+SJC,origem:'Indicação',stage:'agendada',criado:'28/08',dias:5,inst:'Qui, 24/09 · 08:00',obs:'Equipe de 2 instaladores. Levar tubo PPR 25 mm extra.'},
+ {id:'ORC-0407',cli:'Sandra Menezes',tel:'12988315529',prod:PRODUCTS[4][0],valor:1790,pag:'Cartão em 3× sem juros',end:'Rua Rubião Júnior, 301 · Centro'+SJC,origem:'Instagram',stage:'agendada',criado:'26/08',dias:4,inst:'Sex, 25/09 · 14:00',obs:''},
+ {id:'ORC-0405',cli:'Restaurante Sabor da Serra',tel:'12981447702',prod:'Aquecedor a gás Rinnai REU-3802 FEH 50 L (cozinha)',valor:9480,pag:'Boleto 30/60/90 dias',end:'Rod. dos Tamoios, km 12 · Jardim Santa Júlia'+SJC,origem:'Loja',stage:'agendada',criado:'22/08',dias:6,inst:'Sáb, 26/09 · 07:30',obs:'Instalar antes da abertura, às 11h. Precisa de exaustão forçada.'},
+ {id:'ORC-0401',cli:'Tiago Monteiro',tel:'12996648012',prod:PRODUCTS[12][0],valor:1140,pag:'Dinheiro',end:'Rua Guarani, 55 · Vila Industrial'+SJC,origem:'Loja',stage:'concluido',criado:'15/08',dias:10,inst:'Concluída em 12/09',obs:''},
+ {id:'ORC-0398',cli:'Vanessa Ribeiro',tel:'12991870344',prod:PRODUCTS[5][0],valor:2150,pag:'Cartão em 5×',end:'Rua Pedro Tursi, 210 · Jardim Apolo'+SJC,origem:'Instagram',stage:'concluido',criado:'12/08',dias:12,inst:'Concluída em 10/09',obs:''},
+ {id:'ORC-0396',cli:'Rafael Couto',tel:'12988059917',prod:PRODUCTS[3][0],valor:2380,pag:'Cartão em 6× sem juros',end:'Rua Maceió, 91 · Monte Castelo'+SJC,origem:'Instagram',stage:'perdido',criado:'08/08',dias:20,inst:'',obs:'Fechou com outra loja por R$ 190 a menos.'}
+];
+const CLIS=[
+ {id:'c1',nome:'Marta Oliveira',tel:'12997213340',bairro:'Jardim Esplanada',end:'Rua Ângelo Scarpa, 120 · Jardim Esplanada'+SJC,desde:'setembro de 2025',total:4590,ultima:'24/09/2025',equip:'Rinnai REU-E210 21 L',tipo:'cliente',due:{tipo:'Manutenção anual',data:'29/09',dias:7,icon:'wrench'},
+  equips:[{nome:'Aquecedor a gás Rinnai REU-E210 FEHB 21 L',inst:'29/09/2025',garantia:'Até 29/09/2027',manut:'Anual · vence 29/09/2026'}],
+  hist:[{d:'21/09/2026',t:'Indicação',txt:'Indicou Carlos Mendonça (ORC-0430).'},{d:'29/09/2025',t:'Instalação',txt:'Rinnai REU-E210 instalado na área de serviço. Técnico: Jefferson.'},{d:'24/09/2025',t:'Compra',txt:'ORC-0288 · R$ 4.590 · Cartão em 10×'},{d:'18/09/2025',t:'Orçamento',txt:'Pedido pelo Instagram.'}]},
+ {id:'c2',nome:'João Batista Lima',tel:'12991024478',bairro:'Vila Industrial',end:'Rua Tupinambás, 402 · Vila Industrial'+SJC,desde:'outubro de 2025',total:2040,ultima:'01/10/2025',equip:'Komeco KO 15D 15 L',tipo:'cliente',due:{tipo:'Fim da garantia da loja',data:'03/10',dias:11,icon:'shield-check'},
+  equips:[{nome:'Aquecedor a gás Komeco KO 15D 15 L',inst:'03/10/2025',garantia:'Da loja até 03/10/2026',manut:'Anual · vence 03/10/2026'}],
+  hist:[{d:'03/10/2025',t:'Instalação',txt:'Instalado com troca da chaminé.'},{d:'01/10/2025',t:'Compra',txt:'ORC-0301 · R$ 2.040 · PIX'}]},
+ {id:'c3',nome:'Pousada Vale Verde',tel:'12981337260',bairro:'São Francisco Xavier',end:'Estrada Municipal, 3.400 · São Francisco Xavier'+SJC,desde:'abril de 2024',total:21380,ultima:'12/03/2026',equip:'Kit solar 800 L + 8 coletores',tipo:'cliente',due:{tipo:'Limpeza dos coletores',data:'05/10',dias:13,icon:'sun'},
+  equips:[{nome:'Kit aquecedor solar 800 L + 8 coletores',inst:'05/04/2024',garantia:'Reservatório até 04/2029',manut:'Semestral · vence 05/10/2026'},{nome:'Pressurizador Rowa Press 30',inst:'12/03/2026',garantia:'Até 12/03/2027',manut:'—'}],
+  hist:[{d:'12/03/2026',t:'Compra',txt:'Pressurizador Rowa Press 30 · R$ 2.260'},{d:'05/04/2026',t:'Manutenção',txt:'Limpeza dos coletores e troca do anodo. R$ 380.'},{d:'05/10/2025',t:'Manutenção',txt:'Limpeza dos coletores. R$ 320.'},{d:'05/04/2024',t:'Instalação',txt:'Kit solar 800 L. Obra de 2 dias.'}]},
+ {id:'c4',nome:'Cristina Vasconcelos',tel:'12996551203',bairro:'Jardim Apolo',end:'Rua Otávio Bastos, 58 · Jardim Apolo'+SJC,desde:'outubro de 2024',total:2310,ultima:'08/10/2024',equip:'Lorenzetti LZ 1600D 15 L',tipo:'cliente',due:{tipo:'Manutenção anual',data:'08/10',dias:16,icon:'wrench'},
+  equips:[{nome:'Aquecedor a gás Lorenzetti LZ 1600D 15 L',inst:'08/10/2024',garantia:'Encerrada em 10/2025',manut:'Anual · vence 08/10/2026'}],
+  hist:[{d:'10/10/2025',t:'Manutenção',txt:'Limpeza do queimador e teste de vazamento. R$ 240.'},{d:'08/10/2024',t:'Instalação',txt:'Troca de aquecedor antigo.'},{d:'04/10/2024',t:'Compra',txt:'ORC-0172 · R$ 2.070 · Cartão em 6×'}]},
+ {id:'c5',nome:'André Figueiredo',tel:'12988746610',bairro:'Urbanova',end:'Rua dos Jacarandás, 300 · Urbanova'+SJC,desde:'outubro de 2025',total:1580,ultima:'12/10/2025',equip:'Pressurizador Rowa Press 20',tipo:'cliente',due:{tipo:'Fim da garantia da loja',data:'12/10',dias:20,icon:'shield-check'},
+  equips:[{nome:'Pressurizador Rowa Press 20',inst:'12/10/2025',garantia:'Da loja até 12/10/2026',manut:'—'}],
+  hist:[{d:'12/10/2025',t:'Instalação',txt:'Pressurizador no barrilete.'},{d:'10/10/2025',t:'Compra',txt:'ORC-0309 · R$ 1.580 · PIX'}]},
+ {id:'c6',nome:'Débora Castilho',tel:'12996617740',bairro:'Vila Betânia',end:ORCS[10].end,desde:'setembro de 2026',total:4180,ultima:'20/09/2026',equip:'Rinnai REU-E210 21 L',tipo:'cliente',alerta:'Agendar instalação',atone:'info',equips:[],
+  hist:[{d:'20/09/2026',t:'Compra',txt:'ORC-0412 · R$ 4.180 · Cartão em 10×'},{d:'02/09/2026',t:'Orçamento',txt:'Atendida na loja.'}]},
+ {id:'c7',nome:'Paulo Henrique Souza',tel:'12997026658',bairro:'Jardim das Indústrias',end:ORCS[12].end,desde:'setembro de 2026',total:5260,ultima:'18/09/2026',equip:'Kit solar 200 L',tipo:'cliente',alerta:'Instalação em 24/09',atone:'info',equips:[],
+  hist:[{d:'18/09/2026',t:'Compra',txt:'ORC-0409 · R$ 5.260 · PIX'},{d:'28/08/2026',t:'Orçamento',txt:'Indicação do vizinho.'}]},
+ {id:'c8',nome:'Tiago Monteiro',tel:'12996648012',bairro:'Vila Industrial',end:ORCS[15].end,desde:'setembro de 2026',total:1140,ultima:'12/09/2026',equip:"Caixa d'água Fortlev 1.000 L",tipo:'cliente',alerta:'Em dia',atone:'success',
+  equips:[{nome:"Caixa d'água Fortlev 1.000 L",inst:'12/09/2026',garantia:'Até 09/2031',manut:'Limpeza a cada 6 meses'}],
+  hist:[{d:'12/09/2026',t:'Instalação',txt:'Troca da caixa e registros.'},{d:'12/09/2026',t:'Compra',txt:'ORC-0401 · R$ 1.140 · Dinheiro'}]},
+ {id:'c9',nome:'Juliana Prado',tel:'12988124410',bairro:'Jardim Esplanada',end:ORCS[0].end,desde:'setembro de 2026',total:0,ultima:'—',equip:'Interesse: Rinnai REU-E210',tipo:'lead',alerta:'Enviar orçamento',atone:'warning',equips:[],
+  hist:[{d:'22/09/2026',t:'Orçamento',txt:'Pedido pelo Instagram (ORC-0431).'}]},
+ {id:'c10',nome:'Ricardo Almeida',tel:'12997751203',bairro:'Vila Ema',end:ORCS[6].end,desde:'setembro de 2026',total:0,ultima:'—',equip:'Interesse: Bosch Therm 4400 F',tipo:'lead',alerta:'Em negociação',atone:'warning',equips:[],
+  hist:[{d:'16/09/2026',t:'Orçamento',txt:'Enviado pelo WhatsApp.'},{d:'12/09/2026',t:'Orçamento',txt:'Pedido pelo Instagram (ORC-0421).'}]}
+];
+const TASKS=[
+ {id:1,g:'atrasadas',t:'Retornar Eduardo Siqueira sobre o orçamento enviado',sub:'ORC-0426 · Lorenzetti LZ 2000DE · enviado há 4 dias',when:'Venceu 19/09',ref:['orc','ORC-0426'],cal:true},
+ {id:2,g:'hoje',t:'Ligar para Ricardo Almeida: pediu desconto à vista',sub:'ORC-0421 · Bosch Therm 4400 F · R$ 3.690',when:'10:00',ref:['orc','ORC-0421'],cal:true},
+ {id:3,g:'hoje',t:'Enviar orçamento para Juliana Prado',sub:'ORC-0431 · veio pelo Instagram',when:'14:00',ref:['orc','ORC-0431'],cal:true},
+ {id:4,g:'hoje',t:'Confirmar a instalação de amanhã com Márcio Pinheiro',sub:'ORC-0403 · Qua, 23/09 · 08:00',when:'16:00',ref:['orc','ORC-0403'],cal:true},
+ {id:5,g:'hoje',t:'Cobrar 1ª parcela do boleto do Restaurante Sabor da Serra',sub:'ORC-0405 · R$ 3.160 · vence 25/09',when:'Hoje',ref:['orc','ORC-0405'],cal:false},
+ {id:6,g:'semana',t:'Visita técnica no Condomínio Aquarius',sub:'ORC-0423 · com o síndico Marcos Rezende',when:'Qui, 24/09 · 10:00',ref:['orc','ORC-0423'],cal:true},
+ {id:7,g:'semana',t:'Lembrar Marta Oliveira da manutenção anual',sub:'Rinnai REU-E210 · vence 29/09',when:'Sex, 25/09',ref:['cli','c1'],cal:true},
+ {id:8,g:'semana',t:'Agendar a instalação de Gustavo Rangel',sub:'ORC-0415 · pagamento confirmado',when:'Sex, 25/09',ref:['orc','ORC-0415'],cal:false},
+ {id:9,g:'semana',t:'Enviar orçamento para Fernanda Lopes',sub:'ORC-0424 · Komeco KO 20DI',when:'17/09',ref:['orc','ORC-0424'],cal:false,done:true},
+ {id:10,g:'semana',t:'Confirmar pagamento via PIX de Paulo Henrique',sub:'ORC-0409 · R$ 5.260',when:'18/09',ref:['orc','ORC-0409'],cal:false,done:true}
+];
+const FIN=[
+ ['20/09','Venda ORC-0412 · Débora Castilho','Venda com instalação','Cartão',4180],
+ ['19/09','Compra de estoque · distribuidora Rinnai','Estoque','Boleto',-12640],
+ ['19/09','Venda ORC-0415 · Gustavo Rangel','Venda com instalação','PIX',1890],
+ ['18/09','Venda ORC-0409 · Paulo Henrique Souza','Venda com instalação','PIX',5260],
+ ['17/09','Venda ORC-0405 · Restaurante Sabor da Serra','Venda com instalação','Boleto',9480],
+ ['16/09','Venda ORC-0407 · Sandra Menezes','Venda com instalação','Cartão',1790],
+ ['15/09','Venda no balcão · tubos PVC e conexões','Balcão','PIX',2318.4],
+ ['15/09','Aluguel da loja','Custo fixo','Boleto',-4200],
+ ['12/09','Venda ORC-0401 · Tiago Monteiro','Venda com instalação','Dinheiro',1140],
+ ['10/09','Venda ORC-0398 · Vanessa Ribeiro','Venda com instalação','Cartão',2150],
+ ['10/09','Salários e encargos · 2 instaladores','Equipe','Transferência',-7380],
+ ['09/09','Manutenções preventivas · 4 atendimentos','Manutenção','PIX',1080],
+ ['08/09','Anúncios no Instagram','Divulgação','Cartão',-600],
+ ['05/09','Venda no balcão · registros e bombas','Balcão','Cartão',3426.7],
+ ['05/09','Combustível e manutenção da Strada','Veículo','Cartão',-980],
+ ['05/09','Energia e internet','Custo fixo','Débito',-612.4],
+ ['03/09','Venda ORC-0392 · Kit solar 300 L','Venda com instalação','PIX',7150],
+ ['02/09','Venda ORC-0385 · Pressurizador Rowa Press 20','Venda com instalação','PIX',1580],
+ ['01/09','Assinatura Nortiq · plano Profissional','Custo fixo','Cartão',-149]
+];
+const ACCOUNTS=[
+ {nome:'Casa do Aquecedor',slug:'casadoaquecedor',cidade:'São José dos Campos/SP',plano:'Profissional',users:3,desde:'03/2025',status:'Em dia',nota:'Pago em 01/09'},
+ {nome:'Hidráulica Bom Jesus',slug:'hidraulicabomjesus',cidade:'Campinas/SP',plano:'Essencial',users:1,desde:'07/2025',status:'Em dia',nota:'Pago em 09/09'},
+ {nome:'Aquece Sul Aquecedores',slug:'aquecesul',cidade:'Curitiba/PR',plano:'Profissional',users:4,desde:'11/2024',status:'Em atraso',nota:'12 dias · 2º aviso enviado'},
+ {nome:'Solar Minas',slug:'solarminas',cidade:'Belo Horizonte/MG',plano:'Rede',users:9,desde:'02/2025',status:'Em dia',nota:'Pago em 05/09'},
+ {nome:'Ponto do Encanador',slug:'pontodoencanador',cidade:'Sorocaba/SP',plano:'Essencial',users:1,desde:'09/2026',status:'Em teste',nota:'Faltam 9 dias'},
+ {nome:'Termo Center',slug:'termocenter',cidade:'Porto Alegre/RS',plano:'Profissional',users:5,desde:'06/2025',status:'Em dia',nota:'Pago em 10/09'},
+ {nome:'Casa das Bombas',slug:'casadasbombas',cidade:'Ribeirão Preto/SP',plano:'Essencial',users:1,desde:'01/2026',status:'Em atraso',nota:'4 dias'},
+ {nome:'Aquecedores Litoral',slug:'aquecedoreslitoral',cidade:'Santos/SP',plano:'Rede',users:7,desde:'08/2025',status:'Em dia',nota:'Pago em 02/09'},
+ {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',plano:'Profissional',users:2,desde:'09/2026',status:'Em teste',nota:'Faltam 3 dias'},
+ {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',plano:'Essencial',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
+];
+const ACC_TONE={'Em dia':'success','Em atraso':'danger','Em teste':'info','Cancelada':'neutral'};
+const PLAN_PRICE={Essencial:89,Profissional:149,Rede:279};
+const LOG0={'orc:ORC-0426':[{body:'Olá Eduardo, segue o orçamento ORC-0426: Lorenzetti LZ 2000DE 20 L com instalação, R$ 2.380 em 6× sem juros.',meta:'18/09 · 11:42 · WhatsApp'}],
+ 'orc:ORC-0421':[{body:'Olá Ricardo, segue o orçamento do Bosch Therm 4400 F com instalação: R$ 3.690 em 10× sem juros.',meta:'16/09 · 09:10 · WhatsApp'},{body:'Cliente respondeu por ligação pedindo desconto à vista.',meta:'19/09 · 17:25 · anotação'}],
+ 'cli:c3':[{body:'Olá, aqui é da Casa do Aquecedor. A limpeza semestral dos coletores foi feita hoje. Qualquer coisa estamos à disposição.',meta:'05/04 · 16:02 · WhatsApp'}]};
+const brl=(v,dec)=>'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:dec?2:0,maximumFractionDigits:dec?2:0});
+const fmtTel=t=>t?`(${t.slice(0,2)}) ${t.slice(2,7)}-${t.slice(7)}`:'';
+const first=n=>n.startsWith('Condomínio')?'Marcos':n.startsWith('Restaurante')?'pessoal':n.startsWith('Pousada')?'pessoal':n.split(' ')[0];
+const ini=n=>n.split(' ').filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const emptyNf=()=>({cli:'',tel:'',prod:PRODUCTS[0][0],valor:String(PRODUCTS[0][1]),pag:'PIX à vista',origem:'Instagram',end:''});
+
+class Component extends DCLogic {
+  state={view:null,page:'inicio',apage:'a-geral',collapsed:null,drawer:null,orcs:ORCS.map(o=>({...o})),tasks:TASKS.map(t=>({done:false,...t})),
+    cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
+    showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432};
+
+  componentDidUpdate(pp){ if(pp.visao!==this.props.visao) this.setState({view:null,drawer:null}); if(pp.menuRecolhido!==this.props.menuRecolhido) this.setState({collapsed:null}); }
+
+  openDrawer(type,id){ this.setState({drawer:{type,id},draft:null,tpl:0,tplAuto:true}); }
+  setStage(id,stage){
+    this.setState(s=>({draft:null,tpl:0,orcs:s.orcs.map(o=>{ if(o.id!==id) return o;
+      let inst=o.inst; if(stage==='agendada'&&!inst) inst='A definir'; if(stage==='concluido') inst='Concluída em 22/09'; if(!['agendada','concluido'].includes(stage)) inst='';
+      return {...o,stage,inst,dias:0}; })}));
+  }
+  toggleTask(id){ this.setState(s=>({tasks:s.tasks.map(t=>t.id===id?{...t,done:!t.done}:t)})); }
+  waFor(type,id,tel,msg){
+    window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`,'_blank');
+    const k=type+':'+id;
+    this.setState(s=>({log:{...s.log,[k]:[...(s.log[k]||[]),{body:msg,meta:'Agora · aberta no WhatsApp'}]}}));
+  }
+  cliByName(n){ return CLIS.find(c=>c.nome===n); }
+  cliAlert(c){ if(c.due) return {alerta:`${c.due.tipo} · ${c.due.data}`,atone:c.due.dias<=10?'warning':'info'}; return {alerta:c.alerta,atone:c.atone}; }
+
+  orcTemplates(o){
+    const f=first(o.cli), short=o.prod.replace('Aquecedor a gás ','');
+    return [
+      {label:'Enviar orçamento',text:`Olá ${f}, tudo bem? Aqui é o Rogério, da Casa do Aquecedor. Segue o orçamento ${o.id}: ${short}, ${brl(o.valor)} com instalação, ${o.pag.toLowerCase()}. Qualquer dúvida, é só me chamar.`},
+      {label:'Retomar conversa',text:`Olá ${f}! Passando para saber se ficou alguma dúvida sobre o orçamento do ${short}. Consigo manter esse valor até sexta-feira.`},
+      {label:'Confirmar instalação',text:`Olá ${f}, confirmando a instalação do ${short}${o.inst&&o.inst!=='A definir'?' em '+o.inst.replace(' · ',' às '):''}. O técnico chega no horário combinado. Pode confirmar?`},
+      {label:'Pós-venda',text:`Olá ${f}! Como está o ${short}? Se precisar de qualquer ajuste, estamos à disposição. A primeira manutenção é recomendada em 12 meses.`}
+    ];
+  }
+  cliTemplates(c){
+    const f=first(c.nome), eq=c.equip.replace('Interesse: ','');
+    const t=[];
+    if(c.due) t.push({label:c.due.tipo,text:c.due.tipo.startsWith('Fim')
+      ?`Olá ${f}, tudo bem? Aqui é da Casa do Aquecedor. A garantia da instalação do seu ${eq} termina em ${c.due.data}. Quer que o técnico faça uma revisão antes disso?`
+      :`Olá ${f}, tudo bem? Aqui é da Casa do Aquecedor. A ${c.due.tipo.toLowerCase()} do seu ${eq} vence em ${c.due.data}. Quer agendar uma visita do técnico?`});
+    t.push({label:'Pós-venda',text:`Olá ${f}! Como está funcionando o ${eq}? Qualquer coisa, estamos à disposição.`});
+    t.push({label:'Retorno',text:`Olá ${f}, aqui é o Rogério, da Casa do Aquecedor. Posso te ajudar com mais alguma coisa?`});
+    return t;
+  }
+  defaultTpl(o){ return {solicitado:0,enviado:1,negociando:1,fechada:2,agendada:2,concluido:3,perdido:1}[o.stage]||0; }
+
+  renderVals(){
+    const s=this.state;
+    const view=s.view ?? (this.props.visao ?? 'loja');
+    const collapsed=s.collapsed ?? (this.props.menuRecolhido ?? false);
+    const expanded=!collapsed;
+    const admin=view==='admin';
+    const page=admin?s.apage:s.page;
+    const go=p=>(e)=>{ if(e&&e.preventDefault) e.preventDefault(); this.setState(admin?{apage:p,drawer:null}:{page:p,drawer:null}); };
+    const orcs=s.orcs;
+    const openStages=['solicitado','enviado','negociando'];
+    const openO=orcs.filter(o=>openStages.includes(o.stage));
+    const instO=orcs.filter(o=>o.stage==='agendada');
+    const pend=s.tasks.filter(t=>!t.done);
+    const receita=FIN.filter(f=>f[4]>0).reduce((a,f)=>a+f[4],0);
+    const despesa=-FIN.filter(f=>f[4]<0).reduce((a,f)=>a+f[4],0);
+    const dueClis=CLIS.filter(c=>c.due);
+
+    const navDef=admin?[
+      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(ACCOUNTS.filter(a=>a.status==='Em atraso').length)},{id:'a-planos',label:'Planos',icon:'layers'}]}
+    ]:[
+      {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)}]},
+      {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'config',label:'Configurações',icon:'settings'}]}
+    ];
+    const navGroups=navDef.map(g=>({label:g.label,items:g.items.map(it=>{const on=it.id===page;return {...it,go:go(it.id),
+      bg:on?'var(--navy-50)':'transparent',hoverBg:on?'var(--navy-50)':'var(--surface-hover)',fg:on?'var(--navy-700)':'var(--text-muted)',ic:on?'var(--navy-500)':'var(--text-subtle)',fw:on?600:500,
+      hasBadge:!!it.badge&&expanded,badgeBg:on?'var(--navy-500)':'var(--gray-200)',badgeFg:on?'#fff':'var(--text-muted)'};})}));
+
+    const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],
+      tarefas:['Tarefas','Retornos e compromissos'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],config:['Configurações','Perfil, plano e dados da loja'],
+      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Planos','Preços e distribuição das contas']};
+
+    // KPIs
+    const heroMaint=(this.props.kpiDestaque ?? 'manutencoes')==='manutencoes';
+    const kpis=[
+      {label:'Orçamentos abertos',value:String(openO.length),icon:'file-text',foot:brl(openO.reduce((a,o)=>a+o.valor,0))+' em negociação',tone:'default',go:go('orcamentos')},
+      {label:'Conversão do mês',value:'38%',icon:'trending-up',delta:'+6 p.p.',foot:'11 de 29 orçamentos',tone:'default',go:go('orcamentos')},
+      {label:'Receita do mês',value:brl(receita),icon:'wallet',foot:Math.round(receita/s.meta*100)+'% da meta',tone:heroMaint?'default':'accent',go:go('faturamento')},
+      {label:'Instalações na semana',value:String(instO.length),icon:'calendar-check',foot:'Próxima amanhã, 08:00',tone:'default',go:go('orcamentos')},
+      {label:'Manutenções e garantias',value:String(dueClis.length),icon:'wrench',foot:'vencem nos próximos 30 dias',tone:heroMaint?'accent':'default',go:()=>this.setState({page:'clientes',cliF:'manut'})}
+    ];
+    const dueList=dueClis.map(c=>({nome:c.nome,equip:c.equip,tipo:c.due.tipo,icon:c.due.icon,tone:c.due.dias<=10?'warning':'info',quando:`vence ${c.due.data} · em ${c.due.dias} dias`,
+      open:()=>this.openDrawer('cli',c.id),wa:()=>this.waFor('cli',c.id,c.tel,this.cliTemplates(c)[0].text)}));
+    const weekInst=instO.map(o=>{const [dw,rest]=o.inst.split(', ');const [day,hora]=(rest||'').split(' · ');return {dow:dw,day:(day||'').slice(0,2),hora:hora||'',cli:o.cli,prod:o.prod,open:()=>this.openDrawer('orc',o.id)};});
+    const funnel=STAGES.map(st=>{const l=orcs.filter(o=>o.stage===st.id);return {label:st.label,count:String(l.length),total:brl(l.reduce((a,o)=>a+o.valor,0)),go:go('orcamentos')};});
+    const taskItem=t=>({...t,toggle:()=>this.toggleTask(t.id),open:()=>this.openDrawer(t.ref[0],t.ref[1]),whenColor:t.g==='atrasadas'&&!t.done?'var(--status-danger-fg)':'var(--text-subtle)'});
+    const todayTasks=s.tasks.filter(t=>t.g==='hoje'||t.g==='atrasadas').map(taskItem);
+
+    // Metas
+    const falta=Math.max(0,s.meta-receita);
+    const metaPct=Math.round(receita/(s.meta||1)*100);
+
+    // Orçamentos columns
+    const columns=STAGES.map(st=>{const l=orcs.filter(o=>o.stage===st.id);return {label:st.label,count:String(l.length),total:brl(l.reduce((a,o)=>a+o.valor,0)),empty:l.length===0,
+      line:st.id==='perdido'?'var(--gray-300)':'var(--navy-'+({solicitado:200,enviado:300,negociando:400,fechada:500,agendada:500,concluido:600}[st.id])+')',
+      cards:l.map(o=>({id:o.id,cli:o.cli,prod:o.prod,valorFmt:brl(o.valor),origem:o.origem,origemIcon:ORIGIN_ICON[o.origem],hasInst:!!o.inst,inst:o.inst,
+        age:o.dias===0?'hoje':o.dias===1?'há 1 dia':`há ${o.dias} dias`,open:()=>this.openDrawer('orc',o.id)}))};});
+
+    // Clientes
+    const q=s.cliQ.trim().toLowerCase();
+    const cliRows=CLIS.filter(c=>s.cliF==='todos'||(s.cliF==='manut'&&c.due)||(s.cliF==='lead'&&c.tipo==='lead')||(s.cliF==='cliente'&&c.tipo==='cliente'))
+      .filter(c=>!q||(c.nome+' '+c.bairro+' '+c.equip).toLowerCase().includes(q))
+      .map(c=>({...c,...this.cliAlert(c),ini:ini(c.nome),totalFmt:c.total?brl(c.total):'—',open:()=>this.openDrawer('cli',c.id)}));
+
+    // Tarefas
+    const shown=s.tasks.filter(t=>s.taskF==='pend'?!t.done:t.done);
+    const taskGroups=(s.taskF==='pend'?[['atrasadas','Atrasadas','var(--status-danger-fg)'],['hoje','Hoje','var(--text-strong)'],['semana','Esta semana','var(--text-strong)']]:[['all','Concluídas','var(--text-strong)']])
+      .map(([k,label,color])=>{const items=shown.filter(t=>k==='all'||t.g===k).map(taskItem);return {label,color,count:String(items.length),items};}).filter(g=>g.items.length);
+
+    // Faturamento
+    const finRows=FIN.filter(f=>s.finF==='todos'||(s.finF==='in'?f[4]>0:f[4]<0)).map(f=>({d:f[0],desc:f[1],cat:f[2],forma:f[3],valor:(f[4]<0?'− ':'+ ')+brl(Math.abs(f[4]),true),color:f[4]>0?'var(--status-success-fg)':'var(--text-strong)'}));
+
+    // Admin
+    const aq=s.accQ.trim().toLowerCase();
+    const accRows=ACCOUNTS.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status]}));
+    const charges=ACCOUNTS.filter(a=>a.status!=='Cancelada').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':a.status==='Em teste'?'Em teste':'Pago';const r=!!s.reminded[a.slug];
+      return {nome:a.nome,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),plano:a.plano,valor:a.status==='Em teste'?'R$ 0,00':brl(PLAN_PRICE[a.plano],true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
+        canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
+    const plans=[
+      {nome:'Essencial',para:'Para quem está começando a organizar a loja',preco:'R$ 89',itens:['1 usuário','Até 300 clientes','Orçamentos e funil','Lembretes de manutenção'],contas:'62',mrr:brl(62*89)},
+      {nome:'Profissional',para:'Loja com equipe de instalação',preco:'R$ 149',itens:['Até 5 usuários','Clientes ilimitados','Google Agenda','Faturamento e metas'],contas:'51',mrr:brl(51*149)},
+      {nome:'Rede',para:'Mais de uma loja ou depósito',preco:'R$ 279',itens:['Até 3 lojas','Usuários ilimitados','Relatório por loja','Atendimento prioritário'],contas:'15',mrr:brl(15*279)}
+    ];
+
+    // Drawer
+    let d={isOrc:false,isCli:false,fields:[],steps:[],hist:[],equips:[],linked:[],tpls:[],log:[],stageOptions:[],noLog:true,noEquips:false};
+    let tpls=[],tel='',dKey='';
+    if(s.drawer){
+      dKey=s.drawer.type+':'+s.drawer.id;
+      const log=s.log[dKey]||[];
+      if(s.drawer.type==='orc'){
+        const o=orcs.find(x=>x.id===s.drawer.id);
+        if(o){
+          const st=STAGES.find(x=>x.id===o.stage), idx=STAGES.findIndex(x=>x.id===o.stage);
+          const nextSt=idx<5?STAGES[idx+1]:null; tel=o.tel; tpls=this.orcTemplates(o);
+          const c=this.cliByName(o.cli);
+          d={...d,isOrc:true,kicker:o.id,title:o.cli,sub:`Criado em ${o.criado} · via ${o.origem}`,status:st.label,tone:st.tone,
+            stageNote:o.stage==='perdido'?'Orçamento encerrado sem venda':(o.dias===0?'Nesta etapa desde hoje':`Nesta etapa há ${o.dias} dias`),
+            steps:STAGES.slice(0,6).map((x,i)=>({label:x.label,bar:o.stage==='perdido'?'var(--gray-200)':i<idx?'var(--navy-500)':i===idx?'var(--navy-300)':'var(--gray-200)',fg:i===idx?'var(--text-strong)':'var(--text-muted)',fw:i===idx?600:500})),
+            hasNext:!!nextSt,nextLabel:nextSt?'Mover para '+nextSt.label.toLowerCase():'',advance:()=>nextSt&&this.setStage(o.id,nextSt.id),
+            canLose:!['concluido','perdido'].includes(o.stage),lose:()=>this.setStage(o.id,'perdido'),
+            selectProps:{key:o.id+':'+o.stage,options:STAGES.map(x=>({value:x.id,label:x.label})),value:o.stage,defaultValue:undefined,onChange:e=>this.setStage(o.id,e.target.value)},
+            fields:[
+              {label:'Produto de interesse',value:o.prod,icon:PRODUCTS.find(p=>p[0]===o.prod)?.[2]||'package',span:'1 / -1',size:'15px'},
+              {label:'Valor com instalação',value:brl(o.valor),icon:'banknote',span:'auto',size:'20px'},
+              {label:'Forma de pagamento',value:o.pag,icon:'credit-card',span:'auto',size:'13px'},
+              {label:'Endereço de instalação',value:o.end||'A combinar',icon:'map-pin',span:'1 / -1',size:'13px'},
+              {label:'Instalação',value:o.inst||'Ainda não agendada',icon:'calendar',span:'auto',size:'13px'},
+              {label:'WhatsApp',value:fmtTel(o.tel),icon:'phone',span:'auto',size:'13px'}
+            ],hasObs:!!o.obs,obs:o.obs,hasCli:!!c,openCli:()=>c&&this.openDrawer('cli',c.id)};
+          if(s.draft===null&&s.tpl===0&&!s._tplSet) {}
+        }
+      } else {
+        const c=CLIS.find(x=>x.id===s.drawer.id);
+        if(c){
+          tel=c.tel; tpls=this.cliTemplates(c); const a=this.cliAlert(c);
+          const linked=orcs.filter(o=>o.cli===c.nome).map(o=>{const st=STAGES.find(x=>x.id===o.stage);return {id:o.id,prod:o.prod,valor:brl(o.valor),stage:st.label,tone:st.tone,open:()=>this.openDrawer('orc',o.id)};});
+          const dot={Compra:'var(--navy-500)',Instalação:'var(--navy-300)',Manutenção:'var(--green-500)',Orçamento:'var(--gray-400)',Indicação:'var(--navy-200)'};
+          d={...d,isCli:true,kicker:c.tipo==='lead'?'LEAD':'CLIENTE',title:c.nome,sub:`Cliente desde ${c.desde} · ${c.bairro}`,status:a.alerta,tone:a.atone,
+            fields:[
+              {label:'WhatsApp',value:fmtTel(c.tel),icon:'phone',span:'auto',size:'13px'},
+              {label:'Total comprado',value:c.total?brl(c.total):'—',icon:'banknote',span:'auto',size:'20px'},
+              {label:'Endereço',value:c.end,icon:'map-pin',span:'1 / -1',size:'13px'}
+            ],equips:c.equips,noEquips:!c.equips.length,hist:c.hist.map(h=>({...h,dot:dot[h.t]||'var(--gray-400)'})),linked,hasLinked:linked.length>0,hasObs:false,hasCli:false};
+        }
+      }
+      d.log=log; d.noLog=!log.length; d.telFmt=fmtTel(tel);
+    }
+    let tplIdx=s.tpl;
+    if(s.drawer&&s.drawer.type==='orc'&&s.tplAuto!==false&&s.draft===null&&s.tpl===0){ const o=orcs.find(x=>x.id===s.drawer.id); if(o) tplIdx=this.defaultTpl(o); }
+    tplIdx=Math.min(tplIdx,Math.max(0,tpls.length-1));
+    const draft=s.draft ?? (tpls[tplIdx]?.text||'');
+    d.tpls=tpls.map((t,i)=>({label:t.label,pick:()=>this.setState({tpl:i,draft:null,tplAuto:false}),bg:i===tplIdx?'var(--navy-100)':'transparent',fg:i===tplIdx?'var(--navy-700)':'var(--text-muted)',ring:i===tplIdx?'none':'var(--ring-card)'}));
+
+    const nf=s.nf; const setNf=k=>e=>{const v=e.target.value; this.setState(x=>{const n={...x.nf,[k]:v}; if(k==='prod'){const p=PRODUCTS.find(p=>p[0]===v); if(p) n.valor=String(p[1]);} return {nf:n,nfErr:{...x.nfErr,[k]:undefined}};});};
+
+    return {
+      isLogin:view==='login',isApp:view!=='login',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
+      brandSub:admin?'Administração':'Casa do Aquecedor',navGroups,
+      accountName:admin?'Equipe Nortiq':'Casa do Aquecedor',accountSub:admin?'Acesso administrativo':'Plano Profissional',accountIcon:admin?'shield':'store',
+      toggleSide:()=>this.setState({collapsed:expanded}),toggleLabel:expanded?'Recolher menu':'Expandir menu',toggleIcon:expanded?'panel-left-close':'panel-left-open',
+      logout:()=>this.setState({view:'login',drawer:null}),
+      loginLoja:()=>this.setState({view:'loja',page:'inicio'}),loginAdmin:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'admin',apage:'a-geral'});},
+      pageTitle:(TITLES[page]||[''])[0],pageSub:(TITLES[page]||['',''])[1],
+      user:admin?{name:'Helena Duarte',role:'Operações · Nortiq',initials:'HD'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
+      isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isTarefas:!admin&&page==='tarefas',
+      isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isConfig:!admin&&page==='config',
+      isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',
+      goOrcamentos:go('orcamentos'),goTarefas:go('tarefas'),goMetas:go('metas'),goAContas:go('a-contas'),
+      goClientesDue:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({page:'clientes',cliF:'manut'});},
+      tasksTodayCount:String(todayTasks.filter(t=>!t.done).length),
+      kpis,dueList,weekInst,funnel,todayTasks,
+      metaReal:receita,metaAlvo:s.meta,metaRealFmt:brl(receita),metaAlvoFmt:brl(s.meta),metaPctFmt:metaPct+'%',
+      metaCaption:falta>0?`Faltam ${brl(falta)} · 7 dias úteis até o fim do mês`:'Meta atingida',
+      onMeta:e=>this.setState({meta:Math.max(0,Number(e.target.value)||0)}),metaInputStyle:{width:200},
+      metaFacts:[{label:'Atingido',value:metaPct+'%'},{label:'Falta vender',value:brl(falta)},{label:'Dias úteis restantes',value:'7'},{label:'Por dia útil',value:brl(Math.ceil(falta/7))}],
+      metaHist:[['Agosto',46210,45000],['Julho',38900,45000],['Junho',42300,40000],['Maio',35120,40000],['Abril',31800,35000]].map(([mes,real,alvo])=>({mes,real,alvo,tone:real>=alvo?'success':'accent',caption:`${brl(real)} de ${brl(alvo)} · ${Math.round(real/alvo*100)}%`})),
+      metaSources:[{label:'Vendas com instalação',sub:'10 orçamentos fechados',value:brl(FIN.filter(f=>f[2]==='Venda com instalação').reduce((a,f)=>a+f[4],0))},{label:'Balcão',sub:'Tubos, conexões, registros e bombas',value:brl(FIN.filter(f=>f[2]==='Balcão').reduce((a,f)=>a+f[4],0))},{label:'Manutenção',sub:'4 atendimentos',value:brl(1080)}],
+      openCount:String(openO.length),openTotal:brl(openO.reduce((a,o)=>a+o.valor,0)),wonTotal:brl(orcs.filter(o=>['fechada','agendada','concluido'].includes(o.stage)).reduce((a,o)=>a+o.valor,0)),columns,
+      cliTabs:[{id:'todos',label:'Todos',count:CLIS.length},{id:'manut',label:'Manutenção próxima',count:dueClis.length},{id:'cliente',label:'Clientes',count:CLIS.filter(c=>c.tipo==='cliente').length},{id:'lead',label:'Interessados',count:CLIS.filter(c=>c.tipo==='lead').length}],
+      cliF:s.cliF,onCliF:id=>this.setState({cliF:id}),cliQ:s.cliQ,onCliQ:e=>this.setState({cliQ:e.target.value}),cliRows,cliEmpty:cliRows.length===0,
+      taskTabs:[{id:'pend',label:'Pendentes',count:pend.length},{id:'done',label:'Concluídas',count:s.tasks.length-pend.length}],taskF:s.taskF,onTaskF:id=>this.setState({taskF:id}),taskGroups,taskEmpty:taskGroups.length===0,
+      gcal:s.gcal,toggleGcal:v=>this.setState({gcal:v}),gcalSub:s.gcal?'Conectada · rogerio@casadoaquecedor.com.br':'Desconectada',
+      finKpis:[{label:'Receitas',value:brl(receita),icon:'arrow-down-left',foot:'1 a 22 de setembro'},{label:'Despesas',value:brl(despesa),icon:'arrow-up-right',foot:'Estoque, equipe e custos fixos'},{label:'Sobra no mês',value:brl(receita-despesa),icon:'wallet',foot:'Receitas menos despesas'}],
+      finTabs:[{id:'todos',label:'Todos'},{id:'in',label:'Receitas'},{id:'out',label:'Despesas'}],finF:s.finF,onFinF:id=>this.setState({finF:id}),finRows,
+      cfgTabs:[{id:'perfil',label:'Perfil'},{id:'plano',label:'Plano e assinatura'},{id:'conta',label:'Dados da loja'}],cfgTab:s.cfgTab,onCfgTab:id=>this.setState({cfgTab:id,profileSaved:false}),
+      cfgPerfil:s.cfgTab==='perfil',cfgPlano:s.cfgTab==='plano',cfgConta:s.cfgTab==='conta',fullRow:{gridColumn:'1 / -1'},
+      saveProfile:()=>this.setState({profileSaved:true}),profileSaved:s.profileSaved,
+      invoices:[{mes:'Setembro de 2026',data:'01/09 · cartão final 4821'},{mes:'Agosto de 2026',data:'01/08 · cartão final 4821'},{mes:'Julho de 2026',data:'01/07 · cartão final 4821'}],
+      adminKpis:[{label:'Contas ativas',value:'128',icon:'building-2',delta:'+7',foot:'no mês',tone:'accent'},{label:'Receita recorrente',value:brl(62*89+51*149+15*279),icon:'repeat',foot:'por mês',tone:'default'},{label:'Pagamentos em atraso',value:'9',icon:'circle-alert',foot:brl(1021)+' a receber',tone:'default'},{label:'Em teste grátis',value:'14',icon:'hourglass',foot:'5 terminam esta semana',tone:'default'}],
+      charges,accRows,accF:s.accF,onAccF:id=>this.setState({accF:id}),accQ:s.accQ,onAccQ:e=>this.setState({accQ:e.target.value}),
+      accTabs:['todas','Em dia','Em atraso','Em teste','Cancelada'].map(k=>({id:k,label:k==='todas'?'Todas':k,count:k==='todas'?ACCOUNTS.length:ACCOUNTS.filter(a=>a.status===k).length})),plans,
+      drawerOpen:!!s.drawer,closeDrawer:()=>this.setState({drawer:null}),d,draft,
+      onDraft:e=>this.setState({draft:e.target.value}),
+      sendWa:()=>s.drawer&&this.waFor(s.drawer.type,s.drawer.id,tel,draft),
+      showNew:s.showNew,openNew:()=>this.setState({showNew:true,nf:emptyNf(),nfErr:{}}),openNewFromHome:()=>this.setState({page:'orcamentos',showNew:true,nf:emptyNf(),nfErr:{}}),closeNew:()=>this.setState({showNew:false}),
+      nf,nfErr:{cli:s.nfErr.cli,valor:s.nfErr.valor},nfOn:{cli:setNf('cli'),tel:setNf('tel'),prod:setNf('prod'),valor:setNf('valor'),pag:setNf('pag'),origem:setNf('origem'),end:setNf('end')},
+      productOptions:PRODUCTS.map(p=>p[0]),payOptions:PAYS,originOptions:ORIGINS,
+      saveNew:()=>{
+        const err={}; if(!nf.cli.trim()) err.cli='Falta preencher o nome do cliente.'; if(!(Number(nf.valor)>0)) err.valor='Falta preencher o valor.';
+        if(Object.keys(err).length) return this.setState({nfErr:err});
+        const id='ORC-'+String(s.next).padStart(4,'0');
+        const o={id,cli:nf.cli.trim(),tel:(nf.tel.replace(/\D/g,'')||'12900000000'),prod:nf.prod,valor:Number(nf.valor),pag:nf.pag,end:nf.end.trim(),origem:nf.origem,stage:'solicitado',criado:'22/09',dias:0,inst:'',obs:''};
+        this.setState(x=>({orcs:[o,...x.orcs],next:x.next+1,showNew:false,page:'orcamentos',drawer:{type:'orc',id},draft:null,tpl:0,tplAuto:true}));
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

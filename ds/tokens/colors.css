@@ -1,0 +1,43 @@
+:root{
+/* ---------- Official palette (Nortiq Identidade Visual) ---------- */
+--navy-500:#0E2A47;   /* Azul Nortiq — cor primária da marca */
+--gray-900:#0A1826;   /* Tinta — texto sobre fundo claro */
+--gray-50:#F7F8FA;    /* Branco-gelo — fundo claro padrão */
+--gray-200:#E3E6EB;   /* Cinza-névoa — fundo secundário / divisores */
+--gray-500:#6B7280;   /* Cinza-médio — texto secundário / labels */
+--navy-100:#DCE4EE;   /* Azul-neblina — realce sutil / hover / badges */
+--gray-0:#FFFFFF;     /* Branco — texto sobre fundo escuro */
+
+/* ---------- Derived steps (interpolated from the official seven) ---------- */
+--navy-700:#071B2E;--navy-600:#0A2139;--navy-400:#1C4770;--navy-300:#38689B;--navy-200:#8FAAC8;--navy-50:#F0F4F9;
+--gray-100:#EFF1F4;--gray-300:#CBD1DA;--gray-400:#9AA3B0;--gray-600:#4B5563;--gray-700:#2B3648;--gray-800:#17253A;
+
+/* ---------- Derived status hues (not in the brand sheet — kept desaturated) ---------- */
+--green-100:#E4F0EA;--green-300:#8FBFA6;--green-500:#157347;--green-600:#0F5A37;
+--amber-100:#FBF0DC;--amber-300:#E3C07A;--amber-400:#C9911F;--amber-500:#9A6400;--amber-600:#7A4F00;
+--red-100:#F8E5E5;--red-300:#DDA1A1;--red-500:#A32424;--red-600:#841D1D;
+
+/* ---------- Semantic aliases ---------- */
+/* Text */
+--text-strong:var(--gray-900);--text-body:var(--gray-800);--text-muted:var(--gray-500);--text-subtle:var(--gray-500);--text-disabled:var(--gray-400);--text-on-accent:#FFFFFF;--text-on-dark:var(--gray-50);--text-link:var(--navy-500);--text-link-hover:var(--navy-400);
+/* Surfaces */
+--surface-app:var(--gray-50);--surface-card:var(--gray-0);--surface-sunken:var(--gray-100);--surface-raised:var(--gray-0);--surface-nav:var(--gray-0);--surface-inverse:var(--navy-500);--surface-accent-soft:var(--navy-100);--surface-accent:var(--navy-500);--surface-hover:var(--gray-100);--surface-active:var(--gray-200);--surface-overlay:rgba(10,24,38,.52);
+/* Borders */
+--border-subtle:var(--gray-200);--border-default:var(--gray-300);--border-strong:var(--gray-400);--border-accent:var(--navy-500);--border-focus:var(--navy-500);
+/* Interactive */
+--action-primary-bg:var(--navy-500);--action-primary-bg-hover:var(--navy-600);--action-primary-bg-active:var(--navy-700);--action-primary-fg:#FFFFFF;
+--action-secondary-bg:var(--gray-0);--action-secondary-bg-hover:var(--gray-100);--action-secondary-fg:var(--gray-800);--action-secondary-border:var(--gray-300);
+--action-ghost-fg:var(--gray-700);--action-ghost-bg-hover:var(--gray-100);
+--action-dark-bg:var(--gray-900);--action-dark-bg-hover:var(--gray-800);--action-dark-fg:var(--gray-50);
+--action-disabled-bg:var(--gray-200);--action-disabled-fg:var(--gray-400);
+/* Status */
+--status-success-fg:var(--green-600);--status-success-bg:var(--green-100);--status-success-border:var(--green-300);
+--status-warning-fg:var(--amber-600);--status-warning-bg:var(--amber-100);--status-warning-border:var(--amber-300);
+--status-danger-fg:var(--red-600);--status-danger-bg:var(--red-100);--status-danger-border:var(--red-300);
+--status-info-fg:var(--navy-500);--status-info-bg:var(--navy-100);--status-info-border:var(--navy-200);
+--status-neutral-fg:var(--gray-600);--status-neutral-bg:var(--gray-100);--status-neutral-border:var(--gray-300);
+/* Data viz — quase monocromática: azul da marca em degraus, cor só onde é status */
+--chart-1:var(--navy-500);--chart-2:var(--navy-300);--chart-3:var(--navy-200);--chart-4:var(--gray-400);--chart-5:var(--navy-100);--chart-6:var(--gray-300);--chart-grid:var(--gray-200);--chart-track:var(--gray-200);
+/* Focus ring */
+--focus-ring:0 0 0 3px rgba(14,42,71,.22)
+}

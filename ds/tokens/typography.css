@@ -1,0 +1,19 @@
+:root{
+/* Sizes — números grandes e diretos; interface densa e legível */
+--text-2xs:11px;--text-xs:12px;--text-sm:13px;--text-base:15px;--text-md:17px;--text-lg:20px;--text-xl:24px;--text-2xl:30px;--text-3xl:38px;--text-4xl:48px;--text-5xl:60px;
+--leading-tight:1.08;--leading-snug:1.25;--leading-normal:1.5;--leading-relaxed:1.65;
+--tracking-tight:-0.03em;--tracking-snug:-0.015em;--tracking-normal:0;--tracking-wide:0.06em;--tracking-caps:0.1em;
+--weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;--weight-extrabold:700;
+/* Semantic roles — display = Space Grotesk 500/700, resto = IBM Plex Sans 400/500/600 */
+--type-display:var(--weight-bold) var(--text-4xl)/var(--leading-tight) var(--font-display);
+--type-title-xl:var(--weight-bold) var(--text-2xl)/var(--leading-snug) var(--font-display);
+--type-title:var(--weight-medium) var(--text-xl)/var(--leading-snug) var(--font-display);
+--type-section:var(--weight-semibold) var(--text-md)/var(--leading-snug) var(--font-sans);
+--type-body:var(--weight-regular) var(--text-base)/var(--leading-normal) var(--font-sans);
+--type-body-strong:var(--weight-semibold) var(--text-base)/var(--leading-normal) var(--font-sans);
+--type-ui:var(--weight-medium) var(--text-sm)/1.35 var(--font-sans);
+--type-caption:var(--weight-medium) var(--text-xs)/1.4 var(--font-sans);
+--type-overline:var(--weight-semibold) var(--text-2xs)/1.2 var(--font-sans);
+--type-numeric:var(--weight-bold) var(--text-3xl)/var(--leading-tight) var(--font-display);
+--type-mono:var(--weight-medium) var(--text-sm)/1.4 var(--font-mono)
+}
