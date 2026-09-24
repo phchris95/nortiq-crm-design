@@ -294,6 +294,12 @@
                           <span style="font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ c.valorFmt }}</span>
                           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="neutral" size="sm" icon="{{ c.origemIcon }}" hint-size="80px,20px">{{ c.origem }}</x-import>
                         </div>
+                        <sc-if value="{{ c.hasObj }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; align-items:flex-start; gap:6px; font:var(--type-caption); color:{{ c.objFg }}; padding:6px 8px; border-radius:var(--radius-sm); background:{{ c.objBg }}">
+                            <span style="display:inline-flex; margin-top:2px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ c.objIcon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                            <span><span style="font-weight:600">{{ c.objLabel }}:</span> {{ c.obj }}</span>
+                          </div>
+                        </sc-if>
                         <sc-if value="{{ c.hasInst }}" hint-placeholder-val="{{ false }}">
                           <div style="display:flex; align-items:center; gap:6px; font:var(--type-caption); font-weight:600; color:var(--navy-500); padding-top:8px; border-top:1px solid var(--border-subtle)">
                             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar" size="{{ 14 }}" hint-size="14px,14px"></x-import>
@@ -335,6 +341,12 @@
                           <span style="font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ c.valorFmt }}</span>
                           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="neutral" size="sm" icon="{{ c.origemIcon }}" hint-size="80px,20px">{{ c.origem }}</x-import>
                         </div>
+                        <sc-if value="{{ c.hasObj }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; align-items:flex-start; gap:6px; font:var(--type-caption); color:{{ c.objFg }}; padding:6px 8px; border-radius:var(--radius-sm); background:{{ c.objBg }}">
+                            <span style="display:inline-flex; margin-top:2px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ c.objIcon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                            <span><span style="font-weight:600">{{ c.objLabel }}:</span> {{ c.obj }}</span>
+                          </div>
+                        </sc-if>
                         <sc-if value="{{ c.hasInst }}" hint-placeholder-val="{{ false }}">
                           <div style="display:flex; align-items:center; gap:6px; font:var(--type-caption); font-weight:600; color:var(--navy-500); padding-top:8px; border-top:1px solid var(--border-subtle)">
                             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar" size="{{ 14 }}" hint-size="14px,14px"></x-import>
@@ -824,6 +836,20 @@
                   </div>
                 </div>
               </x-import>
+              <sc-if value="{{ d.showObj }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
+                <div style="display:grid; gap:14px">
+                  <div style="display:grid; gap:4px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">{{ d.objTitle }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ d.objHelp }}</span>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="orc-objecao" label="{{ d.objSelectLabel }}" options="{{ objOptions }}" value="{{ d.obj }}" onChange="{{ d.onObj }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="orc-objecao-nota" label="Detalhe (opcional)" placeholder="Ex.: pediu 5% de desconto no PIX" value="{{ d.objNota }}" onChange="{{ d.onObjNota }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                  </div>
+                </div>
+              </x-import>
+              </sc-if>
             </sc-if>
 
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,240px">
@@ -972,6 +998,23 @@
     </div>
   </sc-if>
 
+  <!-- MARCAR COMO PERDIDO -->
+  <sc-if value="{{ showLose }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Marcar como perdido" description="{{ loseDesc }}" width="{{ 480 }}" onClose="{{ closeLose }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="perda-motivo" label="Motivo da perda" options="{{ loseOptions }}" value="{{ lf.motivo }}" onChange="{{ lfOn.motivo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <sc-if value="{{ lfHasErr }}" hint-placeholder-val="{{ false }}">
+          <span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg); margin-top:-6px">{{ lfErr }}</span>
+        </sc-if>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="perda-nota" label="Detalhe (opcional)" placeholder="Ex.: fechou com outra loja por R$ 190 a menos" value="{{ lf.nota }}" onChange="{{ lfOn.nota }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeLose }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="circle-x" onClick="{{ confirmLose }}" hint-size="180px,44px">Marcar como perdido</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- NOVO ORÇAMENTO -->
   <sc-if value="{{ showNew }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo orçamento" description="Anote o pedido agora. Os detalhes podem ser completados depois." width="{{ 620 }}" onClose="{{ closeNew }}" hint-size="100%,100%">
@@ -1015,6 +1058,7 @@ const PRODUCTS=[
 const PAYS=['PIX à vista','PIX à vista (5% de desconto)','Cartão em 3× sem juros','Cartão em 6× sem juros','Cartão em 10× sem juros','Cartão em 12×','Boleto 30/60 dias','Boleto 30/60/90 dias','Dinheiro'];
 const ORIGINS=['Instagram','WhatsApp','Loja','Indicação'];
 const ORIGIN_ICON={Instagram:'instagram',WhatsApp:'message-circle',Loja:'store',Indicação:'users'};
+const OBJECOES=['Preço','Forma de pagamento','Prazo de instalação','Comparando com outra loja','Depende de outra pessoa aprovar','Obra ainda não liberada','Ainda está pensando','Sem resposta do cliente','Desistiu da compra','Outro'];
 const STAGES=[
  {id:'solicitado',label:'Orçamento solicitado',tone:'neutral'},
  {id:'enviado',label:'Enviado',tone:'info'},
@@ -1031,10 +1075,10 @@ const ORCS=[
  {id:'ORC-0429',cli:'Patrícia Nogueira',tel:'12991457830',prod:'Pressurizador Rowa Press 20 + instalação',valor:1680,pag:'PIX à vista',end:'Av. Cidade Jardim, 1.240, ap. 52 · Jardim Satélite'+SJC,origem:'WhatsApp',stage:'solicitado',criado:'21/09',dias:1,inst:'',obs:'Pouca pressão no chuveiro do andar de cima.'},
  {id:'ORC-0426',cli:'Eduardo Siqueira',tel:'12988770145',prod:PRODUCTS[3][0],valor:2380,pag:'Cartão em 6× sem juros',end:'Rua Paraibuna, 455 · Centro · Jacareí/SP',origem:'Instagram',stage:'enviado',criado:'18/09',dias:4,inst:'',obs:'Orçamento enviado em 18/09. Sem resposta desde então.'},
  {id:'ORC-0424',cli:'Fernanda Lopes',tel:'12996034418',prod:PRODUCTS[5][0],valor:2150,pag:'Boleto 30/60 dias',end:'Rua Siqueira Campos, 190 · Vila Adyana'+SJC,origem:'Loja',stage:'enviado',criado:'17/09',dias:3,inst:'',obs:''},
- {id:'ORC-0423',cli:'Condomínio Residencial Aquarius',tel:'12981120907',prod:'2 bombas Schneider BC-92 1 cv + quadro de comando',valor:6940,pag:'Boleto 30/60/90 dias',end:'Av. Salmão, 900 · Parque Residencial Aquarius'+SJC,origem:'Indicação',stage:'enviado',criado:'16/09',dias:5,inst:'',obs:'Contato: Marcos Rezende, síndico. Aprovação depende da assembleia de 30/09.'},
- {id:'ORC-0421',cli:'Ricardo Almeida',tel:'12997751203',prod:PRODUCTS[2][0],valor:3690,pag:'Cartão em 10× sem juros',end:'Rua Ana Gonçalves da Cunha, 62 · Vila Ema'+SJC,origem:'Instagram',stage:'negociando',criado:'12/09',dias:6,inst:'',obs:'Pediu desconto para pagar à vista. A margem permite até 4%.'},
- {id:'ORC-0419',cli:'Aline Barbosa',tel:'12992284476',prod:PRODUCTS[9][0],valor:6420,pag:'PIX à vista',end:'Estrada do Bom Jesus, 1.800 · Chácaras Pousada do Vale'+SJC,origem:'Instagram',stage:'negociando',criado:'10/09',dias:8,inst:'',obs:'Comparando com orçamento de outra loja. Quer instalar ainda em outubro.'},
- {id:'ORC-0418',cli:'Luciana Farias',tel:'12988402291',prod:PRODUCTS[1][0],valor:5980,pag:'Cartão em 12×',end:'Rua Ipê Amarelo, 25 · Jardim Aquarius'+SJC,origem:'WhatsApp',stage:'negociando',criado:'09/09',dias:3,inst:'',obs:'Casa nova, obra em fase de acabamento.'},
+ {id:'ORC-0423',cli:'Condomínio Residencial Aquarius',tel:'12981120907',prod:'2 bombas Schneider BC-92 1 cv + quadro de comando',valor:6940,pag:'Boleto 30/60/90 dias',end:'Av. Salmão, 900 · Parque Residencial Aquarius'+SJC,origem:'Indicação',stage:'enviado',criado:'16/09',dias:5,inst:'',obs:'Contato: Marcos Rezende, síndico. Aprovação depende da assembleia de 30/09.',obj:'Depende de outra pessoa aprovar',objNota:'Assembleia do condomínio em 30/09.'},
+ {id:'ORC-0421',cli:'Ricardo Almeida',tel:'12997751203',prod:PRODUCTS[2][0],valor:3690,pag:'Cartão em 10× sem juros',end:'Rua Ana Gonçalves da Cunha, 62 · Vila Ema'+SJC,origem:'Instagram',stage:'negociando',criado:'12/09',dias:6,inst:'',obs:'Pediu desconto para pagar à vista. A margem permite até 4%.',obj:'Preço',objNota:'Quer desconto para pagar à vista.'},
+ {id:'ORC-0419',cli:'Aline Barbosa',tel:'12992284476',prod:PRODUCTS[9][0],valor:6420,pag:'PIX à vista',end:'Estrada do Bom Jesus, 1.800 · Chácaras Pousada do Vale'+SJC,origem:'Instagram',stage:'negociando',criado:'10/09',dias:8,inst:'',obs:'Comparando com orçamento de outra loja. Quer instalar ainda em outubro.',obj:'Comparando com outra loja',objNota:'Tem outro orçamento em mãos.'},
+ {id:'ORC-0418',cli:'Luciana Farias',tel:'12988402291',prod:PRODUCTS[1][0],valor:5980,pag:'Cartão em 12×',end:'Rua Ipê Amarelo, 25 · Jardim Aquarius'+SJC,origem:'WhatsApp',stage:'negociando',criado:'09/09',dias:3,inst:'',obs:'Casa nova, obra em fase de acabamento.',obj:'Obra ainda não liberada',objNota:'Casa em fase de acabamento.'},
  {id:'ORC-0415',cli:'Gustavo Rangel',tel:'12991183365',prod:PRODUCTS[6][0],valor:1890,pag:'PIX à vista',end:'Rua Sebastião Hummel, 410 · Centro'+SJC,origem:'Instagram',stage:'fechada',criado:'05/09',dias:3,inst:'',obs:'Pagamento confirmado. Falta agendar a instalação.'},
  {id:'ORC-0412',cli:'Débora Castilho',tel:'12996617740',prod:PRODUCTS[0][0],valor:4180,pag:'Cartão em 10× sem juros',end:'Rua Corifeu de Azevedo Marques, 88 · Vila Betânia'+SJC,origem:'Loja',stage:'fechada',criado:'02/09',dias:2,inst:'',obs:'Quer instalar depois que o pintor sair, a partir de 29/09.'},
  {id:'ORC-0403',cli:'Márcio Pinheiro',tel:'12992760381',prod:PRODUCTS[10][0],valor:1580,pag:'PIX à vista',end:'Rua Euclides Miragaia, 700, casa 3 · Centro'+SJC,origem:'WhatsApp',stage:'agendada',criado:'20/08',dias:3,inst:'Qua, 23/09 · 08:00',obs:''},
@@ -1043,7 +1087,7 @@ const ORCS=[
  {id:'ORC-0405',cli:'Restaurante Sabor da Serra',tel:'12981447702',prod:'Aquecedor a gás Rinnai REU-3802 FEH 50 L (cozinha)',valor:9480,pag:'Boleto 30/60/90 dias',end:'Rod. dos Tamoios, km 12 · Jardim Santa Júlia'+SJC,origem:'Loja',stage:'agendada',criado:'22/08',dias:6,inst:'Sáb, 26/09 · 07:30',obs:'Instalar antes da abertura, às 11h. Precisa de exaustão forçada.'},
  {id:'ORC-0401',cli:'Tiago Monteiro',tel:'12996648012',prod:PRODUCTS[12][0],valor:1140,pag:'Dinheiro',end:'Rua Guarani, 55 · Vila Industrial'+SJC,origem:'Loja',stage:'concluido',criado:'15/08',dias:10,inst:'Concluída em 12/09',obs:''},
  {id:'ORC-0398',cli:'Vanessa Ribeiro',tel:'12991870344',prod:PRODUCTS[5][0],valor:2150,pag:'Cartão em 5×',end:'Rua Pedro Tursi, 210 · Jardim Apolo'+SJC,origem:'Instagram',stage:'concluido',criado:'12/08',dias:12,inst:'Concluída em 10/09',obs:''},
- {id:'ORC-0396',cli:'Rafael Couto',tel:'12988059917',prod:PRODUCTS[3][0],valor:2380,pag:'Cartão em 6× sem juros',end:'Rua Maceió, 91 · Monte Castelo'+SJC,origem:'Instagram',stage:'perdido',criado:'08/08',dias:20,inst:'',obs:'Fechou com outra loja por R$ 190 a menos.'}
+ {id:'ORC-0396',cli:'Rafael Couto',tel:'12988059917',prod:PRODUCTS[3][0],valor:2380,pag:'Cartão em 6× sem juros',end:'Rua Maceió, 91 · Monte Castelo'+SJC,origem:'Instagram',stage:'perdido',criado:'08/08',dias:20,inst:'',obs:'',obj:'Preço',objNota:'Fechou com outra loja por R$ 190 a menos.'}
 ];
 const CLIS=[
  {id:'c1',nome:'Marta Oliveira',tel:'12997213340',bairro:'Jardim Esplanada',end:'Rua Ângelo Scarpa, 120 · Jardim Esplanada'+SJC,desde:'setembro de 2025',total:4590,ultima:'24/09/2025',equip:'Rinnai REU-E210 21 L',tipo:'cliente',due:{tipo:'Manutenção anual',data:'29/09',dias:7,icon:'wrench'},
@@ -1134,6 +1178,7 @@ class Component extends DCLogic {
   state={view:null,page:'inicio',apage:'a-geral',collapsed:null,drawer:null,orcs:ORCS.map(o=>({...o})),tasks:TASKS.map(t=>({done:false,...t})),
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
     showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432,
+    loseFor:null,lf:{motivo:'',nota:''},lfErr:'',
     mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
 
   componentDidMount(){
@@ -1165,6 +1210,8 @@ class Component extends DCLogic {
       let inst=o.inst; if(stage==='agendada'&&!inst) inst='A definir'; if(stage==='concluido') inst='Concluída em 22/09'; if(!['agendada','concluido'].includes(stage)) inst='';
       return {...o,stage,inst,dias:0}; })}));
   }
+  setObj(id,patch){ this.setState(s=>({orcs:s.orcs.map(o=>o.id===id?{...o,...patch}:o)})); }
+  openLose(id){ const o=this.state.orcs.find(x=>x.id===id); this.setState({loseFor:id,lf:{motivo:(o&&o.obj)||'',nota:(o&&o.objNota)||''},lfErr:''}); }
   toggleTask(id){ this.setState(s=>({tasks:s.tasks.map(t=>t.id===id?{...t,done:!t.done}:t)})); }
   waFor(type,id,tel,msg){
     window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`,'_blank');
@@ -1251,6 +1298,8 @@ class Component extends DCLogic {
     const columns=STAGES.map(st=>{const l=orcs.filter(o=>o.stage===st.id);return {label:st.label,count:String(l.length),total:brl(l.reduce((a,o)=>a+o.valor,0)),empty:l.length===0,
       line:st.id==='perdido'?'var(--gray-300)':'var(--navy-'+({solicitado:200,enviado:300,negociando:400,fechada:500,agendada:500,concluido:600}[st.id])+')',
       cards:l.map(o=>({id:o.id,cli:o.cli,prod:o.prod,valorFmt:brl(o.valor),origem:o.origem,origemIcon:ORIGIN_ICON[o.origem],hasInst:!!o.inst,inst:o.inst,
+        hasObj:!!o.obj&&!['concluido'].includes(o.stage),obj:o.obj,objLabel:o.stage==='perdido'?'Motivo':'Objeção',objIcon:o.stage==='perdido'?'circle-x':'circle-alert',
+        objFg:o.stage==='perdido'?'var(--text-muted)':'var(--status-warning-fg)',objBg:o.stage==='perdido'?'var(--gray-100)':'var(--status-warning-bg)',
         age:o.dias===0?'hoje':o.dias===1?'há 1 dia':`há ${o.dias} dias`,open:()=>this.openDrawer('orc',o.id)}))};});
 
     // Clientes
@@ -1295,8 +1344,13 @@ class Component extends DCLogic {
             stageNote:o.stage==='perdido'?'Orçamento encerrado sem venda':(o.dias===0?'Nesta etapa desde hoje':`Nesta etapa há ${o.dias} dias`),
             steps:STAGES.slice(0,6).map((x,i)=>({label:x.label,bar:o.stage==='perdido'?'var(--gray-200)':i<idx?'var(--navy-500)':i===idx?'var(--navy-300)':'var(--gray-200)',fg:i===idx?'var(--text-strong)':'var(--text-muted)',fw:i===idx?600:500})),
             hasNext:!!nextSt,nextLabel:nextSt?'Mover para '+nextSt.label.toLowerCase():'',advance:()=>nextSt&&this.setStage(o.id,nextSt.id),
-            canLose:!['concluido','perdido'].includes(o.stage),lose:()=>this.setStage(o.id,'perdido'),
-            selectProps:{key:o.id+':'+o.stage,options:STAGES.map(x=>({value:x.id,label:x.label})),value:o.stage,defaultValue:undefined,onChange:e=>this.setStage(o.id,e.target.value)},
+            canLose:!['concluido','perdido'].includes(o.stage),lose:()=>this.openLose(o.id),
+            showObj:['solicitado','enviado','negociando','perdido'].includes(o.stage),
+            objTitle:o.stage==='perdido'?'Motivo da perda':'Objeção do cliente',
+            objHelp:o.stage==='perdido'?'Por que a venda não aconteceu. Entra no relatório de vendas perdidas.':'O que está segurando a venda. Ajuda a preparar a resposta no próximo contato.',
+            objSelectLabel:o.stage==='perdido'?'Motivo':'Principal objeção',obj:o.obj||'',objNota:o.objNota||'',
+            onObj:e=>this.setObj(o.id,{obj:e.target.value}),onObjNota:e=>this.setObj(o.id,{objNota:e.target.value}),
+            selectProps:{key:o.id+':'+o.stage,options:STAGES.map(x=>({value:x.id,label:x.label})),value:o.stage,defaultValue:undefined,onChange:e=>{const v=e.target.value; if(v==='perdido'&&o.stage!=='perdido') this.openLose(o.id); else this.setStage(o.id,v);}},
             fields:[
               {label:'Produto de interesse',value:o.prod,icon:PRODUCTS.find(p=>p[0]===o.prod)?.[2]||'package',span:'1 / -1',size:'15px'},
               {label:'Valor com instalação',value:brl(o.valor),icon:'banknote',span:'auto',size:'20px'},
@@ -1377,6 +1431,16 @@ class Component extends DCLogic {
       sendWa:()=>s.drawer&&this.waFor(s.drawer.type,s.drawer.id,tel,draft),
       showNew:s.showNew,openNew:()=>this.setState({showNew:true,nf:emptyNf(),nfErr:{}}),openNewFromHome:()=>this.setState({page:'orcamentos',showNew:true,nf:emptyNf(),nfErr:{}}),closeNew:()=>this.setState({showNew:false}),
       nf,nfErr:{cli:s.nfErr.cli,valor:s.nfErr.valor},nfOn:{cli:setNf('cli'),tel:setNf('tel'),prod:setNf('prod'),valor:setNf('valor'),pag:setNf('pag'),origem:setNf('origem'),end:setNf('end')},
+      objOptions:[{value:'',label:'Nenhuma registrada'},...OBJECOES.map(x=>({value:x,label:x}))],
+      loseOptions:[{value:'',label:'Escolha o motivo'},...OBJECOES.map(x=>({value:x,label:x}))],
+      showLose:!!s.loseFor,closeLose:()=>this.setState({loseFor:null}),
+      loseDesc:(()=>{const o=s.orcs.find(x=>x.id===s.loseFor);return o?`${o.id} · ${o.cli} · ${brl(o.valor)}. O motivo aparece no cartão e no relatório de vendas perdidas.`:'';})(),
+      lf:s.lf,lfErr:s.lfErr,lfHasErr:!!s.lfErr,
+      lfOn:{motivo:e=>{const v=e.target.value;this.setState(x=>({lf:{...x.lf,motivo:v},lfErr:''}));},nota:e=>{const v=e.target.value;this.setState(x=>({lf:{...x.lf,nota:v}}));}},
+      confirmLose:()=>{
+        if(!s.lf.motivo) return this.setState({lfErr:'Escolha o motivo da perda.'});
+        const id=s.loseFor; this.setObj(id,{obj:s.lf.motivo,objNota:s.lf.nota.trim()}); this.setStage(id,'perdido'); this.setState({loseFor:null});
+      },
       productOptions:PRODUCTS.map(p=>p[0]),payOptions:PAYS,originOptions:ORIGINS,
       saveNew:()=>{
         const err={}; if(!nf.cli.trim()) err.cli='Falta preencher o nome do cliente.'; if(!(Number(nf.valor)>0)) err.valor='Falta preencher o valor.';
