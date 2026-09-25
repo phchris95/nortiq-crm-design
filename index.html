@@ -154,7 +154,28 @@
 
   <div style="position:relative; flex:1; min-width:0; display:flex; flex-direction:column; height:100%">
     <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
-      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.TopBar" title="{{ pageTitle }}" subtitle="{{ pageSub }}" user="{{ user }}" hint-size="100%,64px"></x-import>
+      <header style="display:flex; align-items:center; gap:12px; min-height:var(--layout-topbar-h); box-sizing:border-box; padding:10px var(--layout-gutter); background:var(--surface-nav); border-bottom:1px solid var(--border-subtle)">
+        <div style="display:grid; gap:2px; min-width:0; flex:1 1 220px">
+          <span style="font:var(--type-section); font-family:var(--font-display); color:var(--text-strong)">{{ pageTitle }}</span>
+          <span style="font:var(--type-caption); color:var(--text-subtle)">{{ pageSub }}</span>
+        </div>
+        <sc-if value="{{ showBell }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ toggleNotif }}" aria-label="{{ bellLabel }}" aria-expanded="{{ notifOpenStr }}" style="position:relative; flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border:none; border-radius:var(--radius-pill); background:{{ bellBg }}; color:var(--text-body); cursor:pointer" style-hover="background:var(--surface-hover)">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="bell" size="{{ 20 }}" hint-size="20px,20px"></x-import>
+            <sc-if value="{{ notifHasUnread }}" hint-placeholder-val="{{ true }}">
+              <span style="position:absolute; top:4px; right:3px; min-width:19px; height:19px; padding:0 5px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--red-500); color:#fff; font:var(--type-caption); font-size:11px; font-weight:700; box-shadow:0 0 0 2px var(--surface-nav)">{{ notifUnread }}</span>
+            </sc-if>
+          </button>
+        </sc-if>
+        <div style="display:flex; align-items:center; gap:10px; padding-left:12px; margin-left:4px; border-left:1px solid var(--border-subtle)">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ userInitials }}</span>
+          <div style="display:grid; gap:1px">
+            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ userName }}</span>
+            <span style="font:var(--type-caption); font-size:12px; color:var(--text-subtle)">{{ userRole }}</span>
+          </div>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="chevron-down" size="{{ 15 }}" style="color:var(--text-subtle)" hint-size="15px,15px"></x-import>
+        </div>
+      </header>
     </sc-if>
     <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
       <header style="position:absolute; top:0; left:0; right:0; z-index:20; height:60px; box-sizing:border-box; display:flex; align-items:center; gap:8px; padding:0 12px 0 6px; background:var(--surface-nav); border-bottom:1px solid var(--border-subtle); transform:translateY({{ barY }}); transition:transform 220ms cubic-bezier(.2,.8,.25,1)">
@@ -163,6 +184,14 @@
           <span style="font:var(--type-section); font-family:var(--font-display); color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ pageTitle }}</span>
           <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ pageSub }}</span>
         </div>
+        <sc-if value="{{ showBell }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ toggleNotif }}" aria-label="{{ bellLabel }}" aria-expanded="{{ notifOpenStr }}" style="position:relative; flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border:none; border-radius:var(--radius-pill); background:{{ bellBg }}; color:var(--text-body); cursor:pointer" style-hover="background:var(--surface-hover)">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="bell" size="{{ 20 }}" hint-size="20px,20px"></x-import>
+            <sc-if value="{{ notifHasUnread }}" hint-placeholder-val="{{ true }}">
+              <span style="position:absolute; top:4px; right:3px; min-width:19px; height:19px; padding:0 5px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--red-500); color:#fff; font:var(--type-caption); font-size:11px; font-weight:700; box-shadow:0 0 0 2px var(--surface-nav)">{{ notifUnread }}</span>
+            </sc-if>
+          </button>
+        </sc-if>
         <span title="{{ userName }}" style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ userInitials }}</span>
       </header>
     </sc-if>
@@ -1326,6 +1355,84 @@
           </div>
         </sc-if>
 
+        <!-- ADMIN · NOTIFICAÇÕES -->
+        <sc-if value="{{ isAAvisos }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap:16px; align-items:start">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,760px">
+              <div style="display:grid; gap:16px">
+                <div style="display:grid; gap:2px">
+                  <span style="font:var(--type-section); color:var(--text-strong)">Nova notificação</span>
+                  <span style="font:var(--type-caption); color:var(--text-muted)">Aparece no sino das lojas escolhidas, no topo do CRM.</span>
+                </div>
+                <sc-if value="{{ avMsgShow }}" hint-placeholder-val="{{ false }}">
+                  <div role="status" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+                    <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                    <span>{{ avMsg }}</span>
+                  </div>
+                </sc-if>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="av-para" label="Para quem" options="{{ avParaOptions }}" value="{{ av.para }}" onChange="{{ avOn.para }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="av-tipo" label="Tipo" options="{{ avTipoOptions }}" value="{{ av.tipo }}" onChange="{{ avOn.tipo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                </div>
+                <sc-if value="{{ avEscolher }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid; gap:4px">
+                    <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted)">Lojas ({{ avEscolhidasTxt }})</span>
+                    <div style="display:grid; max-height:220px; overflow-y:auto; padding:4px 12px; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+                      <sc-for list="{{ avLojas }}" as="l" hint-placeholder-count="6">
+                        <div style="padding:4px 0; border-bottom:1px solid var(--border-subtle)">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ l.nome }}" description="{{ l.sub }}" checked="{{ l.on }}" onChange="{{ l.toggle }}" hint-size="100%,44px"></x-import>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ avErrLojasShow }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg)">{{ avErr.lojas }}</span></sc-if>
+                  </div>
+                </sc-if>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="av-titulo" label="Título" value="{{ av.titulo }}" onChange="{{ avOn.titulo }}" error="{{ avErr.titulo }}" hint="{{ avTituloConta }}" max-length="{{ 60 }}" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+                <label style="display:grid; gap:6px">
+                  <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted)">Mensagem</span>
+                  <textarea id="av-msg" value="{{ av.msg }}" onChange="{{ avOn.msg }}" maxLength="240" rows="4" style="resize:vertical; box-sizing:border-box; width:100%; padding:10px 12px; border:1px solid {{ avMsgBorda }}; border-radius:var(--radius-control); font:var(--type-body); font-size:15px; color:var(--text-strong); background:var(--surface-card); outline:none" style-focus="border-color:var(--border-focus); box-shadow:var(--focus-ring)"></textarea>
+                  <span style="font:var(--type-caption); color:{{ avMsgContaFg }}">{{ avMsgConta }}</span>
+                </label>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="av-link" label="Ao tocar, abrir" options="{{ avLinkOptions }}" value="{{ av.link }}" onChange="{{ avOn.link }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="Enviar também por e-mail" description="Vai para o e-mail do dono de cada loja." checked="{{ av.email }}" onChange="{{ avToggleEmail }}" hint-size="100%,44px"></x-import>
+                <div style="display:grid; gap:6px">
+                  <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Prévia no sino da loja</span>
+                  <div style="display:grid; grid-template-columns:36px minmax(0,1fr) 10px; gap:12px; align-items:start; padding:12px 16px; border-radius:var(--radius-md); box-shadow:var(--ring-card); background:var(--navy-50)">
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-500); color:#fff"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ avPrevIcon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                    <span style="display:grid; gap:2px; min-width:0">
+                      <span style="font:var(--type-caption); font-size:12px; color:var(--text-subtle)">Equipe Nortiq · agora</span>
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ avPrevTitulo }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.45">{{ avPrevMsg }}</span>
+                    </span>
+                    <span style="width:9px; height:9px; margin-top:6px; border-radius:50%; background:var(--navy-500)"></span>
+                  </div>
+                </div>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="send" onClick="{{ avEnviar }}" style="justify-self:start" hint-size="220px,44px">{{ avEnviarTxt }}</x-import>
+              </div>
+            </x-import>
+
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,420px">
+              <div style="display:grid; gap:2px; padding:16px 20px; border-bottom:1px solid var(--border-subtle)">
+                <span style="font:var(--type-section); color:var(--text-strong)">Enviadas</span>
+                <span style="font:var(--type-caption); color:var(--text-muted)">Quantas lojas já abriram cada notificação.</span>
+              </div>
+              <sc-for list="{{ avHist }}" as="h" hint-placeholder-count="3">
+                <div style="display:grid; gap:8px; padding:14px 20px; border-bottom:1px solid var(--border-subtle)">
+                  <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px">
+                    <div style="display:grid; gap:2px; min-width:0">
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ h.titulo }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">{{ h.meta }}</span>
+                    </div>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ h.tone }}" size="sm" hint-size="100px,20px">{{ h.tipo }}</x-import>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ h.lidas }}" max="{{ h.total }}" show-value="{{ false }}" height="{{ 6 }}" hint-size="100%,6px"></x-import>
+                  <span style="font:var(--type-caption); color:var(--text-subtle)">{{ h.lidasTxt }}</span>
+                </div>
+              </sc-for>
+            </x-import>
+          </div>
+        </sc-if>
+
         <!-- ADMIN · PLANO -->
         <sc-if value="{{ isAPlanos }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap:16px; align-items:start">
@@ -1376,6 +1483,45 @@
       </div>
     </main>
   </div>
+
+  <!-- NOTIFICAÇÕES -->
+  <sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeNotif }}" style="position:absolute; inset:0; z-index:34; background:{{ notifScrim }}"></div>
+    <section aria-label="Notificações" style="position:absolute; z-index:35; top:{{ notifTop }}; right:{{ notifRight }}; left:{{ notifLeft }}; width:{{ notifW }}; max-height:{{ notifMaxH }}; display:flex; flex-direction:column; background:var(--surface-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-xl), var(--ring-card); overflow:hidden">
+      <div style="display:grid; gap:10px; padding:16px 16px 12px; border-bottom:1px solid var(--border-subtle)">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px">
+          <span style="font:var(--type-section); color:var(--text-strong)">Notificações</span>
+          <sc-if value="{{ notifHasUnread }}" hint-placeholder-val="{{ true }}">
+            <button type="button" onClick="{{ markAllRead }}" style="border:none; background:transparent; padding:6px 4px; cursor:pointer; font:var(--type-caption); font-weight:600; color:var(--text-link)">Marcar todas como lidas</button>
+          </sc-if>
+        </div>
+        <div style="display:flex; gap:6px">
+          <sc-for list="{{ notifTabs }}" as="t" hint-placeholder-count="2">
+            <button type="button" onClick="{{ t.go }}" style="min-height:32px; padding:0 12px; border:none; border-radius:var(--radius-pill); cursor:pointer; font:var(--type-caption); font-weight:600; background:{{ t.bg }}; color:{{ t.fg }}">{{ t.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="overflow-y:auto; overscroll-behavior:contain">
+        <sc-for list="{{ notifList }}" as="n" hint-placeholder-count="5">
+          <button type="button" onClick="{{ n.open }}" style="display:grid; grid-template-columns:36px minmax(0,1fr) 10px; gap:12px; align-items:start; width:100%; text-align:left; padding:12px 16px; border:none; border-bottom:1px solid var(--border-subtle); background:{{ n.bg }}; cursor:pointer; font:inherit" style-hover="background:var(--surface-hover)">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:{{ n.iconBg }}; color:{{ n.iconFg }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ n.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+            <span style="display:grid; gap:2px; min-width:0">
+              <span style="font:var(--type-caption); font-size:12px; color:var(--text-subtle)">{{ n.de }} · {{ n.quando }}</span>
+              <span style="font:var(--type-ui); font-weight:{{ n.fw }}; color:var(--text-strong)">{{ n.titulo }}</span>
+              <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.45">{{ n.texto }}</span>
+            </span>
+            <span style="width:9px; height:9px; margin-top:6px; border-radius:50%; background:{{ n.dot }}"></span>
+          </button>
+        </sc-for>
+        <sc-if value="{{ notifEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:8px; justify-items:center; padding:32px 16px; text-align:center">
+            <span style="display:inline-flex; color:var(--text-disabled)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="bell" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <span style="font:var(--type-caption); color:var(--text-muted)">Nenhuma notificação não lida. Tudo em dia.</span>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+  </sc-if>
 
   <!-- DRAWER -->
   <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
@@ -1983,6 +2129,28 @@ const ORIGINS=['Instagram','WhatsApp','Loja','Indicação'];
 const ORIGIN_ICON={Instagram:'instagram',WhatsApp:'message-circle',Loja:'store',Indicação:'users'};
 // Preencher quando a conta do gateway estiver pronta: o nome aparece na tela e o link abre em nova aba.
 const GATEWAY={nome:'Asaas',linkPagamento:''};
+// ---------- Notificações ----------
+// go: tela da loja ('agenda', 'relatorios'...) ou ficha ['orc', id] / ['cli', id]
+const NOTIF_TIPOS={agenda:['Agenda','calendar-check','var(--navy-100)','var(--navy-600)'],retorno:['Tarefas','clock','var(--status-warning-bg)','var(--status-warning-fg)'],
+  manut:['Clientes','wrench','var(--status-info-bg)','var(--status-info-fg)'],fatura:['Meu plano','receipt','var(--gray-100)','var(--gray-700)'],
+  estoque:['Estoque','package-open','var(--status-danger-bg)','var(--status-danger-fg)'],nortiq:['Equipe Nortiq','sparkles','var(--navy-500)','#fff']};
+const NOTIFS0=[
+ {id:'n1',tipo:'agenda',titulo:'Instalação amanhã às 08:00',texto:'Márcio Pinheiro · Pressurizador Rowa Press 20 · técnico Alan',quando:'há 10 min',lida:false,go:['orc','ORC-0403']},
+ {id:'n2',tipo:'nortiq',titulo:'Novidade: relatórios em PDF',texto:'Monte o relatório do mês com a logo da loja em Gestão, Relatórios.',quando:'hoje, 09:12',lida:false,go:'relatorios'},
+ {id:'n3',tipo:'retorno',titulo:'Retorno atrasado',texto:'Eduardo Siqueira · orçamento ORC-0426 enviado há 4 dias, sem resposta',quando:'hoje, 08:00',lida:false,go:['orc','ORC-0426']},
+ {id:'n4',tipo:'manut',titulo:'Manutenção vence em 7 dias',texto:'Marta Oliveira · Rinnai REU-E210 21 L · 29/09',quando:'ontem',lida:true,go:['cli','c1']},
+ {id:'n5',tipo:'fatura',titulo:'Fatura de outubro disponível',texto:'R$ 79,90 · vence 01/10 · PIX ou boleto',quando:'ontem',lida:true,go:'plano'},
+ {id:'n6',tipo:'estoque',titulo:'Produto sem estoque',texto:'Aquecedor a gás Lorenzetti LZ 2000DE 20 L (LOR-2000)',quando:'20/09',lida:true,go:'estoque'}
+];
+const AV_TIPOS={'Novidade':['sparkles','info'],'Aviso importante':['circle-alert','warning'],'Manutenção programada':['settings','neutral'],'Cobrança':['receipt','danger']};
+const AV_LINKS=[{value:'',label:'Nenhuma tela'},{value:'inicio',label:'Início'},{value:'orcamentos',label:'Orçamentos'},{value:'agenda',label:'Agenda'},{value:'estoque',label:'Estoque'},{value:'relatorios',label:'Relatórios'},{value:'plano',label:'Meu plano'}];
+const AVISOS0=[
+ {titulo:'Novidade: relatórios em PDF',tipo:'Novidade',para:'Todas as lojas',total:128,lidas:47,quando:'22/09 às 09:12',email:true},
+ {titulo:'Manutenção programada no domingo',tipo:'Manutenção programada',para:'Todas as lojas',total:128,lidas:91,quando:'20/09 às 18:40',email:true},
+ {titulo:'Fatura de setembro em aberto',tipo:'Cobrança',para:'2 lojas em atraso',total:2,lidas:1,quando:'15/09 às 10:05',email:false}
+];
+const emptyAv=()=>({para:'todas',escolhidas:{},tipo:'Novidade',titulo:'',msg:'',link:'',email:true});
+
 // ---------- Estoque ----------
 const EST_CATS=['Aquecedor a gás','Aquecedor solar','Pressurizador e bomba',"Caixa d'água",'Tubos e conexões','Registros e válvulas','Outros'];
 const ESTOQUE0=[
@@ -2228,6 +2396,7 @@ class Component extends DCLogic {
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
     showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432,
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
+    notifs:NOTIFS0.map(n=>({...n})),notifOpen:false,notifF:'todas',avisos:AVISOS0.map(a=>({...a})),av:emptyAv(),avErr:{},avMsg:'',
     estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
     accs:ACCOUNTS.map(a=>({...a})),showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
     rpPer:'mes',rpDe:'2026-09-01',rpAte:'2026-09-30',rpSec:{resumo:true,vendas:true,funil:true,perdas:true,fat:true,inst:false,novos:false},rpEmp:{...LOJA},rpLogo:null,rpLogoErr:'',rpObs:'',rpMsg:'',rpMsgErr:false,rpGen:false,
@@ -2327,7 +2496,7 @@ class Component extends DCLogic {
     const dueClis=CLIS.filter(c=>c.due);
 
     const navDef=admin?[
-      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(s.accs.filter(a=>a.status==='Em atraso').length)},{id:'a-planos',label:'Plano',icon:'layers'}]}
+      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(s.accs.filter(a=>a.status==='Em atraso').length)},{id:'a-avisos',label:'Notificações',icon:'bell'},{id:'a-planos',label:'Plano',icon:'layers'}]}
     ]:[
       {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'estoque',label:'Estoque',icon:'package'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
       {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'relatorios',label:'Relatórios',icon:'chart-no-axes-column'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
@@ -2338,7 +2507,7 @@ class Component extends DCLogic {
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],estoque:['Estoque','Produtos, quantidades e importação por planilha'],
       tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
-      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Plano','Preço e próximos planos']};
+      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos']};
 
     // KPIs
     const heroMaint=(this.props.kpiDestaque ?? 'manutencoes')==='manutencoes';
@@ -2388,6 +2557,59 @@ class Component extends DCLogic {
     const charges=s.accs.filter(a=>a.status==='Em dia'||a.status==='Em atraso').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
       return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
         canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
+    // Notificações (sino da loja) e envio pela administração
+    const notifVals=(()=>{
+      const naoLidas=s.notifs.filter(n=>!n.lida).length;
+      const abrir=n=>{ const g=n.go, patch={notifOpen:false,notifs:s.notifs.map(x=>x.id===n.id?{...x,lida:true}:x),menuOpen:false};
+        if(Array.isArray(g)) Object.assign(patch,{drawer:{type:g[0],id:g[1]},draft:null,tpl:0,tplAuto:true});
+        else if(g) Object.assign(patch,{page:g,drawer:null});
+        this.setState(patch); };
+      const lista=s.notifs.filter(n=>s.notifF==='todas'||!n.lida).map(n=>{const t=NOTIF_TIPOS[n.tipo]||NOTIF_TIPOS.nortiq;
+        return {...n,de:n.de||t[0],icon:t[1],iconBg:t[2],iconFg:t[3],bg:n.lida?'transparent':'var(--navy-50)',fw:n.lida?500:600,dot:n.lida?'transparent':'var(--navy-500)',open:()=>abrir(n)};});
+      // administração
+      const av=s.av, ativas=s.accs.filter(a=>a.status==='Em dia'||a.status==='Em atraso'), atraso=s.accs.filter(a=>a.status==='Em atraso');
+      const alvo=av.para==='todas'?ativas:av.para==='atraso'?atraso:s.accs.filter(a=>av.escolhidas[a.slug]);
+      const nAlvo=av.para==='todas'?128:alvo.length;
+      const setAv=k=>e=>{const v=e&&e.target?e.target.value:e;this.setState(x=>({av:{...x.av,[k]:v},avErr:{...x.avErr,[k]:undefined},avMsg:''}));};
+      const tipo=AV_TIPOS[av.tipo]||AV_TIPOS.Novidade;
+      return {
+        showBell:!admin,bellLabel:naoLidas?'Notificações: '+naoLidas+' não lidas':'Notificações',notifUnread:String(naoLidas>9?'9+':naoLidas),notifHasUnread:naoLidas>0,
+        bellBg:s.notifOpen?'var(--surface-active)':'transparent',notifOpen:!!s.notifOpen&&!admin,notifOpenStr:String(!!s.notifOpen),
+        toggleNotif:()=>this.setState(x=>({notifOpen:!x.notifOpen})),closeNotif:()=>this.setState({notifOpen:false}),
+        markAllRead:()=>this.setState(x=>({notifs:x.notifs.map(n=>({...n,lida:true}))})),
+        notifTabs:[{id:'todas',label:'Todas'},{id:'nao',label:'Não lidas'+(naoLidas?' ('+naoLidas+')':'')}].map(t=>({...t,bg:s.notifF===t.id?'var(--navy-100)':'var(--surface-sunken)',fg:s.notifF===t.id?'var(--navy-700)':'var(--text-muted)',go:()=>this.setState({notifF:t.id})})),
+        notifList:lista,notifEmpty:!lista.length,
+        notifTop:mobile?'64px':'70px',notifRight:mobile?'8px':'24px',notifLeft:mobile?'8px':'auto',notifW:mobile?'auto':'420px',notifMaxH:mobile?'calc(100% - 80px)':'min(620px, calc(100% - 90px))',
+        notifScrim:mobile?'var(--surface-overlay)':'transparent',
+        userRole:admin?'Operações · Nortiq':'Proprietário',
+        // administração
+        av,avErr:s.avErr,avMsg:s.avMsg,avMsgShow:!!s.avMsg,
+        avParaOptions:[{value:'todas',label:'Todas as lojas ativas (128)'},{value:'atraso',label:'Só as lojas em atraso ('+atraso.length+')'},{value:'escolher',label:'Escolher as lojas'}],
+        avTipoOptions:Object.keys(AV_TIPOS),avLinkOptions:AV_LINKS,avEscolher:av.para==='escolher',
+        avOn:{para:setAv('para'),tipo:setAv('tipo'),titulo:setAv('titulo'),msg:setAv('msg'),link:setAv('link')},
+        avToggleEmail:()=>this.setState(x=>({av:{...x.av,email:!x.av.email}})),
+        avLojas:s.accs.filter(a=>a.status!=='Cancelada').map(a=>({nome:a.nome,sub:a.cidade+' · '+a.status,on:!!av.escolhidas[a.slug],
+          toggle:()=>this.setState(x=>({av:{...x.av,escolhidas:{...x.av.escolhidas,[a.slug]:!x.av.escolhidas[a.slug]}},avErr:{...x.avErr,lojas:undefined},avMsg:''}))})),
+        avEscolhidasTxt:alvo.length===1?'1 escolhida':alvo.length+' escolhidas',avErrLojasShow:!!s.avErr.lojas,
+        avTituloConta:String(av.titulo.length)+' de 60 caracteres',avMsgConta:s.avErr.msg||(av.msg.length+' de 240 caracteres'),
+        avMsgContaFg:s.avErr.msg?'var(--status-danger-fg)':'var(--text-subtle)',avMsgBorda:s.avErr.msg?'var(--red-500)':'var(--border-default)',
+        avPrevIcon:tipo[0],avPrevTitulo:av.titulo.trim()||'Título da notificação',avPrevMsg:av.msg.trim()||'A mensagem aparece aqui, do jeito que a loja vai ler.',
+        avEnviarTxt:'Enviar para '+nAlvo+(nAlvo===1?' loja':' lojas'),
+        avHist:s.avisos.map(h=>({...h,tone:(AV_TIPOS[h.tipo]||AV_TIPOS.Novidade)[1],meta:h.para+' · '+h.quando+(h.email?' · também por e-mail':''),lidasTxt:'Lida por '+h.lidas+' de '+h.total+(h.total===1?' loja':' lojas')})),
+        avEnviar:()=>{
+          const err={}; if(!av.titulo.trim()) err.titulo='Falta o título.'; if(!av.msg.trim()) err.msg='Falta a mensagem.';
+          if(av.para==='escolher'&&!alvo.length) err.lojas='Escolha pelo menos uma loja.';
+          if(Object.keys(err).length) return this.setState({avErr:err,avMsg:''});
+          const paraTxt=av.para==='todas'?'Todas as lojas':av.para==='atraso'?(nAlvo===1?'1 loja em atraso':nAlvo+' lojas em atraso'):(nAlvo===1?alvo[0].nome:nAlvo+' lojas escolhidas');
+          const chegaNaDemo=av.para==='todas'||alvo.some(a=>a.slug==='casadoaquecedor');
+          const novo={id:'n'+Date.now(),tipo:'nortiq',titulo:av.titulo.trim(),texto:av.msg.trim(),quando:'agora',lida:false,go:av.link||null};
+          this.setState(x=>({avisos:[{titulo:av.titulo.trim(),tipo:av.tipo,para:paraTxt,total:nAlvo,lidas:0,quando:'hoje às 10:30',email:av.email},...x.avisos],
+            notifs:chegaNaDemo?[novo,...x.notifs]:x.notifs,av:emptyAv(),avErr:{},
+            avMsg:'Notificação enviada para '+nAlvo+(nAlvo===1?' loja':' lojas')+(av.email?' e também por e-mail.':'.')+(chegaNaDemo?' Entre como Casa do Aquecedor para ver no sino.':'')}));
+        }
+      };
+    })();
+
     // Estoque
     const estVals=(()=>{
       const est=s.estq, statusOf=p=>p.qtd<=0?{status:'Sem estoque',tone:'danger',fg:'var(--status-danger-fg)'}:p.qtd<p.min?{status:'Abaixo do mínimo',tone:'warning',fg:'var(--status-warning-fg)'}:{status:'',tone:'neutral',fg:'var(--text-strong)'};
@@ -2803,6 +3025,7 @@ class Component extends DCLogic {
       ...rpVals,
       ...accVals,
       ...estVals,
+      ...notifVals,
       isLogin:view==='login',isSenha:view==='senha',isApp:view!=='login'&&view!=='senha',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
@@ -2818,7 +3041,7 @@ class Component extends DCLogic {
       user:admin?{name:'Helena Duarte',role:'Operações · Nortiq',initials:'HD'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
       isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isEstoque:!admin&&page==='estoque',isTarefas:!admin&&page==='tarefas',isAgenda:!admin&&page==='agenda',
       isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isRelatorios:!admin&&page==='relatorios',isConfig:!admin&&page==='config',isPlano:!admin&&page==='plano',
-      isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',
+      isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',isAAvisos:admin&&page==='a-avisos',
       goOrcamentos:go('orcamentos'),goTarefas:go('tarefas'),goMetas:go('metas'),goAContas:go('a-contas'),
       goClientesDue:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({page:'clientes',cliF:'manut'});},
       tasksTodayCount:String(todayTasks.filter(t=>!t.done).length),
