@@ -1338,6 +1338,7 @@ function Input({
     style: {
       display: "grid",
       gap: 6,
+      minWidth: 0,
       width: fullWidth ? "100%" : undefined,
       ...wrapperStyle
     }
@@ -1357,6 +1358,7 @@ function Input({
       display: "flex",
       alignItems: "center",
       gap: 8,
+      minWidth: 0,
       height: h,
       padding: "0 12px",
       background: disabled ? "var(--surface-sunken)" : "var(--surface-card)",
