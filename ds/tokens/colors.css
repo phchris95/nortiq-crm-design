@@ -17,6 +17,13 @@
 --amber-100:#FBF0DC;--amber-300:#E3C07A;--amber-400:#C9911F;--amber-500:#9A6400;--amber-600:#7A4F00;
 --red-100:#F8E5E5;--red-300:#DDA1A1;--red-500:#A32424;--red-600:#841D1D;
 
+/* ---------- Agenda: uma cor por técnico (categórica, usada só no módulo Agenda) ---------- */
+--tech-1:#1F7A6E;--tech-1-bg:#DDF0EC;
+--tech-2:#7A5AA6;--tech-2-bg:#EEE8F6;
+--tech-3:#A8612B;--tech-3-bg:#F7EADF;
+--tech-4:#4F7A28;--tech-4-bg:#E8F0DE;
+--agenda-loja:var(--navy-500);--agenda-loja-bg:var(--navy-100);
+--agenda-google:var(--gray-400);--agenda-google-bg:var(--gray-100);
 /* ---------- Semantic aliases ---------- */
 /* Text */
 --text-strong:var(--gray-900);--text-body:var(--gray-800);--text-muted:var(--gray-500);--text-subtle:var(--gray-500);--text-disabled:var(--gray-400);--text-on-accent:#FFFFFF;--text-on-dark:var(--gray-50);--text-link:var(--navy-500);--text-link-hover:var(--navy-400);

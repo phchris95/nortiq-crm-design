@@ -10,7 +10,7 @@
 <helmet>
   <title>Nortiq CRM</title>
   <link rel="stylesheet" href="ds/tokens/fonts.css">
-  <link rel="stylesheet" href="ds/tokens/colors.css">
+  <link rel="stylesheet" href="ds/tokens/colors.css?v=2">
   <link rel="stylesheet" href="ds/tokens/typography.css">
   <link rel="stylesheet" href="ds/tokens/spacing.css">
   <link rel="stylesheet" href="ds/tokens/radii.css">
@@ -476,6 +476,206 @@
               </div>
             </x-import>
             </div>
+          </div>
+        </sc-if>
+
+        <!-- AGENDA -->
+        <sc-if value="{{ isAgenda }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:16px">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,80px">
+              <div style="display:flex; flex-wrap:wrap; align-items:center; gap:12px 24px; padding:14px 16px">
+                <div style="display:flex; align-items:center; gap:10px; flex:1 1 240px; min-width:0">
+                  <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:var(--radius-sm); background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar-sync" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+                  <div style="display:grid; min-width:0">
+                    <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">Google Agenda</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ gSyncSub }}</span>
+                  </div>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:10px 24px">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Trazer compromissos do Google" checked="{{ gIn }}" onChange="{{ toggleGIn }}" hint-size="240px,32px"></x-import>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Enviar agendamentos para o Google" checked="{{ gcal }}" onChange="{{ toggleGcal }}" hint-size="260px,32px"></x-import>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Mostrar o nome dos compromissos do Google" checked="{{ gTitles }}" onChange="{{ toggleGTitles }}" disabled="{{ gTitlesOff }}" hint-size="300px,32px"></x-import>
+                </div>
+              </div>
+            </x-import>
+
+            <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px">
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="chevron-left" label="Anterior" variant="ghost" onClick="{{ agPrev }}" hint-size="44px,44px"></x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" onClick="{{ agToday }}" hint-size="70px,34px">Hoje</x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="chevron-right" label="Próximo" variant="ghost" onClick="{{ agNext }}" hint-size="44px,44px"></x-import>
+                <span style="font:var(--type-title); color:var(--text-strong); margin-left:6px">{{ agLabel }}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ agTabs }}" active="{{ agView }}" onSelect="{{ onAgView }}" hint-size="220px,40px"></x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openAgNew }}" hint-size="190px,44px">Novo agendamento</x-import>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px">
+              <span style="font:var(--type-caption); color:var(--text-muted)">Mostrar:</span>
+              <sc-for list="{{ agLegend }}" as="l" hint-placeholder-count="4">
+                <button type="button" onClick="{{ l.toggle }}" aria-pressed="{{ l.pressed }}" style="display:inline-flex; align-items:center; gap:8px; min-height:34px; padding:0 12px; border:none; border-radius:var(--radius-pill); cursor:pointer; font:var(--type-caption); font-weight:600; color:{{ l.fg }}; background:var(--surface-card); box-shadow:var(--ring-card)">
+                  <span style="width:12px; height:12px; border-radius:3px; background:{{ l.swatch }}; opacity:{{ l.op }}"></span>{{ l.label }}
+                </button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ agMsgShow }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                <span>{{ agMsg }}</span>
+              </div>
+            </sc-if>
+
+            <!-- Mês -->
+            <sc-if value="{{ agIsMes }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,560px">
+                <div style="display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); border-bottom:1px solid var(--border-subtle)">
+                  <sc-for list="{{ agDow }}" as="w" hint-placeholder-count="7">
+                    <span style="padding:10px 8px; text-align:center; font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">{{ w }}</span>
+                  </sc-for>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(7, minmax(0,1fr))">
+                  <sc-for list="{{ agCells }}" as="c" hint-placeholder-count="35">
+                    <div onClick="{{ c.pick }}" style="min-width:0; min-height:{{ agCellH }}; padding:6px; display:flex; flex-direction:column; gap:4px; border-right:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); background:{{ c.bg }}; cursor:pointer" style-hover="background:var(--surface-hover)">
+                      <span style="align-self:{{ agNumAlign }}; display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px; padding:0 4px; border-radius:var(--radius-pill); font:var(--type-caption); font-weight:600; color:{{ c.numFg }}; background:{{ c.numBg }}; font-variant-numeric:tabular-nums">{{ c.num }}</span>
+                      <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+                        <sc-for list="{{ c.chips }}" as="e" hint-placeholder-count="2">
+                          <button type="button" onClick="{{ e.open }}" title="{{ e.hora }} · {{ e.titulo }}" style="display:block; width:100%; text-align:left; padding:2px 6px; border:none; border-left:3px solid {{ e.cor }}; border-radius:4px; background:{{ e.bg }}; font:var(--type-caption); font-size:12px; color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer">{{ e.chip }}</button>
+                        </sc-for>
+                        <sc-if value="{{ c.hasMore }}" hint-placeholder-val="{{ false }}">
+                          <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-muted); padding-left:4px">{{ c.more }}</span>
+                        </sc-if>
+                      </sc-if>
+                      <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:3px">
+                          <sc-for list="{{ c.dots }}" as="dt" hint-placeholder-count="2">
+                            <span style="width:6px; height:6px; border-radius:50%; background:{{ dt }}"></span>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
+                <div style="display:grid; gap:12px">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                    <span style="font:var(--type-section); color:var(--text-strong)">{{ agSelLabel }}</span>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="plus" onClick="{{ openAgNewSel }}" hint-size="160px,34px">Agendar neste dia</x-import>
+                  </div>
+                  <div style="display:grid; gap:8px">
+                    <sc-for list="{{ agSelList }}" as="e" hint-placeholder-count="3">
+                      <button type="button" onClick="{{ e.open }}" style="display:grid; grid-template-columns:4px minmax(0,1fr); gap:10px; width:100%; text-align:left; padding:10px 12px; border:none; border-radius:var(--radius-sm); cursor:pointer; background:{{ e.bg }}; font:inherit">
+                          <span style="border-radius:2px; background:{{ e.cor }}"></span>
+                          <span style="display:grid; gap:1px; min-width:0">
+                            <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.hora }} · {{ e.tipo }}</span>
+                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ e.titulo }}</span>
+                            <span style="font:var(--type-caption); color:var(--text-muted)">{{ e.sub }}</span>
+                          </span>
+                        </button>
+                    </sc-for>
+                    <sc-if value="{{ agSelEmpty }}" hint-placeholder-val="{{ false }}">
+                      <span style="font:var(--type-ui); color:var(--text-muted)">Nada agendado neste dia.</span>
+                    </sc-if>
+                  </div>
+                </div>
+              </x-import>
+            </sc-if>
+
+            <!-- Semana (computador) -->
+            <sc-if value="{{ agIsSemanaGrade }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,700px">
+                <div style="overflow-x:auto">
+                  <div style="min-width:760px">
+                    <div style="display:grid; grid-template-columns:56px repeat(7, minmax(0,1fr)); border-bottom:1px solid var(--border-subtle)">
+                      <span></span>
+                      <sc-for list="{{ agWeek }}" as="col" hint-placeholder-count="7">
+                        <div onClick="{{ col.pick }}" style="display:grid; justify-items:center; gap:2px; padding:10px 4px; cursor:pointer">
+                          <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">{{ col.dow }}</span>
+                          <span style="display:inline-flex; align-items:center; justify-content:center; min-width:32px; height:32px; border-radius:var(--radius-pill); font-family:var(--font-display); font-weight:700; font-size:18px; color:{{ col.numFg }}; background:{{ col.numBg }}">{{ col.num }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="display:grid; grid-template-columns:56px repeat(7, minmax(0,1fr))">
+                      <div style="display:grid; grid-auto-rows:48px">
+                        <sc-for list="{{ agHours }}" as="h" hint-placeholder-count="13">
+                          <span style="padding:2px 8px 0 0; text-align:right; font:var(--type-caption); font-size:11px; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ h }}</span>
+                        </sc-for>
+                      </div>
+                      <sc-for list="{{ agWeek }}" as="col" hint-placeholder-count="7">
+                        <div style="position:relative; height:{{ agGridH }}; border-left:1px solid var(--border-subtle); background-color:{{ col.bg }}; background-image:repeating-linear-gradient(to bottom, var(--border-subtle) 0 1px, transparent 1px 48px)">
+                          <sc-for list="{{ col.evs }}" as="e" hint-placeholder-count="2">
+                            <button type="button" onClick="{{ e.open }}" title="{{ e.hora }} · {{ e.titulo }}" style="position:absolute; top:{{ e.top }}; height:{{ e.h }}; left:{{ e.left }}; width:{{ e.w }}; box-sizing:border-box; overflow:hidden; display:grid; align-content:start; gap:1px; padding:{{ e.pad }}; border:none; border-left:3px solid {{ e.cor }}; border-radius:6px; background:{{ e.bg }}; text-align:left; cursor:pointer; font:inherit">
+                              <sc-if value="{{ e.curto }}" hint-placeholder-val="{{ false }}">
+                                <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis"><span style="color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.ini }}</span> {{ e.titulo }}</span>
+                              </sc-if>
+                              <sc-if value="{{ e.longo }}" hint-placeholder-val="{{ true }}">
+                                <span style="font:var(--type-caption); font-size:11px; font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.hora }}</span>
+                                <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-strong); line-height:1.25">{{ e.titulo }}</span>
+                                <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">{{ e.tecNome }}</span>
+                              </sc-if>
+                            </button>
+                          </sc-for>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+              </x-import>
+            </sc-if>
+
+            <!-- Semana (celular): lista por dia -->
+            <sc-if value="{{ agIsSemanaLista }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; gap:16px">
+                <sc-for list="{{ agWeek }}" as="col" hint-placeholder-count="7">
+                  <section style="display:grid; gap:8px">
+                    <div style="display:flex; align-items:baseline; gap:8px; padding-bottom:6px; border-bottom:1px solid var(--border-subtle)">
+                      <span style="font:var(--type-section); color:var(--text-strong)">{{ col.longo }}</span>
+                      <sc-if value="{{ col.isToday }}" hint-placeholder-val="{{ false }}">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="info" size="sm" hint-size="50px,20px">Hoje</x-import>
+                      </sc-if>
+                    </div>
+                    <sc-for list="{{ col.evs }}" as="e" hint-placeholder-count="2">
+                      <button type="button" onClick="{{ e.open }}" style="display:grid; grid-template-columns:4px minmax(0,1fr); gap:10px; width:100%; text-align:left; padding:10px 12px; border:none; border-radius:var(--radius-sm); cursor:pointer; background:{{ e.bg }}; font:inherit">
+                          <span style="border-radius:2px; background:{{ e.cor }}"></span>
+                          <span style="display:grid; gap:1px; min-width:0">
+                            <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.hora }} · {{ e.tipo }}</span>
+                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ e.titulo }}</span>
+                            <span style="font:var(--type-caption); color:var(--text-muted)">{{ e.sub }}</span>
+                          </span>
+                        </button>
+                    </sc-for>
+                    <sc-if value="{{ col.empty }}" hint-placeholder-val="{{ false }}">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Nada agendado.</span>
+                    </sc-if>
+                  </section>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <!-- Ano -->
+            <sc-if value="{{ agIsAno }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap:16px">
+                <sc-for list="{{ agYear }}" as="m" hint-placeholder-count="12">
+                  <div onClick="{{ m.open }}" style="display:grid; gap:10px; padding:14px; border-radius:var(--radius-md); background:var(--surface-card); box-shadow:{{ m.ring }}; cursor:pointer" style-hover="box-shadow:var(--shadow-sm), var(--ring-card)">
+                    <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px">
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ m.nome }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">{{ m.total }}</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:2px; text-align:center">
+                      <sc-for list="{{ agDowMini }}" as="w" hint-placeholder-count="7">
+                        <span style="font:var(--type-caption); font-size:10px; color:var(--text-muted)">{{ w }}</span>
+                      </sc-for>
+                      <sc-for list="{{ m.days }}" as="d" hint-placeholder-count="30">
+                        <span style="display:inline-flex; align-items:center; justify-content:center; height:24px; border-radius:6px; font:var(--type-caption); font-size:11px; font-weight:{{ d.fw }}; color:{{ d.fg }}; background:{{ d.bg }}; font-variant-numeric:tabular-nums">{{ d.n }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -1035,6 +1235,62 @@
     </div>
   </sc-if>
 
+  <!-- NOVO AGENDAMENTO -->
+  <sc-if value="{{ showAgNew }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo agendamento" description="Marque uma visita, instalação ou retorno. Fica salvo na agenda do CRM." width="{{ 620 }}" onClose="{{ closeAgNew }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="ag-tipo" label="Tipo" options="{{ agTipoOptions }}" value="{{ af.tipo }}" onChange="{{ afOn.tipo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-cli" label="Cliente" placeholder="Nome do cliente" value="{{ af.cli }}" onChange="{{ afOn.cli }}" error="{{ afErr.cli }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-data" label="Data" type="date" value="{{ af.data }}" onChange="{{ afOn.data }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="ag-tec" label="Técnico" options="{{ agTecOptions }}" value="{{ af.tec }}" onChange="{{ afOn.tec }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-ini" label="Começa às" type="time" value="{{ af.ini }}" onChange="{{ afOn.ini }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-fim" label="Termina às" type="time" value="{{ af.fim }}" onChange="{{ afOn.fim }}" error="{{ afErr.fim }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-end" label="Endereço" icon="map-pin" value="{{ af.end }}" onChange="{{ afOn.end }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <sc-for list="{{ afConflicts }}" as="w" hint-placeholder-count="1">
+          <div role="alert" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg); font:var(--type-caption); line-height:1.5">
+            <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="triangle-alert" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+            <span>{{ w }}</span>
+          </div>
+        </sc-for>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Enviar para o Google Agenda (lembrete no celular)" checked="{{ af.google }}" onChange="{{ afOn.google }}" disabled="{{ afGoogleOff }}" hint-size="100%,32px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeAgNew }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveAgNew }}" hint-size="190px,44px">Salvar agendamento</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- DETALHE DO AGENDAMENTO -->
+  <sc-if value="{{ showAgOpen }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ ao.titulo }}" description="{{ ao.tipo }}" width="{{ 480 }}" onClose="{{ closeAgOpen }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+          <sc-for list="{{ ao.linhas }}" as="l" hint-placeholder-count="4">
+            <div style="display:flex; justify-content:space-between; gap:12px; padding:11px 14px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+              <span style="color:var(--text-muted)">{{ l.k }}</span>
+              <span style="color:var(--text-strong); font-weight:600; text-align:right">{{ l.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ ao.hasNota }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+            <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+            <span>{{ ao.nota }}</span>
+          </div>
+        </sc-if>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <sc-if value="{{ ao.hasRef }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon-right="arrow-up-right" onClick="{{ ao.abrirRef }}" hint-size="180px,44px">{{ ao.refLabel }}</x-import>
+          </sc-if>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ closeAgOpen }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- AVISO DO PROTÓTIPO: PÁGINA DO GATEWAY -->
   <sc-if value="{{ showGwNote }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Página de pagamento" description="{{ gwNoteText }}" width="{{ 460 }}" onClose="{{ closeGwNote }}" hint-size="100%,100%">
@@ -1112,6 +1368,51 @@ const ORIGINS=['Instagram','WhatsApp','Loja','Indicação'];
 const ORIGIN_ICON={Instagram:'instagram',WhatsApp:'message-circle',Loja:'store',Indicação:'users'};
 // Preencher quando a conta do gateway estiver pronta: o nome aparece na tela e o link abre em nova aba.
 const GATEWAY={nome:'Asaas',linkPagamento:''};
+// ---------- Agenda ----------
+// Data de referência do protótipo (o "hoje" dos dados de exemplo).
+const HOJE_ISO='2026-09-22';
+const TECNICOS=[{id:'jefferson',nome:'Jefferson',cor:'var(--tech-1, #1F7A6E)',bg:'var(--tech-1-bg, #DDF0EC)'},{id:'alan',nome:'Alan',cor:'var(--tech-2, #7A5AA6)',bg:'var(--tech-2-bg, #EEE8F6)'}];
+const LOJA_COR={cor:'var(--agenda-loja, var(--navy-500))',bg:'var(--agenda-loja-bg, var(--navy-100))'};
+const GOOGLE_BG='repeating-linear-gradient(135deg, var(--agenda-google-bg, var(--gray-100)) 0 6px, var(--gray-0) 6px 12px)';
+const GOOGLE_CONTA='rogerio@casadoaquecedor.com.br';
+const AG_TIPOS=['Visita técnica','Instalação','Manutenção','Retorno ao cliente','Outro'];
+// Atendimentos criados no CRM (fonte da verdade). google:true = já enviado para o Google Agenda.
+const AGENDA0=[
+ {id:'ag1',tipo:'Instalação',cli:'Vanessa Ribeiro',data:'2026-09-10',ini:'08:00',fim:'11:00',tec:'alan',ref:['orc','ORC-0398'],google:true},
+ {id:'ag2',tipo:'Instalação',cli:'Tiago Monteiro',data:'2026-09-12',ini:'08:00',fim:'10:00',tec:'jefferson',ref:['orc','ORC-0401'],google:true},
+ {id:'ag3',tipo:'Visita técnica',cli:'Luciana Farias',data:'2026-09-16',ini:'14:00',fim:'15:00',tec:'jefferson',ref:['orc','ORC-0418'],google:true},
+ {id:'ag4',tipo:'Retorno ao cliente',cli:'Ricardo Almeida',data:'2026-09-22',ini:'10:00',fim:'10:30',tec:null,ref:['orc','ORC-0421'],google:true},
+ {id:'ag5',tipo:'Retorno ao cliente',cli:'Juliana Prado',data:'2026-09-22',ini:'14:00',fim:'14:30',tec:null,ref:['orc','ORC-0431'],google:true},
+ {id:'ag6',tipo:'Retorno ao cliente',cli:'Márcio Pinheiro',data:'2026-09-22',ini:'16:00',fim:'16:30',tec:null,ref:['orc','ORC-0403'],google:true},
+ {id:'ag7',tipo:'Instalação',cli:'Márcio Pinheiro',data:'2026-09-23',ini:'08:00',fim:'11:00',tec:'alan',ref:['orc','ORC-0403'],google:true},
+ {id:'ag8',tipo:'Instalação',cli:'Paulo Henrique Souza',data:'2026-09-24',ini:'08:00',fim:'16:00',tec:'jefferson',ref:['orc','ORC-0409'],google:true},
+ {id:'ag9',tipo:'Visita técnica',cli:'Condomínio Residencial Aquarius',data:'2026-09-24',ini:'10:00',fim:'11:00',tec:'alan',ref:['orc','ORC-0423'],google:true},
+ {id:'ag10',tipo:'Instalação',cli:'Sandra Menezes',data:'2026-09-25',ini:'14:00',fim:'16:00',tec:'alan',ref:['orc','ORC-0407'],google:true},
+ {id:'ag11',tipo:'Instalação',cli:'Restaurante Sabor da Serra',data:'2026-09-26',ini:'07:30',fim:'11:00',tec:'jefferson',ref:['orc','ORC-0405'],google:true},
+ {id:'ag12',tipo:'Manutenção',cli:'Marta Oliveira',data:'2026-09-29',ini:'09:00',fim:'10:30',tec:'alan',ref:['cli','c1'],google:false},
+ {id:'ag13',tipo:'Visita técnica',cli:'Carlos Mendonça',data:'2026-10-01',ini:'09:00',fim:'10:00',tec:'jefferson',ref:['orc','ORC-0430'],google:false},
+ {id:'ag14',tipo:'Manutenção',cli:'Pousada Vale Verde',data:'2026-10-05',ini:'08:00',fim:'12:00',tec:'jefferson',ref:['cli','c3'],google:true}
+];
+// Compromissos que vêm do Google Agenda do dono da loja (só leitura no CRM).
+const GOOGLE0=[
+ {id:'g1',titulo:'Reunião com a distribuidora',data:'2026-09-17',ini:'15:00',fim:'16:00'},
+ {id:'g2',titulo:'Reunião com a distribuidora Rinnai',data:'2026-09-22',ini:'15:00',fim:'16:00'},
+ {id:'g3',titulo:'Almoço com o contador',data:'2026-09-23',ini:'12:00',fim:'13:00'},
+ {id:'g4',titulo:'Consulta médica',data:'2026-09-24',ini:'17:30',fim:'18:30'},
+ {id:'g5',titulo:'Banco: renovar capital de giro',data:'2026-09-25',ini:'09:00',fim:'10:00'},
+ {id:'g6',titulo:'Reunião da associação comercial',data:'2026-09-28',ini:'19:00',fim:'20:00'},
+ {id:'g7',titulo:'Visita do representante Bosch',data:'2026-09-30',ini:'14:00',fim:'15:00'}
+];
+const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const DOW3=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DOWL=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+const pad2=n=>String(n).padStart(2,'0');
+const isoOf=d=>d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+const dOf=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
+const addD=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const minOf=t=>{const [h,m]=String(t||'0:0').split(':').map(Number);return h*60+(m||0);};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const AG_H0=7, AG_H1=20, AG_PX=48;
 const OBJECOES=['Preço','Forma de pagamento','Prazo de instalação','Comparando com outra loja','Depende de outra pessoa aprovar','Obra ainda não liberada','Ainda está pensando','Sem resposta do cliente','Desistiu da compra','Outro'];
 const STAGES=[
  {id:'solicitado',label:'Orçamento solicitado',tone:'neutral'},
@@ -1235,6 +1536,8 @@ class Component extends DCLogic {
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
     showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432,
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
+    agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true},
+    showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:15,
     mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
 
   componentDidMount(){
@@ -1266,6 +1569,14 @@ class Component extends DCLogic {
       let inst=o.inst; if(stage==='agendada'&&!inst) inst='A definir'; if(stage==='concluido') inst='Concluída em 22/09'; if(!['agendada','concluido'].includes(stage)) inst='';
       return {...o,stage,inst,dias:0}; })}));
   }
+  agShift(dir){
+    this.setState(s=>{const d=dOf(s.agRef); let n;
+      if(s.agView==='mes') n=new Date(d.getFullYear(),d.getMonth()+dir,1);
+      else if(s.agView==='ano') n=new Date(d.getFullYear()+dir,d.getMonth(),1);
+      else n=addD(d,7*dir);
+      return {agRef:isoOf(n),agSel:isoOf(n),agMsg:''};});
+  }
+  openAgNew(dataIso){ this.setState(s=>({showAgNew:true,afErr:{},agMsg:'',af:{tipo:'Visita técnica',cli:'',data:dataIso||s.agSel,ini:'09:00',fim:'10:00',tec:'jefferson',end:'',google:s.gcal}})); }
   goGateway(acao){
     if(GATEWAY.linkPagamento){ window.open(GATEWAY.linkPagamento,'_blank','noopener'); }
     else this.setState({gwNote:acao});
@@ -1323,7 +1634,7 @@ class Component extends DCLogic {
     const navDef=admin?[
       {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(ACCOUNTS.filter(a=>a.status==='Em atraso').length)},{id:'a-planos',label:'Plano',icon:'layers'}]}
     ]:[
-      {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)}]},
+      {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
       {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
     ];
     const navGroups=navDef.map(g=>({label:g.label,items:g.items.map(it=>{const on=it.id===page;return {...it,go:go(it.id),
@@ -1331,7 +1642,7 @@ class Component extends DCLogic {
       hasBadge:!!it.badge&&expanded,badgeBg:on?'var(--navy-500)':'var(--gray-200)',badgeFg:on?'#fff':'var(--text-muted)'};})}));
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],
-      tarefas:['Tarefas','Retornos e compromissos'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
+      tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
       'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Plano','Preço e próximos planos']};
 
     // KPIs
@@ -1382,6 +1693,105 @@ class Component extends DCLogic {
     const charges=ACCOUNTS.filter(a=>a.status!=='Cancelada').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
       return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
         canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
+    // Agenda
+    const agVals=(()=>{
+      const mob=mobile, ref=dOf(s.agRef), hoje=HOJE_ISO;
+      const tecOf=id=>TECNICOS.find(t=>t.id===id);
+      const ftime=(a,b)=>a+' às '+b;
+      const crm=s.agEv.filter(e=>e.tec?s.agF[e.tec]!==false:s.agF.loja).map(e=>{const t=tecOf(e.tec)||null, c=t||LOJA_COR;
+        const tipoTxt=e.tipo, sub=(t?'Técnico: '+t.nome:'Com você (loja)')+(e.google?' · no Google Agenda':'');
+        return {...e,origem:'crm',titulo:e.cli,tipoTxt,cor:c.cor,bg:c.bg,tecNome:t?t.nome:'Você',sub,chip:e.ini+' '+e.cli};});
+      const gg=(s.gIn&&s.agF.google)?GOOGLE0.map(g=>{const t=s.gTitles?g.titulo:'Ocupado';
+        return {...g,origem:'google',titulo:t,tipoTxt:'Google Agenda',cli:'',cor:'var(--agenda-google, var(--gray-400))',bg:GOOGLE_BG,tecNome:'Google Agenda',sub:'Compromisso do Google Agenda',chip:g.ini+' '+t};}):[];
+      const all=[...crm,...gg].map(e=>({...e,hora:ftime(e.ini,e.fim),tipo:e.tipoTxt,open:()=>this.setState({agOpen:{origem:e.origem,id:e.id}})}));
+      const byDay=iso=>all.filter(e=>e.data===iso).sort((a,b)=>minOf(a.ini)-minOf(b.ini));
+      const label=(()=>{
+        if(s.agView==='mes') return cap(MESES[ref.getMonth()])+' de '+ref.getFullYear();
+        if(s.agView==='ano') return String(ref.getFullYear());
+        const a=addD(ref,-ref.getDay()), b=addD(a,6);
+        return a.getMonth()===b.getMonth()?a.getDate()+' a '+b.getDate()+' de '+MESES[b.getMonth()]:a.getDate()+' de '+MESES[a.getMonth()]+' a '+b.getDate()+' de '+MESES[b.getMonth()];
+      })();
+      // mês
+      const first=new Date(ref.getFullYear(),ref.getMonth(),1), start=addD(first,-first.getDay());
+      const nDays=new Date(ref.getFullYear(),ref.getMonth()+1,0).getDate(), weeks=Math.ceil((first.getDay()+nDays)/7);
+      const cells=Array.from({length:weeks*7},(_,i)=>{const d=addD(start,i), iso=isoOf(d), out=d.getMonth()!==ref.getMonth(), evs=byDay(iso), sel=iso===s.agSel, today=iso===hoje;
+        return {num:String(d.getDate()),bg:sel?'var(--navy-50)':out?'var(--surface-sunken)':'transparent',
+          numFg:today?'var(--text-on-accent)':out?'var(--text-disabled)':'var(--text-strong)',numBg:today?'var(--navy-500)':'transparent',
+          chips:evs.slice(0,3),hasMore:evs.length>3,more:'+'+(evs.length-3)+' mais',dots:evs.slice(0,4).map(e=>e.cor),
+          pick:()=>this.setState({agSel:iso,agMsg:''})};});
+      const sd=dOf(s.agSel), selList=byDay(s.agSel);
+      // semana
+      const ws=addD(ref,-ref.getDay());
+      const lay=list=>{const lanes=[]; const out=list.map(e=>{const a=minOf(e.ini); let i=lanes.findIndex(end=>end<=a); if(i<0){i=lanes.length;lanes.push(0);} lanes[i]=minOf(e.fim); return {...e,_l:i};});
+        const n=Math.max(1,lanes.length);
+        return out.map(e=>{const a=Math.max(minOf(e.ini),AG_H0*60), b=Math.min(Math.max(minOf(e.fim),a+30),AG_H1*60);
+          const curto=(b-a)<=40; return {...e,curto,longo:!curto,pad:curto?'2px 6px':'4px 6px',top:((a-AG_H0*60)/60*AG_PX)+'px',h:Math.max(22,(b-a)/60*AG_PX-2)+'px',left:'calc('+(e._l*100/n)+'% + 2px)',w:'calc('+(100/n)+'% - 4px)'};});};
+      const week=Array.from({length:7},(_,i)=>{const d=addD(ws,i), iso=isoOf(d), evs=byDay(iso), today=iso===hoje;
+        return {dow:DOW3[d.getDay()],num:String(d.getDate()),longo:DOW3[d.getDay()]+', '+pad2(d.getDate())+'/'+pad2(d.getMonth()+1),isToday:today,
+          numFg:today?'var(--text-on-accent)':'var(--text-strong)',numBg:today?'var(--navy-500)':'transparent',bg:today?'var(--navy-50)':'transparent',
+          evs:mob?evs:lay(evs),empty:evs.length===0,pick:()=>this.setState({agSel:iso,agRef:iso,agView:'mes'})};});
+      // ano
+      const year=Array.from({length:12},(_,m)=>{const f=new Date(ref.getFullYear(),m,1), nd=new Date(ref.getFullYear(),m+1,0).getDate();
+        const days=[...Array.from({length:f.getDay()},()=>({n:'',fg:'transparent',bg:'transparent',fw:400}))];
+        let total=0;
+        for(let d=1;d<=nd;d++){const iso=isoOf(new Date(ref.getFullYear(),m,d)), k=all.filter(e=>e.data===iso).length, today=iso===hoje; total+=k;
+          days.push({n:String(d),fw:k?700:400,fg:today?'var(--text-on-accent)':k?'var(--navy-700)':'var(--text-muted)',bg:today?'var(--navy-500)':k?'var(--navy-100)':'transparent'});}
+        return {nome:cap(MESES[m]),total:total===1?'1 agendamento':total+' agendamentos',days,ring:m===dOf(hoje).getMonth()&&ref.getFullYear()===dOf(hoje).getFullYear()?'0 0 0 2px var(--navy-500)':'var(--ring-card)',
+          open:()=>this.setState({agView:'mes',agRef:isoOf(f),agSel:isoOf(f)})};});
+      // legenda / filtros
+      const leg=[...TECNICOS.map(t=>({id:t.id,label:t.nome,swatch:t.cor})),{id:'loja',label:'Você (loja)',swatch:LOJA_COR.cor},...(s.gIn?[{id:'google',label:'Google Agenda',swatch:GOOGLE_BG}]:[])]
+        .map(l=>{const on=s.agF[l.id]!==false; return {...l,op:on?1:0.25,fg:on?'var(--text-strong)':'var(--text-disabled)',pressed:String(on),toggle:()=>this.setState(x=>({agF:{...x.agF,[l.id]:!on}}))};});
+      // novo agendamento
+      const af=s.af||{}; const conflicts=[];
+      if(s.showAgNew&&af.data&&af.ini&&af.fim&&minOf(af.fim)>minOf(af.ini)){
+        const a=minOf(af.ini), b=minOf(af.fim), ov=e=>e.data===af.data&&minOf(e.ini)<b&&a<minOf(e.fim);
+        if(s.gIn) GOOGLE0.filter(ov).forEach(g=>conflicts.push('Nesse horário você tem um compromisso no Google Agenda ('+g.ini+' às '+g.fim+(s.gTitles?': '+g.titulo:'')+').'));
+        if(af.tec&&af.tec!=='loja') s.agEv.filter(e=>e.tec===af.tec&&ov(e)).forEach(e=>conflicts.push((tecOf(af.tec)||{}).nome+' já tem '+e.tipo.toLowerCase()+' com '+e.cli+' das '+e.ini+' às '+e.fim+'.'));
+      }
+      const setAf=k=>ev=>{const v=(ev&&ev.target)?ev.target.value:ev; this.setState(x=>({af:{...x.af,[k]:v},afErr:{...x.afErr,[k]:undefined}}));};
+      // detalhe
+      let ao={linhas:[]};
+      if(s.agOpen){
+        const e=all.find(x=>x.origem===s.agOpen.origem&&x.id===s.agOpen.id)||(s.agOpen.origem==='google'?null:s.agEv.find(x=>x.id===s.agOpen.id));
+        if(e){ const d=dOf(e.data), quando=DOW3[d.getDay()]+', '+pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+' · '+e.ini+' às '+e.fim;
+          if(e.origem==='google'){
+            ao={titulo:s.gTitles?e.titulo:'Ocupado',tipo:'Compromisso do Google Agenda',linhas:[{k:'Quando',v:quando},{k:'Agenda',v:GOOGLE_CONTA}],hasNota:true,
+              nota:s.gTitles?'Este compromisso vem do Google Agenda. Para mudar, edite lá no Google.':'Os detalhes deste compromisso ficam só no Google Agenda.',hasRef:false};
+          } else {
+            const t=tecOf(e.tec), o=e.ref&&e.ref[0]==='orc'?orcs.find(x=>x.id===e.ref[1]):null, c=e.ref&&e.ref[0]==='cli'?CLIS.find(x=>x.id===e.ref[1]):null;
+            const end=e.end||(o&&o.end)||(c&&c.end)||'A combinar';
+            ao={titulo:e.cli,tipo:e.tipo+(o?' · '+o.id:''),linhas:[{k:'Quando',v:quando},{k:'Técnico',v:t?t.nome:'Com você (loja)'},{k:'Endereço',v:end},{k:'Google Agenda',v:e.google?'Enviado para '+GOOGLE_CONTA:'Não enviado'}],
+              hasNota:!!o,nota:o?o.prod:'',hasRef:!!(o||c),refLabel:o?'Abrir orçamento':'Ver ficha do cliente',
+              abrirRef:()=>{this.setState({agOpen:null}); if(o) this.openDrawer('orc',o.id); else if(c) this.openDrawer('cli',c.id);}};
+          }
+        }
+      }
+      return {
+        agView:s.agView,agTabs:[{id:'mes',label:'Mês'},{id:'semana',label:'Semana'},{id:'ano',label:'Ano'}],onAgView:id=>this.setState({agView:id,agMsg:''}),
+        agLabel:label,agPrev:()=>this.agShift(-1),agNext:()=>this.agShift(1),agToday:()=>this.setState({agRef:hoje,agSel:hoje,agMsg:''}),
+        agIsMes:s.agView==='mes',agIsSemanaGrade:s.agView==='semana'&&!mob,agIsSemanaLista:s.agView==='semana'&&mob,agIsAno:s.agView==='ano',
+        agDow:mob?['D','S','T','Q','Q','S','S']:DOW3,agDowMini:['D','S','T','Q','Q','S','S'],agCells:cells,agCellH:mob?'54px':'112px',agNumAlign:mob?'center':'flex-start',
+        agSelLabel:DOWL[sd.getDay()]+', '+sd.getDate()+' de '+MESES[sd.getMonth()],agSelList:selList,agSelEmpty:selList.length===0,
+        agWeek:week,agHours:Array.from({length:AG_H1-AG_H0},(_,i)=>pad2(AG_H0+i)+':00'),agGridH:((AG_H1-AG_H0)*AG_PX)+'px',agYear:year,agLegend:leg,
+        gIn:s.gIn,gTitles:s.gTitles,gTitlesOff:!s.gIn,toggleGIn:v=>this.setState({gIn:v}),toggleGTitles:v=>this.setState({gTitles:v}),
+        gSyncSub:(s.gIn||s.gcal)?'Conectada · '+GOOGLE_CONTA+' · sincronizada há 2 minutos':'Conectada, mas sem sincronizar nada no momento',
+        agMsg:s.agMsg,agMsgShow:!!s.agMsg,
+        openAgNew:()=>this.openAgNew(),openAgNewSel:()=>this.openAgNew(s.agSel),closeAgNew:()=>this.setState({showAgNew:false}),showAgNew:s.showAgNew,
+        af:{...af,google:!!af.google&&s.gcal},afErr:s.afErr,afConflicts:conflicts,afGoogleOff:!s.gcal,
+        afOn:{tipo:setAf('tipo'),cli:setAf('cli'),data:setAf('data'),ini:setAf('ini'),fim:setAf('fim'),tec:setAf('tec'),end:setAf('end'),google:setAf('google')},
+        agTipoOptions:AG_TIPOS,agTecOptions:[...TECNICOS.map(t=>({value:t.id,label:t.nome})),{value:'loja',label:'Sem técnico (eu mesmo)'}],
+        saveAgNew:()=>{
+          const err={}; if(!String(af.cli||'').trim()) err.cli='Falta preencher o cliente.'; if(!(minOf(af.fim)>minOf(af.ini))) err.fim='O fim precisa ser depois do começo.';
+          if(Object.keys(err).length) return this.setState({afErr:err});
+          const vaiGoogle=!!af.google&&s.gcal, id='ag'+s.agSeq;
+          const ev={id,tipo:af.tipo,cli:af.cli.trim(),data:af.data,ini:af.ini,fim:af.fim,tec:af.tec==='loja'?null:af.tec,end:String(af.end||'').trim(),google:vaiGoogle};
+          this.setState(x=>({agEv:[...x.agEv,ev],agSeq:x.agSeq+1,showAgNew:false,agRef:af.data,agSel:af.data,
+            agMsg:vaiGoogle?'Agendamento salvo e enviado para o Google Agenda de '+GOOGLE_CONTA+'.':'Agendamento salvo na agenda do CRM.'}));
+        },
+        showAgOpen:!!s.agOpen&&!!ao.titulo,ao,closeAgOpen:()=>this.setState({agOpen:null})
+      };
+    })();
+
     // Drawer
     let d={isOrc:false,isCli:false,fields:[],steps:[],hist:[],equips:[],linked:[],tpls:[],log:[],stageOptions:[],noLog:true,noEquips:false};
     let tpls=[],tel='',dKey='';
@@ -1440,6 +1850,7 @@ class Component extends DCLogic {
     const nf=s.nf; const setNf=k=>e=>{const v=e.target.value; this.setState(x=>{const n={...x.nf,[k]:v}; if(k==='prod'){const p=PRODUCTS.find(p=>p[0]===v); if(p) n.valor=String(p[1]);} return {nf:n,nfErr:{...x.nfErr,[k]:undefined}};});};
 
     return {
+      ...agVals,
       isLogin:view==='login',isApp:view!=='login',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
@@ -1453,7 +1864,7 @@ class Component extends DCLogic {
       loginLoja:()=>this.setState({view:'loja',page:'inicio'}),loginAdmin:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'admin',apage:'a-geral'});},
       pageTitle:(TITLES[page]||[''])[0],pageSub:(TITLES[page]||['',''])[1],
       user:admin?{name:'Helena Duarte',role:'Operações · Nortiq',initials:'HD'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
-      isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isTarefas:!admin&&page==='tarefas',
+      isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isTarefas:!admin&&page==='tarefas',isAgenda:!admin&&page==='agenda',
       isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isConfig:!admin&&page==='config',isPlano:!admin&&page==='plano',
       isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',
       goOrcamentos:go('orcamentos'),goTarefas:go('tarefas'),goMetas:go('metas'),goAContas:go('a-contas'),
