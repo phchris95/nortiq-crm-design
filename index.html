@@ -1187,24 +1187,40 @@
         <!-- MEU PLANO -->
         <sc-if value="{{ isPlano }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid; gap:24px">
+            <sc-if value="{{ mpBannerShow }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; padding:16px 18px; border-radius:var(--radius-md); background:{{ mpBanner.bg }}; color:{{ mpBanner.fg }}">
+                <span style="display:inline-flex; margin-top:2px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ mpBanner.icon }}" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+                <div style="display:grid; gap:4px; flex:1 1 280px; min-width:0">
+                  <span style="font:var(--type-ui); font-weight:700">{{ mpBanner.titulo }}</span>
+                  <span style="font:var(--type-ui); line-height:1.5; color:var(--text-body)">{{ mpBanner.texto }}</span>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap">
+                  <sc-for list="{{ mpBanner.acoes }}" as="b" hint-placeholder-count="2">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ b.variant }}" size="sm" icon="{{ b.icon }}" onClick="{{ b.go }}" hint-size="180px,34px">{{ b.label }}</x-import>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:16px; align-items:start">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" tone="dark" padding="{{ 24 }}" hint-size="100%,300px">
                 <div style="display:grid; gap:16px">
                   <div style="display:flex; justify-content:space-between; align-items:center; gap:12px">
                     <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--gray-300)">Seu plano</span>
-                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" dot="{{ true }}" hint-size="80px,24px">Em dia</x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ mpBadgeTone }}" dot="{{ true }}" hint-size="80px,24px">{{ mpBadge }}</x-import>
                   </div>
                   <div style="display:grid; gap:2px">
                     <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:#fff">{{ planoNome }}</span>
                     <span style="font:var(--type-body); color:var(--gray-300)">{{ planoPrecoFmt }} por mês · assinatura única, tudo incluso · desde março de 2025</span>
                   </div>
                   <div style="display:grid; gap:8px; font:var(--type-ui); color:var(--gray-200)">
-                    <span>Próxima fatura: {{ planoPrecoFmt }} · vence 01/10</span>
+                    <span>{{ mpProxLinha }}</span>
                     <span>Forma de pagamento: PIX ou boleto, enviado por e-mail e WhatsApp</span>
                   </div>
+                  <sc-if value="{{ mpPodePagar }}" hint-placeholder-val="{{ true }}">
                   <div style="display:flex; gap:8px; flex-wrap:wrap">
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon-right="arrow-up-right" onClick="{{ payOpen }}" hint-size="200px,44px">Pagar fatura de outubro</x-import>
                   </div>
+                  </sc-if>
                 </div>
               </x-import>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,300px">
@@ -1239,11 +1255,23 @@
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
                     <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ planoPrecoFmt }}</span>
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ i.tone }}" dot="{{ true }}" hint-size="80px,24px">{{ i.status }}</x-import>
+                    <sc-if value="{{ i.temAcao }}" hint-placeholder-val="{{ true }}">
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ i.btnVariant }}" size="sm" icon-right="arrow-up-right" onClick="{{ i.acao }}" hint-size="110px,34px">{{ i.btnLabel }}</x-import>
+                    </sc-if>
                   </div>
                 </div>
               </sc-for>
             </x-import>
+
+            <sc-if value="{{ mpPodeCancelar }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:18px 20px; border-radius:var(--radius-lg); background:var(--surface-card); box-shadow:var(--ring-card)">
+                <div style="display:grid; gap:4px; flex:1 1 320px; min-width:0">
+                  <span style="font:var(--type-section); color:var(--text-strong)">Cancelar assinatura</span>
+                  <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Você pode cancelar quando quiser, direto por aqui. O acesso continua até o fim do período já pago.</span>
+                </div>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="circle-x" onClick="{{ openCancel }}" hint-size="200px,44px">Cancelar assinatura</x-import>
+              </div>
+            </sc-if>
 
             <div style="display:flex; gap:10px; align-items:flex-start; font:var(--type-caption); color:var(--text-muted); line-height:1.5">
               <span style="display:inline-flex; color:var(--status-success-fg); margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
@@ -1305,6 +1333,13 @@
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNewAcc }}" hint-size="140px,44px">Nova conta</x-import>
               </div>
             </div>
+            <sc-if value="{{ accPedidosShow }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 16px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg)">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="triangle-alert" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                <span style="flex:1 1 240px; font:var(--type-ui); font-weight:600">{{ accPedidosTxt }}</span>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" onClick="{{ verPedidos }}" hint-size="120px,34px">Ver pedidos</x-import>
+              </div>
+            </sc-if>
             <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
                 <sc-for list="{{ accRows }}" as="a" hint-placeholder-count="8">
@@ -1903,6 +1938,36 @@
     </x-import>
   </sc-if>
 
+  <!-- CANCELAR ASSINATURA (loja) -->
+  <sc-if value="{{ showCancel }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Cancelar assinatura" description="Antes de confirmar, conte o que aconteceu. Isso ajuda a melhorar o Nortiq." width="{{ 540 }}" onClose="{{ closeCancel }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="cf-motivo" label="Por que você quer cancelar?" options="{{ cfMotivoOptions }}" value="{{ cf.motivo }}" onChange="{{ cfOn.motivo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <sc-if value="{{ cfErrShow }}" hint-placeholder-val="{{ false }}">
+          <span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg); margin-top:-6px">{{ cfErr }}</span>
+        </sc-if>
+        <label style="display:grid; gap:6px">
+          <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted)">Quer contar mais? (opcional)</span>
+          <textarea id="cf-detalhe" value="{{ cf.detalhe }}" onChange="{{ cfOn.detalhe }}" rows="3" maxLength="400" style="resize:vertical; box-sizing:border-box; width:100%; padding:10px 12px; border:1px solid var(--border-default); border-radius:var(--radius-control); font:var(--type-body); font-size:15px; color:var(--text-strong); background:var(--surface-card); outline:none" style-focus="border-color:var(--border-focus); box-shadow:var(--focus-ring)"></textarea>
+        </label>
+        <div style="display:grid; gap:10px; padding:14px 16px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+          <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">O que acontece depois</span>
+          <sc-for list="{{ cfInfo }}" as="i" hint-placeholder-count="3">
+            <div style="display:flex; gap:10px; align-items:flex-start; font:var(--type-caption); color:var(--text-body); line-height:1.5">
+              <span style="display:inline-flex; margin-top:1px; color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ i.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+              <span>{{ i.txt }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeCancel }}" hint-size="90px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="message-circle" onClick="{{ cfWhats }}" hint-size="190px,44px">Falar pelo WhatsApp</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="circle-x" onClick="{{ cfConfirmar }}" hint-size="200px,44px">{{ cfConfirmarTxt }}</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- FICHA DA CONTA ASSINANTE -->
   <sc-if value="{{ showAcc }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ ac.nome }}" description="{{ ac.sub }}" width="{{ 560 }}" onClose="{{ closeAcc }}" hint-size="100%,100%">
@@ -1922,6 +1987,17 @@
           </sc-for>
         </div>
         <div style="display:grid; gap:0">
+          <sc-if value="{{ ac.cancelShow }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid; gap:8px; margin-bottom:16px; padding:14px 16px; border-radius:var(--radius-md); background:{{ ac.cancelBg }}">
+              <span style="font:var(--type-ui); font-weight:700; color:{{ ac.cancelFg }}">{{ ac.cancelTitulo }}</span>
+              <sc-for list="{{ ac.cancelLinhas }}" as="l" hint-placeholder-count="3">
+                <div style="display:flex; justify-content:space-between; gap:12px; font:var(--type-caption)">
+                  <span style="color:var(--text-muted)">{{ l.k }}</span>
+                  <span style="color:var(--text-strong); font-weight:600; text-align:right">{{ l.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
           <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted); margin-bottom:8px">Etapas do acesso</span>
           <sc-for list="{{ ac.etapas }}" as="e" hint-placeholder-count="4">
             <div style="display:grid; grid-template-columns:28px minmax(0,1fr); gap:12px">
@@ -2375,7 +2451,13 @@ const ACCOUNTS=[
  {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',users:2,desde:'09/2026',status:'Em dia',nota:'Pago em 18/09'},
  {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
 ];
-const ACC_TONE={'Em dia':'success','Em atraso':'danger','Cancelada':'neutral','Aguardando pagamento':'warning','Convite enviado':'info'};
+const ACC_TONE={'Em dia':'success','Em atraso':'danger','Cancelada':'neutral','Aguardando pagamento':'warning','Convite enviado':'info','Cancelamento pedido':'warning'};
+// Cancelamento automático: o botão da loja encerra a assinatura no Asaas na hora (sem cobranças futuras).
+// false = modo reserva, em que a loja só PEDE e a equipe Nortiq confirma pelo painel.
+const CANCELAMENTO_AUTOMATICO=true;
+const CANCEL_MOTIVOS=['Está caro para a minha loja','Não estou usando o sistema','Faltou alguma função','Vou usar outro sistema','Fechei ou vendi a loja','Outro motivo'];
+const ACESSO_ATE='30/09', WA_NORTIQ='5511934727720';
+const abrirWhats=(numero,texto)=>window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(texto),'_blank','noopener');
 const slugOf=n=>String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,30);
 const emptyNa=()=>({nome:'',razao:'',doc:'',cidade:'',slug:'',slugTouched:false,dono:'',email:'',tel:'',cobranca:'agora',cupom:''});
 // Plano único por enquanto. Planos extras (IA, WhatsApp integrado) ficam para o futuro.
@@ -2398,7 +2480,7 @@ class Component extends DCLogic {
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
     notifs:NOTIFS0.map(n=>({...n})),notifOpen:false,notifF:'todas',avisos:AVISOS0.map(a=>({...a})),av:emptyAv(),avErr:{},avMsg:'',
     estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
-    accs:ACCOUNTS.map(a=>({...a})),showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
+    accs:ACCOUNTS.map(a=>({...a})),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
     rpPer:'mes',rpDe:'2026-09-01',rpAte:'2026-09-30',rpSec:{resumo:true,vendas:true,funil:true,perdas:true,fat:true,inst:false,novos:false},rpEmp:{...LOJA},rpLogo:null,rpLogoErr:'',rpObs:'',rpMsg:'',rpMsgErr:false,rpGen:false,
     agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true},
     showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:15,
@@ -2496,7 +2578,7 @@ class Component extends DCLogic {
     const dueClis=CLIS.filter(c=>c.due);
 
     const navDef=admin?[
-      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(s.accs.filter(a=>a.status==='Em atraso').length)},{id:'a-avisos',label:'Notificações',icon:'bell'},{id:'a-planos',label:'Plano',icon:'layers'}]}
+      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(s.accs.filter(a=>a.status==='Em atraso'||a.status==='Cancelamento pedido').length)},{id:'a-avisos',label:'Notificações',icon:'bell'},{id:'a-planos',label:'Plano',icon:'layers'}]}
     ]:[
       {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'estoque',label:'Estoque',icon:'package'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
       {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'relatorios',label:'Relatórios',icon:'chart-no-axes-column'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
@@ -2554,9 +2636,51 @@ class Component extends DCLogic {
     // Admin
     const aq=s.accQ.trim().toLowerCase();
     const accRows=s.accs.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status],mensal:a.status==='Cancelada'?'—':a.gratisAte?'Grátis até '+a.gratisAte:brl(PLANO.preco,true),open:()=>this.setState({accOpen:a.slug,accDlgMsg:''})}));
-    const charges=s.accs.filter(a=>a.status==='Em dia'||a.status==='Em atraso').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
+    const charges=s.accs.filter(a=>a.status==='Em dia'||a.status==='Em atraso'||a.status==='Cancelamento pedido').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
       return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
         canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
+    // Meu plano: situação da assinatura da loja e cancelamento
+    const cancelVals=(()=>{
+      const loja=s.accs.find(a=>a.slug==='casadoaquecedor')||{status:'Em dia'};
+      const st=loja.status, pedido=st==='Cancelamento pedido', cancelada=st==='Cancelada', ativa=st==='Em dia'||st==='Em atraso';
+      const upd=patch=>this.setState(x=>({accs:x.accs.map(a=>a.slug==='casadoaquecedor'?{...a,...patch}:a)}));
+      const whatsNortiq=txt=>()=>abrirWhats(WA_NORTIQ,txt);
+      let banner=null;
+      if(pedido) banner={bg:'var(--status-warning-bg)',fg:'var(--status-warning-fg)',icon:'clock',titulo:'Pedido de cancelamento enviado',
+        texto:'Recebemos seu pedido em '+(loja.cancel?loja.cancel.data:'22/09')+'. A equipe Nortiq vai confirmar e avisar você por e-mail. Até lá, tudo continua funcionando.',
+        acoes:[{label:'Desistir do cancelamento',variant:'primary',icon:'arrow-left',go:()=>{upd({status:'Em dia',nota:'Pago em 01/09',cancel:null});this.setState({mpMsg:'Pronto, seu pedido de cancelamento foi retirado. A assinatura continua normalmente.'});}},
+               {label:'Falar pelo WhatsApp',variant:'secondary',icon:'message-circle',go:whatsNortiq('Olá! Sou da Casa do Aquecedor e quero falar sobre o cancelamento da assinatura.')}]};
+      else if(cancelada) banner={bg:'var(--surface-sunken)',fg:'var(--text-strong)',icon:'info',titulo:'Assinatura cancelada',
+        texto:'Você pode usar o sistema até '+ACESSO_ATE+', fim do período já pago. Não haverá novas cobranças.',
+        acoes:[CANCELAMENTO_AUTOMATICO?{label:'Reativar assinatura',variant:'primary',icon:'arrow-left',go:()=>{upd({status:'Em dia',nota:'Reativada em 22/09',cancel:null});this.setState({mpMsg:'Assinatura reativada. Que bom ter você de volta!'});}}
+                                     :{label:'Quero reativar',variant:'primary',icon:'message-circle',go:whatsNortiq('Olá! Sou da Casa do Aquecedor e quero reativar a assinatura do Nortiq.')}]};
+      else if(s.mpMsg) banner={bg:'var(--status-success-bg)',fg:'var(--status-success-fg)',icon:'circle-check',titulo:s.mpMsg,texto:'',acoes:[]};
+      const cf=s.cf;
+      const setCf=k=>e=>{const v=e.target.value;this.setState(x=>({cf:{...x.cf,[k]:v},cfErr:''}));};
+      return {
+        mpBadge:st,mpBadgeTone:ACC_TONE[st]||'neutral',mpPodePagar:ativa||pedido,mpPodeCancelar:ativa,
+        mpProxLinha:cancelada?'Sem novas cobranças · acesso até '+ACESSO_ATE:'Próxima fatura: '+brl(PLANO.preco,true)+' · vence 01/10',
+        mpBannerShow:!!banner,mpBanner:banner||{acoes:[]},
+        showCancel:s.showCancel,openCancel:()=>this.setState({showCancel:true,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:''}),closeCancel:()=>this.setState({showCancel:false}),
+        cf,cfErr:s.cfErr,cfErrShow:!!s.cfErr,cfOn:{motivo:setCf('motivo'),detalhe:setCf('detalhe')},
+        cfMotivoOptions:[{value:'',label:'Escolha o motivo'},...CANCEL_MOTIVOS.map(m=>({value:m,label:m}))],
+        cfInfo:[{icon:'calendar',txt:'Seu acesso continua até '+ACESSO_ATE+', fim do período já pago.'},{icon:'receipt',txt:'A fatura de outubro não será cobrada.'},
+          ...(CANCELAMENTO_AUTOMATICO?[]:[{icon:'mail',txt:'A equipe Nortiq confirma o cancelamento e avisa você por e-mail.'}])],
+        cfConfirmarTxt:CANCELAMENTO_AUTOMATICO?'Cancelar assinatura':'Pedir cancelamento',
+        cfWhats:whatsNortiq('Olá! Sou da Casa do Aquecedor e estou pensando em cancelar a assinatura. Podemos conversar?'),
+        cfConfirmar:()=>{
+          if(!cf.motivo) return this.setState({cfErr:'Escolha o motivo para continuar.'});
+          const info={motivo:cf.motivo,detalhe:String(cf.detalhe||'').trim(),data:'22/09'};
+          if(CANCELAMENTO_AUTOMATICO) upd({status:'Cancelada',nota:'Cancelada pela loja em 22/09 · acesso até '+ACESSO_ATE,cancel:info});
+          else upd({status:'Cancelamento pedido',nota:'Pedido em 22/09 · '+cf.motivo,cancel:info});
+          this.setState({showCancel:false,mpMsg:''});
+        },
+        accPedidosShow:s.accs.some(a=>a.status==='Cancelamento pedido')&&s.accF!=='Cancelamento pedido',
+        accPedidosTxt:(n=>n===1?'1 pedido de cancelamento para analisar':n+' pedidos de cancelamento para analisar')(s.accs.filter(a=>a.status==='Cancelamento pedido').length),
+        verPedidos:()=>this.setState({accF:'Cancelamento pedido',accQ:''})
+      };
+    })();
+
     // Notificações (sino da loja) e envio pela administração
     const notifVals=(()=>{
       const naoLidas=s.notifs.filter(n=>!n.lida).length;
@@ -2750,12 +2874,23 @@ class Component extends DCLogic {
           acoes.push({label:'Reenviar cobrança',variant:'secondary',icon:'send',go:()=>this.setState({accDlgMsg:'Cobrança reenviada para '+email+' e para o WhatsApp '+(a.tel||'')+'.'})});
           acoes.push({label:'Simular pagamento (protótipo)',variant:'secondary',icon:'circle-check',go:()=>{upd(a.slug,{status:'Convite enviado',nota:'Pago em 22/09 · senha ainda não criada',pago:'22/09'});this.setState({accDlgMsg:'Pagamento confirmado pelo Asaas. O convite para criar a senha foi enviado para '+email+'.'});}});
         }
+        const pedido=a.status==='Cancelamento pedido';
+        if(pedido){
+          const nomeDono=String(a.dono||'').split(' ')[0]||'tudo bem';
+          acoes.push({label:'Falar pelo WhatsApp',variant:'secondary',icon:'message-circle',go:()=>abrirWhats('55'+String(a.tel||'').replace(/\D/g,''),'Olá, '+nomeDono+'! Aqui é da equipe Nortiq. Recebemos o pedido de cancelamento da '+a.nome+'. Podemos conversar rapidinho?')});
+          acoes.push({label:'Confirmar cancelamento',variant:'danger',icon:'circle-x',go:()=>{upd(a.slug,{status:'Cancelada',nota:'Cancelada em 22/09 · acesso até '+ACESSO_ATE});
+            this.setState({accDlgMsg:'Cancelamento confirmado. A cobrança recorrente foi encerrada no Asaas e a loja usa o sistema até '+ACESSO_ATE+'.'});}});
+        }
         if(cv){
           acoes.push({label:'Reenviar convite',variant:'secondary',icon:'send',go:()=>this.setState({accDlgMsg:'Novo convite enviado para '+email+'. O link anterior deixou de valer.'})});
           acoes.push({label:'Ver e-mail do convite',variant:'primary',icon:'mail',go:()=>this.setState({mailFor:a.slug})});
         }
+        const cc=a.cancel;
         ac={nome:a.nome,sub:a.slug+'.nortiq.com.br · '+a.status,msg:s.accDlgMsg,msgShow:!!s.accDlgMsg,etapas,acoes,
-          linhas:[{k:'Responsável',v:a.dono||'—'},{k:'E-mail',v:a.email||'—'},{k:'WhatsApp',v:a.tel||'—'},{k:'Cidade',v:a.cidade},{k:'Mensalidade',v:a.gratisAte?'Grátis até '+a.gratisAte+', depois '+brl(PLANO.preco,true):brl(PLANO.preco,true)}]};
+          cancelShow:!!cc&&(pedido||a.status==='Cancelada'),cancelTitulo:pedido?'Pedido de cancelamento':'Assinatura cancelada pela loja',
+          cancelBg:pedido?'var(--status-warning-bg)':'var(--surface-sunken)',cancelFg:pedido?'var(--status-warning-fg)':'var(--text-strong)',
+          cancelLinhas:cc?[{k:'Motivo',v:cc.motivo},{k:'Detalhe',v:cc.detalhe||'—'},{k:pedido?'Pedido em':'Acesso até',v:pedido?cc.data:ACESSO_ATE}]:[],
+          linhas:[{k:'Responsável',v:a.dono||'—'},{k:'E-mail',v:a.email||'—'},{k:'WhatsApp',v:a.tel||'—'},{k:'Cidade',v:a.cidade},{k:'Mensalidade',v:a.status==='Cancelada'?'Encerrada, sem novas cobranças':a.gratisAte?'Grátis até '+a.gratisAte+', depois '+brl(PLANO.preco,true):brl(PLANO.preco,true)}]};
       }
       // e-mail
       const m=s.mailFor&&accBy(s.mailFor);
@@ -3026,6 +3161,7 @@ class Component extends DCLogic {
       ...accVals,
       ...estVals,
       ...notifVals,
+      ...cancelVals,
       isLogin:view==='login',isSenha:view==='senha',isApp:view!=='login'&&view!=='senha',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
@@ -3064,17 +3200,18 @@ class Component extends DCLogic {
       saveProfile:()=>this.setState({profileSaved:true}),profileSaved:s.profileSaved,
       rowPadX:mobile?'16px':'20px',
       myInvoices:[
-        {mes:'Outubro de 2026',data:'Vence 01/10 · PIX ou boleto',status:'Em aberto',tone:'info',btnLabel:'Pagar',btnVariant:'primary',acao:()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)')},
-        {mes:'Setembro de 2026',data:'Paga em 01/09 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',acao:()=>this.goGateway('ver o recibo de setembro')},
-        {mes:'Agosto de 2026',data:'Paga em 01/08 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',acao:()=>this.goGateway('ver o recibo de agosto')},
-        {mes:'Julho de 2026',data:'Paga em 02/07 · boleto',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',acao:()=>this.goGateway('ver o recibo de julho')}],
+        ((s.accs.find(a=>a.slug==='casadoaquecedor')||{}).status==='Cancelada'?{mes:'Outubro de 2026',data:'Não será cobrada · assinatura cancelada',status:'Cancelada',tone:'neutral',temAcao:false}
+          :{mes:'Outubro de 2026',data:'Vence 01/10 · PIX ou boleto',status:'Em aberto',tone:'info',btnLabel:'Pagar',btnVariant:'primary',temAcao:true,acao:()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)')}),
+        {mes:'Setembro de 2026',data:'Paga em 01/09 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',temAcao:true,acao:()=>this.goGateway('ver o recibo de setembro')},
+        {mes:'Agosto de 2026',data:'Paga em 01/08 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',temAcao:true,acao:()=>this.goGateway('ver o recibo de agosto')},
+        {mes:'Julho de 2026',data:'Paga em 02/07 · boleto',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',temAcao:true,acao:()=>this.goGateway('ver o recibo de julho')}],
       payOpen:()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)'),
       gwNomeDe:GATEWAY.nome?'do '+GATEWAY.nome:'do nosso parceiro de pagamentos',
       showGwNote:!!s.gwNote,gwNoteText:s.gwNote?'Aqui o Nortiq abre, em uma nova aba, a página segura '+(GATEWAY.nome?'do '+GATEWAY.nome:'do gateway')+' para '+s.gwNote+'.':'',
       closeGwNote:()=>this.setState({gwNote:null}),
       adminKpis:[{label:'Contas ativas',value:'128',icon:'building-2',delta:'+7',foot:'no mês',tone:'accent'},{label:'Receita recorrente',value:brl(LOJAS_PAGANTES*PLANO.preco,true),icon:'repeat',foot:LOJAS_PAGANTES+' lojas × '+brl(PLANO.preco,true),tone:'default'},{label:'Pagamentos em atraso',value:String(EM_ATRASO),icon:'circle-alert',foot:brl(EM_ATRASO*PLANO.preco,true)+' a receber',tone:'default'},{label:'Cancelamentos',value:'1',icon:'circle-x',foot:'nos últimos 30 dias',tone:'default'}],
       charges,accRows,accF:s.accF,onAccF:id=>this.setState({accF:id}),accQ:s.accQ,onAccQ:e=>this.setState({accQ:e.target.value}),
-      accTabs:['todas','Aguardando pagamento','Convite enviado','Em dia','Em atraso','Cancelada'].map(k=>({id:k,label:k==='todas'?'Todas':k,count:k==='todas'?s.accs.length:s.accs.filter(a=>a.status===k).length})).filter(t=>t.id==='todas'||t.count>0),
+      accTabs:['todas','Aguardando pagamento','Convite enviado','Em dia','Em atraso','Cancelamento pedido','Cancelada'].map(k=>({id:k,label:k==='todas'?'Todas':k,count:k==='todas'?s.accs.length:s.accs.filter(a=>a.status===k).length})).filter(t=>t.id==='todas'||t.count>0),
       planoNome:PLANO.nome,planoPrecoFmt:brl(PLANO.preco,true),planoItens:PLANO.itens,lojasPagantes:String(LOJAS_PAGANTES),mrrFmt:brl(LOJAS_PAGANTES*PLANO.preco,true),
       drawerOpen:!!s.drawer,closeDrawer:()=>this.setState({drawer:null}),d,draft,
       onDraft:e=>this.setState({draft:e.target.value}),
