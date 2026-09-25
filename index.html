@@ -830,6 +830,206 @@
           </div>
         </sc-if>
 
+        <!-- RELATÓRIOS -->
+        <sc-if value="{{ isRelatorios }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap:20px; align-items:start">
+            <div style="display:grid; gap:16px; min-width:0">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 20 }}" hint-size="100%,200px">
+                <div style="display:grid; gap:14px">
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Período</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">O relatório considera só o que aconteceu entre essas datas.</span>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ rpPerTabs }}" active="{{ rpPer }}" onSelect="{{ onRpPer }}" hint-size="100%,40px"></x-import>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:14px">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-de" label="De" type="date" value="{{ rpDe }}" onChange="{{ onRpDe }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-ate" label="Até" type="date" value="{{ rpAte }}" onChange="{{ onRpAte }}" error="{{ rpDataErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                  </div>
+                </div>
+              </x-import>
+
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 20 }}" hint-size="100%,420px">
+                <div style="display:grid; gap:14px">
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Dados da empresa</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Aparecem no topo de cada página do PDF.</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+                    <sc-if value="{{ rpHasLogo }}" hint-placeholder-val="{{ false }}">
+                      <span role="img" aria-label="Logo atual" style="{{ rpLogoThumbStyle }}"></span>
+                    </sc-if>
+                    <sc-if value="{{ rpNoLogo }}" hint-placeholder-val="{{ true }}">
+                      <span style="display:inline-flex; align-items:center; justify-content:center; width:64px; height:64px; border-radius:var(--radius-sm); background:var(--surface-sunken); color:var(--text-muted); box-shadow:var(--ring-card)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="upload" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+                    </sc-if>
+                    <div style="display:grid; gap:6px">
+                      <div style="display:flex; gap:8px; flex-wrap:wrap">
+                        <label style="position:relative; display:inline-flex; align-items:center; gap:6px; min-height:34px; padding:0 12px; border-radius:var(--radius-control); background:var(--action-secondary-bg); border:1px solid var(--action-secondary-border); font:var(--type-ui); font-weight:600; color:var(--action-secondary-fg); cursor:pointer" style-hover="background:var(--action-secondary-bg-hover)">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="upload" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ rpLogoBtn }}
+                          <input id="rp-logo" type="file" accept="image/png,image/jpeg,image/svg+xml" onChange="{{ rpLogoPick }}" style="position:absolute; inset:0; opacity:0; cursor:pointer">
+                        </label>
+                        <sc-if value="{{ rpHasLogo }}" hint-placeholder-val="{{ false }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" size="sm" onClick="{{ rpLogoRemove }}" hint-size="90px,34px">Remover</x-import>
+                        </sc-if>
+                      </div>
+                      <span style="font:var(--type-caption); color:{{ rpLogoHintFg }}">{{ rpLogoHint }}</span>
+                    </div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-nome" label="Nome da loja" value="{{ rpEmp.nome }}" onChange="{{ rpOn.nome }}" full-width="{{ true }}"  hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-razao" label="Razão social" value="{{ rpEmp.razao }}" onChange="{{ rpOn.razao }}" full-width="{{ true }}"  hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-cnpj" label="CNPJ" value="{{ rpEmp.cnpj }}" onChange="{{ rpOn.cnpj }}" full-width="{{ true }}"  hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-tel" label="Telefone ou WhatsApp" value="{{ rpEmp.tel }}" onChange="{{ rpOn.tel }}" full-width="{{ true }}"  hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-email" label="E-mail" value="{{ rpEmp.email }}" onChange="{{ rpOn.email }}" full-width="{{ true }}"  hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-endereco" label="Endereço" value="{{ rpEmp.endereco }}" onChange="{{ rpOn.endereco }}" full-width="{{ true }}"  hint-size="100%,70px"></x-import>
+                  </div>
+                </div>
+              </x-import>
+
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 20 }}" hint-size="100%,420px">
+                <div style="display:grid; gap:6px">
+                  <div style="display:grid; gap:2px; margin-bottom:6px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">O que entra no relatório</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Marque as seções. A prévia ao lado muda na hora.</span>
+                  </div>
+                  <sc-for list="{{ rpSecList }}" as="c" hint-placeholder-count="7">
+                    <div style="padding:6px 0; border-top:1px solid var(--border-subtle)">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ c.label }}" description="{{ c.desc }}" checked="{{ c.on }}" onChange="{{ c.toggle }}" hint-size="100%,44px"></x-import>
+                    </div>
+                  </sc-for>
+                  <div style="padding-top:10px; border-top:1px solid var(--border-subtle)">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rp-obs" label="Observação no rodapé (opcional)" placeholder="Ex.: valores com instalação inclusa" value="{{ rpObs }}" onChange="{{ onRpObs }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                  </div>
+                </div>
+              </x-import>
+
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="download" size="lg" onClick="{{ rpGerar }}" hint-size="200px,52px">Gerar relatório</x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="lg" onClick="{{ rpSalvar }}" hint-size="200px,52px">Salvar configuração</x-import>
+              </div>
+              <sc-if value="{{ rpMsgShow }}" hint-placeholder-val="{{ false }}">
+                <span role="status" style="font:var(--type-caption); font-weight:600; color:{{ rpMsgFg }}">{{ rpMsg }}</span>
+              </sc-if>
+            </div>
+
+            <div style="display:grid; gap:10px; min-width:0; position:{{ rpPrevPos }}; top:0">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px">
+                <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Prévia do PDF</span>
+                <span style="font:var(--type-caption); color:var(--text-muted)">Formato A4</span>
+              </div>
+
+                <div style="display:grid; gap:18px; padding:28px 26px; background:var(--gray-0); border-radius:4px; box-shadow:var(--shadow-lg), var(--ring-card); color:var(--text-body)">
+                  <header style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; padding-bottom:14px; border-bottom:2px solid var(--navy-500)">
+                    <div style="display:flex; gap:12px; align-items:center; min-width:0">
+                      <sc-if value="{{ rpHasLogo }}" hint-placeholder-val="{{ false }}">
+                        <span role="img" aria-label="Logo da loja" style="{{ rpLogoPrevStyle }}"></span>
+                      </sc-if>
+                      <sc-if value="{{ rpNoLogo }}" hint-placeholder-val="{{ true }}">
+                        <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:var(--radius-sm); background:var(--navy-500); color:#fff; font-family:var(--font-display); font-weight:700; font-size:18px">{{ rpIni }}</span>
+                      </sc-if>
+                      <div style="display:grid; gap:1px; min-width:0">
+                        <span style="font-family:var(--font-display); font-weight:700; font-size:17px; color:var(--text-strong)">{{ rpEmp.nome }}</span>
+                        <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">{{ rpEmp.razao }} · CNPJ {{ rpEmp.cnpj }}</span>
+                        <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">{{ rpEmp.endereco }}</span>
+                        <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">{{ rpEmp.tel }} · {{ rpEmp.email }}</span>
+                      </div>
+                    </div>
+                    <div style="display:grid; gap:2px; text-align:right">
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--navy-500)">Relatório da loja</span>
+                      <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-strong)">{{ rpPeriodoTxt }}</span>
+                      <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">Gerado em 22/09/2026</span>
+                    </div>
+                  </header>
+
+                  <sc-if value="{{ rpShow.resumo }}" hint-placeholder-val="{{ true }}">
+                    <section style="display:grid">
+                      <span style="display:block; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--navy-500)">Resumo do período</span>
+                      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:10px">
+                        <sc-for list="{{ rpResumo }}" as="k" hint-placeholder-count="4">
+                          <div style="display:grid; gap:2px; padding:8px 10px; border-radius:6px; background:var(--gray-50); box-shadow:inset 0 0 0 1px var(--border-subtle)">
+                            <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">{{ k.k }}</span>
+                            <span style="font-family:var(--font-display); font-weight:700; font-size:16px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ k.v }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </section>
+                  </sc-if>
+
+                    <sc-if value="{{ rpShow.vendas }}" hint-placeholder-val="{{ true }}">
+                      <section style="display:grid">
+                        <span style="display:block; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--navy-500)">Vendas fechadas</span>
+                        <sc-for list="{{ rpVendas }}" as="r" hint-placeholder-count="3">
+                          <div style="display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px dashed var(--border-subtle); font:var(--type-caption); font-size:12px; color:var(--text-body)"><span style="min-width:0">{{ r.k }}</span><span style="font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.v }}</span></div>
+                        </sc-for>
+                        <sc-if value="{{ rpVendasVazio }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); font-size:12px; color:var(--text-muted)">Nenhuma venda fechada no período.</span></sc-if>
+                        <div style="display:flex; justify-content:space-between; gap:12px; padding:6px 0 0; font:var(--type-caption); font-size:12px; font-weight:700; color:var(--text-strong)"><span>Total vendido</span><span style="font-variant-numeric:tabular-nums">{{ rpVendasTotal }}</span></div>
+                      </section>
+                    </sc-if>
+
+                    <sc-if value="{{ rpShow.funil }}" hint-placeholder-val="{{ true }}">
+                      <section style="display:grid">
+                        <span style="display:block; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--navy-500)">Orçamentos por etapa</span>
+                        <sc-for list="{{ rpFunil }}" as="r" hint-placeholder-count="3">
+                          <div style="display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px dashed var(--border-subtle); font:var(--type-caption); font-size:12px; color:var(--text-body)"><span style="min-width:0">{{ r.k }}</span><span style="font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.v }}</span></div>
+                        </sc-for>
+                        <sc-if value="{{ rpFunilVazio }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); font-size:12px; color:var(--text-muted)">Nenhum orçamento criado no período.</span></sc-if>
+                      </section>
+                    </sc-if>
+
+                    <sc-if value="{{ rpShow.perdas }}" hint-placeholder-val="{{ true }}">
+                      <section style="display:grid">
+                        <span style="display:block; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--navy-500)">Perdas e objeções</span>
+                        <sc-for list="{{ rpPerdas }}" as="r" hint-placeholder-count="3">
+                          <div style="display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px dashed var(--border-subtle); font:var(--type-caption); font-size:12px; color:var(--text-body)"><span style="min-width:0">{{ r.k }}</span><span style="font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.v }}</span></div>
+                        </sc-for>
+                        <sc-if value="{{ rpPerdasVazio }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); font-size:12px; color:var(--text-muted)">Nenhuma perda ou objeção registrada no período.</span></sc-if>
+                      </section>
+                    </sc-if>
+
+                    <sc-if value="{{ rpShow.fat }}" hint-placeholder-val="{{ true }}">
+                      <section style="display:grid">
+                        <span style="display:block; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--navy-500)">Faturamento por categoria</span>
+                        <sc-for list="{{ rpFat }}" as="r" hint-placeholder-count="3">
+                          <div style="display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px dashed var(--border-subtle); font:var(--type-caption); font-size:12px; color:var(--text-body)"><span style="min-width:0">{{ r.k }}</span><span style="font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.v }}</span></div>
+                        </sc-for>
+                        <sc-if value="{{ rpFatVazio }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); font-size:12px; color:var(--text-muted)">Nenhum lançamento no período.</span></sc-if>
+                        <div style="display:flex; justify-content:space-between; gap:12px; padding:6px 0 0; font:var(--type-caption); font-size:12px; font-weight:700; color:var(--text-strong)"><span>Sobra no período</span><span style="font-variant-numeric:tabular-nums">{{ rpFatSobra }}</span></div>
+                      </section>
+                    </sc-if>
+
+                    <sc-if value="{{ rpShow.inst }}" hint-placeholder-val="{{ true }}">
+                      <section style="display:grid">
+                        <span style="display:block; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--navy-500)">Instalações e manutenções</span>
+                        <sc-for list="{{ rpInst }}" as="r" hint-placeholder-count="3">
+                          <div style="display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px dashed var(--border-subtle); font:var(--type-caption); font-size:12px; color:var(--text-body)"><span style="min-width:0">{{ r.k }}</span><span style="font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.v }}</span></div>
+                        </sc-for>
+                        <sc-if value="{{ rpInstVazio }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); font-size:12px; color:var(--text-muted)">Nenhuma instalação ou manutenção no período.</span></sc-if>
+                      </section>
+                    </sc-if>
+
+                    <sc-if value="{{ rpShow.novos }}" hint-placeholder-val="{{ true }}">
+                      <section style="display:grid">
+                        <span style="display:block; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--navy-500)">Clientes novos</span>
+                        <sc-for list="{{ rpNovos }}" as="r" hint-placeholder-count="3">
+                          <div style="display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px dashed var(--border-subtle); font:var(--type-caption); font-size:12px; color:var(--text-body)"><span style="min-width:0">{{ r.k }}</span><span style="font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.v }}</span></div>
+                        </sc-for>
+                        <sc-if value="{{ rpNovosVazio }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); font-size:12px; color:var(--text-muted)">Nenhum cliente novo no período.</span></sc-if>
+                      </section>
+                    </sc-if>
+
+                  <sc-if value="{{ rpNada }}" hint-placeholder-val="{{ false }}">
+                    <span style="font:var(--type-caption); font-size:12px; color:var(--text-muted)">Marque ao menos uma seção para montar o relatório.</span>
+                  </sc-if>
+                  <footer style="display:grid; gap:4px; padding-top:10px; border-top:1px solid var(--border-subtle)">
+                    <sc-if value="{{ rpHasObs }}" hint-placeholder-val="{{ false }}">
+                      <span style="font:var(--type-caption); font-size:12px; color:var(--text-body)">{{ rpObs }}</span>
+                    </sc-if>
+                    <span style="font:var(--type-caption); font-size:10px; color:var(--text-muted)">Relatório gerado pelo Nortiq CRM · página 1</span>
+                  </footer>
+                </div>
+            </div>
+          </div>
+        </sc-if>
+
         <!-- MEU PLANO -->
         <sc-if value="{{ isPlano }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid; gap:24px">
@@ -1235,6 +1435,30 @@
     </div>
   </sc-if>
 
+  <!-- RELATÓRIO GERADO -->
+  <sc-if value="{{ rpGenOpen }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Relatório pronto" description="Confira os dados e baixe o arquivo." width="{{ 460 }}" onClose="{{ rpGenClose }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+          <sc-for list="{{ rpGenLinhas }}" as="l" hint-placeholder-count="3">
+            <div style="display:flex; justify-content:space-between; gap:12px; padding:11px 14px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+              <span style="color:var(--text-muted)">{{ l.k }}</span>
+              <span style="color:var(--text-strong); font-weight:600; text-align:right; word-break:break-word">{{ l.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+          <span>Protótipo: no sistema final, o botão abaixo baixa o arquivo PDF gerado pelo servidor.</span>
+        </div>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ rpGenClose }}" hint-size="100px,44px">Fechar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="download" onClick="{{ rpGenClose }}" hint-size="150px,44px">Baixar PDF</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- NOVO AGENDAMENTO -->
   <sc-if value="{{ showAgNew }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo agendamento" description="Marque uma visita, instalação ou retorno. Fica salvo na agenda do CRM." width="{{ 620 }}" onClose="{{ closeAgNew }}" hint-size="100%,100%">
@@ -1368,6 +1592,19 @@ const ORIGINS=['Instagram','WhatsApp','Loja','Indicação'];
 const ORIGIN_ICON={Instagram:'instagram',WhatsApp:'message-circle',Loja:'store',Indicação:'users'};
 // Preencher quando a conta do gateway estiver pronta: o nome aparece na tela e o link abre em nova aba.
 const GATEWAY={nome:'Asaas',linkPagamento:''};
+// ---------- Relatórios ----------
+const LOJA={nome:'Casa do Aquecedor',razao:'R. Tavares Aquecedores e Hidráulica Ltda.',cnpj:'34.218.907/0001-52',tel:'(12) 99640-2218',email:'rogerio@casadoaquecedor.com.br',endereco:'Av. Andrômeda, 1.520 · Jardim Satélite · São José dos Campos/SP'};
+const RP_SECOES=[
+ {id:'resumo',label:'Resumo do período',desc:'Receitas, despesas, sobra e meta do mês'},
+ {id:'vendas',label:'Vendas fechadas',desc:'Orçamentos que viraram venda, com valor'},
+ {id:'funil',label:'Orçamentos por etapa',desc:'Quantos orçamentos em cada etapa do funil'},
+ {id:'perdas',label:'Perdas e objeções',desc:'Motivos das vendas perdidas e objeções em aberto'},
+ {id:'fat',label:'Faturamento por categoria',desc:'Receitas e despesas lançadas, somadas por categoria'},
+ {id:'inst',label:'Instalações e manutenções',desc:'Serviços feitos pela equipe no período'},
+ {id:'novos',label:'Clientes novos',desc:'Quem comprou ou pediu orçamento pela primeira vez'}
+];
+const RP_PERIODOS={mes:['2026-09-01','2026-09-30'],passado:['2026-08-01','2026-08-31'],tri:['2026-07-01','2026-09-30']};
+
 // ---------- Agenda ----------
 // Data de referência do protótipo (o "hoje" dos dados de exemplo).
 const HOJE_ISO='2026-09-22';
@@ -1536,6 +1773,7 @@ class Component extends DCLogic {
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
     showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432,
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
+    rpPer:'mes',rpDe:'2026-09-01',rpAte:'2026-09-30',rpSec:{resumo:true,vendas:true,funil:true,perdas:true,fat:true,inst:false,novos:false},rpEmp:{...LOJA},rpLogo:null,rpLogoErr:'',rpObs:'',rpMsg:'',rpMsgErr:false,rpGen:false,
     agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true},
     showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:15,
     mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
@@ -1635,14 +1873,14 @@ class Component extends DCLogic {
       {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(ACCOUNTS.filter(a=>a.status==='Em atraso').length)},{id:'a-planos',label:'Plano',icon:'layers'}]}
     ]:[
       {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
-      {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
+      {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'relatorios',label:'Relatórios',icon:'chart-no-axes-column'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
     ];
     const navGroups=navDef.map(g=>({label:g.label,items:g.items.map(it=>{const on=it.id===page;return {...it,go:go(it.id),
       bg:on?'var(--navy-50)':'transparent',hoverBg:on?'var(--navy-50)':'var(--surface-hover)',fg:on?'var(--navy-700)':'var(--text-muted)',ic:on?'var(--navy-500)':'var(--text-subtle)',fw:on?600:500,
       hasBadge:!!it.badge&&expanded,badgeBg:on?'var(--navy-500)':'var(--gray-200)',badgeFg:on?'#fff':'var(--text-muted)'};})}));
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],
-      tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
+      tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
       'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Plano','Preço e próximos planos']};
 
     // KPIs
@@ -1693,6 +1931,64 @@ class Component extends DCLogic {
     const charges=ACCOUNTS.filter(a=>a.status!=='Cancelada').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
       return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
         canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
+    // Relatórios
+    const rpVals=(()=>{
+      const a=s.rpDe||'0000-00-00', b=s.rpAte||'9999-12-31', inP=iso=>iso>=a&&iso<=b;
+      const ddmm=t=>{const [d,m]=String(t).split('/');return '2026-'+m+'-'+d;};
+      const fmtD=iso=>{const d=dOf(iso);return d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear();};
+      const fin=FIN.filter(f=>inP(ddmm(f[0])));
+      const rec=fin.filter(f=>f[4]>0).reduce((x,f)=>x+f[4],0), des=Math.abs(fin.filter(f=>f[4]<0).reduce((x,f)=>x+f[4],0));
+      const noMesAtual=a<='2026-09-01'&&b>='2026-09-01'&&a>='2026-09-01'&&b<='2026-09-30';
+      const resumo=[{k:'Receitas',v:brl(rec)},{k:'Despesas',v:brl(des)},{k:'Sobra',v:brl(rec-des)}];
+      if(noMesAtual) resumo.push({k:'Meta de setembro',v:Math.round(rec/(s.meta||1)*100)+'%'});
+      const orcP=orcs.filter(o=>inP(ddmm(o.criado)));
+      const vend=orcP.filter(o=>['fechada','agendada','concluido'].includes(o.stage));
+      const funil=STAGES.map(st=>{const l=orcP.filter(o=>o.stage===st.id);return {k:st.label+' · '+l.length,v:brl(l.reduce((x,o)=>x+o.valor,0))};}).filter(r=>!r.k.endsWith(' · 0'));
+      const perd=orcP.filter(o=>o.stage==='perdido'), objAb=orcP.filter(o=>['solicitado','enviado','negociando'].includes(o.stage)&&o.obj);
+      const cont={}; perd.forEach(o=>{const k='Perdida: '+(o.obj||'sem motivo registrado');cont[k]=(cont[k]||0)+1;}); objAb.forEach(o=>{const k='Objeção em aberto: '+o.obj;cont[k]=(cont[k]||0)+1;});
+      const perdas=Object.entries(cont).sort((x,y)=>y[1]-x[1]).map(([k,n])=>({k,v:n===1?'1 orçamento':n+' orçamentos'}));
+      const cats={}; fin.forEach(f=>{cats[f[2]]=(cats[f[2]]||0)+f[4];});
+      const fat=Object.entries(cats).sort((x,y)=>y[1]-x[1]).map(([k,v])=>({k,v:(v<0?'− ':'+ ')+brl(Math.abs(v),true)}));
+      const inst=s.agEv.filter(e=>(e.tipo==='Instalação'||e.tipo==='Manutenção')&&inP(e.data)).sort((x,y)=>x.data<y.data?-1:1)
+        .map(e=>{const d=dOf(e.data);return {k:pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+' · '+e.tipo+' · '+e.cli,v:e.data<=HOJE_ISO?'Feita':'Agendada'};});
+      const desdeIso=t=>{const m=String(t).split(' de ');const i=MESES.indexOf(m[0]);return i<0?'':m[1]+'-'+pad2(i+1)+'-01';};
+      const novos=CLIS.filter(c=>{const d=desdeIso(c.desde);return d&&d>=a.slice(0,8)+'01'&&d<=b;}).map(c=>({k:c.nome+' · '+c.bairro,v:c.tipo==='lead'?'Interessado':'Cliente'}));
+      const periodoTxt=s.rpDe&&s.rpAte?(s.rpDe===s.rpAte?fmtD(s.rpDe):'De '+fmtD(s.rpDe)+' a '+fmtD(s.rpAte)):'Período incompleto';
+      const dataErr=s.rpDe&&s.rpAte&&s.rpAte<s.rpDe?'A data final precisa ser depois da inicial.':undefined;
+      const nSec=RP_SECOES.filter(x=>s.rpSec[x.id]).length;
+      const setEmp=k=>e=>{const v=e.target.value;this.setState(x=>({rpEmp:{...x.rpEmp,[k]:v},rpMsg:''}));};
+      const ini=String(s.rpEmp.nome||'?').split(' ').filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'?';
+      const slug=String(s.rpEmp.nome||'loja').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      return {
+        rpPer:s.rpPer,rpPerTabs:[{id:'mes',label:'Este mês'},{id:'passado',label:'Mês passado'},{id:'tri',label:'Últimos 3 meses'},{id:'custom',label:'Personalizado'}],
+        onRpPer:id=>this.setState(RP_PERIODOS[id]?{rpPer:id,rpDe:RP_PERIODOS[id][0],rpAte:RP_PERIODOS[id][1],rpMsg:''}:{rpPer:id,rpMsg:''}),
+        rpDe:s.rpDe,rpAte:s.rpAte,onRpDe:e=>this.setState({rpDe:e.target.value,rpPer:'custom',rpMsg:''}),onRpAte:e=>this.setState({rpAte:e.target.value,rpPer:'custom',rpMsg:''}),rpDataErr:dataErr,
+        rpEmp:s.rpEmp,rpOn:{nome:setEmp('nome'),razao:setEmp('razao'),cnpj:setEmp('cnpj'),tel:setEmp('tel'),email:setEmp('email'),endereco:setEmp('endereco')},
+        rpLogo:s.rpLogo||'',rpLogoPrevStyle:{display:'block',width:120,height:52,backgroundImage:s.rpLogo?'url("'+s.rpLogo+'")':'none',backgroundPosition:'left center',backgroundSize:'contain',backgroundRepeat:'no-repeat'},
+        rpLogoThumbStyle:{display:'block',width:64,height:64,borderRadius:'var(--radius-sm)',boxShadow:'var(--ring-card)',backgroundColor:'var(--gray-0)',backgroundImage:s.rpLogo?'url("'+s.rpLogo+'")':'none',backgroundPosition:'center',backgroundSize:'contain',backgroundRepeat:'no-repeat'},rpHasLogo:!!s.rpLogo,rpNoLogo:!s.rpLogo,rpIni:ini,rpLogoBtn:s.rpLogo?'Trocar logo':'Enviar logo',
+        rpLogoHint:s.rpLogoErr||'PNG, JPG ou SVG, até 2 MB. Fundo transparente fica melhor.',rpLogoHintFg:s.rpLogoErr?'var(--status-danger-fg)':'var(--text-muted)',
+        rpLogoPick:e=>{const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return;
+          if(!/^image\/(png|jpeg|svg\+xml)$/.test(f.type)) return this.setState({rpLogoErr:'Esse arquivo não é uma imagem PNG, JPG ou SVG.'});
+          if(f.size>2*1024*1024) return this.setState({rpLogoErr:'A imagem passou de 2 MB. Diminua o tamanho e tente de novo.'});
+          const r=new FileReader(); r.onload=()=>this.setState({rpLogo:r.result,rpLogoErr:'',rpMsg:''}); r.readAsDataURL(f);},
+        rpLogoRemove:()=>this.setState({rpLogo:null,rpLogoErr:''}),
+        rpSecList:RP_SECOES.map(x=>({...x,on:!!s.rpSec[x.id],toggle:()=>this.setState(y=>({rpSec:{...y.rpSec,[x.id]:!y.rpSec[x.id]},rpMsg:''}))})),
+        rpObs:s.rpObs,onRpObs:e=>this.setState({rpObs:e.target.value}),rpHasObs:!!String(s.rpObs).trim(),
+        rpShow:s.rpSec,rpNada:nSec===0,rpPeriodoTxt:periodoTxt,rpPrevPos:mobile?'static':'sticky',
+        rpResumo:resumo,rpVendas:vend.map(o=>({k:o.id+' · '+o.cli,v:brl(o.valor)})),rpVendasVazio:!vend.length,rpVendasTotal:brl(vend.reduce((x,o)=>x+o.valor,0)),
+        rpFunil:funil,rpFunilVazio:!funil.length,rpPerdas:perdas,rpPerdasVazio:!perdas.length,
+        rpFat:fat,rpFatVazio:!fat.length,rpFatSobra:brl(rec-des,true),rpInst:inst,rpInstVazio:!inst.length,rpNovos:novos,rpNovosVazio:!novos.length,
+        rpMsg:s.rpMsg,rpMsgShow:!!s.rpMsg,rpMsgFg:s.rpMsgErr?'var(--status-danger-fg)':'var(--status-success-fg)',
+        rpSalvar:()=>this.setState({rpMsg:'Configuração salva. Da próxima vez o relatório já abre assim.',rpMsgErr:false}),
+        rpGerar:()=>{
+          if(!s.rpDe||!s.rpAte||dataErr) return this.setState({rpMsg:'Confira o período antes de gerar o relatório.',rpMsgErr:true});
+          if(!nSec) return this.setState({rpMsg:'Marque ao menos uma seção para gerar o relatório.',rpMsgErr:true});
+          this.setState({rpGen:true,rpMsg:''});},
+        rpGenOpen:!!s.rpGen,rpGenClose:()=>this.setState({rpGen:false}),
+        rpGenLinhas:[{k:'Período',v:periodoTxt},{k:'Seções',v:nSec+' de '+RP_SECOES.length},{k:'Arquivo',v:'relatorio-'+slug+'-'+(s.rpDe||'')+'-a-'+(s.rpAte||'')+'.pdf'}]
+      };
+    })();
+
     // Agenda
     const agVals=(()=>{
       const mob=mobile, ref=dOf(s.agRef), hoje=HOJE_ISO;
@@ -1851,6 +2147,7 @@ class Component extends DCLogic {
 
     return {
       ...agVals,
+      ...rpVals,
       isLogin:view==='login',isApp:view!=='login',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
@@ -1865,7 +2162,7 @@ class Component extends DCLogic {
       pageTitle:(TITLES[page]||[''])[0],pageSub:(TITLES[page]||['',''])[1],
       user:admin?{name:'Helena Duarte',role:'Operações · Nortiq',initials:'HD'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
       isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isTarefas:!admin&&page==='tarefas',isAgenda:!admin&&page==='agenda',
-      isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isConfig:!admin&&page==='config',isPlano:!admin&&page==='plano',
+      isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isRelatorios:!admin&&page==='relatorios',isConfig:!admin&&page==='config',isPlano:!admin&&page==='plano',
       isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',
       goOrcamentos:go('orcamentos'),goTarefas:go('tarefas'),goMetas:go('metas'),goAContas:go('a-contas'),
       goClientesDue:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({page:'clientes',cliF:'manut'});},
