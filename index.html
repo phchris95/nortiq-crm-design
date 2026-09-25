@@ -813,25 +813,6 @@
               </div>
             </x-import>
             <div style="display:grid; gap:16px">
-              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,180px">
-                <div style="display:grid; gap:12px">
-                  <div style="display:flex; align-items:center; gap:10px">
-                    <span style="display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:var(--radius-sm); background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="hourglass" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
-                    <span style="font:var(--type-section); color:var(--text-strong)">Teste grátis de 30 dias</span>
-                  </div>
-                  <span style="font:var(--type-ui); color:var(--text-body); line-height:1.5">Toda loja nova começa com 30 dias grátis. A primeira cobrança só é gerada no fim do teste.</span>
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-top:12px; border-top:1px solid var(--border-subtle)">
-                    <div style="display:grid; gap:2px">
-                      <span style="font:var(--type-caption); color:var(--text-muted)">Em teste agora</span>
-                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong)">14</span>
-                    </div>
-                    <div style="display:grid; gap:2px">
-                      <span style="font:var(--type-caption); color:var(--text-muted)">Terminam esta semana</span>
-                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong)">5</span>
-                    </div>
-                  </div>
-                </div>
-              </x-import>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" tone="sunken" padding="{{ 20 }}" hint-size="100%,150px">
                 <div style="display:grid; gap:10px">
                   <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Próximos planos · ainda não à venda</span>
@@ -1228,17 +1209,17 @@ const ACCOUNTS=[
  {nome:'Hidráulica Bom Jesus',slug:'hidraulicabomjesus',cidade:'Campinas/SP',users:1,desde:'07/2025',status:'Em dia',nota:'Pago em 09/09'},
  {nome:'Aquece Sul Aquecedores',slug:'aquecesul',cidade:'Curitiba/PR',users:4,desde:'11/2024',status:'Em atraso',nota:'12 dias · 2º aviso enviado'},
  {nome:'Solar Minas',slug:'solarminas',cidade:'Belo Horizonte/MG',users:9,desde:'02/2025',status:'Em dia',nota:'Pago em 05/09'},
- {nome:'Ponto do Encanador',slug:'pontodoencanador',cidade:'Sorocaba/SP',users:1,desde:'09/2026',status:'Em teste',nota:'Faltam 9 dias',ate:'01/10'},
+ {nome:'Ponto do Encanador',slug:'pontodoencanador',cidade:'Sorocaba/SP',users:1,desde:'09/2026',status:'Em dia',nota:'Pago em 15/09'},
  {nome:'Termo Center',slug:'termocenter',cidade:'Porto Alegre/RS',users:5,desde:'06/2025',status:'Em dia',nota:'Pago em 10/09'},
  {nome:'Casa das Bombas',slug:'casadasbombas',cidade:'Ribeirão Preto/SP',users:1,desde:'01/2026',status:'Em atraso',nota:'4 dias'},
  {nome:'Aquecedores Litoral',slug:'aquecedoreslitoral',cidade:'Santos/SP',users:7,desde:'08/2025',status:'Em dia',nota:'Pago em 02/09'},
- {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',users:2,desde:'09/2026',status:'Em teste',nota:'Faltam 3 dias',ate:'25/09'},
+ {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',users:2,desde:'09/2026',status:'Em dia',nota:'Pago em 18/09'},
  {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
 ];
-const ACC_TONE={'Em dia':'success','Em atraso':'danger','Em teste':'info','Cancelada':'neutral'};
+const ACC_TONE={'Em dia':'success','Em atraso':'danger','Cancelada':'neutral'};
 // Plano único por enquanto. Planos extras (IA, WhatsApp integrado) ficam para o futuro.
 const PLANO={nome:'Plano Nortiq',preco:79.9,itens:['Clientes sem limite','Orçamentos do pedido à instalação','Avisos de manutenção e garantia','Mensagens prontas para WhatsApp','Tarefas com Google Agenda','Faturamento e metas']};
-const LOJAS_PAGANTES=114, EM_ATRASO=9;
+const LOJAS_PAGANTES=128, EM_ATRASO=9;
 const LOG0={'orc:ORC-0426':[{body:'Olá Eduardo, segue o orçamento ORC-0426: Lorenzetti LZ 2000DE 20 L com instalação, R$ 2.380 em 6× sem juros.',meta:'18/09 · 11:42 · WhatsApp'}],
  'orc:ORC-0421':[{body:'Olá Ricardo, segue o orçamento do Bosch Therm 4400 F com instalação: R$ 3.690 em 10× sem juros.',meta:'16/09 · 09:10 · WhatsApp'},{body:'Cliente respondeu por ligação pedindo desconto à vista.',meta:'19/09 · 17:25 · anotação'}],
  'cli:c3':[{body:'Olá, aqui é da Casa do Aquecedor. A limpeza semestral dos coletores foi feita hoje. Qualquer coisa estamos à disposição.',meta:'05/04 · 16:02 · WhatsApp'}]};
@@ -1351,7 +1332,7 @@ class Component extends DCLogic {
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],
       tarefas:['Tarefas','Retornos e compromissos'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
-      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Plano','Preço, teste grátis e próximos planos']};
+      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Plano','Preço e próximos planos']};
 
     // KPIs
     const heroMaint=(this.props.kpiDestaque ?? 'manutencoes')==='manutencoes';
@@ -1397,9 +1378,9 @@ class Component extends DCLogic {
 
     // Admin
     const aq=s.accQ.trim().toLowerCase();
-    const accRows=ACCOUNTS.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status],mensal:a.status==='Em teste'?'Grátis até '+a.ate:a.status==='Cancelada'?'—':brl(PLANO.preco,true)}));
-    const charges=ACCOUNTS.filter(a=>a.status!=='Cancelada').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':a.status==='Em teste'?'Em teste':'Pago';const r=!!s.reminded[a.slug];
-      return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:a.status==='Em teste'?'Grátis':brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
+    const accRows=ACCOUNTS.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status],mensal:a.status==='Cancelada'?'—':brl(PLANO.preco,true)}));
+    const charges=ACCOUNTS.filter(a=>a.status!=='Cancelada').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
+      return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
         canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
     // Drawer
     let d={isOrc:false,isCli:false,fields:[],steps:[],hist:[],equips:[],linked:[],tpls:[],log:[],stageOptions:[],noLog:true,noEquips:false};
@@ -1505,9 +1486,9 @@ class Component extends DCLogic {
       gwNomeDe:GATEWAY.nome?'do '+GATEWAY.nome:'do nosso parceiro de pagamentos',
       showGwNote:!!s.gwNote,gwNoteText:s.gwNote?'Aqui o Nortiq abre, em uma nova aba, a página segura '+(GATEWAY.nome?'do '+GATEWAY.nome:'do gateway')+' para '+s.gwNote+'.':'',
       closeGwNote:()=>this.setState({gwNote:null}),
-      adminKpis:[{label:'Contas ativas',value:'128',icon:'building-2',delta:'+7',foot:'no mês',tone:'accent'},{label:'Receita recorrente',value:brl(LOJAS_PAGANTES*PLANO.preco,true),icon:'repeat',foot:LOJAS_PAGANTES+' lojas pagantes × '+brl(PLANO.preco,true),tone:'default'},{label:'Pagamentos em atraso',value:String(EM_ATRASO),icon:'circle-alert',foot:brl(EM_ATRASO*PLANO.preco,true)+' a receber',tone:'default'},{label:'Em teste grátis',value:'14',icon:'hourglass',foot:'30 dias · 5 terminam esta semana',tone:'default'}],
+      adminKpis:[{label:'Contas ativas',value:'128',icon:'building-2',delta:'+7',foot:'no mês',tone:'accent'},{label:'Receita recorrente',value:brl(LOJAS_PAGANTES*PLANO.preco,true),icon:'repeat',foot:LOJAS_PAGANTES+' lojas × '+brl(PLANO.preco,true),tone:'default'},{label:'Pagamentos em atraso',value:String(EM_ATRASO),icon:'circle-alert',foot:brl(EM_ATRASO*PLANO.preco,true)+' a receber',tone:'default'},{label:'Cancelamentos',value:'1',icon:'circle-x',foot:'nos últimos 30 dias',tone:'default'}],
       charges,accRows,accF:s.accF,onAccF:id=>this.setState({accF:id}),accQ:s.accQ,onAccQ:e=>this.setState({accQ:e.target.value}),
-      accTabs:['todas','Em dia','Em atraso','Em teste','Cancelada'].map(k=>({id:k,label:k==='todas'?'Todas':k,count:k==='todas'?ACCOUNTS.length:ACCOUNTS.filter(a=>a.status===k).length})),
+      accTabs:['todas','Em dia','Em atraso','Cancelada'].map(k=>({id:k,label:k==='todas'?'Todas':k,count:k==='todas'?ACCOUNTS.length:ACCOUNTS.filter(a=>a.status===k).length})),
       planoNome:PLANO.nome,planoPrecoFmt:brl(PLANO.preco,true),planoItens:PLANO.itens,lojasPagantes:String(LOJAS_PAGANTES),mrrFmt:brl(LOJAS_PAGANTES*PLANO.preco,true),
       drawerOpen:!!s.drawer,closeDrawer:()=>this.setState({drawer:null}),d,draft,
       onDraft:e=>this.setState({draft:e.target.value}),
