@@ -641,11 +641,11 @@
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" dot="{{ true }}" hint-size="80px,24px">Em dia</x-import>
                   </div>
                   <div style="display:grid; gap:2px">
-                    <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:#fff">Profissional</span>
-                    <span style="font:var(--type-body); color:var(--gray-300)">R$ 149,00 por mês · desde março de 2025</span>
+                    <span style="font-family:var(--font-display); font-weight:700; font-size:30px; color:#fff">{{ planoNome }}</span>
+                    <span style="font:var(--type-body); color:var(--gray-300)">{{ planoPrecoFmt }} por mês · assinatura única, tudo incluso · desde março de 2025</span>
                   </div>
                   <div style="display:grid; gap:8px; font:var(--type-ui); color:var(--gray-200)">
-                    <span>Próxima fatura: R$ 149,00 · vence 01/10</span>
+                    <span>Próxima fatura: {{ planoPrecoFmt }} · vence 01/10</span>
                     <span>Forma de pagamento: PIX ou boleto, enviado por e-mail e WhatsApp</span>
                   </div>
                   <div style="display:flex; gap:8px; flex-wrap:wrap">
@@ -654,53 +654,21 @@
                 </div>
               </x-import>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,300px">
-                <div style="display:grid; gap:18px">
-                  <span style="font:var(--type-section); color:var(--text-strong)">Uso do plano</span>
-                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" label="Usuários" value="{{ 3 }}" max="{{ 5 }}" hint-size="100%,32px"></x-import>
-                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" label="Mensagens automáticas no mês" value="{{ 214 }}" max="{{ 500 }}" hint-size="100%,32px"></x-import>
-                  <span style="font:var(--type-caption); color:var(--text-muted)">Usuários: Rogério (proprietário), Jefferson e Alan (instaladores).</span>
+                <div style="display:grid; gap:16px">
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">O que está incluso</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Um plano só, sem limite de clientes cadastrados.</span>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap:10px 16px">
+                    <sc-for list="{{ planoItens }}" as="i" hint-placeholder-count="6">
+                      <div style="display:flex; gap:8px; align-items:center; font:var(--type-ui); color:var(--text-body)">
+                        <span style="display:inline-flex; color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="check" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+                        <span>{{ i }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
                 </div>
               </x-import>
-            </div>
-
-            <div style="display:grid; gap:12px">
-              <div style="display:grid; gap:2px">
-                <span style="font:var(--type-section); color:var(--text-strong)">Planos</span>
-                <span style="font:var(--type-caption); color:var(--text-muted)">A mudança vale a partir da próxima fatura.</span>
-              </div>
-              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap:16px; align-items:stretch">
-                <sc-for list="{{ myPlans }}" as="p" hint-placeholder-count="3">
-                  <div style="display:grid; grid-template-rows:auto auto 1fr auto; gap:14px; padding:20px; border-radius:var(--radius-lg); background:var(--surface-card); box-shadow:{{ p.ring }}">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px">
-                      <div style="display:grid; gap:2px">
-                        <span style="font:var(--type-section); color:var(--text-strong)">{{ p.nome }}</span>
-                        <span style="font:var(--type-caption); color:var(--text-muted)">{{ p.para }}</span>
-                      </div>
-                      <sc-if value="{{ p.atual }}" hint-placeholder-val="{{ false }}">
-                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="info" size="sm" hint-size="80px,20px">Plano atual</x-import>
-                      </sc-if>
-                    </div>
-                    <div style="display:flex; align-items:baseline; gap:6px">
-                      <span style="font-family:var(--font-display); font-weight:700; font-size:32px; letter-spacing:-0.03em; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ p.preco }}</span>
-                      <span style="font:var(--type-ui); color:var(--text-muted)">por mês</span>
-                    </div>
-                    <div style="display:grid; gap:8px; align-content:start">
-                      <sc-for list="{{ p.itens }}" as="i" hint-placeholder-count="4">
-                        <div style="display:flex; gap:8px; align-items:center; font:var(--type-ui); color:var(--text-body)">
-                          <span style="display:inline-flex; color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="check" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
-                          <span>{{ i }}</span>
-                        </div>
-                      </sc-for>
-                    </div>
-                    <sc-if value="{{ p.podeMudar }}" hint-placeholder-val="{{ true }}">
-                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ p.btnVariant }}" full-width="{{ true }}" onClick="{{ p.escolher }}" hint-size="100%,44px">{{ p.btnLabel }}</x-import>
-                    </sc-if>
-                    <sc-if value="{{ p.atual }}" hint-placeholder-val="{{ false }}">
-                      <span style="min-height:44px; display:flex; align-items:center; justify-content:center; font:var(--type-ui); color:var(--text-muted)">Você está neste plano</span>
-                    </sc-if>
-                  </div>
-                </sc-for>
-              </div>
             </div>
 
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,300px">
@@ -715,7 +683,7 @@
                     <span style="font:var(--type-caption); color:var(--text-muted)">{{ i.data }}</span>
                   </div>
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
-                    <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums">R$ 149,00</span>
+                    <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ planoPrecoFmt }}</span>
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ i.tone }}" dot="{{ true }}" hint-size="80px,24px">{{ i.status }}</x-import>
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ i.btnVariant }}" size="sm" icon-right="arrow-up-right" onClick="{{ i.acao }}" hint-size="110px,34px">{{ i.btnLabel }}</x-import>
                   </div>
@@ -754,7 +722,7 @@
                         <span style="font-weight:600; color:var(--text-strong)">{{ c.nome }}</span>
                         <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ c.fatura }}</span>
                       </div>
-                      <span style="color:var(--text-muted)">{{ c.plano }}</span>
+                      <span style="color:var(--text-muted)">{{ c.cidade }}</span>
                       <span style="color:var(--text-strong); font-variant-numeric:tabular-nums">{{ c.valor }}</span>
                       <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ c.tone }}" dot="{{ true }}" hint-size="120px,24px">{{ c.status }}</x-import></div>
                       <div style="display:flex; justify-content:flex-end">
@@ -784,7 +752,7 @@
               <div style="overflow-x:auto">
                 <div style="min-width:900px">
                   <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) 80px minmax(0,1fr) minmax(0,1.3fr); gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
-                    <span>Conta</span><span>Cidade</span><span>Plano</span><span style="text-align:right">Usuários</span><span>Cliente desde</span><span>Pagamento</span>
+                    <span>Conta</span><span>Cidade</span><span>Mensalidade</span><span style="text-align:right">Usuários</span><span>Cliente desde</span><span>Pagamento</span>
                   </div>
                   <sc-for list="{{ accRows }}" as="a" hint-placeholder-count="10">
                     <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) 80px minmax(0,1fr) minmax(0,1.3fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px">
@@ -793,7 +761,7 @@
                         <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ a.slug }}.nortiq.com.br</span>
                       </div>
                       <span style="color:var(--text-body)">{{ a.cidade }}</span>
-                      <span style="color:var(--text-body)">{{ a.plano }}</span>
+                      <span style="color:var(--text-body); font-variant-numeric:tabular-nums">{{ a.mensal }}</span>
                       <span style="text-align:right; color:var(--text-body); font-variant-numeric:tabular-nums">{{ a.users }}</span>
                       <span style="color:var(--text-muted)">{{ a.desde }}</span>
                       <div style="display:grid; gap:2px; justify-items:start">
@@ -808,41 +776,69 @@
           </div>
         </sc-if>
 
-        <!-- ADMIN · PLANOS -->
+        <!-- ADMIN · PLANO -->
         <sc-if value="{{ isAPlanos }}" hint-placeholder-val="{{ false }}">
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap:16px; align-items:start">
-            <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
-              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,360px">
-                <div style="display:grid; gap:16px">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap:16px; align-items:start">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,380px">
+              <div style="display:grid; gap:16px">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px">
                   <div style="display:grid; gap:4px">
-                    <span style="font:var(--type-section); color:var(--text-strong)">{{ p.nome }}</span>
-                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ p.para }}</span>
+                    <span style="font:var(--type-section); color:var(--text-strong)">{{ planoNome }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Assinatura única, tudo incluso, sem limite de clientes</span>
                   </div>
-                  <div style="display:flex; align-items:baseline; gap:6px">
-                    <span style="font-family:var(--font-display); font-weight:700; font-size:38px; letter-spacing:-0.03em; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ p.preco }}</span>
-                    <span style="font:var(--type-ui); color:var(--text-muted)">por mês</span>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" dot="{{ true }}" size="sm" hint-size="80px,20px">À venda</x-import>
+                </div>
+                <div style="display:flex; align-items:baseline; gap:6px">
+                  <span style="font-family:var(--font-display); font-weight:700; font-size:38px; letter-spacing:-0.03em; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ planoPrecoFmt }}</span>
+                  <span style="font:var(--type-ui); color:var(--text-muted)">por mês</span>
+                </div>
+                <div style="display:grid; gap:8px">
+                  <sc-for list="{{ planoItens }}" as="i" hint-placeholder-count="6">
+                    <div style="display:flex; gap:8px; align-items:center; font:var(--type-ui); color:var(--text-body)">
+                      <span style="display:inline-flex; color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="check" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+                      <span>{{ i }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-top:16px; border-top:1px solid var(--border-subtle)">
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Lojas pagantes</span>
+                    <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ lojasPagantes }}</span>
                   </div>
-                  <div style="display:grid; gap:8px">
-                    <sc-for list="{{ p.itens }}" as="i" hint-placeholder-count="4">
-                      <div style="display:flex; gap:8px; align-items:center; font:var(--type-ui); color:var(--text-body)">
-                        <span style="display:inline-flex; color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="check" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
-                        <span>{{ i }}</span>
-                      </div>
-                    </sc-for>
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Receita mensal</span>
+                    <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ mrrFmt }}</span>
                   </div>
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-top:16px; border-top:1px solid var(--border-subtle)">
+                </div>
+              </div>
+            </x-import>
+            <div style="display:grid; gap:16px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,180px">
+                <div style="display:grid; gap:12px">
+                  <div style="display:flex; align-items:center; gap:10px">
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:var(--radius-sm); background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="hourglass" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+                    <span style="font:var(--type-section); color:var(--text-strong)">Teste grátis de 30 dias</span>
+                  </div>
+                  <span style="font:var(--type-ui); color:var(--text-body); line-height:1.5">Toda loja nova começa com 30 dias grátis. A primeira cobrança só é gerada no fim do teste.</span>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-top:12px; border-top:1px solid var(--border-subtle)">
                     <div style="display:grid; gap:2px">
-                      <span style="font:var(--type-caption); color:var(--text-muted)">Contas ativas</span>
-                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong)">{{ p.contas }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Em teste agora</span>
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong)">14</span>
                     </div>
                     <div style="display:grid; gap:2px">
-                      <span style="font:var(--type-caption); color:var(--text-muted)">Receita mensal</span>
-                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ p.mrr }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Terminam esta semana</span>
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong)">5</span>
                     </div>
                   </div>
                 </div>
               </x-import>
-            </sc-for>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" tone="sunken" padding="{{ 20 }}" hint-size="100%,150px">
+                <div style="display:grid; gap:10px">
+                  <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Próximos planos · ainda não à venda</span>
+                  <span style="font:var(--type-ui); color:var(--text-body); line-height:1.5">Planos com agente de IA e WhatsApp integrado entram depois dos primeiros testes com as lojas.</span>
+                </div>
+              </x-import>
+            </div>
           </div>
         </sc-if>
 
@@ -1058,27 +1054,6 @@
     </div>
   </sc-if>
 
-  <!-- MUDAR DE PLANO -->
-  <sc-if value="{{ showPlanChange }}" hint-placeholder-val="{{ false }}">
-    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ pc.titulo }}" description="Confira antes de seguir para o pagamento." width="{{ 480 }}" onClose="{{ closePlanChange }}" hint-size="100%,100%">
-      <div style="display:grid; gap:14px">
-        <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
-          <sc-for list="{{ pc.linhas }}" as="l" hint-placeholder-count="3">
-            <div style="display:flex; justify-content:space-between; gap:12px; padding:12px 14px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
-              <span style="color:var(--text-muted)">{{ l.k }}</span>
-              <span style="color:var(--text-strong); font-weight:600; text-align:right; font-variant-numeric:tabular-nums">{{ l.v }}</span>
-            </div>
-          </sc-for>
-        </div>
-        <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Na próxima tela você confirma a mudança e escolhe como pagar: PIX, boleto ou cartão.</span>
-        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closePlanChange }}" hint-size="100px,44px">Cancelar</x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon-right="arrow-up-right" onClick="{{ pc.continuar }}" hint-size="220px,44px">Continuar para o pagamento</x-import>
-        </div>
-      </div>
-    </x-import>
-  </sc-if>
-
   <!-- AVISO DO PROTÓTIPO: PÁGINA DO GATEWAY -->
   <sc-if value="{{ showGwNote }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Página de pagamento" description="{{ gwNoteText }}" width="{{ 460 }}" onClose="{{ closeGwNote }}" hint-size="100%,100%">
@@ -1155,7 +1130,7 @@ const PAYS=['PIX à vista','PIX à vista (5% de desconto)','Cartão em 3× sem j
 const ORIGINS=['Instagram','WhatsApp','Loja','Indicação'];
 const ORIGIN_ICON={Instagram:'instagram',WhatsApp:'message-circle',Loja:'store',Indicação:'users'};
 // Preencher quando a conta do gateway estiver pronta: o nome aparece na tela e o link abre em nova aba.
-const GATEWAY={nome:'',linkPagamento:''};
+const GATEWAY={nome:'Asaas',linkPagamento:''};
 const OBJECOES=['Preço','Forma de pagamento','Prazo de instalação','Comparando com outra loja','Depende de outra pessoa aprovar','Obra ainda não liberada','Ainda está pensando','Sem resposta do cliente','Desistiu da compra','Outro'];
 const STAGES=[
  {id:'solicitado',label:'Orçamento solicitado',tone:'neutral'},
@@ -1246,23 +1221,24 @@ const FIN=[
  ['05/09','Energia e internet','Custo fixo','Débito',-612.4],
  ['03/09','Venda ORC-0392 · Kit solar 300 L','Venda com instalação','PIX',7150],
  ['02/09','Venda ORC-0385 · Pressurizador Rowa Press 20','Venda com instalação','PIX',1580],
- ['01/09','Assinatura Nortiq · plano Profissional','Custo fixo','PIX',-149]
+ ['01/09','Assinatura Nortiq','Custo fixo','PIX',-79.9]
 ];
 const ACCOUNTS=[
- {nome:'Casa do Aquecedor',slug:'casadoaquecedor',cidade:'São José dos Campos/SP',plano:'Profissional',users:3,desde:'03/2025',status:'Em dia',nota:'Pago em 01/09'},
- {nome:'Hidráulica Bom Jesus',slug:'hidraulicabomjesus',cidade:'Campinas/SP',plano:'Essencial',users:1,desde:'07/2025',status:'Em dia',nota:'Pago em 09/09'},
- {nome:'Aquece Sul Aquecedores',slug:'aquecesul',cidade:'Curitiba/PR',plano:'Profissional',users:4,desde:'11/2024',status:'Em atraso',nota:'12 dias · 2º aviso enviado'},
- {nome:'Solar Minas',slug:'solarminas',cidade:'Belo Horizonte/MG',plano:'Rede',users:9,desde:'02/2025',status:'Em dia',nota:'Pago em 05/09'},
- {nome:'Ponto do Encanador',slug:'pontodoencanador',cidade:'Sorocaba/SP',plano:'Essencial',users:1,desde:'09/2026',status:'Em teste',nota:'Faltam 9 dias'},
- {nome:'Termo Center',slug:'termocenter',cidade:'Porto Alegre/RS',plano:'Profissional',users:5,desde:'06/2025',status:'Em dia',nota:'Pago em 10/09'},
- {nome:'Casa das Bombas',slug:'casadasbombas',cidade:'Ribeirão Preto/SP',plano:'Essencial',users:1,desde:'01/2026',status:'Em atraso',nota:'4 dias'},
- {nome:'Aquecedores Litoral',slug:'aquecedoreslitoral',cidade:'Santos/SP',plano:'Rede',users:7,desde:'08/2025',status:'Em dia',nota:'Pago em 02/09'},
- {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',plano:'Profissional',users:2,desde:'09/2026',status:'Em teste',nota:'Faltam 3 dias'},
- {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',plano:'Essencial',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
+ {nome:'Casa do Aquecedor',slug:'casadoaquecedor',cidade:'São José dos Campos/SP',users:3,desde:'03/2025',status:'Em dia',nota:'Pago em 01/09'},
+ {nome:'Hidráulica Bom Jesus',slug:'hidraulicabomjesus',cidade:'Campinas/SP',users:1,desde:'07/2025',status:'Em dia',nota:'Pago em 09/09'},
+ {nome:'Aquece Sul Aquecedores',slug:'aquecesul',cidade:'Curitiba/PR',users:4,desde:'11/2024',status:'Em atraso',nota:'12 dias · 2º aviso enviado'},
+ {nome:'Solar Minas',slug:'solarminas',cidade:'Belo Horizonte/MG',users:9,desde:'02/2025',status:'Em dia',nota:'Pago em 05/09'},
+ {nome:'Ponto do Encanador',slug:'pontodoencanador',cidade:'Sorocaba/SP',users:1,desde:'09/2026',status:'Em teste',nota:'Faltam 9 dias',ate:'01/10'},
+ {nome:'Termo Center',slug:'termocenter',cidade:'Porto Alegre/RS',users:5,desde:'06/2025',status:'Em dia',nota:'Pago em 10/09'},
+ {nome:'Casa das Bombas',slug:'casadasbombas',cidade:'Ribeirão Preto/SP',users:1,desde:'01/2026',status:'Em atraso',nota:'4 dias'},
+ {nome:'Aquecedores Litoral',slug:'aquecedoreslitoral',cidade:'Santos/SP',users:7,desde:'08/2025',status:'Em dia',nota:'Pago em 02/09'},
+ {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',users:2,desde:'09/2026',status:'Em teste',nota:'Faltam 3 dias',ate:'25/09'},
+ {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
 ];
 const ACC_TONE={'Em dia':'success','Em atraso':'danger','Em teste':'info','Cancelada':'neutral'};
-const PLAN_PRICE={Essencial:89,Profissional:149,Rede:279};
-const PLANO_ATUAL='Profissional';
+// Plano único por enquanto. Planos extras (IA, WhatsApp integrado) ficam para o futuro.
+const PLANO={nome:'Plano Nortiq',preco:79.9,itens:['Clientes sem limite','Orçamentos do pedido à instalação','Avisos de manutenção e garantia','Mensagens prontas para WhatsApp','Tarefas com Google Agenda','Faturamento e metas']};
+const LOJAS_PAGANTES=114, EM_ATRASO=9;
 const LOG0={'orc:ORC-0426':[{body:'Olá Eduardo, segue o orçamento ORC-0426: Lorenzetti LZ 2000DE 20 L com instalação, R$ 2.380 em 6× sem juros.',meta:'18/09 · 11:42 · WhatsApp'}],
  'orc:ORC-0421':[{body:'Olá Ricardo, segue o orçamento do Bosch Therm 4400 F com instalação: R$ 3.690 em 10× sem juros.',meta:'16/09 · 09:10 · WhatsApp'},{body:'Cliente respondeu por ligação pedindo desconto à vista.',meta:'19/09 · 17:25 · anotação'}],
  'cli:c3':[{body:'Olá, aqui é da Casa do Aquecedor. A limpeza semestral dos coletores foi feita hoje. Qualquer coisa estamos à disposição.',meta:'05/04 · 16:02 · WhatsApp'}]};
@@ -1277,7 +1253,7 @@ class Component extends DCLogic {
   state={view:null,page:'inicio',apage:'a-geral',collapsed:null,drawer:null,orcs:ORCS.map(o=>({...o})),tasks:TASKS.map(t=>({done:false,...t})),
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
     showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432,
-    loseFor:null,lf:{motivo:'',nota:''},lfErr:'',planChange:null,gwNote:null,
+    loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
     mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
 
   componentDidMount(){
@@ -1310,8 +1286,8 @@ class Component extends DCLogic {
       return {...o,stage,inst,dias:0}; })}));
   }
   goGateway(acao){
-    if(GATEWAY.linkPagamento){ window.open(GATEWAY.linkPagamento,'_blank','noopener'); this.setState({planChange:null}); }
-    else this.setState({planChange:null,gwNote:acao});
+    if(GATEWAY.linkPagamento){ window.open(GATEWAY.linkPagamento,'_blank','noopener'); }
+    else this.setState({gwNote:acao});
   }
   setObj(id,patch){ this.setState(s=>({orcs:s.orcs.map(o=>o.id===id?{...o,...patch}:o)})); }
   openLose(id){ const o=this.state.orcs.find(x=>x.id===id); this.setState({loseFor:id,lf:{motivo:(o&&o.obj)||'',nota:(o&&o.objNota)||''},lfErr:''}); }
@@ -1364,7 +1340,7 @@ class Component extends DCLogic {
     const dueClis=CLIS.filter(c=>c.due);
 
     const navDef=admin?[
-      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(ACCOUNTS.filter(a=>a.status==='Em atraso').length)},{id:'a-planos',label:'Planos',icon:'layers'}]}
+      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(ACCOUNTS.filter(a=>a.status==='Em atraso').length)},{id:'a-planos',label:'Plano',icon:'layers'}]}
     ]:[
       {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)}]},
       {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
@@ -1375,7 +1351,7 @@ class Component extends DCLogic {
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],
       tarefas:['Tarefas','Retornos e compromissos'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
-      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Planos','Preços e distribuição das contas']};
+      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Plano','Preço, teste grátis e próximos planos']};
 
     // KPIs
     const heroMaint=(this.props.kpiDestaque ?? 'manutencoes')==='manutencoes';
@@ -1421,16 +1397,10 @@ class Component extends DCLogic {
 
     // Admin
     const aq=s.accQ.trim().toLowerCase();
-    const accRows=ACCOUNTS.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status]}));
+    const accRows=ACCOUNTS.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status],mensal:a.status==='Em teste'?'Grátis até '+a.ate:a.status==='Cancelada'?'—':brl(PLANO.preco,true)}));
     const charges=ACCOUNTS.filter(a=>a.status!=='Cancelada').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':a.status==='Em teste'?'Em teste':'Pago';const r=!!s.reminded[a.slug];
-      return {nome:a.nome,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),plano:a.plano,valor:a.status==='Em teste'?'R$ 0,00':brl(PLAN_PRICE[a.plano],true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
+      return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:a.status==='Em teste'?'Grátis':brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
         canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
-    const plans=[
-      {nome:'Essencial',para:'Para quem está começando a organizar a loja',preco:'R$ 89',itens:['1 usuário','Até 300 clientes','Orçamentos e funil','Lembretes de manutenção'],contas:'62',mrr:brl(62*89)},
-      {nome:'Profissional',para:'Loja com equipe de instalação',preco:'R$ 149',itens:['Até 5 usuários','Clientes ilimitados','Google Agenda','Faturamento e metas'],contas:'51',mrr:brl(51*149)},
-      {nome:'Rede',para:'Mais de uma loja ou depósito',preco:'R$ 279',itens:['Até 3 lojas','Usuários ilimitados','Relatório por loja','Atendimento prioritário'],contas:'15',mrr:brl(15*279)}
-    ];
-
     // Drawer
     let d={isOrc:false,isCli:false,fields:[],steps:[],hist:[],equips:[],linked:[],tpls:[],log:[],stageOptions:[],noLog:true,noEquips:false};
     let tpls=[],tel='',dKey='';
@@ -1496,7 +1466,7 @@ class Component extends DCLogic {
       barY:mobile&&s.barHidden?'-100%':'0',searchW:mobile?'100%':'320px',cardHeadPad:mobile?'14px 16px':'16px 20px',mainPad:mobile?'76px 16px 24px':'24px',onMainScroll:e=>this.onMainScroll(e),
       userName:admin?'Helena Duarte':'Rogério Tavares',userInitials:admin?'HD':'RT',
       brandSub:admin?'Administração':'Casa do Aquecedor',navGroups,
-      accountName:admin?'Equipe Nortiq':'Casa do Aquecedor',accountSub:admin?'Acesso administrativo':'Plano Profissional',accountIcon:admin?'shield':'store',
+      accountName:admin?'Equipe Nortiq':'Casa do Aquecedor',accountSub:admin?'Acesso administrativo':PLANO.nome,accountIcon:admin?'shield':'store',
       toggleSide:()=>this.setState({collapsed:expanded}),toggleLabel:expanded?'Recolher menu':'Expandir menu',toggleIcon:expanded?'panel-left-close':'panel-left-open',
       logout:()=>this.setState({view:'login',drawer:null,menuOpen:false}),
       loginLoja:()=>this.setState({view:'loja',page:'inicio'}),loginAdmin:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'admin',apage:'a-geral'});},
@@ -1526,25 +1496,19 @@ class Component extends DCLogic {
       cfgPerfil:s.cfgTab==='perfil',cfgConta:s.cfgTab==='conta',fullRow:{gridColumn:'1 / -1'},
       saveProfile:()=>this.setState({profileSaved:true}),profileSaved:s.profileSaved,
       rowPadX:mobile?'16px':'20px',
-      myPlans:plans.map(p=>{const atual=p.nome===PLANO_ATUAL, sobe=PLAN_PRICE[p.nome]>PLAN_PRICE[PLANO_ATUAL];
-        return {...p,atual,podeMudar:!atual,btnLabel:(sobe?'Mudar para ':'Trocar para ')+p.nome,btnVariant:sobe?'primary':'secondary',
-          ring:atual?'0 0 0 2px var(--navy-500)':'var(--ring-card)',escolher:()=>this.setState({planChange:p.nome})};}),
       myInvoices:[
-        {mes:'Outubro de 2026',data:'Vence 01/10 · PIX ou boleto',status:'Em aberto',tone:'info',btnLabel:'Pagar',btnVariant:'primary',acao:()=>this.goGateway('pagar a fatura de outubro (R$ 149,00)')},
+        {mes:'Outubro de 2026',data:'Vence 01/10 · PIX ou boleto',status:'Em aberto',tone:'info',btnLabel:'Pagar',btnVariant:'primary',acao:()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)')},
         {mes:'Setembro de 2026',data:'Paga em 01/09 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',acao:()=>this.goGateway('ver o recibo de setembro')},
         {mes:'Agosto de 2026',data:'Paga em 01/08 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',acao:()=>this.goGateway('ver o recibo de agosto')},
         {mes:'Julho de 2026',data:'Paga em 02/07 · boleto',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',acao:()=>this.goGateway('ver o recibo de julho')}],
-      payOpen:()=>this.goGateway('pagar a fatura de outubro (R$ 149,00)'),
+      payOpen:()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)'),
       gwNomeDe:GATEWAY.nome?'do '+GATEWAY.nome:'do nosso parceiro de pagamentos',
-      showPlanChange:!!s.planChange,closePlanChange:()=>this.setState({planChange:null}),
-      pc:(()=>{const n=s.planChange; if(!n) return {linhas:[]};
-        return {titulo:'Mudar para o plano '+n,linhas:[{k:'Plano atual',v:PLANO_ATUAL+' · '+brl(PLAN_PRICE[PLANO_ATUAL],true)+'/mês'},{k:'Novo plano',v:n+' · '+brl(PLAN_PRICE[n],true)+'/mês'},{k:'Vale a partir de',v:'01/10, na próxima fatura'}],
-          continuar:()=>this.goGateway('confirmar a mudança para o plano '+n+' ('+brl(PLAN_PRICE[n],true)+' por mês)')};})(),
       showGwNote:!!s.gwNote,gwNoteText:s.gwNote?'Aqui o Nortiq abre, em uma nova aba, a página segura '+(GATEWAY.nome?'do '+GATEWAY.nome:'do gateway')+' para '+s.gwNote+'.':'',
       closeGwNote:()=>this.setState({gwNote:null}),
-      adminKpis:[{label:'Contas ativas',value:'128',icon:'building-2',delta:'+7',foot:'no mês',tone:'accent'},{label:'Receita recorrente',value:brl(62*89+51*149+15*279),icon:'repeat',foot:'por mês',tone:'default'},{label:'Pagamentos em atraso',value:'9',icon:'circle-alert',foot:brl(1021)+' a receber',tone:'default'},{label:'Em teste grátis',value:'14',icon:'hourglass',foot:'5 terminam esta semana',tone:'default'}],
+      adminKpis:[{label:'Contas ativas',value:'128',icon:'building-2',delta:'+7',foot:'no mês',tone:'accent'},{label:'Receita recorrente',value:brl(LOJAS_PAGANTES*PLANO.preco,true),icon:'repeat',foot:LOJAS_PAGANTES+' lojas pagantes × '+brl(PLANO.preco,true),tone:'default'},{label:'Pagamentos em atraso',value:String(EM_ATRASO),icon:'circle-alert',foot:brl(EM_ATRASO*PLANO.preco,true)+' a receber',tone:'default'},{label:'Em teste grátis',value:'14',icon:'hourglass',foot:'30 dias · 5 terminam esta semana',tone:'default'}],
       charges,accRows,accF:s.accF,onAccF:id=>this.setState({accF:id}),accQ:s.accQ,onAccQ:e=>this.setState({accQ:e.target.value}),
-      accTabs:['todas','Em dia','Em atraso','Em teste','Cancelada'].map(k=>({id:k,label:k==='todas'?'Todas':k,count:k==='todas'?ACCOUNTS.length:ACCOUNTS.filter(a=>a.status===k).length})),plans,
+      accTabs:['todas','Em dia','Em atraso','Em teste','Cancelada'].map(k=>({id:k,label:k==='todas'?'Todas':k,count:k==='todas'?ACCOUNTS.length:ACCOUNTS.filter(a=>a.status===k).length})),
+      planoNome:PLANO.nome,planoPrecoFmt:brl(PLANO.preco,true),planoItens:PLANO.itens,lojasPagantes:String(LOJAS_PAGANTES),mrrFmt:brl(LOJAS_PAGANTES*PLANO.preco,true),
       drawerOpen:!!s.drawer,closeDrawer:()=>this.setState({drawer:null}),d,draft,
       onDraft:e=>this.setState({draft:e.target.value}),
       sendWa:()=>s.drawer&&this.waFor(s.drawer.type,s.drawer.id,tel,draft),
