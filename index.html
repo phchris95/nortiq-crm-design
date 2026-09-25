@@ -472,6 +472,87 @@
           </div>
         </sc-if>
 
+        <!-- ESTOQUE -->
+        <sc-if value="{{ isEstoque }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:16px">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+              <sc-for list="{{ estKpis }}" as="k" hint-placeholder-count="4">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" tone="{{ k.tone }}" hint-size="100%,132px"></x-import>
+              </sc-for>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ estTabs }}" active="{{ estF }}" onSelect="{{ onEstF }}" hint-size="400px,40px"></x-import>
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; flex:1 1 auto; justify-content:flex-end">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.SearchField" placeholder="Buscar por nome ou SKU" shortcut="{{ null }}" value="{{ estQ }}" onChange="{{ onEstQ }}" width="{{ accSearchW }}" hint-size="260px,44px"></x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="upload" onClick="{{ openImp }}" hint-size="170px,44px">Importar planilha</x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNewProd }}" hint-size="150px,44px">Novo produto</x-import>
+              </div>
+            </div>
+            <sc-if value="{{ estMsgShow }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                <span>{{ estMsg }}</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
+                <sc-for list="{{ estRows }}" as="p" hint-placeholder-count="8">
+                  <div onClick="{{ p.open }}" style="display:grid; gap:6px; padding:14px 16px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px">
+                      <div style="display:grid; min-width:0">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ p.nome }}</span>
+                        <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ p.sku }} · {{ p.cat }}</span>
+                      </div>
+                      <span style="font-family:var(--font-display); font-weight:700; font-size:18px; color:{{ p.qtdFg }}; font-variant-numeric:tabular-nums; white-space:nowrap">{{ p.qtdTxt }}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Venda {{ p.vendaFmt }} · mínimo {{ p.min }}</span>
+                      <sc-if value="{{ p.alerta }}" hint-placeholder-val="{{ false }}">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ p.tone }}" dot="{{ true }}" size="sm" hint-size="120px,20px">{{ p.status }}</x-import>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ estEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:32px 16px; text-align:center; font:var(--type-ui); color:var(--text-muted)">Nenhum produto encontrado.</div>
+                </sc-if>
+              </x-import>
+            </sc-if>
+            <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
+                <div style="overflow-x:auto">
+                  <div style="min-width:860px">
+                    <div style="display:grid; grid-template-columns:minmax(0,2.6fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.3fr) minmax(0,0.8fr); gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
+                      <span>Produto</span><span>Categoria</span><span style="text-align:right">Custo</span><span style="text-align:right">Venda</span><span>Estoque</span><span>Origem</span>
+                    </div>
+                    <sc-for list="{{ estRows }}" as="p" hint-placeholder-count="10">
+                      <div onClick="{{ p.open }}" style="display:grid; grid-template-columns:minmax(0,2.6fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.3fr) minmax(0,0.8fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px; cursor:pointer" style-hover="background:var(--surface-hover)">
+                        <div style="display:grid; min-width:0">
+                          <span style="font-weight:600; color:var(--text-strong)">{{ p.nome }}</span>
+                          <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ p.sku }}</span>
+                        </div>
+                        <span style="color:var(--text-body)">{{ p.cat }}</span>
+                        <span style="text-align:right; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ p.custoFmt }}</span>
+                        <span style="text-align:right; color:var(--text-strong); font-weight:600; font-variant-numeric:tabular-nums">{{ p.vendaFmt }}</span>
+                        <div style="display:grid; gap:4px; justify-items:start">
+                          <span style="font-weight:600; color:{{ p.qtdFg }}; font-variant-numeric:tabular-nums">{{ p.qtdTxt }} <span style="font-weight:400; color:var(--text-muted)">· mín. {{ p.min }}</span></span>
+                          <sc-if value="{{ p.alerta }}" hint-placeholder-val="{{ false }}">
+                            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ p.tone }}" dot="{{ true }}" size="sm" hint-size="120px,20px">{{ p.status }}</x-import>
+                          </sc-if>
+                        </div>
+                        <span style="font:var(--type-caption); color:var(--text-muted)">{{ p.origem }}</span>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ estEmpty }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding:40px 20px; text-align:center; font:var(--type-ui); color:var(--text-muted)">Nenhum produto encontrado. Confira a grafia ou limpe a busca.</div>
+                    </sc-if>
+                  </div>
+                </div>
+              </x-import>
+            </sc-if>
+          </div>
+        </sc-if>
+
         <!-- TAREFAS -->
         <sc-if value="{{ isTarefas }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start">
@@ -1504,6 +1585,139 @@
     </div>
   </sc-if>
 
+  <!-- PRODUTO (novo / editar) -->
+  <sc-if value="{{ showProd }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ pfTitulo }}" description="Os campos com preço aceitam vírgula: 1.290,00" width="{{ 600 }}" onClose="{{ closeProd }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pf-nome" label="Nome do produto" value="{{ pf.nome }}" onChange="{{ pfOn.nome }}" error="{{ pfErr.nome }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="pf-cat" label="Categoria" options="{{ estCatOptions }}" value="{{ pf.cat }}" onChange="{{ pfOn.cat }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pf-sku" label="SKU (código)" value="{{ pf.sku }}" onChange="{{ pfOn.sku }}" error="{{ pfErr.sku }}" hint="Código único do produto na loja" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pf-custo" label="Preço de custo" prefix="R$" value="{{ pf.custo }}" onChange="{{ pfOn.custo }}" error="{{ pfErr.custo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pf-venda" label="Preço de venda" prefix="R$" value="{{ pf.venda }}" onChange="{{ pfOn.venda }}" error="{{ pfErr.venda }}" hint="{{ pfMargem }}" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pf-qtd" label="Quantidade em estoque" type="number" value="{{ pf.qtd }}" onChange="{{ pfOn.qtd }}" error="{{ pfErr.qtd }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pf-min" label="Estoque mínimo" type="number" value="{{ pf.min }}" onChange="{{ pfOn.min }}" error="{{ pfErr.min }}" hint="Abaixo disso, o produto ganha alerta" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeProd }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveProd }}" hint-size="170px,44px">{{ pfSalvarTxt }}</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- IMPORTAR PLANILHA -->
+  <sc-if value="{{ showImp }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Importar produtos por planilha" description="{{ imDesc }}" width="{{ 760 }}" onClose="{{ closeImp }}" hint-size="100%,100%">
+      <div style="display:grid; gap:16px">
+        <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:6px">
+          <sc-for list="{{ imPassos }}" as="st" hint-placeholder-count="3">
+            <div style="display:grid; gap:6px">
+              <span style="height:5px; border-radius:var(--radius-pill); background:{{ st.bar }}"></span>
+              <span style="font:var(--type-caption); font-size:12px; font-weight:{{ st.fw }}; color:{{ st.fg }}">{{ st.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- passo 1 -->
+        <sc-if value="{{ imP1 }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; gap:12px">
+            <label style="position:relative; display:grid; place-items:center; gap:6px; padding:32px 16px; text-align:center; border:2px dashed var(--border-default); border-radius:var(--radius-lg); background:var(--surface-sunken); cursor:pointer" style-hover="border-color:var(--border-focus); background:var(--navy-50)">
+              <span style="display:inline-flex; color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="upload" size="{{ 28 }}" hint-size="28px,28px"></x-import></span>
+              <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ imDropTxt }}</span>
+              <span style="font:var(--type-caption); color:var(--text-muted)">Clique para escolher ou arraste o arquivo aqui · Excel (.xlsx) ou CSV</span>
+              <input id="imp-arquivo" type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" onChange="{{ imPick }}" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer">
+            </label>
+            <sc-if value="{{ imErrShow }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-danger-bg); color:var(--status-danger-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+                <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-alert" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                <span>{{ imErr }}</span>
+              </div>
+            </sc-if>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="download" onClick="{{ imModelo }}" hint-size="200px,34px">Baixar planilha modelo</x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" size="sm" icon="sparkles" onClick="{{ imExemplo }}" hint-size="200px,34px">Usar planilha de exemplo</x-import>
+            </div>
+            <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">A primeira linha da planilha precisa ter o nome das colunas. PDF não é aceito: ele não guarda as colunas de um jeito confiável para importar.</span>
+          </div>
+        </sc-if>
+
+        <!-- passo 2 -->
+        <sc-if value="{{ imP2 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:14px">
+            <span style="font:var(--type-caption); color:var(--text-muted)">Arquivo <span style="font-weight:600; color:var(--text-body)">{{ im.fileName }}</span> · {{ imLinhasTxt }}. Confira de qual coluna vem cada informação.</span>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px 14px">
+              <sc-for list="{{ imCampos }}" as="c" hint-placeholder-count="7">
+                <div style="display:grid; gap:4px; min-width:0">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" label="{{ c.label }}" options="{{ imColOptions }}" value="{{ c.val }}" onChange="{{ c.on }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                  <span style="font:var(--type-caption); color:{{ c.fg }}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ c.ex }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ imIgnoradasShow }}" hint-placeholder-val="{{ false }}">
+              <span style="font:var(--type-caption); color:var(--text-muted)">Colunas que não vão entrar: {{ imIgnoradas }}</span>
+            </sc-if>
+            <div style="display:grid; gap:6px">
+              <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Prévia das primeiras linhas</span>
+              <div style="overflow-x:auto; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+                <div style="min-width:640px">
+                  <div style="display:grid; grid-template-columns:{{ imPrevCols }}; gap:10px; padding:8px 12px; background:var(--surface-sunken); font:var(--type-caption); font-weight:600; color:var(--text-muted)">
+                    <sc-for list="{{ imPrevHead }}" as="h" hint-placeholder-count="7"><span>{{ h }}</span></sc-for>
+                  </div>
+                  <sc-for list="{{ imPrevRows }}" as="r" hint-placeholder-count="5">
+                    <div style="display:grid; grid-template-columns:{{ imPrevCols }}; gap:10px; padding:8px 12px; border-top:1px solid var(--border-subtle); font:var(--type-caption); color:var(--text-body)">
+                      <sc-for list="{{ r }}" as="v" hint-placeholder-count="7"><span style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ v }}</span></sc-for>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+            <sc-if value="{{ imFaltaShow }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+                <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="triangle-alert" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                <span>{{ imFalta }}</span>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- passo 3 -->
+        <sc-if value="{{ imP3 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:14px">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px">
+              <sc-for list="{{ imResumo }}" as="k" hint-placeholder-count="3">
+                <div style="display:grid; gap:2px; padding:12px 14px; border-radius:var(--radius-md); background:{{ k.bg }}">
+                  <span style="font:var(--type-caption); font-weight:600; color:{{ k.fg }}">{{ k.label }}</span>
+                  <span style="font-family:var(--font-display); font-weight:700; font-size:26px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ k.n }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="Atualizar produtos que já existem" description="{{ imAtualizarDesc }}" checked="{{ im.atualizar }}" onChange="{{ imToggleAtualizar }}" hint-size="100%,44px"></x-import>
+            <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card); max-height:260px; overflow-y:auto">
+              <sc-for list="{{ imLinhas }}" as="l" hint-placeholder-count="6">
+                <div style="display:grid; grid-template-columns:44px minmax(0,1fr) auto; gap:10px; align-items:center; padding:8px 12px; border-bottom:1px solid var(--border-subtle); font:var(--type-caption)">
+                  <span style="color:var(--text-muted); font-variant-numeric:tabular-nums">L{{ l.n }}</span>
+                  <div style="display:grid; min-width:0">
+                    <span style="font-weight:600; color:var(--text-strong); overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ l.nome }}</span>
+                    <span style="color:{{ l.subFg }}">{{ l.sub }}</span>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ l.tone }}" size="sm" hint-size="90px,20px">{{ l.acao }}</x-import>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ imVoltar }}" hint-size="100px,44px">{{ imVoltarTxt }}</x-import>
+          <sc-if value="{{ imAvancarShow }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon-right="arrow-right" onClick="{{ imAvancar }}" hint-size="200px,44px">{{ imAvancarTxt }}</x-import>
+          </sc-if>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- NOVA CONTA ASSINANTE -->
   <sc-if value="{{ showNewAcc }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Nova conta assinante" description="Cadastre a loja uma vez. O dono recebe por e-mail o convite para criar a própria senha." width="{{ 640 }}" onClose="{{ closeNewAcc }}" hint-size="100%,100%">
@@ -1769,6 +1983,66 @@ const ORIGINS=['Instagram','WhatsApp','Loja','Indicação'];
 const ORIGIN_ICON={Instagram:'instagram',WhatsApp:'message-circle',Loja:'store',Indicação:'users'};
 // Preencher quando a conta do gateway estiver pronta: o nome aparece na tela e o link abre em nova aba.
 const GATEWAY={nome:'Asaas',linkPagamento:''};
+// ---------- Estoque ----------
+const EST_CATS=['Aquecedor a gás','Aquecedor solar','Pressurizador e bomba',"Caixa d'água",'Tubos e conexões','Registros e válvulas','Outros'];
+const ESTOQUE0=[
+ {sku:'RIN-E210',nome:'Aquecedor a gás Rinnai REU-E210 FEHB 21 L digital',cat:'Aquecedor a gás',custo:2980,venda:4290,qtd:4,min:2,origem:'Manual'},
+ {sku:'RIN-1602',nome:'Aquecedor a gás Rinnai REU-1602 FEH 32 L',cat:'Aquecedor a gás',custo:4150,venda:5980,qtd:1,min:2,origem:'Manual'},
+ {sku:'BOS-4400',nome:'Aquecedor a gás Bosch Therm 4400 F 20 L',cat:'Aquecedor a gás',custo:2560,venda:3690,qtd:3,min:1,origem:'Manual'},
+ {sku:'LOR-2000',nome:'Aquecedor a gás Lorenzetti LZ 2000DE 20 L',cat:'Aquecedor a gás',custo:1640,venda:2380,qtd:0,min:2,origem:'Manual'},
+ {sku:'KOM-20DI',nome:'Aquecedor a gás Komeco KO 20DI 20 L',cat:'Aquecedor a gás',custo:1490,venda:2150,qtd:5,min:2,origem:'Manual'},
+ {sku:'SOL-200',nome:'Kit aquecedor solar 200 L + 2 coletores',cat:'Aquecedor solar',custo:3650,venda:5260,qtd:2,min:1,origem:'Manual'},
+ {sku:'ROW-P20',nome:'Pressurizador Rowa Press 20',cat:'Pressurizador e bomba',custo:1090,venda:1580,qtd:6,min:3,origem:'Manual'},
+ {sku:'SCH-BC92',nome:'Bomba Schneider BC-92 1 cv',cat:'Pressurizador e bomba',custo:2010,venda:2890,qtd:2,min:2,origem:'Manual'},
+ {sku:'FOR-1000',nome:"Caixa d'água Fortlev 1.000 L",cat:"Caixa d'água",custo:620,venda:890,qtd:7,min:3,origem:'Manual'},
+ {sku:'PPR-25',nome:'Tubo PPR 25 mm (barra 3 m)',cat:'Tubos e conexões',custo:21.5,venda:34.9,qtd:48,min:30,origem:'Planilha'},
+ {sku:'PPR-J25',nome:'Joelho PPR 25 mm 90°',cat:'Tubos e conexões',custo:2.1,venda:4.5,qtd:12,min:40,origem:'Planilha'},
+ {sku:'REG-G34',nome:'Registro de gaveta 3/4"',cat:'Registros e válvulas',custo:38,venda:62,qtd:15,min:10,origem:'Planilha'}
+];
+// Planilha de exemplo com nomes de coluna diferentes dos do sistema, para mostrar a conferência.
+const PLANILHA_EXEMPLO={nome:'estoque-distribuidora-setembro.xlsx',linhas:[
+ ['Descrição','Código','Grupo','Custo unit.','Preço','Qtd','Mín.','Fornecedor'],
+ ['Aquecedor a gás Rinnai REU-E210 FEHB 21 L digital','RIN-E210','Aquecedor a gás','2.980,00','4.390,00','6','2','Rinnai'],
+ ['Tubo PPR 25 mm (barra 3 m)','PPR-25','Tubos e conexões','21,50','34,90','120','30','Amanco'],
+ ['Joelho PPR 25 mm 90°','PPR-J25','Tubos e conexões','2,10','4,50','200','40','Amanco'],
+ ['Tê PPR 25 mm','PPR-T25','Tubos e conexões','2,80','5,90','150','40','Amanco'],
+ ['Luva PPR 25 mm','PPR-L25','Tubos e conexões','1,40','3,20','180','40','Amanco'],
+ ['Válvula de retenção 3/4"','VAL-R34','Registros e válvulas','29,00','49,90','20','8','Deca'],
+ ['Engate flexível 40 cm','ENG-40','Tubos e conexões','9,80','','35','10','Blukit'],
+ ['Pressurizador Rowa Press 30','ROW-P30','Pressurizador e bomba','1.560,00','2.260,00','dois','1','Rowa'],
+ ['','BOM-X1','Pressurizador e bomba','900,00','1.300,00','1','1','Genérico']
+]};
+const IMP_CAMPOS=[
+ {id:'nome',label:'Nome do produto',obrig:true,sin:['nome','descricao','produto','item']},
+ {id:'sku',label:'SKU (código)',obrig:true,sin:['sku','codigo','cod','referencia','ref']},
+ {id:'cat',label:'Categoria',obrig:false,sin:['categoria','grupo','familia','linha','tipo']},
+ {id:'custo',label:'Preço de custo',obrig:false,sin:['custo','precodecusto','custounit','precocusto']},
+ {id:'venda',label:'Preço de venda',obrig:true,sin:['venda','precodevenda','preco','valor','precovenda']},
+ {id:'qtd',label:'Quantidade',obrig:false,sin:['quantidade','qtd','qtde','estoque','saldo']},
+ {id:'min',label:'Estoque mínimo',obrig:false,sin:['estoqueminimo','minimo','min','estmin']}
+];
+const normTxt=t=>String(t??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+// Número em formato brasileiro ("1.290,50", "R$ 34,90") ou simples ("34.9").
+const numBR=v=>{ if(typeof v==='number') return v; let t=String(v??'').replace(/R\$|\s/g,''); if(!t) return NaN;
+  if(t.includes(',')) t=t.replace(/\./g,'').replace(',','.'); return /^-?\d+(\.\d+)?$/.test(t)?Number(t):NaN; };
+const moneyIn=n=>isFinite(n)?String(n.toFixed(2)).replace('.',','):'';
+// CSV: aceita ; ou , como separador e campos entre aspas. Aspas no meio do texto (ex.: 1/2") contam como texto.
+const parseCSV=txt=>{ const primeira=txt.split(/\r?\n/)[0]||''; const sep=(primeira.split(';').length>=primeira.split(',').length)?';':',';
+  const rows=[]; let row=[], cur='', q=false;
+  for(let i=0;i<txt.length;i++){ const ch=txt[i];
+    if(q){ if(ch==='"'){ if(txt[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=ch; }
+    else if(ch==='"'&&cur==='') q=true; else if(ch===sep){row.push(cur);cur='';}
+    else if(ch==='\n'||ch==='\r'){ if(ch==='\r'&&txt[i+1]==='\n') i++; row.push(cur);cur=''; if(row.some(c=>c.trim()!=='')) rows.push(row); row=[]; }
+    else cur+=ch; }
+  row.push(cur); if(row.some(c=>c.trim()!=='')) rows.push(row); return rows; };
+const autoMap=header=>{ const m={}; const usadas=new Set();
+  IMP_CAMPOS.forEach(c=>{ const i=header.findIndex((h,ix)=>!usadas.has(ix)&&c.sin.some(sn=>normTxt(h)===sn)); const j=i>=0?i:header.findIndex((h,ix)=>!usadas.has(ix)&&c.sin.some(sn=>normTxt(h).startsWith(sn)));
+    if(j>=0){m[c.id]=String(j);usadas.add(j);} else m[c.id]=''; }); return m; };
+const SHEETJS_URL='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+const carregarSheetJS=()=>new Promise((ok,falha)=>{ if(window.XLSX) return ok(window.XLSX); const sc=document.createElement('script'); sc.src=SHEETJS_URL; sc.onload=()=>ok(window.XLSX); sc.onerror=falha; document.head.appendChild(sc); });
+const emptyPf=()=>({nome:'',cat:'Aquecedor a gás',sku:'',custo:'',venda:'',qtd:'0',min:'1'});
+const emptyIm=()=>({step:1,fileName:'',rows:[],map:{},err:'',loading:false,atualizar:true});
+
 // ---------- Relatórios ----------
 const LOJA={nome:'Casa do Aquecedor',razao:'R. Tavares Aquecedores e Hidráulica Ltda.',cnpj:'34.218.907/0001-52',tel:'(12) 99640-2218',email:'rogerio@casadoaquecedor.com.br',endereco:'Av. Andrômeda, 1.520 · Jardim Satélite · São José dos Campos/SP'};
 const RP_SECOES=[
@@ -1954,6 +2228,7 @@ class Component extends DCLogic {
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
     showNew:false,nf:emptyNf(),nfErr:{},reminded:{},profileSaved:false,next:432,
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
+    estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
     accs:ACCOUNTS.map(a=>({...a})),showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
     rpPer:'mes',rpDe:'2026-09-01',rpAte:'2026-09-30',rpSec:{resumo:true,vendas:true,funil:true,perdas:true,fat:true,inst:false,novos:false},rpEmp:{...LOJA},rpLogo:null,rpLogoErr:'',rpObs:'',rpMsg:'',rpMsgErr:false,rpGen:false,
     agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true},
@@ -2054,14 +2329,14 @@ class Component extends DCLogic {
     const navDef=admin?[
       {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(s.accs.filter(a=>a.status==='Em atraso').length)},{id:'a-planos',label:'Plano',icon:'layers'}]}
     ]:[
-      {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
+      {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'estoque',label:'Estoque',icon:'package'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
       {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'relatorios',label:'Relatórios',icon:'chart-no-axes-column'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
     ];
     const navGroups=navDef.map(g=>({label:g.label,items:g.items.map(it=>{const on=it.id===page;return {...it,go:go(it.id),
       bg:on?'var(--navy-50)':'transparent',hoverBg:on?'var(--navy-50)':'var(--surface-hover)',fg:on?'var(--navy-700)':'var(--text-muted)',ic:on?'var(--navy-500)':'var(--text-subtle)',fw:on?600:500,
       hasBadge:!!it.badge&&expanded,badgeBg:on?'var(--navy-500)':'var(--gray-200)',badgeFg:on?'#fff':'var(--text-muted)'};})}));
 
-    const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],
+    const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],estoque:['Estoque','Produtos, quantidades e importação por planilha'],
       tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
       'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-planos':['Plano','Preço e próximos planos']};
 
@@ -2113,6 +2388,115 @@ class Component extends DCLogic {
     const charges=s.accs.filter(a=>a.status==='Em dia'||a.status==='Em atraso').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
       return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
         canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
+    // Estoque
+    const estVals=(()=>{
+      const est=s.estq, statusOf=p=>p.qtd<=0?{status:'Sem estoque',tone:'danger',fg:'var(--status-danger-fg)'}:p.qtd<p.min?{status:'Abaixo do mínimo',tone:'warning',fg:'var(--status-warning-fg)'}:{status:'',tone:'neutral',fg:'var(--text-strong)'};
+      const baixo=est.filter(p=>p.qtd>0&&p.qtd<p.min), zero=est.filter(p=>p.qtd<=0);
+      const q=normTxt(s.estQ);
+      const rows=est.filter(p=>s.estF==='todos'||(s.estF==='baixo'&&p.qtd>0&&p.qtd<p.min)||(s.estF==='zero'&&p.qtd<=0))
+        .filter(p=>!q||normTxt(p.nome+' '+p.sku).includes(q))
+        .map(p=>{const st=statusOf(p);return {...p,...st,alerta:!!st.status,qtdFg:st.fg,qtdTxt:p.qtd+' un',custoFmt:brl(p.custo,true),vendaFmt:brl(p.venda,true),
+          open:()=>this.setState({showProd:true,pfEdit:p.sku,pfErr:{},pf:{nome:p.nome,cat:p.cat,sku:p.sku,custo:moneyIn(p.custo),venda:moneyIn(p.venda),qtd:String(p.qtd),min:String(p.min)}})};});
+      // produto
+      const pf=s.pf||emptyPf();
+      const setPf=k=>e=>{const v=e.target.value;this.setState(x=>({pf:{...x.pf,[k]:v},pfErr:{...x.pfErr,[k]:undefined}}));};
+      const c=numBR(pf.custo), v=numBR(pf.venda);
+      const margem=isFinite(c)&&isFinite(v)&&v>0&&c>0?'Margem de '+Math.round((v-c)/v*100)+'% sobre a venda':'Informe custo e venda para ver a margem';
+      // importação
+      const im=s.im||emptyIm(); const header=im.rows[0]||[], dados=im.rows.slice(1);
+      const col=(r,id)=>{const ix=im.map[id];return ix===''||ix===undefined?'':String(r[Number(ix)]??'').trim();};
+      const faltam=IMP_CAMPOS.filter(f=>f.obrig&&!(im.map[f.id]!==''&&im.map[f.id]!==undefined)).map(f=>f.label);
+      const usados=new Set(Object.values(im.map).filter(x=>x!=='').map(Number));
+      const ignoradas=header.filter((h,i)=>!usados.has(i)).map(h=>h||'(sem nome)');
+      const analise=dados.map((r,i)=>{const n=i+2, nome=col(r,'nome'), sku=col(r,'sku').toUpperCase(), vd=numBR(col(r,'venda')), cu=col(r,'custo')?numBR(col(r,'custo')):NaN;
+        const qtdRaw=col(r,'qtd'), qtd=qtdRaw===''?0:numBR(qtdRaw), minRaw=col(r,'min'), mn=minRaw===''?0:numBR(minRaw);
+        const erros=[]; if(!nome) erros.push('sem nome'); if(!sku) erros.push('sem SKU'); if(!isFinite(vd)||vd<=0) erros.push('preço de venda vazio ou inválido');
+        if(!isFinite(qtd)||qtd<0||!Number.isInteger(qtd)) erros.push('quantidade "'+qtdRaw+'" não é um número inteiro'); if(!isFinite(mn)||mn<0) erros.push('estoque mínimo inválido');
+        const existe=sku&&est.some(p=>p.sku===sku);
+        const acao=erros.length?'erro':existe?(im.atualizar?'atualizar':'ignorar'):'novo';
+        const catRaw=col(r,'cat'); const cat=EST_CATS.find(x=>normTxt(x)===normTxt(catRaw))||(catRaw||'Outros');
+        return {n,nome:nome||'(sem nome)',sku,acao,erros,dados:{sku,nome,cat,custo:isFinite(cu)?cu:0,venda:vd,qtd:isFinite(qtd)?qtd:0,min:isFinite(mn)?mn:0}};});
+      const cont=k=>analise.filter(a=>a.acao===k).length;
+      const ACAO={novo:['Novo','success'],atualizar:['Atualizar','info'],ignorar:['Ignorar','neutral'],erro:['Com erro','danger']};
+      const setMap=id=>e=>{const val=e.target.value;this.setState(x=>({im:{...x.im,map:{...x.im.map,[id]:val}}}));};
+      const lerLinhas=(nome,rows)=>{ if(!rows||rows.length<2) return this.setState(x=>({im:{...x.im,loading:false,err:'A planilha está vazia ou só tem a linha de títulos.'}}));
+        this.setState(x=>({im:{...x.im,loading:false,err:'',fileName:nome,rows,map:autoMap(rows[0]),step:2}}));};
+      const pick=e=>{ const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return;
+        const ext=(f.name.split('.').pop()||'').toLowerCase();
+        if(ext==='pdf'||f.type==='application/pdf') return this.setState(x=>({im:{...x.im,err:'Esse arquivo é um PDF. Exporte a planilha como Excel (.xlsx) ou CSV e envie de novo: o PDF não guarda as colunas de um jeito confiável.'}}));
+        if(!['csv','xlsx','xls'].includes(ext)) return this.setState(x=>({im:{...x.im,err:'Formato não aceito. Envie uma planilha do Excel (.xlsx) ou um arquivo CSV.'}}));
+        if(f.size>5*1024*1024) return this.setState(x=>({im:{...x.im,err:'A planilha passou de 5 MB. Divida em arquivos menores e importe por partes.'}}));
+        this.setState(x=>({im:{...x.im,loading:true,err:''}}));
+        const r=new FileReader();
+        r.onerror=()=>this.setState(x=>({im:{...x.im,loading:false,err:'Não conseguimos abrir o arquivo. Tente de novo.'}}));
+        r.onload=()=>{ const buf=r.result;
+          if(ext==='csv'){ let txt; try{ txt=new TextDecoder('utf-8',{fatal:true}).decode(buf); }catch(_){ txt=new TextDecoder('windows-1252').decode(buf); }
+            lerLinhas(f.name,parseCSV(txt.replace(/^\uFEFF/,''))); }
+          else carregarSheetJS().then(X=>{ const wb=X.read(buf,{type:'array'}); const ws=wb.Sheets[wb.SheetNames[0]];
+            lerLinhas(f.name,X.utils.sheet_to_json(ws,{header:1,raw:true,defval:''}).filter(rw=>rw.some(cl=>String(cl).trim()!==''))); })
+            .catch(()=>this.setState(x=>({im:{...x.im,loading:false,err:'Não conseguimos ler este arquivo do Excel. Salve como CSV e tente de novo.'}})));
+        };
+        r.readAsArrayBuffer(f); };
+      const prevIdx=IMP_CAMPOS.map(f=>im.map[f.id]);
+      return {
+        estKpis:[
+          {label:'Produtos cadastrados',value:String(est.length),icon:'package',foot:est.filter(p=>p.origem==='Planilha').length+' vieram de planilha',tone:'default'},
+          {label:'Abaixo do mínimo',value:String(baixo.length),icon:'triangle-alert',foot:baixo.length?baixo.map(p=>p.sku).slice(0,3).join(', '):'Tudo acima do mínimo',tone:baixo.length?'accent':'default'},
+          {label:'Sem estoque',value:String(zero.length),icon:'package-open',foot:zero.length?zero.map(p=>p.sku).join(', '):'Nenhum produto zerado',tone:'default'},
+          {label:'Valor em estoque',value:brl(est.reduce((a,p)=>a+p.custo*Math.max(0,p.qtd),0)),icon:'banknote',foot:'Pelo preço de custo · última importação '+s.estUltImp,tone:'default'}],
+        estTabs:[{id:'todos',label:'Todos',count:est.length},{id:'baixo',label:'Abaixo do mínimo',count:baixo.length},{id:'zero',label:'Sem estoque',count:zero.length}],
+        estF:s.estF,onEstF:id=>this.setState({estF:id}),estQ:s.estQ,onEstQ:e=>this.setState({estQ:e.target.value}),
+        estRows:rows,estEmpty:!rows.length,estMsg:s.estMsg,estMsgShow:!!s.estMsg,
+        openNewProd:()=>this.setState({showProd:true,pfEdit:null,pf:emptyPf(),pfErr:{},estMsg:''}),closeProd:()=>this.setState({showProd:false}),showProd:s.showProd,
+        pf,pfErr:s.pfErr,pfOn:{nome:setPf('nome'),cat:setPf('cat'),sku:setPf('sku'),custo:setPf('custo'),venda:setPf('venda'),qtd:setPf('qtd'),min:setPf('min')},
+        pfTitulo:s.pfEdit?'Editar produto':'Novo produto',pfSalvarTxt:s.pfEdit?'Salvar alterações':'Cadastrar produto',pfMargem:margem,estCatOptions:EST_CATS,
+        saveProd:()=>{
+          const err={}, sku=String(pf.sku).trim().toUpperCase(), qt=numBR(pf.qtd), mn=numBR(pf.min);
+          if(!String(pf.nome).trim()) err.nome='Falta o nome do produto.';
+          if(!sku) err.sku='Falta o SKU.'; else if(est.some(p=>p.sku===sku&&p.sku!==s.pfEdit)) err.sku='Já existe um produto com esse SKU.';
+          if(pf.custo!==''&&!(isFinite(c)&&c>=0)) err.custo='Confira o preço de custo.';
+          if(!(isFinite(v)&&v>0)) err.venda='Falta o preço de venda.';
+          if(!(isFinite(qt)&&qt>=0&&Number.isInteger(qt))) err.qtd='Use um número inteiro, 0 ou mais.';
+          if(!(isFinite(mn)&&mn>=0&&Number.isInteger(mn))) err.min='Use um número inteiro, 0 ou mais.';
+          if(Object.keys(err).length) return this.setState({pfErr:err});
+          const item={sku,nome:String(pf.nome).trim(),cat:pf.cat,custo:isFinite(c)?c:0,venda:v,qtd:qt,min:mn};
+          this.setState(x=>({estq:x.pfEdit?x.estq.map(p=>p.sku===x.pfEdit?{...p,...item}:p):[{...item,origem:'Manual'},...x.estq],showProd:false,
+            estMsg:x.pfEdit?'Produto '+sku+' atualizado.':'Produto '+sku+' cadastrado.'}));
+        },
+        // importação
+        openImp:()=>this.setState({showImp:true,im:emptyIm(),estMsg:''}),closeImp:()=>this.setState({showImp:false}),showImp:s.showImp,im,
+        imDesc:['Envie a planilha com os produtos.','Confira de qual coluna vem cada informação.','Revise antes de importar. Nada muda no estoque até você confirmar.'][im.step-1],
+        imPassos:['1. Arquivo','2. Conferir colunas','3. Revisar e importar'].map((l,i)=>({label:l,bar:i+1<=im.step?'var(--navy-500)':'var(--gray-200)',fg:i+1===im.step?'var(--text-strong)':'var(--text-muted)',fw:i+1===im.step?600:500})),
+        imP1:im.step===1,imP2:im.step===2,imP3:im.step===3,
+        imDropTxt:im.loading?'Lendo a planilha…':'Escolha a planilha',imErr:im.err,imErrShow:!!im.err,imPick:pick,
+        imExemplo:()=>lerLinhas(PLANILHA_EXEMPLO.nome,PLANILHA_EXEMPLO.linhas.map(r=>[...r])),
+        imModelo:()=>{ const csv='\uFEFF'+['Nome;SKU;Categoria;Preço de custo;Preço de venda;Quantidade;Estoque mínimo','Aquecedor a gás Rinnai REU-E210 FEHB 21 L digital;RIN-E210;Aquecedor a gás;2.980,00;4.290,00;4;2','Tubo PPR 25 mm (barra 3 m);PPR-25;Tubos e conexões;21,50;34,90;48;30'].join('\r\n');
+          const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); const a=document.createElement('a'); a.href=url; a.download='modelo-estoque-nortiq.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000); },
+        imLinhasTxt:dados.length===1?'1 linha de produto':dados.length+' linhas de produto',
+        imColOptions:[{value:'',label:'Não importar'},...header.map((h,i)=>({value:String(i),label:h||'Coluna '+(i+1)}))],
+        imCampos:IMP_CAMPOS.map(f=>{const ix=im.map[f.id]; const ok=ix!==''&&ix!==undefined; const ex=ok&&dados[0]?String(dados[0][Number(ix)]??''):'';
+          return {label:f.label+(f.obrig?' *':''),val:ok?ix:'',on:setMap(f.id),ex:ok?'Ex.: '+(ex||'(vazio)'):f.obrig?'Obrigatório: escolha a coluna':'Não vai ser importado',fg:ok?'var(--text-muted)':f.obrig?'var(--status-danger-fg)':'var(--text-subtle)'};}),
+        imIgnoradas:ignoradas.join(', '),imIgnoradasShow:im.step===2&&ignoradas.length>0,
+        imPrevHead:IMP_CAMPOS.map(f=>f.label),imPrevCols:'2.4fr 1fr 1.3fr 1fr 1fr 0.8fr 0.8fr',
+        imPrevRows:dados.slice(0,5).map(r=>prevIdx.map(ix=>ix===''||ix===undefined?'—':String(r[Number(ix)]??''))),
+        imFalta:faltam.length?'Escolha a coluna de: '+faltam.join(', ')+'. Sem isso não dá para importar.':'',imFaltaShow:im.step===2&&faltam.length>0,
+        imResumo:[{label:'Novos',n:String(cont('novo')),bg:'var(--status-success-bg)',fg:'var(--status-success-fg)'},{label:im.atualizar?'Atualizados':'Já existem (ignorados)',n:String(cont('atualizar')+cont('ignorar')),bg:'var(--status-info-bg)',fg:'var(--status-info-fg)'},{label:'Com erro (ficam de fora)',n:String(cont('erro')),bg:'var(--status-danger-bg)',fg:'var(--status-danger-fg)'}],
+        imAtualizarDesc:'Quando o SKU já existe, troca preço, quantidade e mínimo pelos da planilha.',
+        imToggleAtualizar:()=>this.setState(x=>({im:{...x.im,atualizar:!x.im.atualizar}})),
+        imLinhas:analise.map(a=>({n:String(a.n),nome:a.nome,sub:a.erros.length?'Linha '+a.n+': '+a.erros.join(', ')+'.':a.sku+' · '+brl(a.dados.venda,true)+' · '+a.dados.qtd+' un',subFg:a.erros.length?'var(--status-danger-fg)':'var(--text-muted)',acao:ACAO[a.acao][0],tone:ACAO[a.acao][1]})),
+        imVoltarTxt:im.step===1?'Cancelar':'Voltar',imVoltar:()=>im.step===1?this.setState({showImp:false}):this.setState(x=>({im:{...x.im,step:x.im.step-1}})),
+        imAvancarShow:im.step>1,imAvancarTxt:im.step===2?'Continuar':'Importar '+(cont('novo')+cont('atualizar'))+' produtos',
+        imAvancar:()=>{
+          if(im.step===2){ if(faltam.length) return; return this.setState(x=>({im:{...x.im,step:3}})); }
+          const novos=analise.filter(a=>a.acao==='novo').map(a=>({...a.dados,origem:'Planilha'})), atual=analise.filter(a=>a.acao==='atualizar');
+          if(!novos.length&&!atual.length) return;
+          this.setState(x=>({estq:[...novos,...x.estq.map(p=>{const u=atual.find(a=>a.sku===p.sku);return u?{...p,...u.dados,nome:p.nome,cat:p.cat,origem:'Planilha'}:p;})],
+            showImp:false,estUltImp:'22/09',estF:'todos',estQ:'',
+            estMsg:'Importação concluída: '+novos.length+' novos e '+atual.length+' atualizados.'+(cont('erro')?' '+cont('erro')+' linha(s) com erro ficaram de fora.':'')}));
+        }
+      };
+    })();
+
     // Contas assinantes: cadastro, etapas do acesso, convite e criação de senha
     const accVals=(()=>{
       const na=s.na||emptyNa(), cupom=na.cobranca==='cupom';
@@ -2418,6 +2802,7 @@ class Component extends DCLogic {
       ...agVals,
       ...rpVals,
       ...accVals,
+      ...estVals,
       isLogin:view==='login',isSenha:view==='senha',isApp:view!=='login'&&view!=='senha',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
@@ -2431,7 +2816,7 @@ class Component extends DCLogic {
       loginLoja:()=>this.setState({view:'loja',page:'inicio',loginNotice:'',loginFor:null}),loginAdmin:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'admin',apage:'a-geral'});},
       pageTitle:(TITLES[page]||[''])[0],pageSub:(TITLES[page]||['',''])[1],
       user:admin?{name:'Helena Duarte',role:'Operações · Nortiq',initials:'HD'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
-      isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isTarefas:!admin&&page==='tarefas',isAgenda:!admin&&page==='agenda',
+      isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isEstoque:!admin&&page==='estoque',isTarefas:!admin&&page==='tarefas',isAgenda:!admin&&page==='agenda',
       isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isRelatorios:!admin&&page==='relatorios',isConfig:!admin&&page==='config',isPlano:!admin&&page==='plano',
       isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',
       goOrcamentos:go('orcamentos'),goTarefas:go('tarefas'),goMetas:go('metas'),goAContas:go('a-contas'),
