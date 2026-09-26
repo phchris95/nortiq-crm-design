@@ -72,8 +72,20 @@ Para ver cada situação no protótipo, use o painel "Protótipo · ver outras s
 - **Ficha excluída** no novo agendamento ou na nova tarefa: mesma mensagem da etapa 5, com Restaurar ficha.
 - As travas de exclusão de cliente e de orçamento passam a contar todo agendamento marcado, como no banco. Os agendamentos antigos de exemplo foram marcados como feitos.
 
+## Etapa 7 do design: Estoque com baixa automática (feito em 26/09)
+
+- **Ficha do produto** (clique no produto): quantidade, mínimo, preço de venda e de custo (o custo só o dono vê), e o **histórico de movimentações**: cadastro, entradas, vendas, vendas desfeitas, perdas, devoluções, ajustes e importações, com data, quem fez, a quantidade e o saldo depois de cada uma. A venda tem o link "Abrir orçamento".
+- **Registrar movimentação** (só o dono): entrada (com custo da compra, opcional), saída sem venda, perda, devolução e ajuste pela contagem. Perda e ajuste pedem o motivo. Mostra antes "o estoque passa de 6 para 9 un". Saída e perda à mão não deixam o estoque negativo.
+- **Editar dados** não muda mais a quantidade: ela só muda por movimentação. No produto novo, a quantidade inicial entra no histórico como cadastro. A importação de planilha também registra entradas e ajustes.
+- **Desativar produto** (em vez de excluir): sai da escolha dos orçamentos, continua no histórico e na aba **Desativados**, e dá para reativar.
+- **Baixa automática:** a ficha do orçamento ganhou **Produtos do orçamento**, com **Adicionar produto** do estoque (quantidade e preço) e o botão de tirar. Quando a venda é fechada, os produtos saem sozinhos do estoque; se a venda for reaberta, perdida ou excluída, eles voltam; na venda já fechada, o produto adicionado na hora (por exemplo, pelo técnico na obra) sai na mesma hora e o lançamento no Faturamento acompanha o novo total.
+- **Vendeu sem ter no estoque:** a venda passa e o produto fica com quantidade negativa e o aviso "Repor 1 un", até a próxima entrada.
+- O funcionário abre a ficha do produto só para consulta (sem custo e sem registrar movimentação).
+
+## Decisões de 26/09
 - **Cópia de segurança:** cópias automáticas do Neon (voltar o banco a qualquer momento dos últimos dias) + botão "Exportar dados" para a loja. Cópia semanal separada por loja fica para depois.
 - **Assinatura paga fora do Asaas:** permitida; a equipe Nortiq registra cada pagamento no painel.
+- **Baixa automática do estoque na venda:** ligada. A venda pode deixar o estoque negativo (vendeu antes de chegar); movimentação à mão não.
 
 ## Falta desenhar para a primeira versão
 
@@ -89,7 +101,7 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 5. ~~Orçamentos~~: feito na etapa 5 (acima).
 6. ~~Tarefas~~: feito na etapa 6 (acima).
 7. ~~Agenda~~: feito na etapa 6 (acima).
-8. **Estoque:** histórico de movimentações do produto; registrar entrada, saída, perda, devolução e ajuste; desativar produto em vez de excluir.
+8. ~~Estoque~~: feito na etapa 7 (acima), com a baixa automática na venda.
 
 ### Faturamento
 9. ~~Lançamentos, recebimentos, estorno, cancelamento e reabrir venda paga~~: feitos na etapa 4 (acima). Fica para depois: parcelas (vários vencimentos num lançamento) e recibo em PDF.
