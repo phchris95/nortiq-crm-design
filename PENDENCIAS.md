@@ -49,6 +49,19 @@ Para ver cada situação no protótipo, use o painel "Protótipo · ver outras s
 - **Ficha do orçamento:** quadro "Financeiro desta venda" com a situação e o botão "Ver no Faturamento" (só para o dono).
 - **Perfil do administrador:** aba Perfil em Minha conta para trocar o nome que aparece no painel.
 
+## Etapa 5 do design: Clientes e Orçamentos (feito em 26/09)
+
+- **Novo cliente** (botão ao lado da busca em Clientes): nome, WhatsApp, tipo (cliente ou interessado), bairro, endereço e como chegou. Se o WhatsApp já estiver em outra ficha, a tela avisa e oferece "Abrir a ficha" ou "Salvar mesmo assim" (o mesmo número pode estar em duas fichas, como decidido na revisão do banco).
+- **Editar dados** do cliente pela ficha. Trocar o nome atualiza os orçamentos e a agenda dele.
+- **Excluir cliente** (só o dono), com as mensagens decididas: com pendências, "Antes de excluir…" e a lista do que falta encerrar (orçamentos em andamento, agendamentos marcados e tarefas pendentes); sem pendências, confirmação. A ficha sai da lista, com **Desfazer** logo depois, e fica na aba **Excluídos**, onde o dono pode **Restaurar ficha**.
+- **Cliente excluído no novo orçamento:** ao escrever o nome de uma ficha excluída, aparece "Esta ficha foi excluída. Restaure a ficha para usá-la de novo." com o botão Restaurar ficha (preenche WhatsApp e endereço).
+- **Adicionar equipamento:** equipamento (lista do estoque ou texto livre), data da instalação, garantia e manutenção (sem, a cada 6 meses ou uma vez por ano). A próxima manutenção já nasce marcada.
+- **Registrar manutenção** em cada equipamento: o que foi feito, data e valor. A próxima manutenção é marcada sozinha, o aviso do Início some e, para o dono, o valor pode ir para o Faturamento como recebido.
+- **Editar orçamento:** produto, valor, forma de pagamento, endereço e observações. Se já for venda, o lançamento do Faturamento acompanha o valor novo, sem ficar menor que o já recebido.
+- **Excluir orçamento** (só o dono): com dinheiro recebido, pede o estorno antes ("Ver no Faturamento"); com agendamento marcado ou tarefa pendente, mostra "Antes de excluir…" com a lista; sem nada disso, confirma e cancela o lançamento a receber. Tem **Desfazer**; se for venda, volta com um lançamento a receber novo.
+- **Mensagem de WhatsApp** para cliente sem compra: "Primeiro contato" ou "Orçamento" no lugar de "Pós-venda".
+- Cancelar agendamento chega na etapa da Agenda (item 7). Até lá, a lista de pendências leva direto para o dia na Agenda.
+
 ### Decisões de 26/09
 - **Cópia de segurança:** cópias automáticas do Neon (voltar o banco a qualquer momento dos últimos dias) + botão "Exportar dados" para a loja. Cópia semanal separada por loja fica para depois.
 - **Assinatura paga fora do Asaas:** permitida; a equipe Nortiq registra cada pagamento no painel.
@@ -63,8 +76,8 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 3. ~~Login da administração Nortiq~~: feito na etapa 3 (acima).
 
 ### Dados do dia a dia
-4. **Clientes:** novo cliente, editar, excluir (com confirmação; a ficha some da lista e o histórico fica guardado), adicionar equipamento, registrar manutenção feita.
-5. **Orçamentos:** editar os dados depois de criado (produto, valor, pagamento, endereço) e excluir (com confirmação).
+4. ~~Clientes~~: feito na etapa 5 (acima).
+5. ~~Orçamentos~~: feito na etapa 5 (acima).
 6. **Tarefas:** nova tarefa, editar, excluir.
 7. **Agenda:** editar, concluir e cancelar agendamento (com confirmação no cancelamento).
 8. **Estoque:** histórico de movimentações do produto; registrar entrada, saída, perda, devolução e ajuste; desativar produto em vez de excluir.
@@ -85,6 +98,8 @@ O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o ca
 | Excluir cliente com pendências | **Antes de excluir Marta Oliveira.** Ainda há 1 orçamento em negociação, 1 agendamento marcado e 2 tarefas pendentes com este cliente. Encerre ou cancele esses itens e tente de novo. | Ver pendências · Fechar |
 | Excluir cliente sem pendências | **Excluir Marta Oliveira?** A ficha sai da lista de clientes. Orçamentos, lançamentos e histórico continuam guardados, e a ficha pode ser restaurada. | Excluir cliente · Cancelar |
 | Usar cliente excluído (novo orçamento, tarefa ou agendamento) | Esta ficha foi excluída. Restaure a ficha para usá-la de novo. | Restaurar ficha · Cancelar |
+| Excluir orçamento com dinheiro recebido | **Antes de excluir ORC-0415.** Este orçamento tem R$ 1.890,00 recebido. Se o dinheiro foi devolvido, registre o estorno no Faturamento e depois exclua. Se a venda aconteceu, mantenha o orçamento. | Ver no Faturamento · Fechar |
+| Excluir orçamento com pendências | **Antes de excluir ORC-0403.** Ainda há 2 agendamentos marcados e 1 tarefa pendente com este orçamento. Encerre ou cancele esses itens e tente de novo. | Ver pendências · Fechar |
 | Desativar usuário com tarefas | **Alan Souza tem 3 tarefas pendentes.** Escolha quem fica com elas antes de desativar. | Campo "Passar para" · Passar tarefas e desativar · Cancelar |
 | Desativar usuário sem tarefas | **Desativar Alan Souza?** Ele sai do sistema na hora, em todos os aparelhos. O que ele fez continua registrado, e você pode reativar depois. | Desativar · Cancelar |
 | Produto ou técnico desativado | Não aparecem nas listas de escolha. Se o orçamento ou agendamento antigo já usa um deles, ele continua lá, com a marca "desativado". | — |
