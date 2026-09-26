@@ -5,7 +5,7 @@ Protótipo navegável (só a parte visual) do **Nortiq CRM**, sistema por assina
 **Ver online:** https://phchris95.github.io/nortiq-crm-design/
 
 ## O que tem no protótipo
-- **Login** por loja (cada loja com seu endereço próprio)
+- **Login** por loja (cada loja com seu endereço próprio), com **Esqueci minha senha**
 - **Loja:** Início, Orçamentos (funil), Clientes (equipamentos, garantia e manutenção), Tarefas, Faturamento, Metas, Configurações
 - **Administração Nortiq:** Visão geral, Contas assinantes, Planos
 
@@ -15,4 +15,5 @@ Os dados são de exemplo (loja fictícia "Casa do Aquecedor"). Banco de dados e 
 - `index.html` — telas e dados de exemplo
 - `support.js` — runtime que monta as telas (React)
 - `ds/` — design system Nortiq (tokens de cor, tipografia, espaçamento e componentes); ver `ds/README.md`
+- `PENDENCIAS.md` — telas e fluxos que ainda faltam desenhar
 - `logo.png` — símbolo branco com fundo transparente; `assets/logo-original.jpg` é o arquivo original

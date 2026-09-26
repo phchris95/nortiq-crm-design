@@ -44,6 +44,7 @@
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="{{ loginSlug }}" suffix=".nortiq.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail" value="{{ loginEmail }}" icon="mail" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Senha" type="password" value="nortiq2026" icon="lock" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+          <a href="#" onClick="{{ goEsqueci }}" style="justify-self:end; margin-top:-8px; font:var(--type-caption); font-weight:600">Esqueci minha senha</a>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ loginLoja }}" hint-size="100%,52px">Entrar</x-import>
         </div>
       </x-import>
@@ -89,6 +90,140 @@
       <div style="display:flex; justify-content:center; font:var(--type-caption); color:var(--text-muted)">
         <a href="#" onClick="{{ sn.voltar }}">Voltar para a administração (protótipo)</a>
       </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ESQUECI MINHA SENHA: pedir o link -->
+<sc-if value="{{ isEsqueci }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative; min-height:100vh; display:grid; place-items:center; padding:24px 16px; background:var(--surface-app); font-family:var(--font-sans)">
+    <div style="width:100%; max-width:420px; display:grid; gap:24px">
+      <div style="display:flex; align-items:center; gap:10px; justify-content:center">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="" width="32" height="32" style="display:block"></span>
+        <span style="font-family:var(--font-display); font-weight:700; font-size:26px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
+      </div>
+      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="100%,420px">
+        <sc-if value="{{ rs.pedindo }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; gap:18px">
+            <div style="display:grid; gap:4px">
+              <span style="font:var(--type-title); color:var(--text-strong)">Esqueceu a senha?</span>
+              <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Informe o e-mail que você usa para entrar. Vamos enviar um link para criar uma nova senha.</span>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="{{ loginSlug }}" suffix=".nortiq.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rs-email" label="E-mail" type="email" value="{{ rs.email }}" onChange="{{ rs.onEmail }}" error="{{ rs.emailErr }}" icon="mail" auto-complete="email" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" loading="{{ rs.enviando }}" onClick="{{ rs.enviar }}" hint-size="100%,52px">{{ rs.enviarTxt }}</x-import>
+          </div>
+        </sc-if>
+        <sc-if value="{{ rs.enviado }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:18px">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="mail-check" size="{{ 22 }}" hint-size="22px,22px"></x-import></span>
+            <div style="display:grid; gap:8px">
+              <span style="font:var(--type-title); color:var(--text-strong)">Confira seu e-mail</span>
+              <span role="status" style="font:var(--type-body); color:var(--text-body); line-height:1.6">Se existir uma conta associada a este e-mail, você receberá as instruções para redefinir sua senha.</span>
+            </div>
+            <div style="display:grid; gap:8px">
+              <sc-for list="{{ rs.dicas }}" as="d" hint-placeholder-count="3">
+                <div style="display:flex; gap:8px; align-items:flex-start; font:var(--type-caption); color:var(--text-muted); line-height:1.5">
+                  <span style="display:inline-flex; margin-top:1px; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ d.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+                  <span>{{ d.txt }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid; gap:10px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ rs.voltarLogin }}" hint-size="100%,52px">Voltar para o login</x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" full-width="{{ true }}" onClick="{{ rs.pedirDeNovo }}" hint-size="100%,40px">Pedir outro link</x-import>
+            </div>
+          </div>
+        </sc-if>
+      </x-import>
+      <div style="display:grid; justify-items:center; gap:8px; font:var(--type-caption); color:var(--text-muted)">
+        <sc-if value="{{ rs.pedindo }}" hint-placeholder-val="{{ true }}">
+          <a href="#" onClick="{{ rs.voltarLogin }}">Voltar para o login</a>
+        </sc-if>
+        <sc-if value="{{ rs.enviado }}" hint-placeholder-val="{{ false }}">
+          <a href="#" onClick="{{ rs.verEmail }}">Ver o e-mail de redefinição (protótipo)</a>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- E-MAIL DE REDEFINIÇÃO (prévia) -->
+    <sc-if value="{{ rs.mailOpen }}" hint-placeholder-val="{{ false }}">
+      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="E-mail de redefinição" description="Assim a pessoa recebe o link para criar uma nova senha." width="{{ 600 }}" onClose="{{ rs.fecharEmail }}" hint-size="600px,560px">
+        <div style="display:grid; gap:0; border-radius:var(--radius-md); box-shadow:var(--ring-card); overflow:hidden">
+          <div style="display:grid; gap:4px; padding:12px 16px; background:var(--surface-sunken); font:var(--type-caption); color:var(--text-muted); overflow-wrap:anywhere">
+            <span><span style="font-weight:600; color:var(--text-body)">De:</span> Nortiq &lt;nao-responda@nortiq.com.br&gt;</span>
+            <span><span style="font-weight:600; color:var(--text-body)">Para:</span> {{ rs.email }}</span>
+            <span><span style="font-weight:600; color:var(--text-body)">Assunto:</span> Crie uma nova senha para entrar no Nortiq</span>
+          </div>
+          <div style="display:grid; gap:16px; padding:24px 20px; background:var(--gray-0)">
+            <div style="display:flex; align-items:center; gap:8px">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="" width="22" height="22" style="display:block"></span>
+              <span style="font-family:var(--font-display); font-weight:700; font-size:18px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
+            </div>
+            <span style="font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--text-strong)">Olá, Rogério</span>
+            <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Recebemos um pedido para criar uma nova senha na conta da <span style="font-weight:600">Casa do Aquecedor</span> ({{ loginSlug }}.nortiq.com.br). Use o botão abaixo.</span>
+            <div>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" size="lg" onClick="{{ rs.abrirLink }}" hint-size="220px,52px">Criar nova senha</x-import>
+            </div>
+            <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.6">O link vale por 1 hora e só funciona uma vez. Se você pedir outro link, este deixa de valer.</span>
+            <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted); line-height:1.6; padding-top:12px; border-top:1px solid var(--border-subtle)">Não foi você que pediu? Ignore este e-mail. Sua senha atual continua valendo e ninguém entra na conta só com este aviso.</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; padding-top:12px; font:var(--type-caption)">
+          <a href="#" onClick="{{ rs.abrirExpirado }}">Simular link vencido ou já usado (protótipo)</a>
+        </div>
+      </x-import>
+    </sc-if>
+  </div>
+</sc-if>
+
+<!-- REDEFINIR SENHA: criar a nova senha pelo link do e-mail -->
+<sc-if value="{{ isRedefinir }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh; display:grid; place-items:center; padding:24px 16px; background:var(--surface-app); font-family:var(--font-sans)">
+    <div style="width:100%; max-width:440px; display:grid; gap:24px">
+      <div style="display:flex; align-items:center; gap:10px; justify-content:center">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="" width="32" height="32" style="display:block"></span>
+        <span style="font-family:var(--font-display); font-weight:700; font-size:26px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
+      </div>
+      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="100%,460px">
+        <sc-if value="{{ rs.linkValido }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; gap:16px">
+            <div style="display:grid; gap:4px">
+              <span style="font:var(--type-title); color:var(--text-strong)">Crie uma nova senha</span>
+              <span style="font:var(--type-caption); color:var(--text-muted)">Casa do Aquecedor · {{ loginSlug }}.nortiq.com.br</span>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rd-email" label="E-mail de acesso" value="{{ rs.email }}" icon="mail" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rd-pw1" label="Nova senha" type="password" value="{{ sn.pw1 }}" onChange="{{ sn.onPw1 }}" icon="lock" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rd-pw2" label="Repita a senha" type="password" value="{{ sn.pw2 }}" onChange="{{ sn.onPw2 }}" icon="lock" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <div style="display:grid; gap:6px">
+              <sc-for list="{{ sn.regras }}" as="r" hint-placeholder-count="3">
+                <div style="display:flex; align-items:center; gap:8px; font:var(--type-caption); color:{{ r.fg }}">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ r.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>
+                  <span>{{ r.txt }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ sn.errShow }}" hint-placeholder-val="{{ false }}">
+              <span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg)">A senha ainda não cumpre as regras acima.</span>
+            </sc-if>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" loading="{{ rs.salvando }}" onClick="{{ rs.salvarSenha }}" hint-size="100%,52px">{{ rs.salvarTxt }}</x-import>
+            <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Ao salvar, a conta sai de todos os aparelhos conectados e você entra de novo com a nova senha. Este link vale por 1 hora e só funciona uma vez.</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ rs.linkVencido }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:18px">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--status-warning-bg); color:var(--status-warning-fg)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="link-2-off" size="{{ 22 }}" hint-size="22px,22px"></x-import></span>
+            <div style="display:grid; gap:8px">
+              <span style="font:var(--type-title); color:var(--text-strong)">Este link não vale mais</span>
+              <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Ele passou de 1 hora, já foi usado ou foi trocado por um link mais novo. Por segurança, cada link funciona uma vez só.</span>
+            </div>
+            <div style="display:grid; gap:10px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ rs.pedirNovo }}" hint-size="100%,52px">Pedir um novo link</x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" full-width="{{ true }}" onClick="{{ rs.voltarLogin }}" hint-size="100%,40px">Voltar para o login</x-import>
+            </div>
+          </div>
+        </sc-if>
+      </x-import>
     </div>
   </div>
 </sc-if>
@@ -2482,6 +2617,7 @@ class Component extends DCLogic {
     notifs:NOTIFS0.map(n=>({...n})),notifOpen:false,notifF:'todas',avisos:AVISOS0.map(a=>({...a})),av:emptyAv(),avErr:{},avMsg:'',
     estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
     accs:ACCOUNTS.map(a=>({...a})),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
+    rsEmail:'',rsErr:'',rsEnviando:false,rsEnviado:false,rsMail:false,rsVencido:false,rsSalvando:false,
     rpPer:'mes',rpDe:'2026-09-01',rpAte:'2026-09-30',rpSec:{resumo:true,vendas:true,funil:true,perdas:true,fat:true,inst:false,novos:false},rpEmp:{...LOJA},rpLogo:null,rpLogoErr:'',rpObs:'',rpMsg:'',rpMsgErr:false,rpGen:false,
     agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true},
     showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:15,
@@ -3099,6 +3235,47 @@ class Component extends DCLogic {
       };
     })();
 
+    // Esqueci minha senha: pedir link por e-mail e criar a nova senha.
+    // A resposta é sempre a mesma, exista ou não uma conta com o e-mail (não revela quem é cliente).
+    const rsVals=(()=>{
+      const pwOk=s.pw1.length>=8&&/[0-9]/.test(s.pw1)&&s.pw1===s.pw2;
+      const emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s.rsEmail||'').trim());
+      const irLogin=(extra)=>this.setState({view:'login',rsEnviado:false,rsEnviando:false,rsMail:false,rsVencido:false,rsSalvando:false,rsErr:'',pw1:'',pw2:'',pwTry:false,...(extra||{})});
+      return {
+        isEsqueci:view==='esqueci',isRedefinir:view==='redefinir',
+        goEsqueci:e=>{e&&e.preventDefault&&e.preventDefault();this.setState(x=>({view:'esqueci',rsEmail:x.rsEmail||(x.loginFor&&(x.accs.find(a=>a.slug===x.loginFor)||{}).email)||'rogerio@casadoaquecedor.com.br',rsErr:'',rsEnviado:false,rsEnviando:false,rsMail:false,loginNotice:''}));},
+        rs:{
+          email:s.rsEmail,emailErr:s.rsErr,enviando:s.rsEnviando,enviarTxt:s.rsEnviando?'Enviando':'Enviar link',
+          pedindo:!s.rsEnviado,enviado:s.rsEnviado,mailOpen:s.rsMail,
+          onEmail:e=>this.setState({rsEmail:e.target.value,rsErr:''}),
+          enviar:()=>{
+            if(s.rsEnviando) return;
+            if(!emailOk) return this.setState({rsErr:'Confira o e-mail. Ex.: nome@sualoja.com.br'});
+            this.setState({rsEnviando:true,rsErr:''});
+            setTimeout(()=>this.setState({rsEnviando:false,rsEnviado:true}),900);
+          },
+          dicas:[{icon:'clock',txt:'O link vale por 1 hora e só funciona uma vez.'},
+                 {icon:'inbox',txt:'Não chegou em alguns minutos? Confira a caixa de spam ou lixo eletrônico.'},
+                 {icon:'refresh-cw',txt:'Pedir um novo link cancela o anterior. Use sempre o e-mail mais recente.'}],
+          pedirDeNovo:()=>this.setState({rsEnviado:false,rsMail:false}),
+          voltarLogin:e=>{e&&e.preventDefault&&e.preventDefault();irLogin();},
+          verEmail:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({rsMail:true});},
+          fecharEmail:()=>this.setState({rsMail:false}),
+          abrirLink:()=>this.setState({view:'redefinir',rsMail:false,rsVencido:false,pw1:'',pw2:'',pwTry:false}),
+          abrirExpirado:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'redefinir',rsMail:false,rsVencido:true});},
+          linkValido:!s.rsVencido,linkVencido:!!s.rsVencido,
+          salvando:s.rsSalvando,salvarTxt:s.rsSalvando?'Salvando':'Salvar nova senha',
+          salvarSenha:()=>{
+            if(s.rsSalvando) return;
+            if(!pwOk) return this.setState({pwTry:true});
+            this.setState({rsSalvando:true});
+            setTimeout(()=>irLogin({rsEmail:'',loginNotice:'Senha alterada. Por segurança, a conta saiu de todos os aparelhos. Entre com a nova senha.'}),900);
+          },
+          pedirNovo:()=>this.setState({view:'esqueci',rsVencido:false,rsEnviado:false,rsMail:false,rsErr:''})
+        }
+      };
+    })();
+
     // Drawer
     let d={isOrc:false,isCli:false,fields:[],steps:[],hist:[],equips:[],linked:[],tpls:[],log:[],stageOptions:[],noLog:true,noEquips:false};
     let tpls=[],tel='',dKey='';
@@ -3163,7 +3340,8 @@ class Component extends DCLogic {
       ...estVals,
       ...notifVals,
       ...cancelVals,
-      isLogin:view==='login',isSenha:view==='senha',isApp:view!=='login'&&view!=='senha',expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
+      ...rsVals,
+      isLogin:view==='login',isSenha:view==='senha',isApp:!['login','senha','esqueci','redefinir'].includes(view),expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
       openMenu:()=>this.setState({menuOpen:true}),closeMenu:()=>this.setState({menuOpen:false}),
