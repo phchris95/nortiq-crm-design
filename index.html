@@ -30,6 +30,7 @@
         <span style="font-family:var(--font-display); font-weight:700; font-size:26px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
       </div>
       <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="100%,420px">
+        <sc-if value="{{ loginForm }}" hint-placeholder-val="{{ true }}">
         <div style="display:grid; gap:18px">
           <div style="display:grid; gap:4px">
             <span style="font:var(--type-title); color:var(--text-strong)">Entre na conta da sua loja</span>
@@ -41,13 +42,51 @@
               <span>{{ loginNotice }}</span>
             </div>
           </sc-if>
+          <sc-if value="{{ loginBannerShow }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:{{ loginBanner.bg }}; color:{{ loginBanner.fg }}; font:var(--type-caption); font-weight:600; line-height:1.5">
+              <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ loginBanner.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+              <span>{{ loginBanner.txt }}</span>
+            </div>
+          </sc-if>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="{{ loginSlug }}" suffix=".nortiq.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail" value="{{ loginEmail }}" icon="mail" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Senha" type="password" value="nortiq2026" icon="lock" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <a href="#" onClick="{{ goEsqueci }}" style="justify-self:end; margin-top:-8px; font:var(--type-caption); font-weight:600">Esqueci minha senha</a>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ loginLoja }}" hint-size="100%,52px">Entrar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" disabled="{{ entrarDesabilitado }}" onClick="{{ loginLoja }}" hint-size="100%,52px">{{ entrarTxt }}</x-import>
         </div>
+        </sc-if>
+        <sc-if value="{{ loginSite }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:18px">
+            <div style="display:grid; gap:4px">
+              <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Área do CRM</span>
+              <span style="font:var(--type-title); color:var(--text-strong)">Qual é o endereço da sua loja?</span>
+              <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">É o endereço que chegou no e-mail de boas-vindas. Depois do primeiro acesso, o navegador lembra.</span>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="site-slug" label="Endereço da loja" value="{{ siteSlug }}" onChange="{{ onSiteSlug }}" error="{{ siteErr }}" suffix=".nortiq.com.br" placeholder="nomedaloja" auto-complete="off" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ irLoja }}" hint-size="100%,52px">Continuar</x-import>
+            <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Não sabe o endereço? Pergunte ao dono da loja. Se você é o dono, procure o e-mail "Sua conta Nortiq está pronta".</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ loginEncerrada }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:18px">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--surface-sunken); color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="archive" size="{{ 22 }}" hint-size="22px,22px"></x-import></span>
+            <div style="display:grid; gap:8px">
+              <span style="font:var(--type-title); color:var(--text-strong)">Assinatura encerrada</span>
+              <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">A assinatura da Casa do Aquecedor terminou em 30/09. Os dados da loja continuam guardados. Para voltar a usar, fale com a equipe Nortiq.</span>
+            </div>
+            <div style="display:grid; gap:10px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" icon="message-circle" onClick="{{ falarReativar }}" hint-size="100%,52px">Falar com a Nortiq</x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" full-width="{{ true }}" onClick="{{ voltarLoginNormal }}" hint-size="100%,40px">Voltar</x-import>
+            </div>
+          </div>
+        </sc-if>
       </x-import>
+      <div style="display:grid; gap:12px; padding:14px 16px; border-radius:var(--radius-md); border:1px dashed var(--border-default); background:var(--surface-card)">
+        <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Protótipo · ver outras situações</span>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-login" label="Situação do login" options="{{ loginDemoOptions }}" value="{{ loginDemo }}" onChange="{{ onLoginDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-papel" label="Entrar como" options="{{ papelDemoOptions }}" value="{{ papelDemo }}" onChange="{{ onPapelDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-assin" label="Assinatura da loja" options="{{ assinDemoOptions }}" value="{{ assinDemo }}" onChange="{{ onAssinDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
+      </div>
       <div style="display:flex; justify-content:center; gap:6px; font:var(--type-caption); color:var(--text-muted)">
         <span>Equipe Nortiq?</span>
         <a href="#" onClick="{{ loginAdmin }}">Acessar a administração</a>
@@ -302,14 +341,14 @@
             </sc-if>
           </button>
         </sc-if>
-        <div style="display:flex; align-items:center; gap:10px; padding-left:12px; margin-left:4px; border-left:1px solid var(--border-subtle)">
+        <button type="button" onClick="{{ toggleUserMenu }}" aria-label="Menu da conta" aria-haspopup="menu" style="display:flex; align-items:center; gap:10px; padding:4px 6px 4px 12px; margin-left:4px; border:none; border-left:1px solid var(--border-subtle); background:transparent; cursor:pointer; text-align:left; font:inherit; color:inherit">
           <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ userInitials }}</span>
           <div style="display:grid; gap:1px">
             <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ userName }}</span>
             <span style="font:var(--type-caption); font-size:12px; color:var(--text-subtle)">{{ userRole }}</span>
           </div>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="chevron-down" size="{{ 15 }}" style="color:var(--text-subtle)" hint-size="15px,15px"></x-import>
-        </div>
+        </button>
       </header>
     </sc-if>
     <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
@@ -327,18 +366,61 @@
             </sc-if>
           </button>
         </sc-if>
-        <span title="{{ userName }}" style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ userInitials }}</span>
+        <button type="button" onClick="{{ toggleUserMenu }}" aria-label="Menu da conta" aria-haspopup="menu" title="{{ userName }}" style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border:none; cursor:pointer; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ userInitials }}</button>
       </header>
     </sc-if>
     <main onScroll="{{ onMainScroll }}" style="flex:1; overflow-y:auto; overscroll-behavior:contain">
       <div style="max-width:1440px; margin:0 auto; padding:{{ mainPad }}; display:grid; gap:24px; box-sizing:border-box">
+        <sc-if value="{{ faixaShow }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 16px; border-radius:var(--radius-md); background:{{ faixa.bg }}; color:{{ faixa.fg }}">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ faixa.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 260px; font:var(--type-ui); font-weight:600; line-height:1.45">{{ faixa.txt }}</span>
+            <sc-if value="{{ faixa.temBotao }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" size="sm" onClick="{{ pagarAtraso }}" hint-size="120px,34px">Pagar agora</x-import>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isPausado }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:680px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="640px,320px">
+            <div style="display:grid; gap:18px">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; background:var(--status-danger-bg); color:var(--status-danger-fg)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-pause" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+              <div style="display:grid; gap:8px">
+                <span style="font:var(--type-title); color:var(--text-strong)">{{ pausadoTitulo }}</span>
+                <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">{{ pausadoTexto }}</span>
+              </div>
+              <sc-if value="{{ pausadoDono }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; gap:8px; flex-wrap:wrap">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="credit-card" onClick="{{ pagarAtraso }}" hint-size="150px,44px">Pagar agora</x-import>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" onClick="{{ irPlano }}" hint-size="150px,44px">Ver Meu plano</x-import>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" icon="message-circle" onClick="{{ falarNortiq }}" hint-size="180px,44px">Falar com a Nortiq</x-import>
+                </div>
+              </sc-if>
+              <sc-if value="{{ pausadoFunc }}" hint-placeholder-val="{{ false }}">
+                <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="log-out" onClick="{{ sairMenu }}" hint-size="100px,44px">Sair</x-import></div>
+              </sc-if>
+            </div>
+          </x-import></div>
+        </sc-if>
+        <sc-if value="{{ isSemAcesso }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:680px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="640px,260px">
+            <div style="display:grid; gap:18px">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="lock" size="{{ 22 }}" hint-size="22px,22px"></x-import></span>
+              <div style="display:grid; gap:8px">
+                <span style="font:var(--type-title); color:var(--text-strong)">Esta área é do dono da loja</span>
+                <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Faturamento, metas, relatórios e o plano ficam só com o dono. Se precisar de alguma informação daqui, peça ao Rogério.</span>
+              </div>
+              <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" onClick="{{ voltarInicio }}" hint-size="160px,44px">Voltar para o Início</x-import></div>
+            </div>
+          </x-import></div>
+        </sc-if>
+
 
         <!-- INÍCIO -->
         <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
           <div style="display:grid; gap:24px">
             <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap">
               <div style="display:grid; gap:4px">
-                <span style="font:var(--type-title-xl); letter-spacing:-0.015em; color:var(--text-strong)">Bom dia, Rogério</span>
+                <span style="font:var(--type-title-xl); letter-spacing:-0.015em; color:var(--text-strong)">{{ saudacao }}</span>
                 <span style="font:var(--type-body); color:var(--text-muted)">Terça-feira, 22 de setembro. Você tem {{ tasksTodayCount }} retornos para hoje.</span>
               </div>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNewFromHome }}" hint-size="160px,44px">Novo orçamento</x-import>
@@ -380,6 +462,7 @@
               </x-import>
 
               <div style="display:grid; gap:16px">
+                <sc-if value="{{ showMetaCard }}" hint-placeholder-val="{{ true }}">
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
                   <div style="display:grid; gap:14px">
                     <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
@@ -393,6 +476,7 @@
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ metaReal }}" max="{{ metaAlvo }}" show-value="{{ false }}" height="{{ 10 }}" caption="{{ metaCaption }}" hint-size="100%,32px"></x-import>
                   </div>
                 </x-import>
+                </sc-if>
 
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,260px">
                   <div style="display:grid; gap:4px">
@@ -648,8 +732,10 @@
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ estTabs }}" active="{{ estF }}" onSelect="{{ onEstF }}" hint-size="400px,40px"></x-import>
               <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; flex:1 1 auto; justify-content:flex-end">
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.SearchField" placeholder="Buscar por nome ou SKU" shortcut="{{ null }}" value="{{ estQ }}" onChange="{{ onEstQ }}" width="{{ accSearchW }}" hint-size="260px,44px"></x-import>
+                <sc-if value="{{ estPodeEditar }}" hint-placeholder-val="{{ true }}">
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="upload" onClick="{{ openImp }}" hint-size="170px,44px">Importar planilha</x-import>
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNewProd }}" hint-size="150px,44px">Novo produto</x-import>
+                </sc-if>
               </div>
             </div>
             <sc-if value="{{ estMsgShow }}" hint-placeholder-val="{{ false }}">
@@ -661,7 +747,7 @@
             <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
                 <sc-for list="{{ estRows }}" as="p" hint-placeholder-count="8">
-                  <div onClick="{{ p.open }}" style="display:grid; gap:6px; padding:14px 16px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                  <div onClick="{{ p.open }}" style="display:grid; gap:6px; padding:14px 16px; border-bottom:1px solid var(--border-subtle); cursor:{{ p.cursor }}" style-hover="background:var(--surface-hover)">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px">
                       <div style="display:grid; min-width:0">
                         <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ p.nome }}</span>
@@ -686,17 +772,17 @@
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
                 <div style="overflow-x:auto">
                   <div style="min-width:860px">
-                    <div style="display:grid; grid-template-columns:minmax(0,2.6fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.3fr) minmax(0,0.8fr); gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
-                      <span>Produto</span><span>Categoria</span><span style="text-align:right">Custo</span><span style="text-align:right">Venda</span><span>Estoque</span><span>Origem</span>
+                    <div style="display:grid; grid-template-columns:{{ estCols }}; gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
+                      <span>Produto</span><span>Categoria</span><sc-if value="{{ estVeCusto }}" hint-placeholder-val="{{ true }}"><span style="text-align:right">Custo</span></sc-if><span style="text-align:right">Venda</span><span>Estoque</span><span>Origem</span>
                     </div>
                     <sc-for list="{{ estRows }}" as="p" hint-placeholder-count="10">
-                      <div onClick="{{ p.open }}" style="display:grid; grid-template-columns:minmax(0,2.6fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.3fr) minmax(0,0.8fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px; cursor:pointer" style-hover="background:var(--surface-hover)">
+                      <div onClick="{{ p.open }}" style="display:grid; grid-template-columns:{{ estCols }}; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px; cursor:{{ p.cursor }}" style-hover="background:var(--surface-hover)">
                         <div style="display:grid; min-width:0">
                           <span style="font-weight:600; color:var(--text-strong)">{{ p.nome }}</span>
                           <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ p.sku }}</span>
                         </div>
                         <span style="color:var(--text-body)">{{ p.cat }}</span>
-                        <span style="text-align:right; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ p.custoFmt }}</span>
+                        <sc-if value="{{ estVeCusto }}" hint-placeholder-val="{{ true }}"><span style="text-align:right; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ p.custoFmt }}</span></sc-if>
                         <span style="text-align:right; color:var(--text-strong); font-weight:600; font-variant-numeric:tabular-nums">{{ p.vendaFmt }}</span>
                         <div style="display:grid; gap:4px; justify-items:start">
                           <span style="font-weight:600; color:{{ p.qtdFg }}; font-variant-numeric:tabular-nums">{{ p.qtdTxt }} <span style="font-weight:400; color:var(--text-muted)">· mín. {{ p.min }}</span></span>
@@ -1080,23 +1166,139 @@
         <sc-if value="{{ isConfig }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid; gap:20px">
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" items="{{ cfgTabs }}" active="{{ cfgTab }}" onSelect="{{ onCfgTab }}" hint-size="100%,44px"></x-import>
+
             <sc-if value="{{ cfgPerfil }}" hint-placeholder-val="{{ true }}">
-              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" style="max-width:760px" hint-size="100%,360px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" style="max-width:760px" hint-size="760px,300px">
                 <div style="display:grid; gap:18px">
                   <span style="font:var(--type-section); color:var(--text-strong)">Seu perfil</span>
-                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px">
-                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Nome" default-value="Rogério Tavares" full-width="{{ true }}" hint-size="100%,70px"></x-import>
-                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Função" default-value="Proprietário" full-width="{{ true }}" hint-size="100%,70px"></x-import>
-                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail" default-value="rogerio@casadoaquecedor.com.br" icon="mail" full-width="{{ true }}" hint-size="100%,70px"></x-import>
-                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="WhatsApp para atender clientes" default-value="(12) 99640-2218" icon="message-circle" hint="As mensagens saem deste número" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; align-items:start">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Nome" default-value="{{ perfil.nome }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Função" default-value="{{ perfil.funcao }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail de acesso" value="{{ perfil.email }}" icon="mail" read-only="{{ true }}" hint="{{ perfil.emailDica }}" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="WhatsApp para atender clientes" default-value="{{ perfil.tel }}" icon="message-circle" hint="As mensagens saem deste número" full-width="{{ true }}" hint-size="100%,90px"></x-import>
                   </div>
-                  <div style="display:flex; align-items:center; gap:12px">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveProfile }}" hint-size="140px,44px">Salvar alterações</x-import>
                     <sc-if value="{{ profileSaved }}" hint-placeholder-val="{{ false }}"><span style="font:var(--type-caption); color:var(--status-success-fg); font-weight:600">Alterações salvas.</span></sc-if>
                   </div>
                 </div>
               </x-import>
             </sc-if>
+
+            <sc-if value="{{ cfgSeg }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; gap:20px; max-width:760px">
+                <sc-if value="{{ sgMsgShow }}" hint-placeholder-val="{{ false }}">
+                  <div role="status" style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import><span>{{ sgMsg }}</span></div>
+                </sc-if>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="760px,420px">
+                  <div style="display:grid; gap:16px">
+                    <div style="display:grid; gap:4px">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Alterar senha</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Depois de alterar, os outros aparelhos saem da conta e vão pedir a senha nova.</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="sg-atual" label="Senha atual" type="password" value="{{ sgPw.atual }}" onChange="{{ sgOn.atual }}" error="{{ sgAtualErr }}" hint="Protótipo: nortiq2026" icon="lock" auto-complete="current-password" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="sg-nova" label="Nova senha" type="password" value="{{ sgPw.nova }}" onChange="{{ sgOn.nova }}" icon="lock" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="sg-rep" label="Repita a nova senha" type="password" value="{{ sgPw.rep }}" onChange="{{ sgOn.rep }}" icon="lock" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                    </div>
+                    <div style="display:grid; gap:6px">
+                      <sc-for list="{{ sgRegras }}" as="r" hint-placeholder-count="3">
+                        <div style="display:flex; align-items:center; gap:8px; font:var(--type-caption); color:{{ r.fg }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ r.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import><span>{{ r.txt }}</span></div>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ sgErrShow }}" hint-placeholder-val="{{ false }}">
+                      <span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg)">{{ sgErr }}</span>
+                    </sc-if>
+                    <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" loading="{{ sgSaving }}" onClick="{{ sgSalvar }}" hint-size="140px,44px">{{ sgSalvarTxt }}</x-import></div>
+                  </div>
+                </x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="760px,300px">
+                  <div style="display:grid; gap:14px">
+                    <div style="display:grid; gap:4px">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Aparelhos conectados</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Você fica conectado por 30 dias em cada aparelho enquanto usar o sistema. Se perder um celular, desconecte-o aqui.</span>
+                    </div>
+                    <div style="display:grid">
+                      <sc-for list="{{ sgSessoes }}" as="z" hint-placeholder-count="3">
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 0; border-top:1px solid var(--border-subtle)">
+                          <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--surface-sunken); color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ z.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                          <div style="display:grid; gap:2px; flex:1 1 180px; min-width:0">
+                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ z.aparelho }}</span>
+                            <span style="font:var(--type-caption); color:var(--text-muted)">{{ z.local }} · {{ z.quando }}</span>
+                          </div>
+                          <sc-if value="{{ z.atual }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" dot="{{ true }}" size="sm" hint-size="110px,22px">Este aparelho</x-import></sc-if>
+                          <sc-if value="{{ z.naoAtual }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" size="sm" onClick="{{ z.sair }}" hint-size="110px,34px">Desconectar</x-import></sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ sgTemOutras }}" hint-placeholder-val="{{ true }}">
+                      <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="log-out" onClick="{{ sgSairTodos }}" hint-size="260px,44px">Sair de todos os outros aparelhos</x-import></div>
+                    </sc-if>
+                    <sc-if value="{{ sgSoEste }}" hint-placeholder-val="{{ false }}">
+                      <span style="font:var(--type-caption); color:var(--text-muted)">Só este aparelho está conectado.</span>
+                    </sc-if>
+                  </div>
+                </x-import>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ cfgEquipe }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; gap:20px; max-width:960px">
+                <sc-if value="{{ eqMsgShow }}" hint-placeholder-val="{{ false }}">
+                  <div role="status" style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import><span>{{ eqMsg }}</span></div>
+                </sc-if>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="960px,380px">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:{{ cardHeadPad }}; border-bottom:1px solid var(--border-subtle)">
+                    <div style="display:grid; gap:2px">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Equipe da loja</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">{{ eqResumo }}. Cada pessoa entra com o próprio e-mail e senha.</span>
+                    </div>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="user-plus" onClick="{{ openConvidar }}" hint-size="170px,44px">Convidar pessoa</x-import>
+                  </div>
+                  <sc-for list="{{ eqRows }}" as="u" hint-placeholder-count="4">
+                    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:14px {{ rowPadX }}; border-bottom:1px solid var(--border-subtle); opacity:{{ u.op }}">
+                      <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:var(--radius-pill); background:var(--gray-200); color:var(--gray-700); font:var(--type-caption); font-weight:700">{{ u.ini }}</span>
+                      <div style="display:grid; gap:2px; flex:1 1 220px; min-width:0">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ u.nome }}<span style="font-weight:400; color:var(--text-muted)">{{ u.voceTxt }}</span></span>
+                        <span style="font:var(--type-caption); color:var(--text-muted); overflow-wrap:anywhere">{{ u.email }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-subtle)">{{ u.info }}</span>
+                      </div>
+                      <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ u.papelTone }}" size="sm" hint-size="90px,22px">{{ u.papelTxt }}</x-import>
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ u.stTone }}" dot="{{ true }}" size="sm" hint-size="120px,22px">{{ u.stTxt }}</x-import>
+                      </div>
+                      <sc-if value="{{ u.temAcoes }}" hint-placeholder-val="{{ true }}">
+                        <div style="display:flex; gap:6px; flex-wrap:wrap">
+                          <sc-for list="{{ u.acoes }}" as="a" hint-placeholder-count="2">
+                            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ a.variant }}" size="sm" onClick="{{ a.go }}" hint-size="120px,34px">{{ a.label }}</x-import>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </x-import>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px">
+                  <sc-for list="{{ papelCards }}" as="c" hint-placeholder-count="2">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 20 }}" hint-size="100%,220px">
+                      <div style="display:grid; gap:12px">
+                        <div style="display:grid; gap:2px">
+                          <span style="font:var(--type-section); color:var(--text-strong)">{{ c.titulo }}</span>
+                          <span style="font:var(--type-caption); color:var(--text-muted)">{{ c.sub }}</span>
+                        </div>
+                        <div style="display:grid; gap:8px">
+                          <sc-for list="{{ c.itens }}" as="i" hint-placeholder-count="4">
+                            <div style="display:flex; gap:8px; align-items:flex-start; font:var(--type-caption); line-height:1.45; color:var(--text-body)"><span style="display:inline-flex; margin-top:1px; color:{{ i.fg }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ i.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><span>{{ i.txt }}</span></div>
+                          </sc-for>
+                        </div>
+                      </div>
+                    </x-import>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
             <sc-if value="{{ cfgConta }}" hint-placeholder-val="{{ false }}">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" style="max-width:760px" hint-size="100%,420px">
                 <div style="display:grid; gap:18px">
@@ -1353,7 +1555,7 @@
                   </div>
                   <sc-if value="{{ mpPodePagar }}" hint-placeholder-val="{{ true }}">
                   <div style="display:flex; gap:8px; flex-wrap:wrap">
-                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon-right="arrow-up-right" onClick="{{ payOpen }}" hint-size="200px,44px">Pagar fatura de outubro</x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon-right="arrow-up-right" onClick="{{ payOpen }}" hint-size="200px,44px">{{ mpPagarTxt }}</x-import>
                   </div>
                   </sc-if>
                 </div>
@@ -1653,6 +1855,22 @@
       </div>
     </main>
   </div>
+
+  <!-- MENU DA CONTA -->
+  <sc-if value="{{ userMenu }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeUserMenu }}" style="position:absolute; inset:0; z-index:44"></div>
+    <div role="menu" aria-label="Conta" style="position:absolute; top:{{ userMenuTop }}; right:{{ userMenuRight }}; z-index:45; width:260px; max-width:calc(100% - 16px); box-sizing:border-box; display:grid; gap:2px; padding:8px; border-radius:var(--radius-md); background:var(--surface-card); box-shadow:var(--shadow-lg)">
+      <div style="display:grid; gap:2px; padding:8px 10px 10px; margin-bottom:4px; border-bottom:1px solid var(--border-subtle)">
+        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ userName }}</span>
+        <span style="font:var(--type-caption); color:var(--text-subtle); overflow-wrap:anywhere">{{ userEmail }}</span>
+      </div>
+      <sc-if value="{{ userMenuLoja }}" hint-placeholder-val="{{ true }}">
+        <button type="button" role="menuitem" onClick="{{ irMinhaConta }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:0 10px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font:var(--type-ui); color:var(--text-body); text-align:left" style-hover="background:var(--surface-hover)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="user-round" size="{{ 17 }}" hint-size="17px,17px"></x-import>Minha conta</button>
+        <button type="button" role="menuitem" onClick="{{ irSeguranca }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:0 10px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font:var(--type-ui); color:var(--text-body); text-align:left" style-hover="background:var(--surface-hover)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 17 }}" hint-size="17px,17px"></x-import>Segurança da conta</button>
+      </sc-if>
+      <button type="button" role="menuitem" onClick="{{ sairMenu }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:0 10px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font:var(--type-ui); color:var(--text-body); text-align:left" style-hover="background:var(--surface-hover)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="log-out" size="{{ 17 }}" hint-size="17px,17px"></x-import>Sair</button>
+    </div>
+  </sc-if>
 
   <!-- NOTIFICAÇÕES -->
   <sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
@@ -2295,6 +2513,80 @@
     </x-import>
   </sc-if>
 
+  <!-- CONVIDAR PESSOA (equipe da loja) -->
+  <sc-if value="{{ eqDlgConvidar }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Convidar pessoa" description="A pessoa recebe um e-mail para criar a própria senha. O link vale 48 horas." width="{{ 560 }}" onClose="{{ eqFechar }}" hint-size="560px,560px">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="eq-nome" label="Nome" value="{{ eqF.nome }}" onChange="{{ eqOn.nome }}" error="{{ eqErr.nome }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="eq-email" label="E-mail" type="email" value="{{ eqF.email }}" onChange="{{ eqOn.email }}" error="{{ eqErr.email }}" icon="mail" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="eq-whats" label="WhatsApp (opcional)" value="{{ eqF.whats }}" onChange="{{ eqOn.whats }}" icon="message-circle" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="eq-papel" label="Papel" options="{{ eqPapelOptions }}" value="{{ eqF.papel }}" onChange="{{ eqOn.papel }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <div style="display:grid; gap:8px; padding:14px 16px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+          <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">{{ eqPapelVeTitulo }}</span>
+          <sc-for list="{{ eqPapelVe }}" as="i" hint-placeholder-count="4">
+            <div style="display:flex; gap:8px; align-items:flex-start; font:var(--type-caption); line-height:1.45; color:var(--text-body)"><span style="display:inline-flex; margin-top:1px; color:{{ i.fg }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ i.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><span>{{ i.txt }}</span></div>
+          </sc-for>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ eqFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="send" onClick="{{ eqConvidar }}" hint-size="160px,44px">Enviar convite</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- ALTERAR PAPEL -->
+  <sc-if value="{{ eqDlgPapel }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Alterar papel" description="{{ eqAlvo.nome }} · {{ eqAlvo.email }}" width="{{ 500 }}" onClose="{{ eqFechar }}" hint-size="500px,420px">
+      <div style="display:grid; gap:14px">
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="eq-papel2" label="Papel" options="{{ eqPapelOptions }}" value="{{ eqF.papel }}" onChange="{{ eqOn.papel }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:grid; gap:8px; padding:14px 16px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+          <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">{{ eqPapelVeTitulo }}</span>
+          <sc-for list="{{ eqPapelVe }}" as="i" hint-placeholder-count="4">
+            <div style="display:flex; gap:8px; align-items:flex-start; font:var(--type-caption); line-height:1.45; color:var(--text-body)"><span style="display:inline-flex; margin-top:1px; color:{{ i.fg }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ i.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><span>{{ i.txt }}</span></div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ eqErrGeralShow }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg)">{{ eqErrGeral }}</span></sc-if>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ eqFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ eqSalvarPapel }}" hint-size="120px,44px">Salvar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- DESATIVAR PESSOA -->
+  <sc-if value="{{ eqDlgDesativar }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ eqDesTitulo }}" description="{{ eqDesTexto }}" width="{{ 500 }}" onClose="{{ eqFechar }}" hint-size="500px,320px">
+      <div style="display:grid; gap:14px">
+        <sc-if value="{{ eqTemTarefas }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="eq-para" label="Passar as tarefas para" options="{{ eqParaOptions }}" value="{{ eqF.para }}" onChange="{{ eqOn.para }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <sc-if value="{{ eqErr.para }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg); margin-top:-6px">{{ eqErr.para }}</span></sc-if>
+        </sc-if>
+        <sc-if value="{{ eqErrGeralShow }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg)">{{ eqErrGeral }}</span></sc-if>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ eqFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="user-x" onClick="{{ eqDesativar }}" hint-size="220px,44px">{{ eqDesBotao }}</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- SAIR DOS OUTROS APARELHOS -->
+  <sc-if value="{{ sgConfirm }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Sair de todos os outros aparelhos?" description="As outras sessões terminam na hora. Quem estiver nelas precisa entrar de novo com a senha." width="{{ 480 }}" onClose="{{ sgFecharConfirm }}" hint-size="480px,260px">
+      <div style="display:grid; gap:14px">
+        <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Use quando perder um celular ou achar que alguém sabe sua senha. Este aparelho continua conectado.</span>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ sgFecharConfirm }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="log-out" onClick="{{ sgConfirmarSair }}" hint-size="220px,44px">Sair dos outros aparelhos</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- NOVO ORÇAMENTO -->
   <sc-if value="{{ showNew }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo orçamento" description="Anote o pedido agora. Os detalhes podem ser completados depois." width="{{ 620 }}" onClose="{{ closeNew }}" hint-size="100%,100%">
@@ -2609,6 +2901,31 @@ const ini=n=>n.split(' ').filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join('')
 const MOBILE_MQ='(max-width: 767px)';
 const emptyNf=()=>({cli:'',tel:'',prod:PRODUCTS[0][0],valor:String(PRODUCTS[0][1]),pag:'PIX à vista',origem:'Instagram',end:''});
 
+// ---------- Equipe, papéis e segurança da conta ----------
+// Papel do usuário da loja: dono vê tudo; funcionário cuida do atendimento (sem dinheiro, equipe e assinatura).
+const PAGINAS_FUNCIONARIO=['inicio','orcamentos','clientes','estoque','tarefas','agenda','config'];
+const PAPEL_VE={
+ dono:{titulo:'Dono',sub:'Tudo, inclusive dinheiro, equipe e assinatura',ve:['Orçamentos, clientes, agenda e tarefas','Estoque: cadastrar, importar e ajustar','Faturamento, metas e relatórios','Equipe, Meu plano e dados da loja'],naoVe:[]},
+ funcionario:{titulo:'Funcionário',sub:'O dia a dia do atendimento',ve:['Orçamentos, clientes, agenda e tarefas','Estoque só para consulta, sem preço de custo'],naoVe:['Faturamento, metas e relatórios','Equipe, Meu plano e dados da loja']}
+};
+const EQUIPE0=[
+ {id:'u1',nome:'Rogério Tavares',email:'rogerio@casadoaquecedor.com.br',papel:'dono',status:'ativo',info:'Conectado agora',voce:true,tarefas:5},
+ {id:'u2',nome:'Camila Duarte',email:'camila@casadoaquecedor.com.br',papel:'funcionario',status:'ativo',info:'Último acesso hoje, 08:12',tarefas:3},
+ {id:'u3',nome:'Bruno Tavares',email:'bruno@casadoaquecedor.com.br',papel:'funcionario',status:'convite',info:'Convite enviado em 21/09 · vale até 23/09',tarefas:0},
+ {id:'u4',nome:'Marcos Vieira',email:'marcos@casadoaquecedor.com.br',papel:'funcionario',status:'desativado',info:'Desativado em 02/08',tarefas:0}
+];
+const SESSOES0=[
+ {id:'s1',aparelho:'Chrome no Windows',local:'São José dos Campos/SP',quando:'Agora',atual:true,icon:'monitor'},
+ {id:'s2',aparelho:'Safari no iPhone',local:'São José dos Campos/SP',quando:'Ontem às 18:40',icon:'smartphone'},
+ {id:'s3',aparelho:'Chrome no Android',local:'Jacareí/SP',quando:'20/09 às 09:15',icon:'smartphone'}
+];
+// Situações do login e da assinatura que o protótipo deixa ver (no sistema real vêm da API).
+const LOGIN_DEMOS=[{value:'normal',label:'Entrar normalmente'},{value:'site',label:'Entrada pelo site (Área do CRM)'},{value:'naoencontrada',label:'Loja não encontrada'},
+ {value:'senha',label:'Senha incorreta'},{value:'tentativas',label:'Muitas tentativas'},{value:'desativado',label:'Usuário desativado'},
+ {value:'sessao',label:'Sessão expirada'},{value:'encerrada',label:'Assinatura encerrada'}];
+const ASSIN_DEMOS=[{value:'em_dia',label:'Em dia'},{value:'atraso',label:'Em atraso (dentro dos 15 dias)'},{value:'pausado',label:'Acesso pausado (mais de 15 dias)'}];
+const PAPEL_DEMOS=[{value:'dono',label:'Rogério Tavares · dono'},{value:'funcionario',label:'Camila Duarte · funcionária'}];
+
 class Component extends DCLogic {
   state={view:null,page:'inicio',apage:'a-geral',collapsed:null,drawer:null,orcs:ORCS.map(o=>({...o})),tasks:TASKS.map(t=>({done:false,...t})),
     cliQ:'',cliF:'todos',finF:'todos',taskF:'pend',cfgTab:'perfil',accF:'todas',accQ:'',meta:50000,gcal:true,draft:null,tpl:0,log:LOG0,
@@ -2618,6 +2935,9 @@ class Component extends DCLogic {
     estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
     accs:ACCOUNTS.map(a=>({...a})),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
     rsEmail:'',rsErr:'',rsEnviando:false,rsEnviado:false,rsMail:false,rsVencido:false,rsSalvando:false,
+    papel:'dono',assin:'em_dia',loginDemo:'normal',userMenu:false,siteSlug:'',siteErr:'',
+    equipe:EQUIPE0.map(u=>({...u})),eqDlg:null,eqForm:{},eqErr:{},eqMsg:'',
+    sgPw:{atual:'',nova:'',rep:''},sgTry:false,sgAtualErrado:false,sgErr:'',sgMsg:'',sgSaving:false,sessoes:SESSOES0.map(z=>({...z})),sgConfirm:false,
     rpPer:'mes',rpDe:'2026-09-01',rpAte:'2026-09-30',rpSec:{resumo:true,vendas:true,funil:true,perdas:true,fat:true,inst:false,novos:false},rpEmp:{...LOJA},rpLogo:null,rpLogoErr:'',rpObs:'',rpMsg:'',rpMsgErr:false,rpGen:false,
     agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true},
     showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:15,
@@ -2705,6 +3025,14 @@ class Component extends DCLogic {
     const admin=view==='admin';
     const page=admin?s.apage:s.page;
     const go=p=>(e)=>{ if(e&&e.preventDefault) e.preventDefault(); this.setState(admin?{apage:p,drawer:null,menuOpen:false,barHidden:false}:{page:p,drawer:null,menuOpen:false,barHidden:false}); };
+    // Papel do usuário (dono ou funcionário) e situação da assinatura da loja.
+    const func=!admin&&s.papel==='funcionario';
+    const assin=admin?'em_dia':s.assin;
+    const semAcesso=func&&!PAGINAS_FUNCIONARIO.includes(page);
+    const bloqueado=!admin&&assin==='pausado'&&(func||page!=='plano');
+    const atrasoTxt=assin==='atraso'?'Venceu em 17/09 · em atraso há 5 dias':'Venceu em 06/09 · em atraso há 16 dias';
+    const ajustaFaturas=lista=>assin==='em_dia'?lista:lista.map(f=>f.mes==='Setembro de 2026'?{...f,data:atrasoTxt,status:'Em atraso',tone:'danger',btnLabel:'Pagar',btnVariant:'primary',
+      temAcao:true,acao:()=>this.goGateway('pagar a mensalidade de setembro em atraso (R$ 79,90)')}:f);
     const orcs=s.orcs;
     const openStages=['solicitado','enviado','negociando'];
     const openO=orcs.filter(o=>openStages.includes(o.stage));
@@ -2720,12 +3048,12 @@ class Component extends DCLogic {
       {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'estoque',label:'Estoque',icon:'package'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
       {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'relatorios',label:'Relatórios',icon:'chart-no-axes-column'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
     ];
-    const navGroups=navDef.map(g=>({label:g.label,items:g.items.map(it=>{const on=it.id===page;return {...it,go:go(it.id),
+    const navGroups=(func?navDef.map(g=>({...g,items:g.items.filter(it=>PAGINAS_FUNCIONARIO.includes(it.id))})):navDef).map(g=>({label:g.label,items:g.items.map(it=>{const on=it.id===page;return {...it,go:go(it.id),
       bg:on?'var(--navy-50)':'transparent',hoverBg:on?'var(--navy-50)':'var(--surface-hover)',fg:on?'var(--navy-700)':'var(--text-muted)',ic:on?'var(--navy-500)':'var(--text-subtle)',fw:on?600:500,
       hasBadge:!!it.badge&&expanded,badgeBg:on?'var(--navy-500)':'var(--gray-200)',badgeFg:on?'#fff':'var(--text-muted)'};})}));
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],estoque:['Estoque','Produtos, quantidades e importação por planilha'],
-      tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil e dados da loja'],
+      tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil, segurança, equipe e dados da loja'],
       'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos']};
 
     // KPIs
@@ -3235,6 +3563,186 @@ class Component extends DCLogic {
       };
     })();
 
+    // Etapa 1: papel do usuário, equipe, segurança da conta, avisos do login e acesso pausado.
+    const etapa1Vals=(()=>{
+      const t=x=>String(x||'').trim();
+      const primeiro=n=>String(n||'').split(' ')[0];
+      const eu=func?{nome:'Camila Duarte',funcao:'Vendedora',email:'camila@casadoaquecedor.com.br',tel:'(12) 98812-4470',ini:'CD',papel:'Funcionária',emailDica:'Quem troca é o dono da loja'}
+                   :{nome:'Rogério Tavares',funcao:'Proprietário',email:'rogerio@casadoaquecedor.com.br',tel:'(12) 99640-2218',ini:'RT',papel:'Dono',emailDica:'É com ele que você entra no sistema'};
+
+      // ---------- equipe ----------
+      const eq=s.equipe;
+      const donosAtivos=eq.filter(u=>u.papel==='dono'&&u.status==='ativo');
+      const upd=(id,patch)=>this.setState(x=>({equipe:x.equipe.map(u=>u.id===id?{...u,...patch}:u)}));
+      const ST={ativo:['Ativo','success'],convite:['Convite enviado','info'],desativado:['Desativado','neutral']};
+      const eqRows=eq.map(u=>{
+        const acoes=[];
+        if(!u.voce&&u.status==='ativo'){
+          acoes.push({label:'Alterar papel',variant:'secondary',go:()=>this.setState({eqDlg:{tipo:'papel',id:u.id},eqForm:{papel:u.papel},eqErr:{},eqMsg:''})});
+          acoes.push({label:'Desativar',variant:'ghost',go:()=>this.setState({eqDlg:{tipo:'desativar',id:u.id},eqForm:{para:''},eqErr:{},eqMsg:''})});
+        }
+        if(u.status==='convite'){
+          acoes.push({label:'Reenviar convite',variant:'secondary',go:()=>{upd(u.id,{info:'Convite reenviado agora · vale até 24/09'});this.setState({eqMsg:'Novo convite enviado para '+u.email+'. O link anterior deixou de valer.'});}});
+          acoes.push({label:'Cancelar convite',variant:'ghost',go:()=>this.setState(x=>({equipe:x.equipe.filter(y=>y.id!==u.id),eqMsg:'Convite de '+u.nome+' cancelado. O link deixou de valer.'}))});
+        }
+        if(u.status==='desativado'){
+          acoes.push({label:'Reativar',variant:'secondary',go:()=>{upd(u.id,{status:'ativo',info:'Reativado agora'});this.setState({eqMsg:'O acesso de '+u.nome+' foi reativado. Dá para entrar de novo com a mesma senha de antes.'});}});
+        }
+        return {...u,ini:ini(u.nome),voceTxt:u.voce?' (você)':'',papelTxt:u.papel==='dono'?'Dono':'Funcionário',papelTone:u.papel==='dono'?'info':'neutral',
+          stTxt:ST[u.status][0],stTone:ST[u.status][1],acoes,temAcoes:acoes.length>0,op:u.status==='desativado'?0.62:1};
+      });
+      const dlg=s.eqDlg, alvo=dlg&&dlg.id?eq.find(u=>u.id===dlg.id):null, f=s.eqForm||{}, eqErr=s.eqErr||{};
+      const setF=k=>e=>{const v=e&&e.target?e.target.value:e;this.setState(x=>({eqForm:{...x.eqForm,[k]:v},eqErr:{...x.eqErr,[k]:undefined,geral:undefined}}));};
+      const papelSel=f.papel||'funcionario';
+      const veLista=p=>[...PAPEL_VE[p].ve.map(txt=>({txt,icon:'check',fg:'var(--status-success-fg)'})),...PAPEL_VE[p].naoVe.map(txt=>({txt:'Não vê: '+txt.charAt(0).toLowerCase()+txt.slice(1),icon:'x',fg:'var(--text-muted)'}))];
+      const outros=alvo?eq.filter(u=>u.status==='ativo'&&u.id!==alvo.id):[];
+
+      // ---------- segurança ----------
+      const pw=s.sgPw;
+      const regras=[{ok:pw.nova.length>=8,txt:'Pelo menos 8 caracteres'},{ok:/[0-9]/.test(pw.nova),txt:'Pelo menos 1 número'},{ok:!!pw.nova&&pw.nova===pw.rep,txt:'As duas senhas iguais'}];
+      const setP=k=>e=>{const v=e.target.value;this.setState(x=>({sgPw:{...x.sgPw,[k]:v},sgErr:'',sgMsg:'',...(k==='atual'?{sgAtualErrado:false}:{})}));};
+
+      // ---------- login (situações do protótipo) ----------
+      const ld=s.loginDemo;
+      const BANNER={senha:['danger','circle-x','E-mail ou senha incorretos. Confira e tente de novo.'],
+        tentativas:['warning','clock','Muitas tentativas seguidas com este e-mail. Por segurança, espere 15 minutos (até 10:45) ou use "Esqueci minha senha".'],
+        desativado:['danger','user-x','Seu acesso a esta loja foi desativado. Se precisar voltar, fale com o dono da loja.'],
+        sessao:['info','log-out','Sua sessão terminou. Entre de novo para continuar de onde parou.']};
+      const TONS={danger:['var(--status-danger-bg)','var(--status-danger-fg)'],warning:['var(--status-warning-bg)','var(--status-warning-fg)'],info:['var(--status-info-bg)','var(--status-info-fg)']};
+      const b=BANNER[ld];
+      const irSite=v=>{
+        const slug=t(v).toLowerCase().replace(/\.nortiq\.com\.br$/,'').replace(/[^a-z0-9]/g,'');
+        if(!slug) return this.setState({siteErr:'Digite o endereço da sua loja.'});
+        const conta=s.accs.find(a=>a.slug===slug);
+        if(!conta) return this.setState({siteErr:'Não encontramos a loja "'+slug+'". Confira o endereço e tente de novo.'});
+        this.setState({loginDemo:'normal',loginFor:slug,siteErr:'',siteSlug:''});
+      };
+
+      // ---------- assinatura em atraso / acesso pausado ----------
+      const faixa=!admin&&(assin==='atraso'||(assin==='pausado'&&!bloqueado));
+      const faixaDono=assin==='atraso'
+        ?{tone:'warning',icon:'triangle-alert',txt:'A mensalidade de setembro venceu em 17/09 e está em atraso há 5 dias. Pague até 02/10 para o acesso não ser pausado.'}
+        :{tone:'danger',icon:'circle-pause',txt:'O acesso da loja está pausado. Pague a mensalidade em atraso e tudo volta a funcionar na hora.'};
+      const fx=func?{tone:'warning',icon:'triangle-alert',txt:'Há uma pendência no pagamento da assinatura da loja. O dono já foi avisado; por enquanto nada muda para você.'}:faixaDono;
+
+      const PAGINAS_DONO=['faturamento','metas','relatorios','plano'];
+      return {
+        // papel do usuário
+        userName:admin?'Helena Duarte':eu.nome,userInitials:admin?'HD':eu.ini,userRole:admin?'Operações · Nortiq':(func?'Funcionária':'Proprietário'),
+        saudacao:'Bom dia, '+primeiro(eu.nome),
+        kpis:func?kpis.filter(k=>k.label!=='Receita do mês'):kpis,
+        showMetaCard:!func,
+        estPodeEditar:!func,estVeCusto:!func,
+        estKpis:func?estVals.estKpis.filter(k=>k.label!=='Valor em estoque'):estVals.estKpis,
+        estCols:func?'minmax(0,2.6fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,1.3fr) minmax(0,0.8fr)':'minmax(0,2.6fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.3fr) minmax(0,0.8fr)',
+        estRows:func?estVals.estRows.map(p=>({...p,open:()=>{},cursor:'default'})):estVals.estRows.map(p=>({...p,cursor:'pointer'})),
+        notifList:func?notifVals.notifList.filter(n=>n.tipo!=='fatura'):notifVals.notifList,
+        perfil:eu,
+        // páginas: funcionário não abre as de gestão; acesso pausado troca tudo pelo aviso
+        isInicio:!admin&&page==='inicio'&&!bloqueado,isOrcamentos:!admin&&page==='orcamentos'&&!bloqueado,isClientes:!admin&&page==='clientes'&&!bloqueado,
+        isEstoque:!admin&&page==='estoque'&&!bloqueado,isTarefas:!admin&&page==='tarefas'&&!bloqueado,isAgenda:!admin&&page==='agenda'&&!bloqueado,
+        isFaturamento:!admin&&page==='faturamento'&&!bloqueado&&!semAcesso,isMetas:!admin&&page==='metas'&&!bloqueado&&!semAcesso,
+        isRelatorios:!admin&&page==='relatorios'&&!bloqueado&&!semAcesso,isConfig:!admin&&page==='config'&&!bloqueado,isPlano:!admin&&page==='plano'&&!bloqueado&&!semAcesso,
+        isSemAcesso:semAcesso&&!bloqueado,isPausado:bloqueado,pausadoDono:bloqueado&&!func,pausadoFunc:bloqueado&&func,
+        pageTitle:bloqueado?'Acesso pausado':semAcesso?'Área do dono':(TITLES[page]||[''])[0],
+        pageSub:bloqueado?'Casa do Aquecedor · assinatura em atraso':semAcesso?'Casa do Aquecedor':(page==='config'&&func?'Seu perfil e a segurança da conta':page==='estoque'&&func?'Produtos e quantidades · só consulta':(TITLES[page]||['',''])[1]),
+        mpBadge:assin==='em_dia'?cancelVals.mpBadge:'Em atraso',mpBadgeTone:assin==='em_dia'?cancelVals.mpBadgeTone:'danger',
+        mpProxLinha:assin==='em_dia'?cancelVals.mpProxLinha:'Mensalidade de setembro em atraso: '+brl(PLANO.preco,true),
+        mpPagarTxt:assin==='em_dia'?'Pagar fatura de outubro':'Pagar mensalidade em atraso',
+        payOpen:assin==='em_dia'?()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)'):()=>this.goGateway('pagar a mensalidade de setembro em atraso (R$ 79,90)'),
+        faixaShow:faixa,faixa:{...fx,bg:TONS[fx.tone][0],fg:TONS[fx.tone][1],temBotao:!func},
+        pagarAtraso:()=>this.goGateway('pagar a mensalidade em atraso (R$ 79,90)'),irPlano:go('plano'),
+        falarNortiq:()=>abrirWhats(WA_NORTIQ,'Olá! Sou da Casa do Aquecedor e quero falar sobre o pagamento da assinatura.'),
+        voltarInicio:go('inicio'),
+        falarReativar:()=>abrirWhats(WA_NORTIQ,'Olá! Sou da Casa do Aquecedor e quero reativar a assinatura do Nortiq.'),
+        pausadoTitulo:func?'O acesso da loja está pausado':'O acesso da Casa do Aquecedor está pausado',
+        pausadoTexto:func?'Há uma pendência no pagamento da assinatura. Os dados estão guardados. Fale com o dono da loja: assim que ele resolver, tudo volta a funcionar.'
+                         :'A mensalidade de setembro venceu em 06/09, há 16 dias. Os dados da loja estão guardados e nada foi apagado. Assim que o pagamento for confirmado, tudo volta a funcionar na hora.',
+        // configurações
+        cfgTabs:func?[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'}]
+                    :[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'},{id:'equipe',label:'Equipe'},{id:'conta',label:'Dados da loja'}],
+        cfgTab:s.cfgTab,cfgPerfil:s.cfgTab==='perfil',cfgSeg:s.cfgTab==='seguranca',cfgEquipe:s.cfgTab==='equipe'&&!func,cfgConta:s.cfgTab==='conta'&&!func,
+        onCfgTab:id=>this.setState({cfgTab:id,profileSaved:false,eqMsg:'',sgMsg:''}),
+        // equipe
+        eqRows,eqMsg:s.eqMsg,eqMsgShow:!!s.eqMsg,eqResumo:eq.filter(u=>u.status!=='desativado').length+' de '+eq.length+' pessoas com acesso',
+        papelCards:['dono','funcionario'].map(p=>({titulo:PAPEL_VE[p].titulo,sub:PAPEL_VE[p].sub,itens:veLista(p)})),
+        openConvidar:()=>this.setState({eqDlg:{tipo:'convidar'},eqForm:{nome:'',email:'',whats:'',papel:'funcionario'},eqErr:{},eqMsg:''}),
+        eqDlgConvidar:!!dlg&&dlg.tipo==='convidar',eqDlgPapel:!!dlg&&dlg.tipo==='papel'&&!!alvo,eqDlgDesativar:!!dlg&&dlg.tipo==='desativar'&&!!alvo,
+        eqFechar:()=>this.setState({eqDlg:null,eqErr:{}}),
+        eqF:{nome:f.nome||'',email:f.email||'',whats:f.whats||'',papel:papelSel,para:f.para||''},eqErr,eqErrGeral:eqErr.geral||'',eqErrGeralShow:!!eqErr.geral,
+        eqOn:{nome:setF('nome'),email:setF('email'),whats:setF('whats'),papel:setF('papel'),para:setF('para')},
+        eqPapelOptions:[{value:'funcionario',label:'Funcionário'},{value:'dono',label:'Dono'}],
+        eqPapelVe:veLista(papelSel),eqPapelVeTitulo:'O que '+(papelSel==='dono'?'o dono':'o funcionário')+' vê',
+        eqAlvo:alvo||{nome:'',email:'',tarefas:0},eqAlvoPrimeiro:alvo?primeiro(alvo.nome):'',
+        eqDesTitulo:alvo?(alvo.tarefas>0?primeiro(alvo.nome)+' tem '+alvo.tarefas+' tarefas pendentes':'Desativar '+alvo.nome+'?'):'',
+        eqDesTexto:alvo?(alvo.tarefas>0?'Escolha quem fica com as tarefas antes de desativar. Depois, '+primeiro(alvo.nome)+' sai do sistema na hora, em todos os aparelhos.'
+                                       :primeiro(alvo.nome)+' sai do sistema na hora, em todos os aparelhos. O que já foi feito continua registrado, e dá para reativar depois.'):'',
+        eqTemTarefas:!!alvo&&alvo.tarefas>0,eqDesBotao:alvo&&alvo.tarefas>0?'Passar tarefas e desativar':'Desativar',
+        eqParaOptions:[{value:'',label:'Escolha a pessoa'},...outros.map(u=>({value:u.id,label:u.nome+(u.voce?' (você)':'')}))],
+        eqConvidar:()=>{
+          const err={};
+          if(!t(f.nome)) err.nome='Falta o nome.';
+          if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t(f.email))) err.email='Confira o e-mail.';
+          else if(eq.some(u=>u.email.toLowerCase()===t(f.email).toLowerCase()&&u.status!=='desativado')) err.email='Essa pessoa já faz parte da equipe.';
+          if(Object.keys(err).length) return this.setState({eqErr:err});
+          const novo={id:'u'+Date.now(),nome:t(f.nome),email:t(f.email).toLowerCase(),papel:papelSel,status:'convite',info:'Convite enviado agora · vale até 24/09',tarefas:0};
+          this.setState(x=>({equipe:[...x.equipe,novo],eqDlg:null,eqMsg:'Convite enviado para '+novo.email+'. O link para criar a senha vale 48 horas.'}));
+        },
+        eqSalvarPapel:()=>{
+          if(!alvo) return;
+          if(alvo.papel==='dono'&&papelSel!=='dono'&&donosAtivos.length<=1) return this.setState({eqErr:{geral:'A loja precisa de pelo menos um dono ativo.'}});
+          upd(alvo.id,{papel:papelSel});
+          this.setState({eqDlg:null,eqMsg:'Papel de '+alvo.nome+' alterado para '+(papelSel==='dono'?'Dono':'Funcionário')+'. Vale a partir da próxima tela que abrir.'});
+        },
+        eqDesativar:()=>{
+          if(!alvo) return;
+          if(alvo.papel==='dono'&&donosAtivos.length<=1) return this.setState({eqErr:{geral:'A loja precisa de pelo menos um dono ativo.'}});
+          if(alvo.tarefas>0&&!f.para) return this.setState({eqErr:{para:'Escolha quem fica com as tarefas.'}});
+          const para=eq.find(u=>u.id===f.para);
+          this.setState(x=>({equipe:x.equipe.map(u=>u.id===alvo.id?{...u,status:'desativado',info:'Desativado agora',tarefas:0}:(para&&u.id===para.id?{...u,tarefas:u.tarefas+alvo.tarefas}:u)),eqDlg:null,
+            eqMsg:'O acesso de '+alvo.nome+' foi desativado e encerrado em todos os aparelhos.'+(para?' As '+alvo.tarefas+' tarefas pendentes passaram para '+para.nome+'.':'')}));
+        },
+        // segurança
+        sgPw:pw,sgOn:{atual:setP('atual'),nova:setP('nova'),rep:setP('rep')},
+        sgRegras:regras.map(r=>({txt:r.txt,icon:r.ok?'circle-check':'minus',fg:r.ok?'var(--status-success-fg)':'var(--text-muted)'})),
+        sgAtualErr:s.sgTry&&!pw.atual?'Informe a senha atual.':(s.sgAtualErrado?'A senha atual não confere.':''),
+        sgErr:s.sgErr,sgErrShow:!!s.sgErr,sgMsg:s.sgMsg,sgMsgShow:!!s.sgMsg,sgSaving:s.sgSaving,sgSalvarTxt:s.sgSaving?'Salvando':'Alterar senha',
+        sgSalvar:()=>{
+          if(s.sgSaving) return;
+          if(!pw.atual) return this.setState({sgTry:true,sgErr:''});
+          if(!regras.every(r=>r.ok)) return this.setState({sgTry:true,sgErr:'A nova senha ainda não cumpre as regras acima.'});
+          if(pw.atual!=='nortiq2026') return this.setState({sgTry:true,sgAtualErrado:true});
+          this.setState({sgSaving:true});
+          setTimeout(()=>this.setState(x=>({sgSaving:false,sgTry:false,sgAtualErrado:false,sgPw:{atual:'',nova:'',rep:''},sessoes:x.sessoes.filter(z=>z.atual),
+            sgMsg:'Senha alterada. Por segurança, os outros aparelhos foram desconectados.'})),900);
+        },
+        sgSessoes:s.sessoes.map(z=>({...z,naoAtual:!z.atual,sair:()=>this.setState(x=>({sessoes:x.sessoes.filter(y=>y.id!==z.id),sgMsg:z.aparelho+' foi desconectado.'}))})),
+        sgTemOutras:s.sessoes.some(z=>!z.atual),sgSoEste:!s.sessoes.some(z=>!z.atual),
+        sgSairTodos:()=>this.setState({sgConfirm:true,sgMsg:''}),sgConfirm:s.sgConfirm,sgFecharConfirm:()=>this.setState({sgConfirm:false}),
+        sgConfirmarSair:()=>this.setState(x=>({sessoes:x.sessoes.filter(z=>z.atual),sgConfirm:false,sgMsg:'Pronto. Todos os outros aparelhos foram desconectados.'})),
+        // menu do usuário
+        userMenu:!!s.userMenu,toggleUserMenu:()=>this.setState(x=>({userMenu:!x.userMenu,notifOpen:false})),closeUserMenu:()=>this.setState({userMenu:false}),
+        userEmail:admin?'helena@nortiq.com.br':eu.email,userMenuLoja:!admin,userMenuTop:mobile?'64px':'70px',userMenuRight:mobile?'8px':'24px',
+        irMinhaConta:()=>this.setState({page:'config',cfgTab:'perfil',userMenu:false,drawer:null,menuOpen:false}),
+        irSeguranca:()=>this.setState({page:'config',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}),
+        sairMenu:()=>this.setState({view:'login',userMenu:false,drawer:null,menuOpen:false}),
+        // login e protótipo
+        loginEmail:s.loginFor?((s.accs.find(a=>a.slug===s.loginFor)||{}).email||('contato@'+s.loginFor+'.com.br')):(s.papel==='funcionario'?'camila@casadoaquecedor.com.br':'rogerio@casadoaquecedor.com.br'),
+        loginDemo:ld,loginDemoOptions:LOGIN_DEMOS,assinDemo:s.assin,assinDemoOptions:ASSIN_DEMOS,papelDemo:s.papel,papelDemoOptions:PAPEL_DEMOS,
+        onLoginDemo:e=>{const v=e.target.value;this.setState({loginDemo:v,siteErr:v==='naoencontrada'?'Não encontramos a loja "casadoaquecedr". Confira o endereço e tente de novo.':'',siteSlug:v==='naoencontrada'?'casadoaquecedr':''});},
+        onAssinDemo:e=>this.setState({assin:e.target.value}),onPapelDemo:e=>this.setState({papel:e.target.value,loginFor:null}),
+        loginForm:!['site','naoencontrada','encerrada'].includes(ld),loginSite:ld==='site'||ld==='naoencontrada',loginEncerrada:ld==='encerrada',
+        loginBannerShow:!!b,loginBanner:b?{icon:b[1],txt:b[2],bg:TONS[b[0]][0],fg:TONS[b[0]][1]}:{},
+        entrarDesabilitado:ld==='tentativas',entrarTxt:ld==='tentativas'?'Tente de novo às 10:45':'Entrar',
+        loginLoja:()=>{
+          if(['senha','desativado','tentativas'].includes(ld)) return;   // no sistema real, a API devolve o erro e a tela mostra o aviso
+          this.setState({view:'loja',page:'inicio',loginNotice:'',loginFor:null,cfgTab:'perfil',loginDemo:'normal'});
+        },
+        siteSlug:s.siteSlug,siteErr:s.siteErr,onSiteSlug:e=>this.setState({siteSlug:e.target.value,siteErr:''}),irLoja:()=>irSite(s.siteSlug),
+        voltarLoginNormal:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({loginDemo:'normal',siteErr:'',siteSlug:''});}
+      };
+    })();
+
     // Esqueci minha senha: pedir link por e-mail e criar a nova senha.
     // A resposta é sempre a mesma, exista ou não uma conta com o e-mail (não revela quem é cliente).
     const rsVals=(()=>{
@@ -3378,12 +3886,12 @@ class Component extends DCLogic {
       cfgPerfil:s.cfgTab==='perfil',cfgConta:s.cfgTab==='conta',fullRow:{gridColumn:'1 / -1'},
       saveProfile:()=>this.setState({profileSaved:true}),profileSaved:s.profileSaved,
       rowPadX:mobile?'16px':'20px',
-      myInvoices:[
+      myInvoices:ajustaFaturas([
         ((s.accs.find(a=>a.slug==='casadoaquecedor')||{}).status==='Cancelada'?{mes:'Outubro de 2026',data:'Não será cobrada · assinatura cancelada',status:'Cancelada',tone:'neutral',temAcao:false}
           :{mes:'Outubro de 2026',data:'Vence 01/10 · PIX ou boleto',status:'Em aberto',tone:'info',btnLabel:'Pagar',btnVariant:'primary',temAcao:true,acao:()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)')}),
         {mes:'Setembro de 2026',data:'Paga em 01/09 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',temAcao:true,acao:()=>this.goGateway('ver o recibo de setembro')},
         {mes:'Agosto de 2026',data:'Paga em 01/08 · PIX',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',temAcao:true,acao:()=>this.goGateway('ver o recibo de agosto')},
-        {mes:'Julho de 2026',data:'Paga em 02/07 · boleto',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',temAcao:true,acao:()=>this.goGateway('ver o recibo de julho')}],
+        {mes:'Julho de 2026',data:'Paga em 02/07 · boleto',status:'Paga',tone:'success',btnLabel:'Recibo',btnVariant:'secondary',temAcao:true,acao:()=>this.goGateway('ver o recibo de julho')}]),
       payOpen:()=>this.goGateway('pagar a fatura de outubro (R$ 79,90)'),
       gwNomeDe:GATEWAY.nome?'do '+GATEWAY.nome:'do nosso parceiro de pagamentos',
       showGwNote:!!s.gwNote,gwNoteText:s.gwNote?'Aqui o Nortiq abre, em uma nova aba, a página segura '+(GATEWAY.nome?'do '+GATEWAY.nome:'do gateway')+' para '+s.gwNote+'.':'',
@@ -3414,7 +3922,8 @@ class Component extends DCLogic {
         const id='ORC-'+String(s.next).padStart(4,'0');
         const o={id,cli:nf.cli.trim(),tel:(nf.tel.replace(/\D/g,'')||'12900000000'),prod:nf.prod,valor:Number(nf.valor),pag:nf.pag,end:nf.end.trim(),origem:nf.origem,stage:'solicitado',criado:'22/09',dias:0,inst:'',obs:''};
         this.setState(x=>({orcs:[o,...x.orcs],next:x.next+1,showNew:false,page:'orcamentos',drawer:{type:'orc',id},draft:null,tpl:0,tplAuto:true}));
-      }
+      },
+      ...etapa1Vals
     };
   }
 }
