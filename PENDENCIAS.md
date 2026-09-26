@@ -82,6 +82,18 @@ Para ver cada situação no protótipo, use o painel "Protótipo · ver outras s
 - **Vendeu sem ter no estoque:** a venda passa e o produto fica com quantidade negativa e o aviso "Repor 1 un", até a próxima entrada.
 - O funcionário abre a ficha do produto só para consulta (sem custo e sem registrar movimentação).
 
+## Etapa 8 do design: estados gerais (feito em 26/09)
+
+No login do protótipo há um seletor novo, **Estado das telas**, para ver cada situação:
+
+- **Loja nova, sem dados:** o Início vira **Primeiros passos** (conferir os dados da loja, cadastrar os produtos, convidar a equipe, primeiro cliente, primeiro orçamento e a meta do mês), com o progresso "2 de 6" e o atalho de cada passo. A funcionária vê só os passos que ela pode fazer. Cada tela vazia explica para que serve e oferece o primeiro passo: Orçamentos, Clientes, Estoque (importar a planilha ou cadastrar produto), Tarefas, Agenda, Faturamento, Relatórios e Metas (definir a primeira meta ali mesmo). Dá para ocultar os primeiros passos e ver o Início completo.
+- **Carregando:** ao abrir uma tela aparece o esqueleto (blocos cinza no lugar dos números e da lista) e, ao salvar, o botão fica em **Salvando…** até o servidor responder.
+- **Sem conexão:** faixa no topo avisando que nada novo é salvo até a internet voltar, com **Tentar de novo**. Ao salvar sem conexão, a janela continua aberta com o que foi digitado.
+- **Erro ao salvar:** aviso dentro da janela ("Não foi possível salvar agora. O que você digitou continua aqui.") com **Tentar de novo**. No protótipo vale para novo orçamento, cliente, tarefa e movimentação do estoque; no sistema real, para todas as janelas.
+- **Erro ao abrir uma tela:** aviso com **Tentar de novo**, **Voltar para o Início**, **Falar com a Nortiq** e o **código do erro**, que a equipe Nortiq usa para achar a falha no registro do servidor.
+- **Página não encontrada:** para link errado ou item excluído, com **Voltar para o Início**. Um item de outra loja também cai aqui (o sistema nunca revela que ele existe).
+- Nos cartões do Início, as listas vazias ganharam uma frase ("Nenhuma instalação marcada para esta semana") e o menu não mostra mais o número 0.
+
 ## Decisões de 26/09
 - **Cópia de segurança:** cópias automáticas do Neon (voltar o banco a qualquer momento dos últimos dias) + botão "Exportar dados" para a loja. Cópia semanal separada por loja fica para depois.
 - **Assinatura paga fora do Asaas:** permitida; a equipe Nortiq registra cada pagamento no painel.
@@ -107,9 +119,9 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 9. ~~Lançamentos, recebimentos, estorno, cancelamento e reabrir venda paga~~: feitos na etapa 4 (acima). Fica para depois: parcelas (vários vencimentos num lançamento) e recibo em PDF.
 
 ### Estados gerais
-10. **Carregando:** padrão para listas e painéis (esqueleto) e botões com "Salvando" ou "Enviando". O botão do design system já tem esse estado.
-11. **Erros gerais:** sem conexão, erro inesperado ("Não foi possível salvar. Tente de novo.") e página não encontrada.
-12. **Loja nova, sem dados:** estados vazios de Início, Orçamentos, Clientes, Estoque (sugerindo importar a planilha), Faturamento, Agenda e Metas (definir a primeira meta).
+10. ~~Carregando~~, 11. ~~Erros gerais~~ e 12. ~~Loja nova, sem dados~~: feitos na etapa 8 (acima).
+
+Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a API.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
@@ -133,6 +145,7 @@ O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o ca
 - Histórico de alterações visível para o dono.
 - Permissões personalizadas por funcionário.
 - Configurações da plataforma no painel Nortiq (dias de tolerância do atraso) e cadastro de cupons.
+- **Tour guiado no primeiro acesso** (sugestão de 26/09): balões apontando cada parte da tela ("1 de 16"), com Próximo, Voltar e Pular; um tour para o dono e outro para funcionário e técnico; ajustado ao celular; aparece uma vez por usuário e pode ser revisto pelo menu da conta. Também serve para mostrar novidades.
 
 ## O que já estava certo
 

@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="ds/tokens/base.css">
   <link rel="stylesheet" href="ds/styles.css">
   <script src="ds/ds_bundle.js?v=2"></script>
-  <style>html,body{margin:0;height:100%;background:var(--surface-app);color:var(--text-body)}a{color:var(--text-link);text-decoration:none}a:hover{color:var(--text-link-hover);text-decoration:underline}</style>
+  <style>html,body{margin:0;height:100%;background:var(--surface-app);color:var(--text-body)}a{color:var(--text-link);text-decoration:none}a:hover{color:var(--text-link-hover);text-decoration:underline}@keyframes nq-pulse{0%,100%{opacity:1}50%{opacity:.45}}@media (prefers-reduced-motion:reduce){[aria-busy="true"] *{animation:none!important}}</style>
 </helmet>
 
 <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
@@ -94,6 +94,7 @@
         <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Protótipo · ver outras situações</span>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-login" label="Situação do login" options="{{ loginDemoOptions }}" value="{{ loginDemo }}" onChange="{{ onLoginDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-papel" label="Entrar como" options="{{ papelDemoOptions }}" value="{{ papelDemo }}" onChange="{{ onPapelDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-estado" label="Estado das telas" options="{{ estadoDemoOptions }}" value="{{ estadoDemo }}" onChange="{{ onEstadoDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-assin" label="Assinatura da loja" options="{{ assinDemoOptions }}" value="{{ assinDemo }}" onChange="{{ onAssinDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-cobr" label="Como a loja paga" options="{{ cobrDemoOptions }}" value="{{ cobrDemo }}" onChange="{{ onCobrDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <div style="display:grid; gap:6px; padding-top:10px; border-top:1px dashed var(--border-default)">
@@ -534,6 +535,19 @@
             </sc-if>
           </div>
         </sc-if>
+        <sc-if value="{{ offlineShow }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; align-items:center; gap:10px 12px; flex-wrap:wrap; padding:12px 16px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg)">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="wifi-off" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 260px; font:var(--type-ui); font-weight:600; line-height:1.45">Sem conexão com a internet. Você continua vendo o que já estava aberto, mas nada novo é salvo até a conexão voltar.</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="rotate-ccw" onClick="{{ conexaoVoltar }}" hint-size="140px,34px">Tentar de novo</x-import>
+          </div>
+        </sc-if>
+        <sc-if value="{{ conexaoMsgShow }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="wifi" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span>Conexão de volta. Pode continuar de onde parou.</span>
+          </div>
+        </sc-if>
         <sc-if value="{{ isPausado }}" hint-placeholder-val="{{ false }}">
           <div style="max-width:680px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="640px,320px">
             <div style="display:grid; gap:18px">
@@ -569,13 +583,181 @@
         </sc-if>
 
 
+        <!-- ESTADOS GERAIS: carregando, erro ao abrir a tela, página não encontrada e loja nova -->
+        <sc-if value="{{ skShow }}" hint-placeholder-val="{{ false }}">
+          <div role="status" aria-busy="true" aria-label="Carregando" style="display:grid; gap:16px">
+            <span style="position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap">Carregando…</span>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+              <sc-for list="{{ skCards }}" as="k" hint-placeholder-count="4">
+                <div style="display:grid; gap:12px; padding:20px; border-radius:var(--radius-card); background:var(--surface-card); box-shadow:var(--ring-card)">
+                  <span style="display:block; width:45%; height:12px; border-radius:6px; background:var(--gray-200); animation:nq-pulse 1.4s ease-in-out infinite"></span>
+                  <span style="display:block; width:60%; height:28px; border-radius:8px; background:var(--gray-200); animation:nq-pulse 1.4s ease-in-out infinite"></span>
+                  <span style="display:block; width:80%; height:10px; border-radius:6px; background:var(--gray-200); animation:nq-pulse 1.4s ease-in-out infinite"></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid; padding:6px 20px; border-radius:var(--radius-card); background:var(--surface-card); box-shadow:var(--ring-card)">
+              <sc-for list="{{ skLinhas }}" as="l" hint-placeholder-count="5">
+                <div style="display:flex; align-items:center; gap:12px; padding:14px 0; border-top:{{ l.borda }}">
+                  <span style="flex:0 0 auto; display:block; width:40px; height:40px; border-radius:var(--radius-sm); background:var(--gray-200); animation:nq-pulse 1.4s ease-in-out infinite"></span>
+                  <div style="flex:1; display:grid; gap:8px; min-width:0">
+                    <span style="display:block; width:{{ l.w1 }}; height:12px; border-radius:6px; background:var(--gray-200); animation:nq-pulse 1.4s ease-in-out infinite"></span>
+                    <span style="display:block; width:{{ l.w2 }}; height:10px; border-radius:6px; background:var(--gray-200); animation:nq-pulse 1.4s ease-in-out infinite"></span>
+                  </div>
+                  <span style="flex:0 0 auto; display:block; width:72px; height:28px; border-radius:var(--radius-pill); background:var(--gray-200); animation:nq-pulse 1.4s ease-in-out infinite"></span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ erroTelaShow }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:680px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="640px,340px">
+            <div role="alert" style="display:grid; gap:18px">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; background:var(--status-danger-bg); color:var(--status-danger-fg)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="triangle-alert" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+              <div style="display:grid; gap:8px">
+                <span style="font:var(--type-title); color:var(--text-strong)">Não foi possível abrir {{ erroTelaNome }}</span>
+                <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Pode ser uma falha passageira. Os dados da loja continuam guardados. Tente de novo em alguns segundos.</span>
+              </div>
+              <div style="display:grid; gap:4px; padding:12px 14px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+                <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Se continuar, fale com a Nortiq e informe este código:</span>
+                <span style="font-family:var(--font-mono, ui-monospace, monospace); font-weight:700; font-size:16px; letter-spacing:0.04em; color:var(--text-strong); user-select:all">{{ erroTelaCodigo }}</span>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="rotate-ccw" onClick="{{ telaDeNovo }}" hint-size="150px,44px">Tentar de novo</x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" onClick="{{ voltarInicio }}" hint-size="170px,44px">Voltar para o Início</x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" icon="message-circle" onClick="{{ falarNortiqErro }}" hint-size="180px,44px">Falar com a Nortiq</x-import>
+              </div>
+            </div>
+          </x-import></div>
+        </sc-if>
+        <sc-if value="{{ naoEncShow }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:680px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="640px,320px">
+            <div style="display:grid; gap:18px">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="search-x" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+              <div style="display:grid; gap:8px">
+                <span style="font:var(--type-title); color:var(--text-strong)">Não encontramos esta página</span>
+                <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">O endereço pode estar errado, ou o item foi excluído. Se alguém mandou o link para você, peça para enviar de novo.</span>
+                <span style="font:var(--type-caption); color:var(--text-subtle); overflow-wrap:anywhere">{{ naoEncEndereco }}</span>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ voltarInicio }}" hint-size="170px,44px">Voltar para o Início</x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="file-text" onClick="{{ irOrcamentos }}" hint-size="170px,44px">Abrir Orçamentos</x-import>
+              </div>
+            </div>
+          </x-import></div>
+        </sc-if>
+        <sc-if value="{{ vazioShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; justify-items:center; gap:16px; text-align:center; padding:48px 24px; border-radius:var(--radius-card); background:var(--surface-card); box-shadow:var(--ring-card)">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:var(--radius-pill); background:var(--navy-50); color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ vazio.icon }}" size="{{ 26 }}" hint-size="26px,26px"></x-import></span>
+            <div style="display:grid; gap:6px; max-width:520px">
+              <span style="font:var(--type-title); color:var(--text-strong)">{{ vazio.titulo }}</span>
+              <span style="font:var(--type-body); color:var(--text-muted); line-height:1.6">{{ vazio.txt }}</span>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center">
+              <sc-for list="{{ vazio.botoes }}" as="b" hint-placeholder-count="2">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ b.variant }}" icon="{{ b.icon }}" onClick="{{ b.go }}" hint-size="170px,44px">{{ b.label }}</x-import>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ vazioCompShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; align-items:center; gap:14px 16px; flex-wrap:wrap; padding:16px 20px; border-radius:var(--radius-card); background:var(--surface-card); box-shadow:var(--ring-card)">
+            <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:var(--radius-pill); background:var(--navy-50); color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ vazio.icon }}" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+            <div style="display:grid; gap:2px; flex:1 1 260px; min-width:0">
+              <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ vazio.titulo }}</span>
+              <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">{{ vazio.txt }}</span>
+            </div>
+            <sc-for list="{{ vazio.botoes }}" as="b" hint-placeholder-count="1">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ b.variant }}" size="sm" icon="{{ b.icon }}" onClick="{{ b.go }}" hint-size="170px,34px">{{ b.label }}</x-import>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ metaVazia }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:620px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="600px,320px">
+            <div style="display:grid; gap:18px">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; background:var(--navy-50); color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="target" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+              <div style="display:grid; gap:8px">
+                <span style="font:var(--type-title); color:var(--text-strong)">Defina a primeira meta</span>
+                <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Quanto a loja quer vender em setembro? Com a meta definida, o Início mostra quanto já foi vendido e quanto falta por dia útil. Dá para ajustar quando quiser.</span>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap">
+                <div style="flex:1 1 220px; max-width:280px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="meta-primeira" label="Meta de vendas de setembro" prefix="R$" inputMode="decimal" placeholder="30.000" value="{{ metaRasc }}" onChange="{{ onMetaRasc }}" error="{{ metaRascErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import></div>
+                <div style="padding-top:22px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ salvarPrimeiraMeta }}" hint-size="140px,44px">Salvar meta</x-import></div>
+              </div>
+            </div>
+          </x-import></div>
+        </sc-if>
+        <sc-if value="{{ inicioNovo }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:24px">
+            <div style="display:grid; gap:4px">
+              <span style="font:var(--type-title-xl); letter-spacing:-0.015em; color:var(--text-strong)">{{ saudacao }}</span>
+              <span style="font:var(--type-body); color:var(--text-muted); line-height:1.5">{{ ppTexto }}</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap:16px; align-items:start">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,460px">
+                <div style="display:grid; gap:12px">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Primeiros passos</span>
+                    <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted); white-space:nowrap">{{ ppFeitosTxt }}</span>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ ppFeitosN }}" max="{{ ppTotalN }}" show-value="{{ false }}" height="{{ 8 }}" hint-size="100%,8px"></x-import>
+                  <div style="display:grid; margin-top:4px">
+                    <sc-for list="{{ passos }}" as="p" hint-placeholder-count="6">
+                      <div style="display:grid; grid-template-columns:34px minmax(0,1fr) auto; align-items:center; gap:12px; padding:12px 0; border-top:{{ p.borda }}">
+                        <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:{{ p.bg }}; color:{{ p.fg }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ p.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                        <div style="display:grid; gap:2px; min-width:0">
+                          <span style="font:var(--type-ui); font-weight:600; color:{{ p.cor }}; text-decoration:{{ p.risco }}">{{ p.titulo }}</span>
+                          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.45">{{ p.txt }}</span>
+                        </div>
+                        <sc-if value="{{ p.pendente }}" hint-placeholder-val="{{ true }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" onClick="{{ p.go }}" hint-size="100px,34px">{{ p.botao }}</x-import>
+                        </sc-if>
+                        <sc-if value="{{ p.feito }}" hint-placeholder-val="{{ false }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" size="sm" hint-size="60px,22px">Feito</x-import>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <a href="#" onClick="{{ ppOcultar }}" style="font:var(--type-caption); font-weight:600">Ocultar os primeiros passos e ver o Início completo</a>
+                </div>
+              </x-import>
+              <div style="display:grid; gap:16px">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
+                  <div style="display:grid; gap:12px">
+                    <div style="display:flex; align-items:center; gap:10px">
+                      <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:var(--navy-50); color:var(--navy-500)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="life-buoy" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                      <span style="font:var(--type-section); color:var(--text-strong)">Precisa de ajuda para começar?</span>
+                    </div>
+                    <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">A equipe Nortiq ajuda a importar a planilha de produtos e a cadastrar a equipe, sem custo.</span>
+                    <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="message-circle" onClick="{{ ppAjuda }}" hint-size="180px,40px">Falar com a Nortiq</x-import></div>
+                  </div>
+                </x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,240px">
+                  <div style="display:grid; gap:10px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">O que aparece aqui depois</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Com os primeiros orçamentos e lançamentos, o Início passa a mostrar:</span>
+                    <div style="display:grid; gap:8px">
+                      <sc-for list="{{ ppLista }}" as="i" hint-placeholder-count="5">
+                        <div style="display:flex; align-items:center; gap:10px; font:var(--type-ui); color:var(--text-body)">
+                          <span style="display:inline-flex; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ i.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                          <span>{{ i.txt }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </x-import>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
         <!-- INÍCIO -->
         <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
           <div style="display:grid; gap:24px">
             <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap">
               <div style="display:grid; gap:4px">
                 <span style="font:var(--type-title-xl); letter-spacing:-0.015em; color:var(--text-strong)">{{ saudacao }}</span>
-                <span style="font:var(--type-body); color:var(--text-muted)">Terça-feira, 22 de setembro. Você tem {{ tasksTodayCount }} retornos para hoje.</span>
+                <span style="font:var(--type-body); color:var(--text-muted)">{{ hojeResumo }}</span>
               </div>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openNewFromHome }}" hint-size="160px,44px">Novo orçamento</x-import>
             </div>
@@ -611,6 +793,9 @@
                         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="message-circle" onClick="{{ r.wa }}" hint-size="110px,34px">Avisar</x-import>
                       </div>
                     </sc-for>
+                    <sc-if value="{{ dueVazio }}" hint-placeholder-val="{{ false }}">
+                      <span style="padding:14px 0; border-top:1px solid var(--border-subtle); font:var(--type-caption); color:var(--text-muted); line-height:1.5">Nenhuma manutenção ou garantia vencendo nos próximos 30 dias. Quando um equipamento instalado estiver perto da revisão, ele aparece aqui.</span>
+                    </sc-if>
                   </div>
                 </div>
               </x-import>
@@ -651,6 +836,9 @@
                           </div>
                         </div>
                       </sc-for>
+                    <sc-if value="{{ weekVazio }}" hint-placeholder-val="{{ false }}">
+                      <span style="padding:14px 0; border-top:1px solid var(--border-subtle); font:var(--type-caption); color:var(--text-muted); line-height:1.5">Nenhuma instalação marcada para esta semana.</span>
+                    </sc-if>
                     </div>
                   </div>
                 </x-import>
@@ -688,6 +876,9 @@
                         <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap">{{ t.when }}</span>
                       </div>
                     </sc-for>
+                    <sc-if value="{{ todayVazio }}" hint-placeholder-val="{{ false }}">
+                      <span style="padding:14px 0; border-top:1px solid var(--border-subtle); font:var(--type-caption); color:var(--text-muted); line-height:1.5">Nenhum retorno para hoje. As tarefas marcadas para o dia aparecem aqui.</span>
+                    </sc-if>
                   </div>
                 </div>
               </x-import>
@@ -1365,6 +1556,9 @@
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ h.real }}" max="{{ h.alvo }}" tone="{{ h.tone }}" show-value="{{ false }}" hint-size="100%,8px"></x-import>
                   </div>
                 </sc-for>
+                <sc-if value="{{ metaHistVazio }}" hint-placeholder-val="{{ false }}">
+                  <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">A loja começou a usar o Nortiq neste mês. Os meses anteriores aparecem aqui a partir de outubro.</span>
+                </sc-if>
               </div>
             </x-import>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,320px">
@@ -2657,9 +2851,16 @@
             <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="arrow-left-right" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ mvPrev }}</span>
           </div>
         </sc-if>
+        <sc-if value="{{ seMov }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-danger-bg); color:var(--status-danger-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ seIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 240px">{{ seTxt }}</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="rotate-ccw" onClick="{{ seRefazer }}" hint-size="140px,34px">Tentar de novo</x-import>
+          </div>
+        </sc-if>
         <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ mvFechar }}" hint-size="100px,44px">Cancelar</x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ mvSalvar }}" hint-size="120px,44px">Registrar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ mvSalvar }}" loading="{{ svMov }}" hint-size="120px,44px">{{ svMovTxt }}</x-import>
         </div>
       </div>
     </x-import>
@@ -3329,12 +3530,19 @@
         </sc-if>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="tf-det" label="Detalhe (opcional)" placeholder="Ex.: pediu desconto à vista" value="{{ tf.det }}" onChange="{{ tfOn.det }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Enviar para o Google Agenda (lembrete no celular)" checked="{{ tfCal }}" onChange="{{ tfOn.cal }}" disabled="{{ tfGoogleOff }}" hint-size="100%,32px"></x-import>
+        <sc-if value="{{ seTar }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-danger-bg); color:var(--status-danger-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ seIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 240px">{{ seTxt }}</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="rotate-ccw" onClick="{{ seRefazer }}" hint-size="140px,34px">Tentar de novo</x-import>
+          </div>
+        </sc-if>
         <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
           <sc-if value="{{ tfEditando }}" hint-placeholder-val="{{ false }}">
             <div style="margin-right:auto"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" icon="trash-2" onClick="{{ tfExcluir }}" hint-size="150px,44px">Excluir tarefa</x-import></div>
           </sc-if>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ tfFechar }}" hint-size="100px,44px">Cancelar</x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ tfSalvar }}" hint-size="170px,44px">{{ tfSalvarTxt }}</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ tfSalvar }}" loading="{{ svTar }}" hint-size="170px,44px">{{ tfSalvarTxt }}</x-import>
         </div>
       </div>
     </x-import>
@@ -3698,9 +3906,16 @@
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon-right="arrow-right" onClick="{{ ceDupAbrir }}" hint-size="140px,34px">Abrir a ficha</x-import>
           </div>
         </sc-if>
+        <sc-if value="{{ seCli }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-danger-bg); color:var(--status-danger-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ seIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 240px">{{ seTxt }}</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="rotate-ccw" onClick="{{ seRefazer }}" hint-size="140px,34px">Tentar de novo</x-import>
+          </div>
+        </sc-if>
         <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ ceFechar }}" hint-size="100px,44px">Cancelar</x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ ceSalvar }}" hint-size="170px,44px">{{ ceSalvarTxt }}</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ ceSalvar }}" loading="{{ svCli }}" hint-size="170px,44px">{{ ceSalvarTxt }}</x-import>
         </div>
       </div>
     </x-import>
@@ -3900,9 +4115,16 @@
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" label="Como chegou" options="{{ originOptions }}" value="{{ nf.origem }}" onChange="{{ nfOn.origem }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
         </div>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço de instalação" value="{{ nf.end }}" onChange="{{ nfOn.end }}" icon="map-pin" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <sc-if value="{{ seOrc }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-danger-bg); color:var(--status-danger-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ seIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 240px">{{ seTxt }}</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="rotate-ccw" onClick="{{ seRefazer }}" hint-size="140px,34px">Tentar de novo</x-import>
+          </div>
+        </sc-if>
         <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeNew }}" hint-size="100px,44px">Cancelar</x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveNew }}" hint-size="160px,44px">Salvar orçamento</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveNew }}" loading="{{ svOrc }}" hint-size="160px,44px">{{ svOrcTxt }}</x-import>
         </div>
       </div>
     </x-import>
@@ -4327,6 +4549,8 @@ const LOGIN_DEMOS=[{value:'normal',label:'Entrar normalmente'},{value:'site',lab
  {value:'senha',label:'Senha incorreta'},{value:'tentativas',label:'Muitas tentativas'},{value:'desativado',label:'Usuário desativado'},
  {value:'sessao',label:'Sessão expirada'},{value:'encerrada',label:'Assinatura encerrada'}];
 const ASSIN_DEMOS=[{value:'em_dia',label:'Em dia'},{value:'atraso',label:'Em atraso (dentro dos 15 dias)'},{value:'pausado',label:'Acesso pausado (mais de 15 dias)'}];
+const ESTADO_DEMOS=[{value:'normal',label:'Normal (loja com dados)'},{value:'nova',label:'Loja nova, sem dados'},{value:'carregando',label:'Internet lenta (carregando)'},
+ {value:'offline',label:'Sem conexão com a internet'},{value:'erro_salvar',label:'Erro ao salvar'},{value:'erro_tela',label:'Erro ao abrir uma tela'},{value:'404',label:'Página não encontrada'}];
 const PAPEL_DEMOS=[{value:'dono',label:'Rogério Tavares · dono'},{value:'funcionario',label:'Camila Duarte · funcionária'}];
 
 class Component extends DCLogic {
@@ -4349,6 +4573,7 @@ class Component extends DCLogic {
     agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({status:'marcado',...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true,cancelados:false},
     showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:16,agCx:null,agCxErr:'',
     tecs:TECNICOS.map(t=>({...t,ativo:true})),tcOpen:false,tcForm:null,tcErr:'',tcMsg:'',tf:null,tfErr:{},tx:null,taskMsg:null,
+    estadoDemo:'normal',lojaNova:false,ppOculto:false,ppLoja:false,carregandoPg:false,erroTela:null,telasOk:{},salvando:null,salvarErro:null,salvarFalhou:false,conexaoMsg:false,metaRasc:'',metaRascErr:'',
     mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
 
   componentDidMount(){
@@ -4419,6 +4644,50 @@ class Component extends DCLogic {
       else n=addD(d,7*dir);
       return {agRef:isoOf(n),agSel:isoOf(n),agMsg:''};});
   }
+  // ---------- Estados gerais (etapa 8) ----------
+  // Dados da loja: a Casa do Aquecedor com o movimento de setembro, ou a mesma loja recém-criada, sem nada cadastrado.
+  dadosLoja(nova,func){
+    if(nova) return {lojaNova:true,ppOculto:false,ppLoja:false,orcs:[],orcsExcl:[],tasks:[],clis:[],estq:[],movs:[],lanc:[],agEv:[],meta:0,metaRasc:'',metaRascErr:'',
+      equipe:EQUIPE0.filter(u=>u.id==='u1'||(func&&u.id==='u2')).map(u=>({...u,tarefas:0})),tecs:[],gIn:false,gcal:false,estUltImp:null,
+      notifs:[{id:'n0',tipo:'nortiq',titulo:'Boas-vindas ao Nortiq',texto:'Siga os primeiros passos no Início para deixar a loja pronta.',quando:'agora',lida:false,go:'inicio'}]};
+    return {lojaNova:false,orcs:ORCS.map(o=>({...o,itens:[{id:o.id+'-1',sku:skuDe(ESTOQUE0,o.prod),desc:o.prod,qtd:1,valor:o.valor}]})),orcsExcl:[],tasks:TASKS.map(t=>({done:false,...t})),
+      clis:CLIS.map(c=>JSON.parse(JSON.stringify(c))),estq:ESTOQUE0.map(p=>({ativo:true,...p})),movs:MOVS0(),lanc:LANC0(),agEv:AGENDA0.map(e=>({status:'marcado',...e})),meta:50000,
+      equipe:EQUIPE0.map(u=>({...u})),tecs:TECNICOS.map(t=>({...t,ativo:true})),gIn:true,gcal:true,estUltImp:'15/09',notifs:NOTIFS0.map(n=>({...n}))};
+  }
+  // Entrar na loja aplicando o "Estado das telas" escolhido no login do protótipo.
+  entrarLoja(extra){
+    const s=this.state, e=s.estadoDemo, nova=e==='nova';
+    const patch={view:'loja',drawer:null,erroTela:null,telasOk:{},salvando:null,salvarErro:null,salvarFalhou:false,conexaoMsg:false,...(extra||{})};
+    if(nova||s.lojaNova) Object.assign(patch,this.dadosLoja(nova,s.papel==='funcionario'));
+    this.setState(patch);
+    this.irPara(e==='404'?'nao-encontrada':'inicio');
+  }
+  // Abrir uma tela: com a internet lenta aparece o esqueleto; com erro no servidor aparece o aviso com o código.
+  irPara(page,extra,ok){
+    const e=this.state.estadoDemo, base={page,drawer:null,menuOpen:false,barHidden:false,erroTela:null,...(extra||{})};
+    const falha=e==='erro_tela'&&page!=='inicio'&&page!=='nao-encontrada'&&!ok&&!this.state.telasOk[page];
+    clearTimeout(this._tPg);
+    if(e!=='carregando'&&!falha&&!ok) return this.setState({...base,carregandoPg:false});
+    this.setState({...base,carregandoPg:true,...(ok?{telasOk:{...this.state.telasOk,[page]:true}}:{})});
+    this._tPg=setTimeout(()=>this.setState({carregandoPg:false,erroTela:falha?page:null}),e==='carregando'?1400:800);
+  }
+  // Salvar: o botão fica em "Salvando…" até o servidor responder. Se a internet cair ou o servidor falhar,
+  // a janela continua aberta com o que foi digitado e um aviso para tentar de novo.
+  guardar(chave,form,feito,online){
+    const s=this.state, e=online?'normal':s.estadoDemo;
+    if(s.salvando) return;
+    const falha=tipo=>this.setState({salvando:null,salvarErro:{chave,form,tipo,refazer:()=>this.guardar(chave,form,feito,tipo==='offline')}});
+    if(e==='offline') return falha('offline');
+    if(online){ this.setState({estadoDemo:'normal',conexaoMsg:true}); clearTimeout(this._tCon); this._tCon=setTimeout(()=>this.setState({conexaoMsg:false}),5000); }
+    if(e==='carregando'||e==='erro_salvar'||online){
+      this.setState({salvando:chave,salvarErro:null});
+      clearTimeout(this._tSalvar);
+      this._tSalvar=setTimeout(()=>{
+        if(e==='erro_salvar'&&!this.state.salvarFalhou){ this.setState({salvarFalhou:true}); return falha('erro'); }
+        this.setState({salvando:null,salvarFalhou:false}); feito(); },e==='carregando'?1400:900);
+      return; }
+    this.setState({salvarErro:null}); feito();
+  }
   openAgNew(dataIso){ this.setState(s=>({showAgNew:true,afErr:{},agMsg:'',af:{id:null,tipo:'Visita técnica',cli:'',data:dataIso||s.agSel,ini:'09:00',fim:'10:00',tec:(s.tecs.find(t=>t.ativo)||{id:'loja'}).id,end:'',google:s.gcal}})); }
   openAgEdit(e){ this.setState({showAgNew:true,afErr:{},agMsg:'',agOpen:null,af:{id:e.id,tipo:e.tipo,cli:e.cli,data:e.data,ini:e.ini,fim:e.fim,tec:e.tec||'loja',end:e.end||'',google:!!e.google}}); }
   // Tarefa nova (pre = campos já preenchidos, ex.: vindo da ficha) ou edição de uma tarefa.
@@ -4482,7 +4751,7 @@ class Component extends DCLogic {
     const expanded=!collapsed;
     const admin=view==='admin';
     const page=admin?s.apage:s.page;
-    const go=p=>(e)=>{ if(e&&e.preventDefault) e.preventDefault(); this.setState(admin?{apage:p,drawer:null,menuOpen:false,barHidden:false}:{page:p,drawer:null,menuOpen:false,barHidden:false}); };
+    const go=p=>(e)=>{ if(e&&e.preventDefault) e.preventDefault(); if(admin) this.setState({apage:p,drawer:null,menuOpen:false,barHidden:false}); else this.irPara(p); };
     // Papel do usuário (dono ou funcionário) e situação da assinatura da loja.
     const func=!admin&&s.papel==='funcionario';
     const assin=admin?'em_dia':s.assin;
@@ -4511,7 +4780,7 @@ class Component extends DCLogic {
     ];
     const navGroups=(func?navDef.map(g=>({...g,items:g.items.filter(it=>PAGINAS_FUNCIONARIO.includes(it.id))})):navDef).map(g=>({label:g.label,items:g.items.map(it=>{const on=it.id===page;return {...it,go:go(it.id),
       bg:on?'var(--navy-50)':'transparent',hoverBg:on?'var(--navy-50)':'var(--surface-hover)',fg:on?'var(--navy-700)':'var(--text-muted)',ic:on?'var(--navy-500)':'var(--text-subtle)',fw:on?600:500,
-      hasBadge:!!it.badge&&expanded,badgeBg:on?'var(--navy-500)':'var(--gray-200)',badgeFg:on?'#fff':'var(--text-muted)'};})}));
+      hasBadge:!!it.badge&&it.badge!=='0'&&expanded,badgeBg:on?'var(--navy-500)':'var(--gray-200)',badgeFg:on?'#fff':'var(--text-muted)'};})}));
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],estoque:['Estoque','Produtos, quantidades e importação por planilha'],
       tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil, segurança, equipe e dados da loja'],
@@ -4733,9 +5002,9 @@ class Component extends DCLogic {
             if(cu!==null&&!(isFinite(cu)&&cu>=0)) err.custo='Confira o custo.';
             if(Object.keys(err).length) return this.setState({mvErr:err});
             const saldo=mvP.qtd+delta, nome=({entrada:'Entrada',saida:'Saída',perda:'Perda',devolucao:'Devolução',ajuste:'Ajuste'})[tipo];
-            this.setState(x=>({estq:x.estq.map(y=>y.sku===mvP.sku?{...y,qtd:saldo}:y),
+            this.guardar('mov',mv,()=>this.setState(x=>({estq:x.estq.map(y=>y.sku===mvP.sku?{...y,qtd:saldo}:y),
               movs:[{id:'m'+Math.random().toString(36).slice(2),sku:mvP.sku,data:'22/09',tipo,qtd:delta,saldo,origem:'manual',orc:'',obs:obs||({entrada:'Entrada registrada',saida:'Saída registrada',devolucao:'Devolução registrada'})[tipo],custo:cu,por:porE},...x.movs],
-              mv:null,mvErr:{},pdMsg:nome+' registrada: '+(delta>0?'+':'−')+Math.abs(delta)+' un. Estoque agora: '+fmtQ(saldo)+' un.'})); }};
+              mv:null,mvErr:{},pdMsg:nome+' registrada: '+(delta>0?'+':'−')+Math.abs(delta)+' un. Estoque agora: '+fmtQ(saldo)+' un.'}))); }};
       }
       // desativar produto
       const pdxP=s.pdx&&todos.find(p=>p.sku===s.pdx);
@@ -5041,7 +5310,7 @@ class Component extends DCLogic {
           // WhatsApp repetido só avisa (decisão da revisão do banco: pode haver o mesmo número em casos específicos)
           const dup=s.clis.find(c=>c.id!==ce.id&&!c.excluido&&digitos(c.tel)===tel);
           if(dup&&ce.dupOk!==tel) return this.setState(x=>({ce:{...x.ce,dupOk:tel,dupNome:dup.nome,dupId:dup.id}}));
-          if(!ce.id){
+          this.guardar('cli',ce,()=>{ if(!ce.id){
             const id='c'+Date.now();
             const novo={id,nome,tel,bairro:String(ce.bairro||'').trim(),end:String(ce.end||'').trim(),desde:'setembro de 2026',total:0,ultima:'—',equip:'—',tipo:ce.tipo,
               alerta:ce.tipo==='lead'?'Interessado':'Novo cliente',atone:'info',equips:[],hist:[{d:'22/09/2026',t:'Cadastro',txt:'Ficha criada'+(ce.origem?' · chegou por '+ce.origem:'')+'.'}]};
@@ -5052,7 +5321,7 @@ class Component extends DCLogic {
               orcs:antigo&&antigo!==nome?x.orcs.map(o=>o.cli===antigo?{...o,cli:nome}:o):x.orcs,
               agEv:antigo&&antigo!==nome?x.agEv.map(e=>e.cli===antigo?{...e,cli:nome}:e):x.agEv,
               ce:null,ceErr:{},cliMsg:{id:ce.id,txt:'Dados salvos.'}}));
-          } }}:{ceShow:false};
+          } }); }}:{ceShow:false};
       // ---------- excluir cliente (com as travas)
       const cxC=s.cx&&s.clis.find(c=>c.id===s.cx.id);
       let cxVals={cxShow:false};
@@ -5255,10 +5524,10 @@ class Component extends DCLogic {
             const ref=o?['orc',o.id]:ca?['cli',ca.id]:null, det=String(tf.det||'').trim();
             const dados={t:titulo,data:tf.data,hora:tf.hora||'',resp:tf.resp,ref,cal:!!tf.cal&&s.gcal,sub:o?o.id+' · '+(det||curto(o.prod)):(det||String(tf.cli||'').trim()),auto:!det};
             const resp=((s.equipe.find(u=>u.id===tf.resp)||{}).nome||'').split(' ')[0], quando=brData(tf.data)+(tf.hora?' às '+tf.hora:'');
-            if(tf.id){ this.setState(x=>({tasks:x.tasks.map(t=>t.id===tf.id?{...t,...dados}:t),tf:null,tfErr:{},taskMsg:{txt:'Tarefa salva.'+(dados.cal?' A Google Agenda também foi atualizada.':'')}})); return; }
+            this.guardar('tar',tf,()=>{ if(tf.id){ this.setState(x=>({tasks:x.tasks.map(t=>t.id===tf.id?{...t,...dados}:t),tf:null,tfErr:{},taskMsg:{txt:'Tarefa salva.'+(dados.cal?' A Google Agenda também foi atualizada.':'')}})); return; }
             const txt='Tarefa criada para '+(tf.resp===euU?'você':resp)+', '+quando+'.'+(dados.cal?' Ela também vai para a Google Agenda.':'');
             this.setState(x=>({tasks:[...x.tasks,{id:Date.now(),done:false,...dados,criada:{data:'22/09',por:eu}}],tf:null,tfErr:{},taskMsg:{txt},taskF:'pend',
-              ...(x.drawer&&x.drawer.type==='orc'?{orcMsg:{id:x.drawer.id,txt}}:{}),...(x.drawer&&x.drawer.type==='cli'?{cliMsg:{id:x.drawer.id,txt}}:{})})); }};
+              ...(x.drawer&&x.drawer.type==='orc'?{orcMsg:{id:x.drawer.id,txt}}:{}),...(x.drawer&&x.drawer.type==='cli'?{cliMsg:{id:x.drawer.id,txt}}:{})})); }); }};
       }
       const txT=s.tx&&s.tasks.find(t=>t.id===s.tx);
       const txV=txT?{txShow:true,txTxt:'"'+txT.t+'" sai da lista de tarefas. Dá para desfazer logo depois.'+(txT.cal?' Também sai da Google Agenda.':''),
@@ -6113,7 +6382,7 @@ class Component extends DCLogic {
         entrarDesabilitado:ld==='tentativas',entrarTxt:ld==='tentativas'?'Tente de novo às 10:45':'Entrar',
         loginLoja:()=>{
           if(['senha','desativado','tentativas'].includes(ld)) return;   // no sistema real, a API devolve o erro e a tela mostra o aviso
-          this.setState({view:'loja',page:'inicio',loginNotice:'',loginFor:null,cfgTab:'perfil',loginDemo:'normal'});
+          this.entrarLoja({loginNotice:'',loginFor:null,cfgTab:'perfil',loginDemo:'normal'});
         },
         siteSlug:s.siteSlug,siteErr:s.siteErr,onSiteSlug:e=>this.setState({siteSlug:e.target.value,siteErr:''}),irLoja:()=>irSite(s.siteSlug),
         voltarLoginNormal:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({loginDemo:'normal',siteErr:'',siteSlug:''});}
@@ -6218,6 +6487,112 @@ class Component extends DCLogic {
 
     const nf=s.nf; const setNf=k=>e=>{const v=e.target.value; this.setState(x=>{const n={...x.nf,[k]:v}; if(k==='prod'){const p=PRODUCTS.find(p=>p[0]===v); if(p) n.valor=String(p[1]);} return {nf:n,nfErr:{...x.nfErr,[k]:undefined}};});};
 
+    // Estados gerais (etapa 8): loja nova sem dados, telas carregando, sem conexão, erro ao salvar, erro ao abrir tela e página não encontrada.
+    // No protótipo vêm do seletor "Estado das telas" do login; no sistema real vêm da resposta da API.
+    const estadosVals=(()=>{
+      const e1=etapa1Vals, nova=!admin&&!!s.lojaNova, lojaPg=!admin&&!bloqueado;
+      const naoEnc=lojaPg&&page==='nao-encontrada';
+      const carregando=lojaPg&&!semAcesso&&!!s.carregandoPg, erroTela=lojaPg&&!semAcesso&&!carregando&&s.erroTela===page;
+      const ocupa=carregando||erroTela||naoEnc;
+      // loja nova: cada tela vazia explica para que serve e oferece o primeiro passo
+      const abrirImp=()=>this.setState({showImp:true,im:emptyIm(),estMsg:''});
+      const VAZ={
+        orcamentos:s.orcs.length===0&&s.orcsExcl.length===0&&{icon:'file-text',titulo:'Nenhum orçamento ainda',
+          txt:'Anote aqui cada pedido que chegar pelo WhatsApp, pelo Instagram ou no balcão. O orçamento acompanha o cliente do pedido até a instalação concluída.',
+          botoes:[{label:'Novo orçamento',icon:'plus',variant:'primary',go:()=>this.setState({showNew:true,nf:emptyNf(),nfErr:{}})}]},
+        clientes:s.clis.length===0&&{icon:'users',titulo:'Nenhum cliente cadastrado',
+          txt:'Cada cliente ganha uma ficha com o histórico de compras, instalações e manutenções. A ficha também é criada quando você faz o primeiro orçamento para a pessoa.',
+          botoes:[{label:'Novo cliente',icon:'user-plus',variant:'primary',go:crVals.abrirNovoCli}]},
+        estoque:s.estq.length===0&&(func?{icon:'package',titulo:'Nenhum produto cadastrado',
+          txt:'O dono da loja ainda não cadastrou os produtos. Quando cadastrar, você consulta aqui o que tem na loja, até pelo celular durante uma visita.',botoes:[]}
+          :{icon:'package',titulo:'Nenhum produto cadastrado',
+          txt:'Traga os produtos de uma vez com a planilha que você já usa (Excel ou CSV), ou cadastre um por um. Com o estoque cadastrado, cada venda dá baixa sozinha.',
+          botoes:[{label:'Importar planilha',icon:'upload',variant:'primary',go:abrirImp},{label:'Cadastrar produto',icon:'plus',variant:'secondary',go:estVals.openNewProd}]}),
+        tarefas:s.tasks.length===0&&{icon:'list-checks',titulo:'Nenhuma tarefa ainda',
+          txt:'Anote os retornos e compromissos da equipe: ligar para um cliente, mandar um orçamento, conferir uma entrega. As tarefas do dia aparecem no Início.',
+          botoes:[{label:'Nova tarefa',icon:'plus',variant:'primary',go:()=>this.abrirTarefa(null)}]},
+        agenda:s.agEv.length===0&&{compacto:true,icon:'calendar',titulo:'A agenda está vazia',
+          txt:'Marque visitas, instalações e retornos pelo botão Novo agendamento. Cada técnico tem uma cor, e a equipe vê tudo pelo celular.',botoes:[]},
+        faturamento:s.lanc.length===0&&{icon:'wallet',titulo:'Nenhum lançamento ainda',
+          txt:'Quando uma venda é fechada nos Orçamentos, o valor a receber aparece aqui sozinho. Despesas e outras receitas você lança pelo botão abaixo.',
+          botoes:[{label:'Novo lançamento',icon:'plus',variant:'primary',go:finVals.abrirNovoLanc},{label:'Ir para Orçamentos',icon:'file-text',variant:'secondary',go:go('orcamentos')}]},
+        relatorios:s.orcs.length===0&&s.lanc.length===0&&{icon:'chart-no-axes-column',titulo:'Ainda não há o que mostrar',
+          txt:'O relatório reúne vendas, funil de orçamentos, perdas e faturamento do período. Ele fica pronto assim que a loja registrar os primeiros orçamentos e lançamentos.',
+          botoes:[{label:'Ir para Orçamentos',icon:'file-text',variant:'primary',go:go('orcamentos')}]}
+      };
+      const vz=nova&&lojaPg&&!semAcesso&&!ocupa&&VAZ[page]||null;
+      const troca=!!vz&&!vz.compacto;
+      const metaVazia=nova&&lojaPg&&!semAcesso&&!ocupa&&page==='metas'&&!(s.meta>0);
+      // primeiros passos no Início da loja nova
+      const PASSOS=[
+        {id:'loja',dono:true,icon:'store',titulo:'Confira os dados da loja',txt:'Nome, CNPJ, endereço e logo saem nos orçamentos e relatórios.',botao:'Conferir',feito:!!s.ppLoja,
+          go:()=>this.setState({page:'config',cfgTab:'conta',ppLoja:true,menuOpen:false})},
+        {id:'estoque',dono:true,icon:'package',titulo:'Cadastre os produtos',txt:'Importe a planilha que você já usa ou cadastre um por um.',botao:'Importar',feito:s.estq.length>0,
+          go:()=>this.setState({page:'estoque',showImp:true,im:emptyIm(),estMsg:'',menuOpen:false})},
+        {id:'equipe',dono:true,icon:'user-plus',titulo:'Convide sua equipe',txt:'Funcionários e técnicos entram com o próprio e-mail e senha.',botao:'Convidar',feito:s.equipe.length>1,
+          go:()=>this.setState({page:'config',cfgTab:'equipe',menuOpen:false})},
+        {id:'cliente',icon:'users',titulo:'Cadastre o primeiro cliente',txt:'A ficha guarda compras, instalações e manutenções.',botao:'Cadastrar',feito:s.clis.length>0,
+          go:()=>{ this.setState({page:'clientes',menuOpen:false}); crVals.abrirNovoCli(); }},
+        {id:'orcamento',icon:'file-text',titulo:'Faça o primeiro orçamento',txt:'Do pedido no WhatsApp até a instalação concluída.',botao:'Criar',feito:s.orcs.length>0,
+          go:()=>this.setState({page:'orcamentos',showNew:true,nf:emptyNf(),nfErr:{},menuOpen:false})},
+        {id:'meta',dono:true,icon:'target',titulo:'Defina a meta do mês',txt:'O Início passa a mostrar quanto falta para bater a meta.',botao:'Definir',feito:s.meta>0,
+          go:()=>this.irPara('metas')}
+      ].filter(x=>!func||!x.dono);
+      const nFeitos=PASSOS.filter(x=>x.feito).length;
+      const inicioNovo=nova&&lojaPg&&!ocupa&&page==='inicio'&&!s.ppOculto&&nFeitos<PASSOS.length;
+      const passos=PASSOS.map((x,i)=>({...x,pendente:!x.feito,icon:x.feito?'check':x.icon,bg:x.feito?'var(--status-success-bg)':'var(--navy-50)',fg:x.feito?'var(--status-success-fg)':'var(--navy-500)',
+        cor:x.feito?'var(--text-muted)':'var(--text-strong)',risco:x.feito?'line-through':'none',borda:i?'1px solid var(--border-subtle)':'none'}));
+      // telas que abrem com erro: o código ajuda a Nortiq a achar a falha no registro do servidor
+      const NOMES={orcamentos:'os Orçamentos',clientes:'os Clientes',estoque:'o Estoque',tarefas:'as Tarefas',agenda:'a Agenda',faturamento:'o Faturamento',metas:'as Metas',relatorios:'os Relatórios',plano:'a tela Meu plano',config:'as Configurações'};
+      const codigoErro='7F3A-21QK';
+      // salvar: botão em "Salvando…" e aviso dentro da janela quando não deu certo
+      const se=s.salvarErro, sv=s.salvando;
+      const seDe=(chave,form)=>!!se&&se.chave===chave&&se.form===form;
+      const seTxt=se&&se.tipo==='offline'?'Sem conexão com a internet. Nada foi salvo, e o que você digitou continua aqui. Confira a internet e tente de novo.'
+        :'Não foi possível salvar agora. O que você digitou continua aqui. Tente de novo em alguns segundos.';
+      const n=todayTasks.filter(t=>!t.done).length;
+      const fech=s.orcs.filter(o=>['fechada','agendada','concluido'].includes(o.stage)).length;
+      return {
+        // seletor do protótipo (tela de login)
+        estadoDemo:s.estadoDemo,estadoDemoOptions:ESTADO_DEMOS,onEstadoDemo:e=>this.setState({estadoDemo:e.target.value}),
+        // telas
+        isInicio:e1.isInicio&&!ocupa&&!inicioNovo,isOrcamentos:e1.isOrcamentos&&!ocupa&&!troca,isClientes:e1.isClientes&&!ocupa&&!troca,
+        isEstoque:e1.isEstoque&&!ocupa&&!troca,isTarefas:e1.isTarefas&&!ocupa&&!troca,isAgenda:e1.isAgenda&&!ocupa,
+        isFaturamento:e1.isFaturamento&&!ocupa&&!troca,isMetas:e1.isMetas&&!ocupa&&!metaVazia,isRelatorios:e1.isRelatorios&&!ocupa&&!troca,
+        isConfig:e1.isConfig&&!ocupa,isPlano:e1.isPlano&&!ocupa,isSemAcesso:e1.isSemAcesso&&!naoEnc,
+        skShow:carregando,skCards:[1,2,3,4].map(i=>({i})),skLinhas:[['62%','38%'],['48%','30%'],['70%','44%'],['55%','34%'],['66%','40%']].map(([w1,w2],i)=>({w1,w2,borda:i?'1px solid var(--border-subtle)':'none'})),
+        erroTelaShow:erroTela,erroTelaNome:NOMES[page]||'esta tela',erroTelaCodigo:codigoErro,
+        telaDeNovo:()=>this.irPara(page,null,true),
+        falarNortiqErro:()=>abrirWhats(WA_NORTIQ,'Olá! Sou da Casa do Aquecedor. Não consegui abrir '+(NOMES[page]||'uma tela')+' no Nortiq. Código do erro: '+codigoErro+'.'),
+        naoEncShow:naoEnc,naoEncEndereco:'casadoaquecedor.nortiq.com.br/orcamentos/ORC-9999',irOrcamentos:go('orcamentos'),
+        ...(nova&&!s.gIn&&!s.gcal?{gSyncSub:'Ainda não conectada. Ligue uma das opções abaixo para conectar a conta Google da loja.'}:{}),
+        pageTitle:naoEnc?'Página não encontrada':e1.pageTitle,pageSub:naoEnc?'Casa do Aquecedor':e1.pageSub,
+        vazioShow:troca,vazioCompShow:!!vz&&!!vz.compacto,vazio:vz||{botoes:[]},
+        metaVazia,metaRasc:s.metaRasc,metaRascErr:s.metaRascErr,onMetaRasc:e=>this.setState({metaRasc:e.target.value,metaRascErr:''}),
+        salvarPrimeiraMeta:()=>{ const v=numBR(s.metaRasc); if(!(isFinite(v)&&v>0)) return this.setState({metaRascErr:'Informe um valor maior que zero.'}); this.setState({meta:Math.round(v),metaRasc:'',metaRascErr:''}); },
+        metaHistVazio:nova,
+        ...(nova?{metaHist:[],metaSources:[{label:'Vendas e serviços',sub:receita>0?'lançamentos de setembro':'nenhuma venda registrada ainda',value:brl(receita)}]}:{}),
+        inicioNovo,passos,ppFeitosTxt:nFeitos+' de '+PASSOS.length,ppFeitosN:nFeitos,ppTotalN:PASSOS.length,
+        ppTexto:func?'A loja está começando no Nortiq. Estes são os primeiros passos que você já pode dar.':'Boas-vindas ao Nortiq! Siga os primeiros passos para deixar a Casa do Aquecedor pronta para o dia a dia.',
+        ppOcultar:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({ppOculto:true});},
+        ppAjuda:()=>abrirWhats(WA_NORTIQ,'Olá! Sou da Casa do Aquecedor e estou começando no Nortiq. Podem me ajudar a importar os produtos e cadastrar a equipe?'),
+        ppLista:[{icon:'file-text',txt:'Orçamentos abertos e o valor em negociação'},{icon:'wallet',txt:'Receita do mês e quanto falta para a meta'},{icon:'calendar-check',txt:'Instalações da semana'},{icon:'wrench',txt:'Manutenções e garantias vencendo'},{icon:'list-checks',txt:'Retornos de hoje'}],
+        hojeResumo:'Terça-feira, 22 de setembro. '+(n===0?'Nenhum retorno para hoje.':n===1?'Você tem 1 retorno para hoje.':'Você tem '+n+' retornos para hoje.'),
+        kpis:nova?(e1.kpis||[]).map(k=>k.label==='Conversão do mês'?{...k,value:s.orcs.length?Math.round(fech/s.orcs.length*100)+'%':'—',delta:undefined,foot:s.orcs.length?fech+' de '+s.orcs.length+' orçamentos':'sem orçamentos no mês'}
+          :k.label==='Instalações na semana'?{...k,foot:instO.length?'próxima: '+instO[0].inst:'nenhuma marcada'}:k.label==='Receita do mês'&&!(s.meta>0)?{...k,foot:'meta ainda não definida'}:k):e1.kpis,
+        dueVazio:dueClis.length===0,weekVazio:instO.length===0,todayVazio:!todayTasks.length,
+        // sem conexão e salvar
+        offlineShow:s.estadoDemo==='offline'&&(view==='loja'||view==='admin'),
+        conexaoVoltar:()=>{ this.setState({estadoDemo:'normal',conexaoMsg:true}); clearTimeout(this._tCon); this._tCon=setTimeout(()=>this.setState({conexaoMsg:false}),5000); },
+        conexaoMsgShow:!!s.conexaoMsg&&s.estadoDemo!=='offline',
+        seOrc:seDe('orc',s.nf),seCli:seDe('cli',s.ce),seTar:seDe('tar',s.tf),seMov:seDe('mov',s.mv),seTxt,
+        seIcon:se&&se.tipo==='offline'?'wifi-off':'triangle-alert',seRefazer:()=>se&&se.refazer(),
+        svOrc:sv==='orc',svCli:sv==='cli',svTar:sv==='tar',svMov:sv==='mov',
+        svOrcTxt:sv==='orc'?'Salvando…':'Salvar orçamento',svMovTxt:sv==='mov'?'Salvando…':'Registrar',
+        ceSalvarTxt:sv==='cli'?'Salvando…':crVals.ceSalvarTxt,tfSalvarTxt:sv==='tar'?'Salvando…':tkVals.tfSalvarTxt
+      };
+    })();
+
     return {
       ...agVals,
       ...rpVals,
@@ -6306,9 +6681,10 @@ class Component extends DCLogic {
         const id='ORC-'+String(s.next).padStart(4,'0');
         const o={id,cli:nf.cli.trim(),tel:(nf.tel.replace(/\D/g,'')||'12900000000'),prod:nf.prod,valor:Number(nf.valor),pag:nf.pag,end:nf.end.trim(),origem:nf.origem,stage:'solicitado',criado:'22/09',dias:0,inst:'',obs:'',
           itens:[{id:id+'-1',sku:skuDe(s.estq,nf.prod),desc:nf.prod,qtd:1,valor:Number(nf.valor)}]};
-        this.setState(x=>({orcs:[o,...x.orcs],next:x.next+1,showNew:false,page:'orcamentos',drawer:{type:'orc',id},draft:null,tpl:0,tplAuto:true}));
+        this.guardar('orc',nf,()=>this.setState(x=>({orcs:[o,...x.orcs],next:x.next+1,showNew:false,page:'orcamentos',drawer:{type:'orc',id},draft:null,tpl:0,tplAuto:true})));
       },
-      ...etapa1Vals
+      ...etapa1Vals,
+      ...estadosVals
     };
   }
 }
