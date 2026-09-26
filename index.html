@@ -96,10 +96,10 @@
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-papel" label="Entrar como" options="{{ papelDemoOptions }}" value="{{ papelDemo }}" onChange="{{ onPapelDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-assin" label="Assinatura da loja" options="{{ assinDemoOptions }}" value="{{ assinDemo }}" onChange="{{ onAssinDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-cobr" label="Como a loja paga" options="{{ cobrDemoOptions }}" value="{{ cobrDemo }}" onChange="{{ onCobrDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
-      </div>
-      <div style="display:flex; justify-content:center; gap:6px; font:var(--type-caption); color:var(--text-muted)">
-        <span>Equipe Nortiq?</span>
-        <a href="#" onClick="{{ loginAdmin }}">Acessar a administração</a>
+        <div style="display:grid; gap:6px; padding-top:10px; border-top:1px dashed var(--border-default)">
+          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">A equipe Nortiq entra por outro endereço (admin.nortiq.com.br), que não aparece para as lojas.</span>
+          <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="shield-check" onClick="{{ irLoginAdmin }}" hint-size="240px,34px">Ir para o login da administração</x-import></div>
+        </div>
       </div>
     </div>
   </div>
@@ -138,6 +138,150 @@
       </x-import>
       <div style="display:flex; justify-content:center; font:var(--type-caption); color:var(--text-muted)">
         <a href="#" onClick="{{ sn.voltar }}">Voltar para a administração (protótipo)</a>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- LOGIN DA ADMINISTRAÇÃO NORTIQ (admin.nortiq.com.br) -->
+<sc-if value="{{ isALogin }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh; display:grid; place-items:center; padding:24px 16px; background:var(--surface-app); font-family:var(--font-sans)">
+    <div style="width:100%; max-width:440px; display:grid; gap:24px">
+      <div style="display:grid; justify-items:center; gap:6px">
+        <div style="display:flex; align-items:center; gap:10px">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="" width="32" height="32" style="display:block"></span>
+          <span style="font-family:var(--font-display); font-weight:700; font-size:26px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
+        </div>
+        <span style="display:inline-flex; align-items:center; gap:6px; font:var(--type-caption); font-weight:600; color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 14 }}" hint-size="14px,14px"></x-import>Administração · admin.nortiq.com.br</span>
+      </div>
+      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="100%,420px">
+        <div style="display:grid; gap:18px">
+          <sc-if value="{{ al.passoTxtShow }}" hint-placeholder-val="{{ false }}">
+            <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">{{ al.passoTxt }}</span>
+          </sc-if>
+          <div style="display:grid; gap:4px">
+            <span style="font:var(--type-title); color:var(--text-strong)">{{ al.titulo }}</span>
+            <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">{{ al.sub }}</span>
+          </div>
+          <sc-if value="{{ al.avisoShow }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+              <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ al.aviso }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ al.erroShow }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:{{ al.erroBg }}; color:{{ al.erroFg }}; font:var(--type-caption); font-weight:600; line-height:1.5">
+              <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ al.erroIcon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ al.erro }}</span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ al.isEntrar }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid; gap:16px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-email" label="E-mail" type="email" icon="mail" value="{{ al.email }}" onChange="{{ al.on.email }}" auto-complete="username" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+              <div style="display:grid; gap:8px">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-senha" label="Senha" type="password" icon="lock" value="{{ al.senha }}" onChange="{{ al.on.senha }}" hint="Protótipo: qualquer senha" auto-complete="current-password" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+                <div style="display:flex; justify-content:flex-end"><a href="#" onClick="{{ al.irEsqueci }}" style="font:var(--type-caption); font-weight:600">Esqueci minha senha</a></div>
+              </div>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" disabled="{{ al.bloqueado }}" onClick="{{ al.continuar }}" hint-size="100%,52px">{{ al.continuarTxt }}</x-import>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ al.isCodigo }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid; gap:16px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-codigo" label="Código de 6 números" inputMode="numeric" maxLength="{{ 6 }}" auto-complete="one-time-code" icon="smartphone" value="{{ al.codigo }}" onChange="{{ al.on.codigo }}" hint="Protótipo: qualquer código de 6 números" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ al.confirmarCodigo }}" hint-size="100%,52px">Entrar</x-import>
+              <div style="display:grid; gap:8px; justify-items:center; font:var(--type-caption)">
+                <a href="#" onClick="{{ al.irRec }}" style="font-weight:600">Perdi o celular: usar um código de recuperação</a>
+                <a href="#" onClick="{{ al.voltarEntrar }}">Voltar</a>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ al.isRec }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid; gap:16px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-rec" label="Código de recuperação" placeholder="XXXX-XXXX" icon="key-round" value="{{ al.rec }}" onChange="{{ al.on.rec }}" hint="Protótipo: use um destes: 7KQ2-M9XD" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ al.confirmarRec }}" hint-size="100%,52px">Entrar</x-import>
+              <div style="display:flex; justify-content:center; font:var(--type-caption)"><a href="#" onClick="{{ al.irCodigo }}">Voltar para o código do celular</a></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ al.isEsqueci }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid; gap:16px">
+              <sc-if value="{{ al.esqPedindo }}" hint-placeholder-val="{{ true }}">
+                <div style="display:grid; gap:16px">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-esq-email" label="E-mail" type="email" icon="mail" value="{{ al.esqEmail }}" onChange="{{ al.on.esqEmail }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ al.enviarEsqueci }}" hint-size="100%,52px">Enviar link</x-import>
+                </div>
+              </sc-if>
+              <sc-if value="{{ al.esqEnviado }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid; gap:14px">
+                  <span role="status" style="font:var(--type-body); color:var(--text-body); line-height:1.6">Se existir uma conta de administrador com este e-mail, você receberá o link para criar uma nova senha.</span>
+                  <sc-for list="{{ al.dicas }}" as="d" hint-placeholder-count="3">
+                    <div style="display:flex; gap:8px; align-items:flex-start; font:var(--type-caption); color:var(--text-muted); line-height:1.5">
+                      <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ d.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><span>{{ d.txt }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <div style="display:flex; justify-content:center; font:var(--type-caption)"><a href="#" onClick="{{ al.voltarEntrar }}">Voltar para o login</a></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ al.isP1 }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid; gap:16px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail de acesso" value="{{ al.adminEmail }}" icon="mail" read-only="{{ true }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-pw1" label="Nova senha" type="password" icon="lock" value="{{ al.pw1 }}" onChange="{{ al.on.pw1 }}" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-pw2" label="Repita a senha" type="password" icon="lock" value="{{ al.pw2 }}" onChange="{{ al.on.pw2 }}" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+              <div style="display:grid; gap:6px">
+                <sc-for list="{{ al.regras }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex; align-items:center; gap:8px; font:var(--type-caption); color:{{ r.fg }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ r.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import><span>{{ r.txt }}</span></div>
+                </sc-for>
+              </div>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ al.p1Continuar }}" hint-size="100%,52px">Continuar</x-import>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ al.isP2 }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid; gap:16px">
+              <sc-for list="{{ al.passosApp }}" as="x" hint-placeholder-count="3">
+                <div style="display:flex; gap:10px; align-items:flex-start; font:var(--type-ui); color:var(--text-body); line-height:1.5">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:22px; height:22px; border-radius:50%; background:var(--navy-100); color:var(--navy-600); font:var(--type-caption); font-weight:700">{{ x.n }}</span><span>{{ x.txt }}</span>
+                </div>
+              </sc-for>
+              <div style="display:grid; justify-items:center; gap:8px; padding:16px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:150px; height:150px; border-radius:var(--radius-sm); background:var(--gray-0); box-shadow:var(--ring-card); color:var(--text-strong)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="qr-code" size="{{ 120 }}" hint-size="120px,120px"></x-import></span>
+                <span style="font:var(--type-caption); color:var(--text-muted)">QR code (no sistema real, gerado para a sua conta)</span>
+                <span style="font:var(--type-caption); color:var(--text-muted); text-align:center">Não consegue ler? Digite a chave no aplicativo:</span>
+                <span style="font:var(--type-mono); font-size:15px; font-weight:600; color:var(--text-strong); letter-spacing:0.08em">JBSW Y3DP EHPK 3PXP</span>
+              </div>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="al-cod2" label="Código de 6 números que aparece no aplicativo" inputMode="numeric" maxLength="{{ 6 }}" icon="smartphone" value="{{ al.codigo }}" onChange="{{ al.on.codigo }}" hint="Protótipo: qualquer código de 6 números" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ al.p2Confirmar }}" hint-size="100%,52px">Confirmar código</x-import>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ al.isP3 }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid; gap:16px">
+              <div style="display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; padding:14px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+                <sc-for list="{{ al.codigosRec }}" as="c" hint-placeholder-count="10">
+                  <span style="font:var(--type-mono); font-size:14px; font-weight:600; color:var(--text-strong); text-align:center; padding:6px 0; border-radius:var(--radius-sm); background:var(--gray-0)">{{ c }}</span>
+                </sc-for>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="copy" onClick="{{ al.copiar }}" hint-size="150px,34px">{{ al.copiarTxt }}</x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="download" onClick="{{ al.baixar }}" hint-size="150px,34px">{{ al.baixarTxt }}</x-import>
+              </div>
+              <label style="display:flex; gap:10px; align-items:flex-start; font:var(--type-ui); color:var(--text-body); line-height:1.5; cursor:pointer">
+                <input id="al-guardei" type="checkbox" checked="{{ al.guardou }}" onChange="{{ al.on.guardou }}" style="width:18px; height:18px; margin-top:2px; accent-color:var(--navy-500)">
+                <span>Guardei os códigos em um lugar seguro, fora do celular</span>
+              </label>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ al.p3Entrar }}" hint-size="100%,52px">Entrar no painel</x-import>
+            </div>
+          </sc-if>
+        </div>
+      </x-import>
+      <div style="display:grid; gap:12px; padding:14px 16px; border-radius:var(--radius-md); border:1px dashed var(--border-default); background:var(--surface-card)">
+        <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Protótipo · ver outras situações</span>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="al-demo" label="Situação do login da administração" options="{{ alDemoOptions }}" value="{{ alDemo }}" onChange="{{ onAlDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
+        <a href="#" onClick="{{ voltarLoginLojas }}" style="font:var(--type-caption); font-weight:600">Voltar para o login das lojas</a>
       </div>
     </div>
   </div>
@@ -1224,11 +1368,46 @@
                     <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" loading="{{ sgSaving }}" onClick="{{ sgSalvar }}" hint-size="140px,44px">{{ sgSalvarTxt }}</x-import></div>
                   </div>
                 </x-import>
+                <sc-if value="{{ sgAdmin }}" hint-placeholder-val="{{ false }}">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="760px,300px">
+                    <div style="display:grid; gap:14px">
+                      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap">
+                        <div style="display:grid; gap:4px; min-width:0; flex:1 1 280px">
+                          <span style="font:var(--type-section); color:var(--text-strong)">Verificação em duas etapas</span>
+                          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Além da senha, a entrada pede o código de 6 números do aplicativo autenticador. Na administração ela é obrigatória.</span>
+                        </div>
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="success" dot="{{ true }}" hint-size="70px,24px">Ativa</x-import>
+                      </div>
+                      <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+                        <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:10px 14px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+                          <span style="color:var(--text-muted)">Aplicativo autenticador</span><span style="color:var(--text-strong); font-weight:600">{{ aCelTxt }}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:10px 14px; font:var(--type-ui)">
+                          <span style="color:var(--text-muted)">Códigos de recuperação</span><span style="color:{{ aRecFg }}; font-weight:600">{{ aRecTxt }}</span>
+                        </div>
+                      </div>
+                      <sc-if value="{{ aRecNovos }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:grid; gap:10px; padding:14px; border-radius:var(--radius-md); background:var(--status-warning-bg)">
+                          <span style="font:var(--type-caption); font-weight:600; color:var(--status-warning-fg); line-height:1.5">Guarde estes códigos agora, fora do celular. Os anteriores deixaram de valer e estes não aparecem de novo.</span>
+                          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(110px, 1fr)); gap:8px">
+                            <sc-for list="{{ aRecLista }}" as="c" hint-placeholder-count="10">
+                              <span style="font:var(--type-mono); font-size:13px; font-weight:600; color:var(--text-strong); text-align:center; padding:6px 0; border-radius:var(--radius-sm); background:var(--gray-0)">{{ c }}</span>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <div style="display:flex; gap:8px; flex-wrap:wrap">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="key-round" onClick="{{ aRecGerar }}" hint-size="260px,44px">Gerar novos códigos de recuperação</x-import>
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" icon="smartphone" onClick="{{ aCelAbrir }}" hint-size="220px,44px">Configurar em outro celular</x-import>
+                      </div>
+                    </div>
+                  </x-import>
+                </sc-if>
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="760px,300px">
                   <div style="display:grid; gap:14px">
                     <div style="display:grid; gap:4px">
                       <span style="font:var(--type-section); color:var(--text-strong)">Aparelhos conectados</span>
-                      <span style="font:var(--type-caption); color:var(--text-muted)">Você fica conectado por 30 dias em cada aparelho enquanto usar o sistema. Se perder um celular, desconecte-o aqui.</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">{{ sgSessaoTxt }}</span>
                     </div>
                     <div style="display:grid">
                       <sc-for list="{{ sgSessoes }}" as="z" hint-placeholder-count="3">
@@ -1921,7 +2100,7 @@
         <span style="font:var(--type-caption); color:var(--text-subtle); overflow-wrap:anywhere">{{ userEmail }}</span>
       </div>
       <sc-if value="{{ userMenuLoja }}" hint-placeholder-val="{{ true }}">
-        <button type="button" role="menuitem" onClick="{{ irMinhaConta }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:0 10px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font:var(--type-ui); color:var(--text-body); text-align:left" style-hover="background:var(--surface-hover)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="user-round" size="{{ 17 }}" hint-size="17px,17px"></x-import>Minha conta</button>
+        <sc-if value="{{ menuMinhaConta }}" hint-placeholder-val="{{ true }}"><button type="button" role="menuitem" onClick="{{ irMinhaConta }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:0 10px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font:var(--type-ui); color:var(--text-body); text-align:left" style-hover="background:var(--surface-hover)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="user-round" size="{{ 17 }}" hint-size="17px,17px"></x-import>Minha conta</button></sc-if>
         <button type="button" role="menuitem" onClick="{{ irSeguranca }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:0 10px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font:var(--type-ui); color:var(--text-body); text-align:left" style-hover="background:var(--surface-hover)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 17 }}" hint-size="17px,17px"></x-import>Segurança da conta</button>
       </sc-if>
       <button type="button" role="menuitem" onClick="{{ sairMenu }}" style="display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:0 10px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font:var(--type-ui); color:var(--text-body); text-align:left" style-hover="background:var(--surface-hover)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="log-out" size="{{ 17 }}" hint-size="17px,17px"></x-import>Sair</button>
@@ -2596,6 +2775,24 @@
     </x-import>
   </sc-if>
 
+  <!-- CONFIGURAR O CÓDIGO EM OUTRO CELULAR (administração) -->
+  <sc-if value="{{ aCelShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Configurar em outro celular" description="Depois de confirmar, o celular antigo deixa de gerar códigos válidos." width="{{ 460 }}" onClose="{{ aCelFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid; justify-items:center; gap:8px; padding:16px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:140px; height:140px; border-radius:var(--radius-sm); background:var(--gray-0); box-shadow:var(--ring-card); color:var(--text-strong)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="qr-code" size="{{ 110 }}" hint-size="110px,110px"></x-import></span>
+          <span style="font:var(--type-caption); color:var(--text-muted); text-align:center">Leia com o aplicativo autenticador do celular novo, ou digite a chave:</span>
+          <span style="font:var(--type-mono); font-size:15px; font-weight:600; color:var(--text-strong); letter-spacing:0.08em">KRSX G5CT MVRX EZLU</span>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="a-cel-codigo" label="Código de 6 números do celular novo" inputMode="numeric" maxLength="{{ 6 }}" icon="smartphone" value="{{ aCelCodigo }}" onChange="{{ aCelOn }}" error="{{ aCelErr }}" hint="Protótipo: qualquer código de 6 números" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ aCelFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ aCelConfirmar }}" hint-size="170px,44px">Confirmar código</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- E-MAIL DO CONVITE (prévia) -->
   <sc-if value="{{ showMail }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="E-mail do convite" description="Assim o dono da loja recebe o convite." width="{{ 600 }}" onClose="{{ closeMail }}" hint-size="100%,100%">
@@ -3118,7 +3315,7 @@ const ACCOUNTS=[
  {nome:'Hidrotec Jacareí',slug:'hidrotecjacarei',cidade:'Jacareí/SP',users:1,desde:'09/2026',status:'Convite enviado',nota:'Pago em 21/09 · senha ainda não criada',dono:'Patrícia Rocha',email:'patricia@hidrotec.com.br',tel:'(12) 98877-6655',criada:'20/09',pago:'21/09'},
  {nome:'Casa do Aquecedor',slug:'casadoaquecedor',cidade:'São José dos Campos/SP',users:3,desde:'03/2025',status:'Em dia',nota:'Pago em 01/09',dono:'Rogério Tavares',email:'rogerio@casadoaquecedor.com.br',tel:'(12) 99640-2218'},
  {nome:'Hidráulica Bom Jesus',slug:'hidraulicabomjesus',cidade:'Campinas/SP',users:1,desde:'07/2025',status:'Em dia',nota:'Pix em 09/09 · registrado',dono:'Antônio Bezerra',email:'antonio@bomjesushidraulica.com.br',tel:'(19) 99731-4410',
-  forma:'direto',meio:'Pix',venc:'09',pags:[{id:'p2',mes:'Setembro de 2026',valor:79.9,data:'09/09',meio:'Pix',por:'Helena Duarte',obs:'Comprovante recebido no WhatsApp'},{id:'p1',mes:'Agosto de 2026',valor:79.9,data:'08/08',meio:'Pix',por:'Helena Duarte',obs:''}]},
+  forma:'direto',meio:'Pix',venc:'09',pags:[{id:'p2',mes:'Setembro de 2026',valor:79.9,data:'09/09',meio:'Pix',por:'Administrador Nortiq',obs:'Comprovante recebido no WhatsApp'},{id:'p1',mes:'Agosto de 2026',valor:79.9,data:'08/08',meio:'Pix',por:'Administrador Nortiq',obs:''}]},
  {nome:'Aquece Sul Aquecedores',slug:'aquecesul',cidade:'Curitiba/PR',users:4,desde:'11/2024',status:'Em atraso',nota:'12 dias · 2º aviso enviado',dono:'Fernando Lima',email:'fernando@aquecesul.com.br',tel:'(41) 99812-3040',
   equipe:[{id:'as1',nome:'Fernando Lima',email:'fernando@aquecesul.com.br',papel:'dono',status:'ativo',info:'Último acesso ontem, 17:20'},
    {id:'as2',nome:'Juliana Prates',email:'juliana@aquecesul.com.br',papel:'funcionario',status:'ativo',bloqueado:'10:45',info:'Último acesso em 19/09'},
@@ -3128,17 +3325,23 @@ const ACCOUNTS=[
  {nome:'Ponto do Encanador',slug:'pontodoencanador',cidade:'Sorocaba/SP',users:1,desde:'09/2026',status:'Em dia',nota:'Pago em 15/09'},
  {nome:'Termo Center',slug:'termocenter',cidade:'Porto Alegre/RS',users:5,desde:'06/2025',status:'Em dia',nota:'Pago em 10/09'},
  {nome:'Casa das Bombas',slug:'casadasbombas',cidade:'Ribeirão Preto/SP',users:1,desde:'01/2026',status:'Em atraso',nota:'4 dias · pagamento direto',dono:'Wagner Pires',email:'wagner@casadasbombas.com.br',tel:'(16) 99208-7713',
-  forma:'direto',meio:'Transferência',venc:'18',pags:[{id:'p3',mes:'Agosto de 2026',valor:79.9,data:'19/08',meio:'Transferência',por:'Helena Duarte',obs:''}]},
+  forma:'direto',meio:'Transferência',venc:'18',pags:[{id:'p3',mes:'Agosto de 2026',valor:79.9,data:'19/08',meio:'Transferência',por:'Administrador Nortiq',obs:''}]},
  {nome:'Aquecedores Litoral',slug:'aquecedoreslitoral',cidade:'Santos/SP',users:7,desde:'08/2025',status:'Em dia',nota:'Pago em 02/09'},
  {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',users:2,desde:'09/2026',status:'Em dia',nota:'Pago em 18/09'},
  {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
 ];
+// Login da administração Nortiq (admin.nortiq.com.br): senha + código do aplicativo autenticador.
+const ADMIN_EMAIL='nortiqtec@gmail.com';
+const ALOGIN_DEMOS=[{value:'normal',label:'Entrar normalmente'},{value:'senha',label:'Senha incorreta'},{value:'codigo',label:'Código do celular incorreto'},
+ {value:'tentativas',label:'Muitas tentativas'},{value:'primeiro',label:'Primeiro acesso (link do convite)'}];
+const REC0=['7KQ2-M9XD','P4TW-2HNA','Z8CE-VJ6R','M3YB-Q7LK','H9FD-4WPE','R2XN-8GTC','B6JU-K3MZ','W5SA-9RQH','D7LV-2EYF','N4GK-6TXB'];
+const AL0=()=>({passo:'entrar',email:ADMIN_EMAIL,senha:'',codigo:'',rec:'',erro:'',aviso:'',pw1:'',pw2:'',tentou:false,guardou:false,copiado:false,baixado:false,esqEmail:ADMIN_EMAIL,esqEnviado:false});
 // Atendimento pelo painel Nortiq: ajuda a entrar sem ver os dados da loja. Cada ação fica registrada.
 const CANAIS_PEDIDO=['WhatsApp','Ligação','E-mail'];
 const CONFIRMA_DONO=['Liguei para o WhatsApp cadastrado da loja','Conferi o CNPJ e o nome do responsável','Outra forma (descrevo na observação)'];
 const ATEND0={
- casadoaquecedor:[{quando:'15/09 às 16:20',por:'Helena Duarte',icon:'key-round',titulo:'Link de nova senha enviado para Camila Duarte',sub:'Pedido pelo WhatsApp'}],
- aquecesul:[{quando:'02/09 às 09:12',por:'Helena Duarte',icon:'log-out',titulo:'Paulo Sérgio desconectado de todos os aparelhos',sub:'Pedido por ligação · celular da loja perdido'}]
+ casadoaquecedor:[{quando:'15/09 às 16:20',por:'Administrador Nortiq',icon:'key-round',titulo:'Link de nova senha enviado para Camila Duarte',sub:'Pedido pelo WhatsApp'}],
+ aquecesul:[{quando:'02/09 às 09:12',por:'Administrador Nortiq',icon:'log-out',titulo:'Paulo Sérgio desconectado de todos os aparelhos',sub:'Pedido por ligação · celular da loja perdido'}]
 };
 // Como a loja paga a assinatura: pelo Asaas (cobrança automática) ou direto com a Nortiq (Pix, transferência, dinheiro...).
 // Na cobrança direta nada passa pelo Asaas: a equipe Nortiq registra cada pagamento recebido na ficha da conta.
@@ -3203,7 +3406,7 @@ class Component extends DCLogic {
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
     notifs:NOTIFS0.map(n=>({...n})),notifOpen:false,notifF:'todas',avisos:AVISOS0.map(a=>({...a})),av:emptyAv(),avErr:{},avMsg:'',
     estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
-    accs:ACCOUNTS.map(a=>({...a})),pgFor:null,pgModo:null,pgPag:null,pg:null,pgErr:{},pixFor:null,pixCopiada:false,expSt:null,expBaixado:false,accAba:'resumo',atFor:null,at:null,atErr:{},atend:JSON.parse(JSON.stringify(ATEND0)),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
+    accs:ACCOUNTS.map(a=>({...a})),pgFor:null,pgModo:null,pgPag:null,pg:null,pgErr:{},pixFor:null,pixCopiada:false,expSt:null,expBaixado:false,accAba:'resumo',atFor:null,at:null,atErr:{},al:AL0(),alDemo:'normal',aRec:10,aRecNovos:false,aCel:null,atend:JSON.parse(JSON.stringify(ATEND0)),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
     rsEmail:'',rsErr:'',rsEnviando:false,rsEnviado:false,rsMail:false,rsVencido:false,rsSalvando:false,
     papel:'dono',assin:'em_dia',loginDemo:'normal',userMenu:false,siteSlug:'',siteErr:'',
     equipe:EQUIPE0.map(u=>({...u})),eqDlg:null,eqForm:{},eqErr:{},eqMsg:'',
@@ -3336,7 +3539,7 @@ class Component extends DCLogic {
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],estoque:['Estoque','Produtos, quantidades e importação por planilha'],
       tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil, segurança, equipe e dados da loja'],
-      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos']};
+      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos'],'a-seguranca':['Segurança da conta','Administração Nortiq · senha, código do celular e aparelhos']};
 
     // KPIs
     const heroMaint=(this.props.kpiDestaque ?? 'manutencoes')==='manutencoes';
@@ -3703,7 +3906,7 @@ class Component extends DCLogic {
             nota:cupom?'Cupom '+t(na.cupom).toUpperCase()+' · senha ainda não criada':recebido?na.meio+' em 22/09 · senha ainda não criada':direto?'Aguardando pagamento direto ('+na.meio+')':'Cobrança enviada em 22/09',
             cupom:cupom?t(na.cupom).toUpperCase():'',gratisAte:cupom?'22/10':'',
             forma:na.forma,meio:direto?na.meio:'',venc:direto?'22':'',pago:recebido?'22/09':'',
-            pags:recebido?[{id:'p'+Date.now(),mes:'Setembro de 2026',valor:PLANO.preco,data:'22/09',meio:na.meio,por:'Helena Duarte',obs:'Registrado no cadastro da conta'}]:[]};
+            pags:recebido?[{id:'p'+Date.now(),mes:'Setembro de 2026',valor:PLANO.preco,data:'22/09',meio:na.meio,por:'Administrador Nortiq',obs:'Registrado no cadastro da conta'}]:[]};
           this.setState(x=>({accs:[nova,...x.accs],showNewAcc:false,accF:'todas',accQ:'',accOpen:nova.slug,
             accDlgMsg:convite?'Conta criada. '+(recebido?'Pagamento de setembro registrado ('+na.meio+'). ':'')+'O convite para criar a senha foi enviado para '+nova.email+'.'
               :direto?'Conta criada. Quando receber o pagamento, use Registrar pagamento: o convite para criar a senha sai na hora.'
@@ -3713,6 +3916,79 @@ class Component extends DCLogic {
         showMail:!!m,ml,closeMail:()=>this.setState({mailFor:null}),
         sn,
         loginSlug:lf?lf.slug:'casadoaquecedor',loginEmail:lf?lf.email:'rogerio@casadoaquecedor.com.br',loginNotice:s.loginNotice,loginNoticeShow:!!s.loginNotice
+      };
+    })();
+
+    // Login da administração Nortiq (senha + código do celular) e segurança da conta do admin
+    const alVals=(()=>{
+      const a=s.al||AL0(), demo=s.alDemo;
+      const setA=patch=>this.setState(x=>({al:{...x.al,...patch}}));
+      const on=k=>e=>{const v=k==='guardou'?e.target.checked:e.target.value;setA({[k]:k==='codigo'?String(v).replace(/\D/g,'').slice(0,6):v,erro:''});};
+      const entrarPainel=extra=>this.setState({view:'admin',apage:'a-geral',al:AL0(),userMenu:false,...(extra||{})});
+      const regras=[{ok:a.pw1.length>=12,txt:'Pelo menos 12 caracteres'},{ok:/[0-9]/.test(a.pw1),txt:'Pelo menos 1 número'},{ok:!!a.pw1&&a.pw1===a.pw2,txt:'As duas senhas iguais'}];
+      const bloqueado=demo==='tentativas'&&a.passo==='entrar';
+      const T={
+        entrar:['Entrar na administração','Acesso só da equipe Nortiq. Depois da senha, pedimos o código do celular.'],
+        codigo:['Verificação em duas etapas','Abra o aplicativo autenticador no seu celular e digite o código de 6 números da Nortiq.'],
+        rec:['Código de recuperação','Use um dos códigos que você guardou ao ativar a verificação. Cada código funciona uma vez.'],
+        esqueci:['Esqueceu a senha?','Informe o e-mail de administrador. Vamos enviar um link para criar uma nova senha.'],
+        p1:['Crie sua senha de administrador','Você recebeu o convite como administrador da Nortiq. A senha da administração precisa ser mais forte que a das lojas.'],
+        p2:['Ative a verificação em duas etapas','Na administração, a entrada sempre pede um código do seu celular, além da senha.'],
+        p3:['Guarde seus códigos de recuperação','Se perder o celular, cada código permite entrar uma vez. Sem eles e sem o celular, só outra pessoa administradora libera o seu acesso.']
+      }[a.passo]||['',''];
+      let erro=a.erro, erroBg='var(--status-danger-bg)', erroFg='var(--status-danger-fg)', erroIcon='circle-alert';
+      if(bloqueado){erro='Muitas tentativas seguidas. Por segurança, a entrada com este e-mail está pausada até 10:45.';erroBg='var(--status-warning-bg)';erroFg='var(--status-warning-fg)';erroIcon='clock';}
+      const prevent=e=>{e&&e.preventDefault&&e.preventDefault();};
+      return {
+        al:{...a,titulo:T[0],sub:T[1],passoTxtShow:['p1','p2','p3'].includes(a.passo),passoTxt:'Primeiro acesso · passo '+({p1:1,p2:2,p3:3}[a.passo]||1)+' de 3',
+          avisoShow:!!a.aviso&&a.passo==='entrar',erroShow:!!erro,erro,erroBg,erroFg,erroIcon,
+          isEntrar:a.passo==='entrar',isCodigo:a.passo==='codigo',isRec:a.passo==='rec',isEsqueci:a.passo==='esqueci',isP1:a.passo==='p1',isP2:a.passo==='p2',isP3:a.passo==='p3',
+          esqPedindo:!a.esqEnviado,adminEmail:ADMIN_EMAIL,bloqueado,continuarTxt:bloqueado?'Tente de novo às 10:45':'Continuar',
+          on:{email:on('email'),senha:on('senha'),codigo:on('codigo'),rec:on('rec'),esqEmail:on('esqEmail'),pw1:on('pw1'),pw2:on('pw2'),guardou:on('guardou')},
+          continuar:()=>{ if(bloqueado) return;
+            if(!String(a.email).trim()||!a.senha) return setA({erro:'Preencha o e-mail e a senha.'});
+            if(demo==='senha') return setA({erro:'E-mail ou senha incorretos.',senha:''});
+            setA({passo:'codigo',erro:'',aviso:'',codigo:''}); },
+          confirmarCodigo:()=>{ if(!/^\d{6}$/.test(a.codigo)) return setA({erro:'Digite os 6 números que aparecem no aplicativo.'});
+            if(demo==='codigo') return setA({erro:'Código incorreto ou vencido. Confira se a hora do celular está certa e tente de novo.',codigo:''});
+            entrarPainel(); },
+          confirmarRec:()=>{ let c=String(a.rec).trim().toUpperCase(); if(/^[A-Z0-9]{8}$/.test(c)) c=c.slice(0,4)+'-'+c.slice(4);
+            if(!/^[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(c)) return setA({erro:'Digite o código no formato XXXX-XXXX.'});
+            if(!REC0.includes(c)) return setA({erro:'Código de recuperação inválido ou já usado.'});
+            const resta=Math.max(0,s.aRec-1);
+            entrarPainel({apage:'a-seguranca',cfgTab:'seguranca',aRec:resta,sgMsg:'Você entrou com um código de recuperação (restam '+resta+'). Se trocou de celular, use "Configurar em outro celular" abaixo.'}); },
+          irEsqueci:e=>{prevent(e);setA({passo:'esqueci',erro:'',aviso:'',esqEnviado:false,esqEmail:a.email});},
+          enviarEsqueci:()=>{ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(a.esqEmail).trim())) return setA({erro:'Confira o e-mail.'}); setA({esqEnviado:true,erro:''}); },
+          dicas:[{icon:'clock',txt:'O link vale 1 hora e só funciona uma vez.'},{icon:'smartphone',txt:'Depois de criar a nova senha, o código do celular continua sendo pedido.'},{icon:'key-round',txt:'Perdeu também o celular? Use um código de recuperação na hora de entrar.'}],
+          irRec:e=>{prevent(e);setA({passo:'rec',erro:'',rec:''});},
+          irCodigo:e=>{prevent(e);setA({passo:'codigo',erro:''});},
+          voltarEntrar:e=>{prevent(e);setA({passo:'entrar',erro:'',aviso:'',senha:''});},
+          regras:regras.map(r=>({txt:r.txt,icon:r.ok?'circle-check':'minus',fg:r.ok?'var(--status-success-fg)':'var(--text-muted)'})),
+          p1Continuar:()=>{ if(!regras.every(r=>r.ok)) return setA({erro:'A senha ainda não cumpre as regras abaixo.'}); setA({passo:'p2',erro:'',codigo:''}); },
+          passosApp:[{n:'1',txt:'Instale no celular um aplicativo autenticador (Google Authenticator ou Microsoft Authenticator).'},{n:'2',txt:'No aplicativo, toque em adicionar e leia o QR code abaixo.'},{n:'3',txt:'Digite o código de 6 números que aparecer.'}],
+          p2Confirmar:()=>{ if(!/^\d{6}$/.test(a.codigo)) return setA({erro:'Digite os 6 números que aparecem no aplicativo.'}); setA({passo:'p3',erro:''}); },
+          codigosRec:REC0,copiarTxt:a.copiado?'Códigos copiados':'Copiar códigos',baixarTxt:a.baixado?'Arquivo baixado':'Baixar arquivo .txt',
+          copiar:()=>{try{navigator.clipboard&&navigator.clipboard.writeText(REC0.join('\n')).catch(()=>{});}catch(e){} setA({copiado:true});},
+          baixar:()=>setA({baixado:true}),
+          p3Entrar:()=>{ if(!a.guardou) return setA({erro:'Confirme que guardou os códigos antes de entrar.'}); entrarPainel({aRec:10}); }
+        },
+        alDemo:demo,alDemoOptions:ALOGIN_DEMOS,
+        onAlDemo:e=>{const v=e.target.value;this.setState({alDemo:v,al:{...AL0(),passo:v==='primeiro'?'p1':'entrar'}});},
+        voltarLoginLojas:e=>{prevent(e);this.setState({view:'login'});},
+        irLoginAdmin:()=>this.setState({view:'alogin',al:AL0(),alDemo:'normal'}),
+        // segurança da conta do admin (aba Segurança reaproveitada)
+        sgAdmin:admin,
+        sgSessaoTxt:admin?'Na administração, cada entrada vale até 12 horas e sempre pede o código do celular. Se perder um aparelho, desconecte-o aqui.'
+          :'Você fica conectado por 30 dias em cada aparelho enquanto usar o sistema. Se perder um celular, desconecte-o aqui.',
+        aCelTxt:s.aCelTrocado?'Celular novo · configurado agora':'Ativado em 26/09',
+        aRecTxt:s.aRec+' de 10 disponíveis',aRecFg:s.aRec<=3?'var(--status-danger-fg)':'var(--text-strong)',
+        aRecNovos:s.aRecNovos,aRecLista:['Q8WM-3KZT','F2HD-7NXR','L9TB-4CVE','S6PY-2JMA','C3RK-8WQD','U7GN-5HBL','E4XZ-9TFP','K2VJ-6MRC','Y5DQ-3LWH','G8AE-7PKS'],
+        aRecGerar:()=>this.setState({aRecNovos:true,aRec:10,sgMsg:'Novos códigos de recuperação gerados. Os anteriores deixaram de valer.'}),
+        aCelShow:!!s.aCel,aCelCodigo:s.aCel?s.aCel.codigo:'',aCelErr:s.aCel?s.aCel.err:'',
+        aCelAbrir:()=>this.setState({aCel:{codigo:'',err:''}}),aCelFechar:()=>this.setState({aCel:null}),
+        aCelOn:e=>{const v=String(e.target.value).replace(/\D/g,'').slice(0,6);this.setState({aCel:{codigo:v,err:''}});},
+        aCelConfirmar:()=>{ if(!s.aCel||!/^\d{6}$/.test(s.aCel.codigo)) return this.setState({aCel:{...(s.aCel||{}),err:'Digite os 6 números do celular novo.'}});
+          this.setState({aCel:null,aCelTrocado:true,sgMsg:'Pronto. O celular novo já gera os códigos e o antigo deixou de valer.'}); }
       };
     })();
 
@@ -3757,7 +4033,7 @@ class Component extends DCLogic {
       const at=s.at, u=f.uid&&equipeDe(c).find(x=>x.id===f.uid), nome=u?u.nome:'', primeiro=String(nome).split(' ')[0];
       const setAt=k=>e=>{const v=e.target.value;this.setState(x=>({at:{...x.at,[k]:v},atErr:{...x.atErr,[k]:undefined}}));};
       const fechar=(msg)=>this.setState({atFor:null,at:null,atErr:{},accAba:'acesso',...(msg?{accDlgMsg:msg}:{})});
-      const registrar=(icon,titulo)=>this.setState(x=>({atend:{...x.atend,[c.slug]:[{quando:'22/09 às 10:14',por:'Helena Duarte',icon,titulo,
+      const registrar=(icon,titulo)=>this.setState(x=>({atend:{...x.atend,[c.slug]:[{quando:'22/09 às 10:14',por:'Administrador Nortiq',icon,titulo,
         sub:'Pedido '+(at.canal==='WhatsApp'?'pelo WhatsApp':at.canal==='Ligação'?'por ligação':'por e-mail')+(at.conf?' · confirmado: '+at.conf.charAt(0).toLowerCase()+at.conf.slice(1):'')+(String(at.obs||'').trim()?' · '+String(at.obs).trim():'')},...(x.atend[c.slug]||[])]}}));
       const emailOk=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||'').trim());
       const D={
@@ -3867,7 +4143,7 @@ class Component extends DCLogic {
           if(pagos.includes(pg.mes)) err.geral='A mensalidade de '+mesMin(pg.mes)+' já está registrada como paga.';
           if(Object.keys(err).length) return this.setState({pgErr:err});
           const data=brData(pg.data);
-          const novo={id:'p'+Date.now(),mes:pg.mes,valor,data,meio:pg.meio,por:'Helena Duarte',obs:String(pg.obs||'').trim()};
+          const novo={id:'p'+Date.now(),mes:pg.mes,valor,data,meio:pg.meio,por:'Administrador Nortiq',obs:String(pg.obs||'').trim()};
           const patch={pags:[novo,...pags]};
           if(ag) Object.assign(patch,{status:'Convite enviado',nota:pg.meio+' em '+data+' · senha ainda não criada',pago:data});
           else if(atraso) Object.assign(patch,{status:'Em dia',nota:pg.meio+' em '+data+' · registrado'});
@@ -3882,7 +4158,7 @@ class Component extends DCLogic {
           const motivo=String(pg.motivo||'').trim();
           if(motivo.length<3) return this.setState({pgErr:{motivo:'Conte o motivo do estorno.'}});
           const volta=pag.mes==='Setembro de 2026'&&a.status==='Em dia';
-          upd({pags:pags.map(p=>p.id===pag.id?{...p,estornado:true,estMotivo:motivo,estData:'22/09',estPor:'Helena Duarte'}:p),
+          upd({pags:pags.map(p=>p.id===pag.id?{...p,estornado:true,estMotivo:motivo,estData:'22/09',estPor:'Administrador Nortiq'}:p),
             ...(volta?{status:'Em atraso',nota:'Pagamento de setembro estornado'}:{})});
           fechar('Pagamento estornado. O registro continua no histórico com o motivo.'+(volta?' A mensalidade de setembro voltou a ficar em aberto.':''));
         };
@@ -4098,7 +4374,8 @@ class Component extends DCLogic {
 
       // ---------- segurança ----------
       const pw=s.sgPw;
-      const regras=[{ok:pw.nova.length>=8,txt:'Pelo menos 8 caracteres'},{ok:/[0-9]/.test(pw.nova),txt:'Pelo menos 1 número'},{ok:!!pw.nova&&pw.nova===pw.rep,txt:'As duas senhas iguais'}];
+      const minSg=admin?12:8;
+      const regras=[{ok:pw.nova.length>=minSg,txt:'Pelo menos '+minSg+' caracteres'},{ok:/[0-9]/.test(pw.nova),txt:'Pelo menos 1 número'},{ok:!!pw.nova&&pw.nova===pw.rep,txt:'As duas senhas iguais'}];
       const setP=k=>e=>{const v=e.target.value;this.setState(x=>({sgPw:{...x.sgPw,[k]:v},sgErr:'',sgMsg:'',...(k==='atual'?{sgAtualErrado:false}:{})}));};
 
       // ---------- login (situações do protótipo) ----------
@@ -4127,7 +4404,7 @@ class Component extends DCLogic {
       const PAGINAS_DONO=['faturamento','metas','relatorios','plano'];
       return {
         // papel do usuário
-        userName:admin?'Helena Duarte':eu.nome,userInitials:admin?'HD':eu.ini,userRole:admin?'Operações · Nortiq':(func?'Funcionária':'Proprietário'),
+        userName:admin?'Administrador Nortiq':eu.nome,userInitials:admin?'NT':eu.ini,userRole:admin?'Operações · Nortiq':(func?'Funcionária':'Proprietário'),
         saudacao:'Bom dia, '+primeiro(eu.nome),
         kpis:func?kpis.filter(k=>k.label!=='Receita do mês'):kpis,
         showMetaCard:!func,
@@ -4141,7 +4418,7 @@ class Component extends DCLogic {
         isInicio:!admin&&page==='inicio'&&!bloqueado,isOrcamentos:!admin&&page==='orcamentos'&&!bloqueado,isClientes:!admin&&page==='clientes'&&!bloqueado,
         isEstoque:!admin&&page==='estoque'&&!bloqueado,isTarefas:!admin&&page==='tarefas'&&!bloqueado,isAgenda:!admin&&page==='agenda'&&!bloqueado,
         isFaturamento:!admin&&page==='faturamento'&&!bloqueado&&!semAcesso,isMetas:!admin&&page==='metas'&&!bloqueado&&!semAcesso,
-        isRelatorios:!admin&&page==='relatorios'&&!bloqueado&&!semAcesso,isConfig:!admin&&page==='config'&&!bloqueado,isPlano:!admin&&page==='plano'&&!bloqueado&&!semAcesso,
+        isRelatorios:!admin&&page==='relatorios'&&!bloqueado&&!semAcesso,isConfig:admin?page==='a-seguranca':page==='config'&&!bloqueado,isPlano:!admin&&page==='plano'&&!bloqueado&&!semAcesso,
         isSemAcesso:semAcesso&&!bloqueado,isPausado:bloqueado,pausadoDono:bloqueado&&!func,pausadoFunc:bloqueado&&func,
         pageTitle:bloqueado?'Acesso pausado':semAcesso?'Área do dono':(TITLES[page]||[''])[0],
         pageSub:bloqueado?'Casa do Aquecedor · assinatura em atraso':semAcesso?'Casa do Aquecedor':(page==='config'&&func?'Seu perfil e a segurança da conta':page==='estoque'&&func?'Produtos e quantidades · só consulta':(TITLES[page]||['',''])[1]),
@@ -4158,7 +4435,7 @@ class Component extends DCLogic {
         pausadoTexto:func?'Há uma pendência no pagamento da assinatura. Os dados estão guardados. Fale com o dono da loja: assim que ele resolver, tudo volta a funcionar.'
                          :'A mensalidade de setembro venceu em 06/09, há 16 dias. Os dados da loja estão guardados e nada foi apagado. Assim que o pagamento for confirmado, tudo volta a funcionar na hora.',
         // configurações
-        cfgTabs:func?[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'}]
+        cfgTabs:admin?[{id:'seguranca',label:'Segurança da conta'}]:func?[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'}]
                     :[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'},{id:'equipe',label:'Equipe'},{id:'conta',label:'Dados da loja'}],
         cfgTab:s.cfgTab,cfgPerfil:s.cfgTab==='perfil',cfgSeg:s.cfgTab==='seguranca',cfgEquipe:s.cfgTab==='equipe'&&!func,cfgConta:s.cfgTab==='conta'&&!func,
         onCfgTab:id=>this.setState({cfgTab:id,profileSaved:false,eqMsg:'',sgMsg:''}),
@@ -4221,10 +4498,11 @@ class Component extends DCLogic {
         sgConfirmarSair:()=>this.setState(x=>({sessoes:x.sessoes.filter(z=>z.atual),sgConfirm:false,sgMsg:'Pronto. Todos os outros aparelhos foram desconectados.'})),
         // menu do usuário
         userMenu:!!s.userMenu,toggleUserMenu:()=>this.setState(x=>({userMenu:!x.userMenu,notifOpen:false})),closeUserMenu:()=>this.setState({userMenu:false}),
-        userEmail:admin?'helena@nortiq.com.br':eu.email,userMenuLoja:!admin,userMenuTop:mobile?'64px':'70px',userMenuRight:mobile?'8px':'24px',
-        irMinhaConta:()=>this.setState({page:'config',cfgTab:'perfil',userMenu:false,drawer:null,menuOpen:false}),
-        irSeguranca:()=>this.setState({page:'config',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}),
-        sairMenu:()=>this.setState({view:'login',userMenu:false,drawer:null,menuOpen:false}),
+        userEmail:admin?ADMIN_EMAIL:eu.email,userMenuLoja:true,userMenuTop:mobile?'64px':'70px',userMenuRight:mobile?'8px':'24px',
+        irMinhaConta:()=>this.setState(admin?{apage:'a-seguranca',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}:{page:'config',cfgTab:'perfil',userMenu:false,drawer:null,menuOpen:false}),
+        irSeguranca:()=>this.setState(admin?{apage:'a-seguranca',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}:{page:'config',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}),
+        sairMenu:()=>this.setState(admin?{view:'alogin',al:{...AL0(),aviso:'Você saiu da administração.'},alDemo:'normal',userMenu:false,drawer:null,menuOpen:false}:{view:'login',userMenu:false,drawer:null,menuOpen:false}),
+        menuMinhaConta:!admin,
         // login e protótipo
         loginEmail:s.loginFor?((s.accs.find(a=>a.slug===s.loginFor)||{}).email||('contato@'+s.loginFor+'.com.br')):(s.papel==='funcionario'?'camila@casadoaquecedor.com.br':'rogerio@casadoaquecedor.com.br'),
         loginDemo:ld,loginDemoOptions:LOGIN_DEMOS,assinDemo:s.assin,assinDemoOptions:ASSIN_DEMOS,papelDemo:s.papel,papelDemoOptions:PAPEL_DEMOS,
@@ -4347,23 +4625,24 @@ class Component extends DCLogic {
       ...pgVals,
       ...lojaVals,
       ...supVals,
+      ...alVals,
       ...estVals,
       ...notifVals,
       ...cancelVals,
       ...rsVals,
-      isLogin:view==='login',isSenha:view==='senha',isApp:!['login','senha','esqueci','redefinir'].includes(view),expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
+      isLogin:view==='login',isSenha:view==='senha',isALogin:view==='alogin',isApp:!['login','senha','esqueci','redefinir','alogin'].includes(view),expanded,sideW:expanded?'var(--layout-sidebar-w)':'var(--layout-sidebar-collapsed-w)',
       mobile,notMobile:!mobile,menuOpen:mobile&&s.menuOpen,
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
       openMenu:()=>this.setState({menuOpen:true}),closeMenu:()=>this.setState({menuOpen:false}),
       barY:mobile&&s.barHidden?'-100%':'0',searchW:mobile?'100%':'320px',cardHeadPad:mobile?'14px 16px':'16px 20px',mainPad:mobile?'76px 16px 24px':'24px',onMainScroll:e=>this.onMainScroll(e),
-      userName:admin?'Helena Duarte':'Rogério Tavares',userInitials:admin?'HD':'RT',
+      userName:admin?'Administrador Nortiq':'Rogério Tavares',userInitials:admin?'NT':'RT',
       brandSub:admin?'Administração':'Casa do Aquecedor',navGroups,
       accountName:admin?'Equipe Nortiq':'Casa do Aquecedor',accountSub:admin?'Acesso administrativo':PLANO.nome,accountIcon:admin?'shield':'store',
       toggleSide:()=>this.setState({collapsed:expanded}),toggleLabel:expanded?'Recolher menu':'Expandir menu',toggleIcon:expanded?'panel-left-close':'panel-left-open',
-      logout:()=>this.setState({view:'login',drawer:null,menuOpen:false}),
+      logout:()=>this.setState(admin?{view:'alogin',al:{...AL0(),aviso:'Você saiu da administração.'},alDemo:'normal',drawer:null,menuOpen:false,userMenu:false}:{view:'login',drawer:null,menuOpen:false}),
       loginLoja:()=>this.setState({view:'loja',page:'inicio',loginNotice:'',loginFor:null}),loginAdmin:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'admin',apage:'a-geral'});},
       pageTitle:(TITLES[page]||[''])[0],pageSub:(TITLES[page]||['',''])[1],
-      user:admin?{name:'Helena Duarte',role:'Operações · Nortiq',initials:'HD'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
+      user:admin?{name:'Administrador Nortiq',role:'Operações · Nortiq',initials:'NT'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
       isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isEstoque:!admin&&page==='estoque',isTarefas:!admin&&page==='tarefas',isAgenda:!admin&&page==='agenda',
       isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isRelatorios:!admin&&page==='relatorios',isConfig:!admin&&page==='config',isPlano:!admin&&page==='plano',
       isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',isAAvisos:admin&&page==='a-avisos',
