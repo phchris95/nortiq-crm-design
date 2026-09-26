@@ -2456,7 +2456,8 @@ const ACC_TONE={'Em dia':'success','Em atraso':'danger','Cancelada':'neutral','A
 // false = modo reserva, em que a loja só PEDE e a equipe Nortiq confirma pelo painel.
 const CANCELAMENTO_AUTOMATICO=true;
 const CANCEL_MOTIVOS=['Está caro para a minha loja','Não estou usando o sistema','Faltou alguma função','Vou usar outro sistema','Fechei ou vendi a loja','Outro motivo'];
-const ACESSO_ATE='30/09', WA_NORTIQ='5511934727720';
+// Depois do cancelamento: acesso até o fim do período já pago; dados guardados por 90 dias após o fim do acesso (caso a loja volte).
+const ACESSO_ATE='30/09', DADOS_ATE='29/12', DIAS_DADOS=90, WA_NORTIQ='5511934727720';
 const abrirWhats=(numero,texto)=>window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(texto),'_blank','noopener');
 const slugOf=n=>String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,30);
 const emptyNa=()=>({nome:'',razao:'',doc:'',cidade:'',slug:'',slugTouched:false,dono:'',email:'',tel:'',cobranca:'agora',cupom:''});
@@ -2651,7 +2652,7 @@ class Component extends DCLogic {
         acoes:[{label:'Desistir do cancelamento',variant:'primary',icon:'arrow-left',go:()=>{upd({status:'Em dia',nota:'Pago em 01/09',cancel:null});this.setState({mpMsg:'Pronto, seu pedido de cancelamento foi retirado. A assinatura continua normalmente.'});}},
                {label:'Falar pelo WhatsApp',variant:'secondary',icon:'message-circle',go:whatsNortiq('Olá! Sou da Casa do Aquecedor e quero falar sobre o cancelamento da assinatura.')}]};
       else if(cancelada) banner={bg:'var(--surface-sunken)',fg:'var(--text-strong)',icon:'info',titulo:'Assinatura cancelada',
-        texto:'Você pode usar o sistema até '+ACESSO_ATE+', fim do período já pago. Não haverá novas cobranças.',
+        texto:'Você pode usar o sistema até '+ACESSO_ATE+', fim do período já pago. Não haverá novas cobranças. Seus dados ficam guardados até '+DADOS_ATE+', caso você queira voltar.',
         acoes:[CANCELAMENTO_AUTOMATICO?{label:'Reativar assinatura',variant:'primary',icon:'arrow-left',go:()=>{upd({status:'Em dia',nota:'Reativada em 22/09',cancel:null});this.setState({mpMsg:'Assinatura reativada. Que bom ter você de volta!'});}}
                                      :{label:'Quero reativar',variant:'primary',icon:'message-circle',go:whatsNortiq('Olá! Sou da Casa do Aquecedor e quero reativar a assinatura do Nortiq.')}]};
       else if(s.mpMsg) banner={bg:'var(--status-success-bg)',fg:'var(--status-success-fg)',icon:'circle-check',titulo:s.mpMsg,texto:'',acoes:[]};
@@ -2664,7 +2665,7 @@ class Component extends DCLogic {
         showCancel:s.showCancel,openCancel:()=>this.setState({showCancel:true,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:''}),closeCancel:()=>this.setState({showCancel:false}),
         cf,cfErr:s.cfErr,cfErrShow:!!s.cfErr,cfOn:{motivo:setCf('motivo'),detalhe:setCf('detalhe')},
         cfMotivoOptions:[{value:'',label:'Escolha o motivo'},...CANCEL_MOTIVOS.map(m=>({value:m,label:m}))],
-        cfInfo:[{icon:'calendar',txt:'Seu acesso continua até '+ACESSO_ATE+', fim do período já pago.'},{icon:'receipt',txt:'A fatura de outubro não será cobrada.'},
+        cfInfo:[{icon:'calendar',txt:'Seu acesso continua até '+ACESSO_ATE+', fim do período já pago.'},{icon:'receipt',txt:'A fatura de outubro não será cobrada.'},{icon:'shield-check',txt:'Seus dados ficam guardados por '+DIAS_DADOS+' dias depois disso, caso você queira voltar.'},
           ...(CANCELAMENTO_AUTOMATICO?[]:[{icon:'mail',txt:'A equipe Nortiq confirma o cancelamento e avisa você por e-mail.'}])],
         cfConfirmarTxt:CANCELAMENTO_AUTOMATICO?'Cancelar assinatura':'Pedir cancelamento',
         cfWhats:whatsNortiq('Olá! Sou da Casa do Aquecedor e estou pensando em cancelar a assinatura. Podemos conversar?'),
@@ -2889,7 +2890,7 @@ class Component extends DCLogic {
         ac={nome:a.nome,sub:a.slug+'.nortiq.com.br · '+a.status,msg:s.accDlgMsg,msgShow:!!s.accDlgMsg,etapas,acoes,
           cancelShow:!!cc&&(pedido||a.status==='Cancelada'),cancelTitulo:pedido?'Pedido de cancelamento':'Assinatura cancelada pela loja',
           cancelBg:pedido?'var(--status-warning-bg)':'var(--surface-sunken)',cancelFg:pedido?'var(--status-warning-fg)':'var(--text-strong)',
-          cancelLinhas:cc?[{k:'Motivo',v:cc.motivo},{k:'Detalhe',v:cc.detalhe||'—'},{k:pedido?'Pedido em':'Acesso até',v:pedido?cc.data:ACESSO_ATE}]:[],
+          cancelLinhas:cc?[{k:'Motivo',v:cc.motivo},{k:'Detalhe',v:cc.detalhe||'—'},{k:pedido?'Pedido em':'Acesso até',v:pedido?cc.data:ACESSO_ATE},...(pedido?[]:[{k:'Dados guardados até',v:DADOS_ATE}])]:[],
           linhas:[{k:'Responsável',v:a.dono||'—'},{k:'E-mail',v:a.email||'—'},{k:'WhatsApp',v:a.tel||'—'},{k:'Cidade',v:a.cidade},{k:'Mensalidade',v:a.status==='Cancelada'?'Encerrada, sem novas cobranças':a.gratisAte?'Grátis até '+a.gratisAte+', depois '+brl(PLANO.preco,true):brl(PLANO.preco,true)}]};
       }
       // e-mail
