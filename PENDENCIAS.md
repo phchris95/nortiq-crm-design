@@ -36,6 +36,19 @@ Para ver cada situação no protótipo, use o painel "Protótipo · ver outras s
 - **Segurança da conta** (menu no nome): alterar senha, ver a verificação em duas etapas, gerar novos códigos de recuperação, configurar em outro celular e aparelhos conectados. Na administração, cada entrada vale até 12 horas.
 - **Primeiro administrador:** nortiqtec@gmail.com. A conta é criada quando o servidor for instalado: um comando envia o convite para esse e-mail e a senha é criada por você, nunca fica escrita no código.
 
+## Etapa 4 do design: Faturamento da loja (feito em 26/09)
+
+- **Resumo do mês:** recebido, pago, a receber e a pagar (com quantos estão vencidos), e a sobra até agora.
+- **Abas:** Todos, A receber, A pagar, Recebidos e pagos, Cancelados. Cada lançamento mostra a situação: a receber, a pagar, parcial, vencido, recebido, pago, cancelado ou estornado.
+- **Novo lançamento** (receita ou despesa), com opção "já recebi/já paguei". **Editar** descrição, valor, vencimento, categoria e forma.
+- **Registrar recebimento ou pagamento**, total ou parcial (o resto continua em aberto).
+- **Estornar** com motivo: o recebimento fica no histórico e o valor volta a ficar em aberto.
+- **Cancelar** com motivo: sai das contas e vai para a aba Cancelados. Nada é apagado.
+- **Venda fechada** cria sozinha o lançamento a receber. O valor acompanha o orçamento. Reabrir a venda sem dinheiro recebido cancela o lançamento com o motivo.
+- **Reabrir venda que já tem dinheiro recebido:** a janela pede a decisão: manter o lançamento ou registrar o estorno (com motivo). Só o dono decide; o funcionário vê um aviso.
+- **Ficha do orçamento:** quadro "Financeiro desta venda" com a situação e o botão "Ver no Faturamento" (só para o dono).
+- **Perfil do administrador:** aba Perfil em Minha conta para trocar o nome que aparece no painel.
+
 ### Decisões de 26/09
 - **Cópia de segurança:** cópias automáticas do Neon (voltar o banco a qualquer momento dos últimos dias) + botão "Exportar dados" para a loja. Cópia semanal separada por loja fica para depois.
 - **Assinatura paga fora do Asaas:** permitida; a equipe Nortiq registra cada pagamento no painel.
@@ -57,13 +70,12 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 8. **Estoque:** histórico de movimentações do produto; registrar entrada, saída, perda, devolução e ajuste; desativar produto em vez de excluir.
 
 ### Faturamento
-9. Novo lançamento (receita ou despesa), editar, marcar como recebido (total ou parcial), cancelar com motivo, ver os cancelados. Mostrar quando o lançamento veio de uma venda (ORC-0431).
-10. **Reabrir venda que já tem dinheiro recebido:** janela que pede a decisão: manter o lançamento ou registrar o estorno.
+9. ~~Lançamentos, recebimentos, estorno, cancelamento e reabrir venda paga~~: feitos na etapa 4 (acima). Fica para depois: parcelas (vários vencimentos num lançamento) e recibo em PDF.
 
 ### Estados gerais
-11. **Carregando:** padrão para listas e painéis (esqueleto) e botões com "Salvando" ou "Enviando". O botão do design system já tem esse estado.
-12. **Erros gerais:** sem conexão, erro inesperado ("Não foi possível salvar. Tente de novo.") e página não encontrada.
-13. **Loja nova, sem dados:** estados vazios de Início, Orçamentos, Clientes, Estoque (sugerindo importar a planilha), Faturamento, Agenda e Metas (definir a primeira meta).
+10. **Carregando:** padrão para listas e painéis (esqueleto) e botões com "Salvando" ou "Enviando". O botão do design system já tem esse estado.
+11. **Erros gerais:** sem conexão, erro inesperado ("Não foi possível salvar. Tente de novo.") e página não encontrada.
+12. **Loja nova, sem dados:** estados vazios de Início, Orçamentos, Clientes, Estoque (sugerindo importar a planilha), Faturamento, Agenda e Metas (definir a primeira meta).
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:

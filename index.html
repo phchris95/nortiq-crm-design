@@ -1211,40 +1211,77 @@
         <!-- FATURAMENTO -->
         <sc-if value="{{ isFaturamento }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid; gap:16px">
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
-              <sc-for list="{{ finKpis }}" as="k" hint-placeholder-count="3">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:16px">
+              <sc-for list="{{ finKpis }}" as="k" hint-placeholder-count="4">
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" hint-size="100%,132px"></x-import>
               </sc-for>
             </div>
-            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:{{ cardHeadPad }}; border-bottom:1px solid var(--border-subtle)">
-                <span style="font:var(--type-section); color:var(--text-strong)">Lançamentos de setembro</span>
-                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ finTabs }}" active="{{ finF }}" onSelect="{{ onFinF }}" hint-size="300px,40px"></x-import>
+            <sc-if value="{{ finMsgShow }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+                <span style="display:inline-flex; margin-top:2px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import></span><span style="flex:1">{{ finMsg }}</span>
               </div>
+            </sc-if>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
+              <div style="display:grid; gap:12px; padding:{{ cardHeadPad }}; border-bottom:1px solid var(--border-subtle)">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                  <div style="display:grid; gap:2px; min-width:0">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Lançamentos</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ finSobra }}</span>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ abrirNovoLanc }}" hint-size="190px,44px">Novo lançamento</x-import>
+                </div>
+                <div style="overflow-x:auto; margin:0 -4px; padding:0 4px">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ finTabs }}" active="{{ finF }}" onSelect="{{ onFinF }}" hint-size="620px,40px"></x-import>
+                </div>
+              </div>
+              <sc-if value="{{ finVazio }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:28px 20px; text-align:center; font:var(--type-ui); color:var(--text-muted)">{{ finVazioTxt }}</div>
+              </sc-if>
               <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
-                <sc-for list="{{ finRows }}" as="f" hint-placeholder-count="10">
-                  <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-subtle)">
-                    <div style="display:grid; gap:2px; min-width:0">
-                      <span style="font:var(--type-ui); color:var(--text-strong)">{{ f.desc }}</span>
-                      <span style="font:var(--type-caption); color:var(--text-muted); font-variant-numeric:tabular-nums">{{ f.d }} · {{ f.cat }} · {{ f.forma }}</span>
+                <sc-for list="{{ finRows }}" as="f" hint-placeholder-count="8">
+                  <div onClick="{{ f.open }}" style="display:grid; gap:8px; padding:12px 16px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px">
+                      <div style="display:grid; gap:2px; min-width:0">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); text-decoration:{{ f.risco }}">{{ f.desc }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-muted)">{{ f.sub }}</span>
+                      </div>
+                      <span style="flex:0 0 auto; font:var(--type-ui); font-weight:700; color:{{ f.color }}; font-variant-numeric:tabular-nums; white-space:nowrap; text-decoration:{{ f.risco }}">{{ f.valor }}</span>
                     </div>
-                    <span style="flex:0 0 auto; font:var(--type-ui); font-weight:600; color:{{ f.color }}; font-variant-numeric:tabular-nums; white-space:nowrap">{{ f.valor }}</span>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap">
+                      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-width:0">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ f.tone }}" dot="{{ true }}" size="sm" hint-size="90px,20px">{{ f.status }}</x-import>
+                        <span style="font:var(--type-caption); color:var(--text-subtle)">{{ f.det }}</span>
+                      </div>
+                      <sc-if value="{{ f.temAcao }}" hint-placeholder-val="{{ false }}">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="circle-check" onClick="{{ f.acao }}" hint-size="110px,34px">{{ f.acaoTxt }}</x-import>
+                      </sc-if>
+                    </div>
                   </div>
                 </sc-for>
               </sc-if>
               <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
               <div style="overflow-x:auto">
-                <div style="min-width:720px">
-                  <div style="display:grid; grid-template-columns:72px minmax(0,2.4fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr); gap:16px; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
-                    <span>Data</span><span>Descrição</span><span>Categoria</span><span>Forma</span><span style="text-align:right">Valor</span>
+                <div style="min-width:820px">
+                  <div style="display:grid; grid-template-columns:64px minmax(0,2.3fr) minmax(0,1.6fr) minmax(0,1fr) 130px; gap:16px; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
+                    <span>Venc.</span><span>Descrição</span><span>Situação</span><span style="text-align:right">Valor</span><span></span>
                   </div>
                   <sc-for list="{{ finRows }}" as="f" hint-placeholder-count="10">
-                    <div style="display:grid; grid-template-columns:72px minmax(0,2.4fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+                    <div onClick="{{ f.open }}" style="display:grid; grid-template-columns:64px minmax(0,2.3fr) minmax(0,1.6fr) minmax(0,1fr) 130px; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); cursor:pointer" style-hover="background:var(--surface-hover)">
                       <span style="color:var(--text-muted); font-variant-numeric:tabular-nums">{{ f.d }}</span>
-                      <span style="color:var(--text-strong)">{{ f.desc }}</span>
-                      <span style="color:var(--text-body)">{{ f.cat }}</span>
-                      <span style="color:var(--text-muted)">{{ f.forma }}</span>
-                      <span style="text-align:right; font-weight:600; color:{{ f.color }}; font-variant-numeric:tabular-nums">{{ f.valor }}</span>
+                      <div style="display:grid; gap:2px; min-width:0">
+                        <span style="color:var(--text-strong); font-weight:600; text-decoration:{{ f.risco }}">{{ f.desc }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-muted)">{{ f.sub }}</span>
+                      </div>
+                      <div style="display:grid; gap:4px; justify-items:start; min-width:0">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ f.tone }}" dot="{{ true }}" size="sm" hint-size="90px,20px">{{ f.status }}</x-import>
+                        <span style="font:var(--type-caption); color:var(--text-subtle); line-height:1.4">{{ f.det }}</span>
+                      </div>
+                      <span style="text-align:right; font-weight:700; color:{{ f.color }}; font-variant-numeric:tabular-nums; text-decoration:{{ f.risco }}">{{ f.valor }}</span>
+                      <div style="display:flex; justify-content:flex-end">
+                        <sc-if value="{{ f.temAcao }}" hint-placeholder-val="{{ false }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="circle-check" onClick="{{ f.acao }}" hint-size="110px,34px">{{ f.acaoTxt }}</x-import>
+                        </sc-if>
+                      </div>
                     </div>
                   </sc-for>
                 </div>
@@ -1337,6 +1374,27 @@
                   </div>
                 </div>
               </x-import>
+            </sc-if>
+
+            <sc-if value="{{ cfgAPerfil }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; gap:16px; max-width:760px">
+                <sc-if value="{{ aPerfilMsgShow }}" hint-placeholder-val="{{ false }}">
+                  <div role="status" style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import><span>{{ aPerfilMsg }}</span></div>
+                </sc-if>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="760px,260px">
+                  <div style="display:grid; gap:18px">
+                    <div style="display:grid; gap:4px">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Seu perfil</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted)">O nome aparece no topo do painel e em tudo o que você registra (pagamentos, atendimentos).</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; align-items:start">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="adm-nome" label="Nome" value="{{ aNome }}" onChange="{{ aNomeOn }}" error="{{ aPerfilErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail de acesso" value="{{ aEmail }}" icon="mail" read-only="{{ true }}" hint="É com ele que você entra na administração" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+                    </div>
+                    <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ aPerfilSalvar }}" hint-size="160px,44px">Salvar alterações</x-import></div>
+                  </div>
+                </x-import>
+              </div>
             </sc-if>
 
             <sc-if value="{{ cfgSeg }}" hint-placeholder-val="{{ false }}">
@@ -2192,6 +2250,29 @@
                   </div>
                 </div>
               </x-import>
+              <sc-if value="{{ finD.show }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,140px">
+                <div style="display:grid; gap:12px">
+                  <sc-if value="{{ finD.avisoShow }}" hint-placeholder-val="{{ false }}">
+                    <div role="status" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+                      <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="wallet" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ finD.aviso }}</span>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ finD.temL }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                      <div style="display:grid; gap:4px; min-width:0">
+                        <span style="font:var(--type-section); color:var(--text-strong)">Financeiro desta venda</span>
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ finD.tone }}" dot="{{ true }}" size="sm" hint-size="90px,20px">{{ finD.status }}</x-import>
+                          <span style="font:var(--type-caption); color:var(--text-muted)">{{ finD.valor }} · {{ finD.det }}</span>
+                        </div>
+                      </div>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon-right="arrow-right" onClick="{{ finD.abrir }}" hint-size="170px,34px">Ver no Faturamento</x-import>
+                    </div>
+                  </sc-if>
+                </div>
+              </x-import>
+              </sc-if>
               <sc-if value="{{ d.showObj }}" hint-placeholder-val="{{ true }}">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
                 <div style="display:grid; gap:14px">
@@ -3033,6 +3114,196 @@
     </x-import>
   </sc-if>
 
+  <!-- LANÇAMENTO (detalhe) -->
+  <sc-if value="{{ lancShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ ld.titulo }}" description="{{ ld.sub }}" width="{{ 560 }}" onClose="{{ lancFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:16px">
+        <sc-if value="{{ finMsgShow }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ finMsg }}</span>
+          </div>
+        </sc-if>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+          <div style="display:grid; gap:4px; justify-items:start">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ ld.tone }}" dot="{{ true }}" hint-size="100px,24px">{{ ld.status }}</x-import>
+            <span style="font:var(--type-caption); color:var(--text-muted)">{{ ld.det }}</span>
+          </div>
+          <span style="font-family:var(--font-display); font-weight:700; font-size:24px; color:var(--text-strong); font-variant-numeric:tabular-nums">{{ ld.valor }}</span>
+        </div>
+        <sc-if value="{{ ld.parcialShow }}" hint-placeholder-val="{{ false }}">
+          <div style="height:8px; border-radius:var(--radius-pill); background:var(--surface-sunken); overflow:hidden"><div style="height:100%; width:{{ ld.barra }}; background:var(--status-warning-fg)"></div></div>
+        </sc-if>
+        <sc-if value="{{ ld.cancelShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:4px; padding:12px 14px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+            <span style="font:var(--type-ui); font-weight:700; color:var(--text-strong)">{{ ld.cancelTitulo }}</span>
+            <span style="font:var(--type-caption); color:var(--text-body); line-height:1.5">{{ ld.cancelTxt }}</span>
+          </div>
+        </sc-if>
+        <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+          <sc-for list="{{ ld.linhas }}" as="l" hint-placeholder-count="4">
+            <div style="display:flex; justify-content:space-between; gap:12px; padding:10px 14px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+              <span style="color:var(--text-muted)">{{ l.k }}</span><span style="color:var(--text-strong); font-weight:600; text-align:right">{{ l.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ ld.temOrc }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding:10px 14px; border-radius:var(--radius-md); background:var(--navy-50)">
+            <span style="display:inline-flex; align-items:center; gap:8px; font:var(--type-ui); color:var(--text-body)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="file-text" size="{{ 16 }}" hint-size="16px,16px"></x-import>Veio da venda {{ ld.orc }}</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" size="sm" icon-right="arrow-right" onClick="{{ ld.abrirOrc }}" hint-size="150px,34px">Abrir orçamento</x-import>
+          </div>
+        </sc-if>
+        <sc-if value="{{ ld.notaVenda }}" hint-placeholder-val="{{ false }}">
+          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">{{ ld.notaVendaTxt }}</span>
+        </sc-if>
+        <sc-if value="{{ ld.baixasShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:8px">
+            <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">{{ ld.baixasTitulo }}</span>
+            <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+              <sc-for list="{{ ld.baixas }}" as="b" hint-placeholder-count="2">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:10px 14px; border-bottom:1px solid var(--border-subtle)">
+                  <div style="display:grid; gap:2px; min-width:0">
+                    <span style="font:var(--type-ui); font-weight:600; color:{{ b.fg }}">{{ b.txt }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.45">{{ b.obs }}</span>
+                  </div>
+                  <span style="font:var(--type-ui); font-weight:700; color:{{ b.fg }}; font-variant-numeric:tabular-nums; white-space:nowrap">{{ b.valor }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <sc-for list="{{ ld.acoes }}" as="a" hint-placeholder-count="3">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ a.variant }}" icon="{{ a.icon }}" onClick="{{ a.go }}" hint-size="190px,44px">{{ a.label }}</x-import>
+          </sc-for>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ lancFechar }}" hint-size="90px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- NOVO / EDITAR LANÇAMENTO -->
+  <sc-if value="{{ flShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ flTitulo }}" description="Receita é dinheiro que entra; despesa, dinheiro que sai." width="{{ 560 }}" onClose="{{ flFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <sc-if value="{{ flIsNovo }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ flTipoTabs }}" active="{{ fl.tipo }}" onSelect="{{ onFlTipo }}" hint-size="240px,40px"></x-import>
+        </sc-if>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fl-desc" label="Descrição" placeholder="Ex.: Venda no balcão · registros" value="{{ fl.desc }}" onChange="{{ flOn.desc }}" error="{{ flErr.desc }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fl-valor" label="Valor" prefix="R$" inputMode="decimal" value="{{ fl.valor }}" onChange="{{ flOn.valor }}" error="{{ flErr.valor }}" hint="{{ flValorHint }}" read-only="{{ flValorRO }}" full-width="{{ true }}" hint-size="100%,90px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fl-venc" type="date" label="{{ flVencLabel }}" value="{{ fl.venc }}" onChange="{{ flOn.venc }}" error="{{ flErr.venc }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="fl-cat" label="Categoria" options="{{ flCatOptions }}" value="{{ fl.cat }}" onChange="{{ flOn.cat }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="fl-forma" label="Forma de pagamento" options="{{ flFormaOptions }}" value="{{ fl.forma }}" onChange="{{ flOn.forma }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <sc-if value="{{ flIsNovo }}" hint-placeholder-val="{{ true }}">
+          <label style="display:flex; gap:10px; align-items:flex-start; font:var(--type-ui); color:var(--text-body); line-height:1.5; cursor:pointer">
+            <input id="fl-japago" type="checkbox" checked="{{ fl.jaPago }}" onChange="{{ flOn.jaPago }}" style="width:18px; height:18px; margin-top:2px; accent-color:var(--navy-500)">
+            <span>{{ flJaPagoTxt }}</span>
+          </label>
+        </sc-if>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ flFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ flSalvar }}" hint-size="160px,44px">Salvar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- REGISTRAR RECEBIMENTO / PAGAMENTO -->
+  <sc-if value="{{ fbShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ fbTitulo }}" description="{{ fbDesc }}" width="{{ 520 }}" onClose="{{ fbFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ fbInfo }}</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fb-valor" label="Valor" prefix="R$" inputMode="decimal" value="{{ fb.valor }}" onChange="{{ fbOn.valor }}" error="{{ fbErr.valor }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fb-data" type="date" label="{{ fbDataLabel }}" value="{{ fb.data }}" onChange="{{ fbOn.data }}" error="{{ fbErr.data }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="fb-forma" label="Forma" options="{{ fbFormaOptions }}" value="{{ fb.forma }}" onChange="{{ fbOn.forma }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fb-obs" label="Observação (opcional)" placeholder="Ex.: sinal de 50%" value="{{ fb.obs }}" onChange="{{ fbOn.obs }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ fbFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="circle-check" onClick="{{ fbSalvar }}" hint-size="170px,44px">Registrar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- ESTORNAR RECEBIMENTO / PAGAMENTO -->
+  <sc-if value="{{ feShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ feTitulo }}" description="{{ feDesc }}" width="{{ 500 }}" onClose="{{ feFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ feInfo }}</span>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fe-valor" label="Valor do estorno" prefix="R$" inputMode="decimal" value="{{ fe.valor }}" onChange="{{ feOn.valor }}" error="{{ feErr.valor }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fe-motivo" label="Motivo" placeholder="Ex.: cliente desistiu e o dinheiro foi devolvido" value="{{ fe.motivo }}" onChange="{{ feOn.motivo }}" error="{{ feErr.motivo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ feFechar }}" hint-size="100px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="undo-2" onClick="{{ feSalvar }}" hint-size="170px,44px">Registrar estorno</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- CANCELAR LANÇAMENTO -->
+  <sc-if value="{{ fcShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Cancelar lançamento" description="{{ fcDesc }}" width="{{ 480 }}" onClose="{{ fcFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>O lançamento não é apagado: sai das contas do mês e fica na aba Cancelados, com o motivo e quem cancelou.</span>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="fc-motivo" label="Motivo do cancelamento" placeholder="Ex.: lançado duas vezes" value="{{ fc.motivo }}" onChange="{{ fcOn }}" error="{{ fcErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ fcFechar }}" hint-size="100px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="circle-x" onClick="{{ fcSalvar }}" hint-size="190px,44px">Cancelar lançamento</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- REABRIR VENDA QUE JÁ TEM DINHEIRO RECEBIDO -->
+  <sc-if value="{{ rvShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ rvTitulo }}" description="{{ rvDesc }}" width="{{ 540 }}" onClose="{{ rvFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <sc-if value="{{ rvSoDono }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:14px">
+            <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="lock" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ rvFuncTxt }}</span>
+        </div>
+            <div style="display:flex; justify-content:flex-end"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ rvFechar }}" hint-size="100px,44px">Entendi</x-import></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ rvDecide }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; gap:14px">
+            <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="wallet" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ rvInfo }}</span>
+        </div>
+            <div role="radiogroup" aria-label="O que fazer com o dinheiro recebido" style="display:grid; gap:10px">
+              <sc-for list="{{ rvOpcoes }}" as="o" hint-placeholder-count="2">
+                <button type="button" role="radio" aria-checked="{{ o.sel }}" onClick="{{ o.go }}" style="display:flex; gap:12px; align-items:flex-start; width:100%; padding:14px 16px; border:1.5px solid {{ o.borda }}; border-radius:var(--radius-md); background:{{ o.fundo }}; cursor:pointer; text-align:left; font:inherit; color:inherit">
+                  <span style="display:inline-flex; margin-top:1px; color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ o.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                  <span style="display:grid; gap:4px"><span style="font:var(--type-ui); font-weight:700; color:var(--text-strong)">{{ o.titulo }}</span><span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">{{ o.txt }}</span></span>
+                </button>
+              </sc-for>
+            </div>
+            <sc-if value="{{ rvEstornar }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rv-motivo" label="Motivo do estorno" placeholder="Ex.: cliente desistiu e o dinheiro foi devolvido" value="{{ rv.motivo }}" onChange="{{ rvMotivoOn }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            </sc-if>
+            <sc-if value="{{ rvErrShow }}" hint-placeholder-val="{{ false }}">
+              <span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg)">{{ rvErr }}</span>
+            </sc-if>
+            <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ rvFechar }}" hint-size="100px,44px">Voltar</x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ rvConfirmar }}" hint-size="240px,44px">{{ rvBtn }}</x-import>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- NOVO ORÇAMENTO -->
   <sc-if value="{{ showNew }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo orçamento" description="Anote o pedido agora. Os detalhes podem ser completados depois." width="{{ 620 }}" onClose="{{ closeNew }}" hint-size="100%,100%">
@@ -3289,6 +3560,35 @@ const TASKS=[
  {id:9,g:'semana',t:'Enviar orçamento para Fernanda Lopes',sub:'ORC-0424 · Komeco KO 20DI',when:'17/09',ref:['orc','ORC-0424'],cal:false,done:true},
  {id:10,g:'semana',t:'Confirmar pagamento via PIX de Paulo Henrique',sub:'ORC-0409 · R$ 5.260',when:'18/09',ref:['orc','ORC-0409'],cal:false,done:true}
 ];
+// Faturamento: lançamentos de receita e despesa. A situação vem dos recebimentos/pagamentos (baixas):
+// nada recebido = a receber (ou a pagar), parte = parcial, tudo = recebido (ou pago). Nada é apagado:
+// errou o recebimento? estorno com motivo. Não vai acontecer? cancelar com motivo (vai para Cancelados).
+// Venda fechada cria sozinha o lançamento a receber; o valor acompanha o orçamento.
+const FORMAS_FIN=['PIX','Cartão','Boleto','Dinheiro','Transferência','Débito'];
+const CATS_FIN={receita:['Venda com instalação','Balcão','Manutenção'],despesa:['Estoque','Equipe','Custo fixo','Divulgação','Veículo','Impostos']};
+const VENDA_ETAPAS=['fechada','agendada','concluido'];
+const HOJE_FIN='22/09';
+const iniciais=n=>String(n||'').trim().split(/\s+/).filter(Boolean).map(p=>p[0]).slice(0,2).join('').toUpperCase()||'NT';
+const dnum=d=>{const p=String(d||'').split('/').map(Number);return (p[1]||0)*100+(p[0]||0);};
+const isoDe=d=>{const p=String(d||'').split('/');return p.length===2?'2026-'+p[1]+'-'+p[0]:'';};
+const pagoDe=l=>(l.baixas||[]).reduce((a,b)=>a+(b.tipo==='estorno'?-b.valor:b.valor),0);
+const situacaoDe=l=>{ if(l.status==='cancelado'||l.status==='estornado') return l.status; const p=pagoDe(l); return p<=0?'pendente':p<l.valor-0.001?'parcial':'pago'; };
+const formaDe=pag=>/pix/i.test(pag)?'PIX':/cart/i.test(pag)?'Cartão':/boleto/i.test(pag)?'Boleto':/dinheiro/i.test(pag)?'Dinheiro':'PIX';
+const noMes=(lanc,tipo)=>lanc.filter(l=>l.tipo===tipo).reduce((a,l)=>a+(l.baixas||[]).filter(b=>String(b.data).endsWith('/09')).reduce((x,b)=>x+(b.tipo==='estorno'?-b.valor:b.valor),0),0);
+const LANC0=()=>{
+  const l=FIN.map((f,i)=>({id:'L'+(100+i),tipo:f[4]>0?'receita':'despesa',desc:f[1],cat:f[2],forma:f[3],valor:Math.abs(f[4]),venc:f[0],criado:f[0],
+    por:'Rogério Tavares',orc:(f[1].match(/ORC-\d{4}/)||[null])[0],auto:/^Venda ORC/.test(f[1]),baixas:[{tipo:'pagamento',data:f[0],valor:Math.abs(f[4]),forma:f[3],por:'Rogério Tavares'}]}));
+  const ajusta=(desc,patch)=>{const x=l.find(y=>y.desc.startsWith(desc)); if(x) Object.assign(x,patch);};
+  ajusta('Venda ORC-0405',{forma:'Boleto',venc:'17/10',baixas:[{tipo:'pagamento',data:'17/09',valor:3160,forma:'Boleto',obs:'1º boleto de 3',por:'Rogério Tavares'}]});
+  return [
+    {id:'L090',tipo:'receita',desc:'Venda ORC-0403 · Márcio Pinheiro',cat:'Venda com instalação',forma:'PIX',valor:1580,venc:'23/09',criado:'20/08',por:'Rogério Tavares',orc:'ORC-0403',auto:true,baixas:[]},
+    {id:'L091',tipo:'receita',desc:'Manutenção · Pousada Vale Verde (limpeza dos coletores)',cat:'Manutenção',forma:'PIX',valor:480,venc:'19/09',criado:'12/09',por:'Camila Duarte',baixas:[]},
+    {id:'L092',tipo:'despesa',desc:'Compra de estoque · Komeco (2º boleto)',cat:'Estoque',forma:'Boleto',valor:6320,venc:'30/09',criado:'01/09',por:'Rogério Tavares',baixas:[]},
+    {id:'L093',tipo:'despesa',desc:'Conta de água',cat:'Custo fixo',forma:'Boleto',valor:186.3,venc:'20/09',criado:'10/09',por:'Rogério Tavares',baixas:[]},
+    {id:'L094',tipo:'receita',desc:'Venda no balcão · tubos PVC e conexões',cat:'Balcão',forma:'PIX',valor:2318.4,venc:'15/09',criado:'15/09',por:'Camila Duarte',baixas:[],
+      status:'cancelado',cancel:{motivo:'Lançado duas vezes; o certo é o outro lançamento de 15/09',data:'15/09',por:'Rogério Tavares'}},
+    ...l];
+};
 const FIN=[
  ['20/09','Venda ORC-0412 · Débora Castilho','Venda com instalação','Cartão',4180],
  ['19/09','Compra de estoque · distribuidora Rinnai','Estoque','Boleto',-12640],
@@ -3406,7 +3706,8 @@ class Component extends DCLogic {
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
     notifs:NOTIFS0.map(n=>({...n})),notifOpen:false,notifF:'todas',avisos:AVISOS0.map(a=>({...a})),av:emptyAv(),avErr:{},avMsg:'',
     estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
-    accs:ACCOUNTS.map(a=>({...a})),pgFor:null,pgModo:null,pgPag:null,pg:null,pgErr:{},pixFor:null,pixCopiada:false,expSt:null,expBaixado:false,accAba:'resumo',atFor:null,at:null,atErr:{},al:AL0(),alDemo:'normal',aRec:10,aRecNovos:false,aCel:null,atend:JSON.parse(JSON.stringify(ATEND0)),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
+    accs:ACCOUNTS.map(a=>({...a})),pgFor:null,pgModo:null,pgPag:null,pg:null,pgErr:{},pixFor:null,pixCopiada:false,expSt:null,expBaixado:false,accAba:'resumo',atFor:null,at:null,atErr:{},al:AL0(),alDemo:'normal',aRec:10,aRecNovos:false,aCel:null,adminNome:'Administrador Nortiq',adminNomeRasc:null,
+    lanc:LANC0(),lancOpen:null,fl:null,flErr:{},fb:null,fbErr:{},fe:null,feErr:{},fc:null,fcErr:'',finMsg:'',rv:null,rvErr:'',finAviso:null,atend:JSON.parse(JSON.stringify(ATEND0)),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
     rsEmail:'',rsErr:'',rsEnviando:false,rsEnviado:false,rsMail:false,rsVencido:false,rsSalvando:false,
     papel:'dono',assin:'em_dia',loginDemo:'normal',userMenu:false,siteSlug:'',siteErr:'',
     equipe:EQUIPE0.map(u=>({...u})),eqDlg:null,eqForm:{},eqErr:{},eqMsg:'',
@@ -3441,9 +3742,33 @@ class Component extends DCLogic {
 
   openDrawer(type,id){ this.setState({drawer:{type,id},draft:null,tpl:0,tplAuto:true}); }
   setStage(id,stage){
-    this.setState(s=>({draft:null,tpl:0,orcs:s.orcs.map(o=>{ if(o.id!==id) return o;
-      let inst=o.inst; if(stage==='agendada'&&!inst) inst='A definir'; if(stage==='concluido') inst='Concluída em 22/09'; if(!['agendada','concluido'].includes(stage)) inst='';
-      return {...o,stage,inst,dias:0}; })}));
+    const s=this.state, o=s.orcs.find(x=>x.id===id); if(!o) return;
+    const era=VENDA_ETAPAS.includes(o.stage), sera=VENDA_ETAPAS.includes(stage);
+    const ativo=s.lanc.find(l=>l.orc===id&&!['cancelado','estornado'].includes(l.status));
+    // venda com dinheiro recebido não sai de venda sem uma decisão: manter o lançamento ou registrar o estorno
+    if(era&&!sera&&ativo&&pagoDe(ativo)>0) return this.setState({rv:{orc:id,para:stage,lanc:ativo.id,escolha:'',motivo:''},rvErr:''});
+    this.aplicarEtapa(id,stage);
+  }
+  aplicarEtapa(id,stage,decisao){
+    this.setState(s=>{
+      const o=s.orcs.find(x=>x.id===id); if(!o) return null;
+      const era=VENDA_ETAPAS.includes(o.stage), sera=VENDA_ETAPAS.includes(stage);
+      const nomeEt=((STAGES.find(x=>x.id===stage)||{}).label||stage).toLowerCase();
+      const ativo=s.lanc.find(l=>l.orc===id&&!['cancelado','estornado'].includes(l.status));
+      let lanc=s.lanc, finAviso=s.finAviso;
+      if(sera&&!era&&!ativo){
+        lanc=[{id:'L'+Date.now(),tipo:'receita',desc:'Venda '+id+' · '+o.cli,cat:'Venda com instalação',forma:formaDe(o.pag),valor:o.valor,venc:HOJE_FIN,criado:HOJE_FIN,por:'Rogério Tavares',orc:id,auto:true,baixas:[]},...lanc];
+        finAviso={orc:id,txt:'Venda fechada: lançamos '+brl(o.valor,true)+' a receber no Faturamento. Quando o cliente pagar, marque como recebido.'};
+      } else if(era&&!sera&&ativo){
+        if(pagoDe(ativo)<=0){
+          lanc=lanc.map(l=>l.id===ativo.id?{...l,status:'cancelado',cancel:{motivo:id+' voltou para '+nomeEt,data:HOJE_FIN,por:'Rogério Tavares'}}:l);
+          finAviso={orc:id,txt:'O lançamento a receber de '+brl(ativo.valor,true)+' foi cancelado porque a venda voltou para '+nomeEt+'. Ele continua em Faturamento, na aba Cancelados.'};
+        } else if(decisao==='manter') finAviso={orc:id,txt:'O lançamento com '+brl(pagoDe(ativo),true)+' recebido continua valendo no Faturamento.'};
+      }
+      return {draft:null,tpl:0,lanc,finAviso,orcs:s.orcs.map(x=>{ if(x.id!==id) return x;
+        let inst=x.inst; if(stage==='agendada'&&!inst) inst='A definir'; if(stage==='concluido') inst='Concluída em 22/09'; if(!['agendada','concluido'].includes(stage)) inst='';
+        return {...x,stage,inst,dias:0}; })};
+    });
   }
   agShift(dir){
     this.setState(s=>{const d=dOf(s.agRef); let n;
@@ -3523,8 +3848,8 @@ class Component extends DCLogic {
     const openO=orcs.filter(o=>openStages.includes(o.stage));
     const instO=orcs.filter(o=>o.stage==='agendada');
     const pend=s.tasks.filter(t=>!t.done);
-    const receita=FIN.filter(f=>f[4]>0).reduce((a,f)=>a+f[4],0);
-    const despesa=-FIN.filter(f=>f[4]<0).reduce((a,f)=>a+f[4],0);
+    const receita=noMes(s.lanc,'receita');
+    const despesa=noMes(s.lanc,'despesa');
     const dueClis=CLIS.filter(c=>c.due);
 
     const navDef=admin?[
@@ -3539,7 +3864,7 @@ class Component extends DCLogic {
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],estoque:['Estoque','Produtos, quantidades e importação por planilha'],
       tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil, segurança, equipe e dados da loja'],
-      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos'],'a-seguranca':['Segurança da conta','Administração Nortiq · senha, código do celular e aparelhos']};
+      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos'],'a-seguranca':['Minha conta','Administração Nortiq · perfil, senha, código do celular e aparelhos']};
 
     // KPIs
     const heroMaint=(this.props.kpiDestaque ?? 'manutencoes')==='manutencoes';
@@ -3581,7 +3906,6 @@ class Component extends DCLogic {
       .map(([k,label,color])=>{const items=shown.filter(t=>k==='all'||t.g===k).map(taskItem);return {label,color,count:String(items.length),items};}).filter(g=>g.items.length);
 
     // Faturamento
-    const finRows=FIN.filter(f=>s.finF==='todos'||(s.finF==='in'?f[4]>0:f[4]<0)).map(f=>({d:f[0],desc:f[1],cat:f[2],forma:f[3],valor:(f[4]<0?'− ':'+ ')+brl(Math.abs(f[4]),true),color:f[4]>0?'var(--status-success-fg)':'var(--text-strong)'}));
 
     // Admin
     const aq=s.accQ.trim().toLowerCase();
@@ -3906,7 +4230,7 @@ class Component extends DCLogic {
             nota:cupom?'Cupom '+t(na.cupom).toUpperCase()+' · senha ainda não criada':recebido?na.meio+' em 22/09 · senha ainda não criada':direto?'Aguardando pagamento direto ('+na.meio+')':'Cobrança enviada em 22/09',
             cupom:cupom?t(na.cupom).toUpperCase():'',gratisAte:cupom?'22/10':'',
             forma:na.forma,meio:direto?na.meio:'',venc:direto?'22':'',pago:recebido?'22/09':'',
-            pags:recebido?[{id:'p'+Date.now(),mes:'Setembro de 2026',valor:PLANO.preco,data:'22/09',meio:na.meio,por:'Administrador Nortiq',obs:'Registrado no cadastro da conta'}]:[]};
+            pags:recebido?[{id:'p'+Date.now(),mes:'Setembro de 2026',valor:PLANO.preco,data:'22/09',meio:na.meio,por:s.adminNome,obs:'Registrado no cadastro da conta'}]:[]};
           this.setState(x=>({accs:[nova,...x.accs],showNewAcc:false,accF:'todas',accQ:'',accOpen:nova.slug,
             accDlgMsg:convite?'Conta criada. '+(recebido?'Pagamento de setembro registrado ('+na.meio+'). ':'')+'O convite para criar a senha foi enviado para '+nova.email+'.'
               :direto?'Conta criada. Quando receber o pagamento, use Registrar pagamento: o convite para criar a senha sai na hora.'
@@ -3916,6 +4240,187 @@ class Component extends DCLogic {
         showMail:!!m,ml,closeMail:()=>this.setState({mailFor:null}),
         sn,
         loginSlug:lf?lf.slug:'casadoaquecedor',loginEmail:lf?lf.email:'rogerio@casadoaquecedor.com.br',loginNotice:s.loginNotice,loginNoticeShow:!!s.loginNotice
+      };
+    })();
+
+    // Perfil do administrador (o nome aparece no topo e nos registros do painel)
+    const aPerfilVals=(()=>{
+      const rasc=s.adminNomeRasc===null?s.adminNome:s.adminNomeRasc;
+      return {aNome:rasc,aNomeOn:e=>this.setState({adminNomeRasc:e.target.value,aPerfilMsg:'',aPerfilErr:''}),aEmail:ADMIN_EMAIL,
+        aPerfilMsg:s.aPerfilMsg||'',aPerfilMsgShow:!!s.aPerfilMsg,aPerfilErr:s.aPerfilErr||'',
+        aPerfilSalvar:()=>{const n=String(rasc||'').trim(); if(n.length<2) return this.setState({aPerfilErr:'Escreva o seu nome.'});
+          this.setState({adminNome:n,adminNomeRasc:null,aPerfilMsg:'Nome salvo. É ele que aparece no topo e nos registros do painel.',aPerfilErr:''});}};
+    })();
+
+    // Faturamento: lista, situação, recebimentos, cancelamento, estorno e reabrir venda com dinheiro recebido
+    const finVals=(()=>{
+      const L=s.lanc, hojeN=dnum(HOJE_FIN);
+      const num=v=>Number(String(v||'').trim().replace(/\./g,'').replace(',','.'));
+      const fmtV=v=>(Math.round(v*100)/100).toFixed(2).replace('.',',');
+      const fechado=l=>['cancelado','estornado'].includes(situacaoDe(l));
+      const aberto=l=>['pendente','parcial'].includes(situacaoDe(l));
+      const falta=l=>Math.max(0,l.valor-pagoDe(l));
+      const vencido=l=>aberto(l)&&dnum(l.venc)<hojeN;
+      const ROT={receita:{pendente:'A receber',parcial:'Parcial',pago:'Recebido'},despesa:{pendente:'A pagar',parcial:'Parcial',pago:'Pago'}};
+      const rotuloDe=l=>{const st=situacaoDe(l); return st==='cancelado'?'Cancelado':st==='estornado'?'Estornado':vencido(l)?'Vencido':ROT[l.tipo][st];};
+      const tomDe=l=>{const st=situacaoDe(l); return fechado(l)?'neutral':vencido(l)?'danger':st==='pago'?'success':st==='parcial'?'warning':'info';};
+      const detalheDe=l=>{const st=situacaoDe(l);
+        if(fechado(l)) return l.cancel?l.cancel.motivo:'';
+        if(st==='pago'){const b=[...(l.baixas||[])].reverse().find(x=>x.tipo==='pagamento'); return (l.tipo==='receita'?'Recebido em ':'Pago em ')+(b?b.data:l.venc);}
+        if(st==='parcial') return brl(pagoDe(l),true)+' de '+brl(l.valor,true)+' · falta '+brl(falta(l),true)+' · vence '+l.venc;
+        const mesmo=Math.floor(dnum(l.venc)/100)===Math.floor(hojeN/100), dias=hojeN-dnum(l.venc);
+        return vencido(l)?'Venceu em '+l.venc+(mesmo&&dias>0?' · há '+dias+(dias===1?' dia':' dias'):''):'Vence em '+l.venc;};
+      const updL=(id,fn)=>this.setState(x=>({lanc:x.lanc.map(l=>l.id===id?fn(l):l)}));
+      const abrirBaixa=l=>this.setState({fb:{id:l.id,valor:fmtV(falta(l)),data:'2026-09-22',forma:l.forma,obs:''},fbErr:{},finMsg:''});
+      const abrirEditar=l=>this.setState({fl:{modo:'editar',id:l.id,tipo:l.tipo,desc:l.desc,valor:fmtV(l.valor),cat:l.cat,venc:isoDe(l.venc),forma:l.forma,jaPago:false},flErr:{},finMsg:''});
+      const stop=e=>{e&&e.stopPropagation&&e.stopPropagation();};
+      // lista
+      const F=s.finF;
+      const conta={todos:L.filter(l=>!fechado(l)).length,receber:L.filter(l=>l.tipo==='receita'&&aberto(l)).length,pagar:L.filter(l=>l.tipo==='despesa'&&aberto(l)).length,
+        feitos:L.filter(l=>situacaoDe(l)==='pago').length,cancelados:L.filter(fechado).length};
+      const filtra=l=>{ if(F==='cancelados') return fechado(l); if(fechado(l)) return false;
+        if(F==='receber') return l.tipo==='receita'&&aberto(l); if(F==='pagar') return l.tipo==='despesa'&&aberto(l); if(F==='feitos') return situacaoDe(l)==='pago'; return true; };
+      const ordem=(F==='receber'||F==='pagar')?(a,b)=>dnum(a.venc)-dnum(b.venc):(a,b)=>dnum(b.venc)-dnum(a.venc);
+      const finRows=L.filter(filtra).sort(ordem).map(l=>({id:l.id,d:l.venc,desc:l.desc,sub:l.cat+' · '+l.forma,orc:l.orc||'',temOrc:!!l.orc,
+        status:rotuloDe(l),tone:tomDe(l),det:detalheDe(l),valor:(l.tipo==='despesa'?'− ':'+ ')+brl(l.valor,true),
+        color:fechado(l)?'var(--text-muted)':l.tipo==='receita'?'var(--status-success-fg)':'var(--text-strong)',risco:fechado(l)?'line-through':'none',
+        temAcao:aberto(l),acaoTxt:l.tipo==='receita'?'Receber':'Pagar',acao:e=>{stop(e);abrirBaixa(l);},open:()=>this.setState({lancOpen:l.id,finMsg:''})}));
+      const rec=noMes(L,'receita'), pag=noMes(L,'despesa');
+      const aRec=L.filter(l=>l.tipo==='receita'&&aberto(l)), aPag=L.filter(l=>l.tipo==='despesa'&&aberto(l));
+      const soma=a=>a.reduce((x,l)=>x+falta(l),0), venc=a=>a.filter(vencido).length;
+      const pl=(n,um,varios)=>n+' '+(n===1?um:varios);
+      // detalhe
+      const lo=s.lancOpen&&L.find(l=>l.id===s.lancOpen);
+      let ld={linhas:[],baixas:[],acoes:[]};
+      if(lo){
+        const st=situacaoDe(lo), p=pagoDe(lo), rc=lo.tipo==='receita';
+        const acoes=[];
+        if(aberto(lo)) acoes.push({label:rc?'Registrar recebimento':'Registrar pagamento',variant:'primary',icon:'circle-check',go:()=>abrirBaixa(lo)});
+        if(!fechado(lo)) acoes.push({label:'Editar',variant:'secondary',icon:'pencil',go:()=>abrirEditar(lo)});
+        if(p>0&&!fechado(lo)) acoes.push({label:rc?'Estornar recebimento':'Estornar pagamento',variant:'secondary',icon:'undo-2',go:()=>this.setState({fe:{id:lo.id,valor:fmtV(p),motivo:''},feErr:{},finMsg:''})});
+        if(!lo.auto&&p<=0&&!fechado(lo)) acoes.push({label:'Cancelar lançamento',variant:'ghost',icon:'circle-x',go:()=>this.setState({fc:{id:lo.id,motivo:''},fcErr:'',finMsg:''})});
+        ld={titulo:lo.desc,sub:(rc?'Receita':'Despesa')+' · '+lo.cat,status:rotuloDe(lo),tone:tomDe(lo),valor:(rc?'+ ':'− ')+brl(lo.valor,true),det:fechado(lo)?'':detalheDe(lo),
+          parcialShow:st==='parcial',barra:Math.round(p/lo.valor*100)+'%',
+          linhas:[{k:'Vencimento',v:lo.venc},{k:'Forma de pagamento',v:lo.forma},{k:rc?'Recebido até agora':'Pago até agora',v:brl(p,true)},
+            {k:'Lançado',v:lo.auto?'Automático, quando a venda '+lo.orc+' foi fechada':lo.criado+' por '+lo.por}],
+          temOrc:!!lo.orc,orc:lo.orc,abrirOrc:()=>{this.setState({lancOpen:null});this.openDrawer('orc',lo.orc);},
+          notaVenda:lo.auto&&!fechado(lo),
+          notaVendaTxt:'O valor acompanha o orçamento '+lo.orc+'. Para cancelar, reabra a venda ou marque o orçamento como perdido.',
+          cancelShow:fechado(lo),cancelTitulo:st==='estornado'?'Estornado':'Cancelado',
+          cancelTxt:lo.cancel?(lo.cancel.data+' por '+lo.cancel.por+'. Motivo: '+lo.cancel.motivo):'',
+          baixasShow:(lo.baixas||[]).length>0,baixasTitulo:rc?'Recebimentos':'Pagamentos',
+          baixas:(lo.baixas||[]).map(b=>({txt:(b.tipo==='estorno'?'Estorno':(rc?'Recebimento':'Pagamento'))+' · '+b.data+' · '+b.forma,obs:(b.obs||'')+(b.por?(b.obs?' · ':'')+'por '+b.por:''),
+            valor:(b.tipo==='estorno'?'− ':'+ ')+brl(b.valor,true),fg:b.tipo==='estorno'?'var(--status-danger-fg)':'var(--text-strong)'})),
+          acoes};
+      }
+      // formulário (novo / editar)
+      const fl=s.fl, flL=fl&&fl.id&&L.find(l=>l.id===fl.id);
+      const setFl=k=>e=>{const v=e.target.type==='checkbox'?e.target.checked:e.target.value;this.setState(x=>({fl:{...x.fl,[k]:v},flErr:{...x.flErr,[k]:undefined}}));};
+      const flVals=fl?{flShow:true,fl,flErr:s.flErr,flTitulo:fl.modo==='novo'?'Novo lançamento':'Editar lançamento',flIsNovo:fl.modo==='novo',
+        flTipoTabs:[{id:'receita',label:'Receita'},{id:'despesa',label:'Despesa'}],onFlTipo:id=>this.setState(x=>({fl:{...x.fl,tipo:id,cat:CATS_FIN[id][0]}})),
+        flCatOptions:CATS_FIN[fl.tipo].map(c=>({value:c,label:c})),flFormaOptions:FORMAS_FIN.map(c=>({value:c,label:c})),
+        flValorRO:!!(flL&&flL.auto),flValorHint:flL&&flL.auto?'Acompanha o orçamento '+flL.orc:(flL&&pagoDe(flL)>0?'Já '+(fl.tipo==='receita'?'recebido':'pago')+': '+brl(pagoDe(flL),true):''),
+        flVencLabel:fl.tipo==='receita'?'Vencimento (quando o cliente paga)':'Vencimento',
+        flJaPagoTxt:fl.tipo==='receita'?'Já recebi este valor (entra como recebido hoje)':'Já paguei este valor (entra como pago hoje)',
+        flOn:{desc:setFl('desc'),valor:setFl('valor'),cat:setFl('cat'),venc:setFl('venc'),forma:setFl('forma'),jaPago:setFl('jaPago')},
+        flFechar:()=>this.setState({fl:null,flErr:{}}),
+        flSalvar:()=>{ const err={}, v=num(fl.valor);
+          if(String(fl.desc||'').trim().length<3) err.desc='Escreva uma descrição.';
+          if(!(v>0)) err.valor='Informe o valor.';
+          else if(flL&&v<pagoDe(flL)-0.001) err.valor='Não pode ficar menor que o já '+(fl.tipo==='receita'?'recebido':'pago')+' ('+brl(pagoDe(flL),true)+').';
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(fl.venc||'')) err.venc='Informe a data.';
+          if(Object.keys(err).length) return this.setState({flErr:err});
+          const venc=brData(fl.venc);
+          if(fl.modo==='novo'){
+            const novo={id:'L'+Date.now(),tipo:fl.tipo,desc:String(fl.desc).trim(),cat:fl.cat,forma:fl.forma,valor:v,venc,criado:HOJE_FIN,por:'Rogério Tavares',
+              baixas:fl.jaPago?[{tipo:'pagamento',data:HOJE_FIN,valor:v,forma:fl.forma,por:'Rogério Tavares'}]:[]};
+            this.setState(x=>({lanc:[novo,...x.lanc],fl:null,flErr:{},finF:fl.jaPago?'feitos':(fl.tipo==='receita'?'receber':'pagar'),
+              finMsg:(fl.tipo==='receita'?'Receita':'Despesa')+' de '+brl(v,true)+' lançada'+(fl.jaPago?(fl.tipo==='receita'?' como recebida.':' como paga.'):(fl.tipo==='receita'?'. Fica a receber até '+venc+'.':'. Fica a pagar até '+venc+'.'))}));
+          } else {
+            updL(fl.id,l=>({...l,desc:String(fl.desc).trim(),cat:fl.cat,forma:fl.forma,venc,valor:l.auto?l.valor:v}));
+            this.setState({fl:null,flErr:{},finMsg:'Alterações salvas. Elas ficam registradas no histórico da loja.'});
+          } }}:{flShow:false};
+      // recebimento / pagamento
+      const fb=s.fb, fbL=fb&&L.find(l=>l.id===fb.id);
+      const setFb=k=>e=>{const v=e.target.value;this.setState(x=>({fb:{...x.fb,[k]:v},fbErr:{...x.fbErr,[k]:undefined}}));};
+      const fbVals=fbL?{fbShow:true,fb,fbErr:s.fbErr,fbTitulo:fbL.tipo==='receita'?'Registrar recebimento':'Registrar pagamento',fbDesc:fbL.desc,
+        fbDataLabel:fbL.tipo==='receita'?'Recebido em':'Pago em',
+        fbInfo:(fbL.tipo==='receita'?'Falta receber ':'Falta pagar ')+brl(falta(fbL),true)+'. Se registrar um valor menor, o lançamento fica como parcial e o resto continua em aberto.',
+        fbOn:{valor:setFb('valor'),data:setFb('data'),forma:setFb('forma'),obs:setFb('obs')},fbFormaOptions:FORMAS_FIN.map(c=>({value:c,label:c})),
+        fbFechar:()=>this.setState({fb:null,fbErr:{}}),
+        fbSalvar:()=>{ const err={}, v=num(fb.valor), f=falta(fbL);
+          if(!(v>0)) err.valor='Informe o valor.'; else if(v>f+0.001) err.valor='Passa do que falta ('+brl(f,true)+').';
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(fb.data||'')) err.data='Informe a data.'; else if(fb.data>'2026-09-22') err.data='A data não pode ser depois de hoje.';
+          if(Object.keys(err).length) return this.setState({fbErr:err});
+          const resta=f-v, rc=fbL.tipo==='receita';
+          updL(fbL.id,l=>({...l,baixas:[...(l.baixas||[]),{tipo:'pagamento',data:brData(fb.data),valor:v,forma:fb.forma,obs:String(fb.obs||'').trim(),por:'Rogério Tavares'}]}));
+          this.setState({fb:null,fbErr:{},finMsg:(rc?'Recebimento':'Pagamento')+' de '+brl(v,true)+' registrado. '+(resta>0.001?'Falta '+brl(resta,true)+'; o lançamento fica como parcial.':(rc?'O lançamento está recebido.':'O lançamento está pago.'))}); }}:{fbShow:false};
+      // estorno
+      const fe=s.fe, feL=fe&&L.find(l=>l.id===fe.id);
+      const setFe=k=>e=>{const v=e.target.value;this.setState(x=>({fe:{...x.fe,[k]:v},feErr:{...x.feErr,[k]:undefined}}));};
+      const feVals=feL?{feShow:true,fe,feErr:s.feErr,feTitulo:feL.tipo==='receita'?'Estornar recebimento':'Estornar pagamento',feDesc:feL.desc,
+        feInfo:'Nada é apagado: o estorno entra no histórico do lançamento, com o motivo, e o valor volta a ficar em aberto. Se não for mais acontecer, depois é só cancelar o lançamento.',
+        feOn:{valor:setFe('valor'),motivo:setFe('motivo')},feFechar:()=>this.setState({fe:null,feErr:{}}),
+        feSalvar:()=>{ const err={}, v=num(fe.valor), p=pagoDe(feL);
+          if(!(v>0)) err.valor='Informe o valor.'; else if(v>p+0.001) err.valor='Passa do que foi '+(feL.tipo==='receita'?'recebido':'pago')+' ('+brl(p,true)+').';
+          if(String(fe.motivo||'').trim().length<3) err.motivo='Conte o motivo do estorno.';
+          if(Object.keys(err).length) return this.setState({feErr:err});
+          updL(feL.id,l=>({...l,baixas:[...(l.baixas||[]),{tipo:'estorno',data:HOJE_FIN,valor:v,forma:l.forma,obs:String(fe.motivo).trim(),por:'Rogério Tavares'}]}));
+          this.setState({fe:null,feErr:{},finMsg:'Estorno de '+brl(v,true)+' registrado. O valor voltou a ficar em aberto.'}); }}:{feShow:false};
+      // cancelar
+      const fc=s.fc, fcL=fc&&L.find(l=>l.id===fc.id);
+      const fcVals=fcL?{fcShow:true,fc,fcErr:s.fcErr,fcErrShow:!!s.fcErr,fcDesc:fcL.desc+' · '+brl(fcL.valor,true),
+        fcOn:e=>{const v=e.target.value;this.setState(x=>({fc:{...x.fc,motivo:v},fcErr:''}));},fcFechar:()=>this.setState({fc:null,fcErr:''}),
+        fcSalvar:()=>{ const m=String(fc.motivo||'').trim(); if(m.length<3) return this.setState({fcErr:'Conte o motivo do cancelamento.'});
+          updL(fcL.id,l=>({...l,status:'cancelado',cancel:{motivo:m,data:HOJE_FIN,por:'Rogério Tavares'}}));
+          this.setState({fc:null,fcErr:'',finMsg:'Lançamento cancelado. Ele não entra mais nas contas e continua na aba Cancelados, com o motivo.'}); }}:{fcShow:false};
+      // reabrir venda com dinheiro recebido
+      const rv=s.rv, rvO=rv&&s.orcs.find(o=>o.id===rv.orc), rvL=rv&&L.find(l=>l.id===rv.lanc);
+      let rvVals={rvShow:false};
+      if(rvO&&rvL){
+        const para=((STAGES.find(x=>x.id===rv.para)||{}).label||rv.para).toLowerCase(), p=pagoDe(rvL);
+        const recs=(rvL.baixas||[]).filter(b=>b.tipo==='pagamento').map(b=>brl(b.valor,true)+' em '+b.data+' ('+b.forma+')').join(', ');
+        const op=(id,titulo,txt)=>({id,titulo,txt,sel:rv.escolha===id,borda:rv.escolha===id?'var(--navy-500)':'var(--border-default)',fundo:rv.escolha===id?'var(--navy-50)':'var(--surface-card)',
+          icon:rv.escolha===id?'circle-check':'circle',go:()=>this.setState(x=>({rv:{...x.rv,escolha:id},rvErr:''}))});
+        rvVals={rvShow:true,rv,rvErr:s.rvErr,rvErrShow:!!s.rvErr,rvSoDono:func,rvDecide:!func,
+          rvTitulo:'Esta venda já tem dinheiro recebido',rvDesc:rvO.id+' · '+rvO.cli+' · vai para '+para,
+          rvInfo:'Recebido: '+recs+'. Antes de reabrir, diga o que fazer com esse dinheiro.',
+          rvFuncTxt:'Esta venda já tem '+brl(p,true)+' recebido. Só o dono da loja pode reabrir, porque precisa decidir o que fazer com esse dinheiro.',
+          rvOpcoes:[op('manter','Manter o lançamento','O dinheiro continua no Faturamento. Use quando o cliente vai fechar de novo ou o valor fica como crédito dele.'),
+                    op('estornar','Registrar o estorno','Devolvi o dinheiro ao cliente. O recebimento sai das contas do mês, com o motivo, e o lançamento é encerrado como estornado.')],
+          rvEstornar:rv.escolha==='estornar',rvMotivoOn:e=>{const v=e.target.value;this.setState(x=>({rv:{...x.rv,motivo:v},rvErr:''}));},
+          rvBtn:'Confirmar e mover para '+para,rvFechar:()=>this.setState({rv:null,rvErr:''}),
+          rvConfirmar:()=>{ if(!rv.escolha) return this.setState({rvErr:'Escolha uma das opções.'});
+            if(rv.escolha==='estornar'&&String(rv.motivo||'').trim().length<3) return this.setState({rvErr:'Conte o motivo do estorno.'});
+            const id=rv.orc, destino=rv.para;
+            if(rv.escolha==='manter'){ this.setState({rv:null,rvErr:''}); return this.aplicarEtapa(id,destino,'manter'); }
+            const m=String(rv.motivo).trim();
+            this.setState(x=>({rv:null,rvErr:'',lanc:x.lanc.map(l=>l.id===rvL.id?{...l,status:'estornado',baixas:[...(l.baixas||[]),{tipo:'estorno',data:HOJE_FIN,valor:p,forma:l.forma,obs:m,por:'Rogério Tavares'}],
+              cancel:{motivo:'Venda '+id+' reaberta · '+m,data:HOJE_FIN,por:'Rogério Tavares'}}:l),
+              finAviso:{orc:id,txt:'Estorno de '+brl(p,true)+' registrado e lançamento encerrado como estornado. Ele continua em Faturamento, na aba Cancelados.'}}),
+              ()=>this.aplicarEtapa(id,destino,'estornado')); }};
+      }
+      // cartão "Financeiro desta venda" na ficha do orçamento (só para quem vê o faturamento)
+      const dOrc=s.drawer&&s.drawer.type==='orc'&&s.orcs.find(o=>o.id===s.drawer.id);
+      const lvs=dOrc?L.filter(l=>l.orc===dOrc.id):[], lv=lvs.find(l=>!fechado(l))||lvs[0];
+      const avisoD=dOrc&&s.finAviso&&s.finAviso.orc===dOrc.id?s.finAviso.txt:'';
+      const finD={show:!!dOrc&&!func&&(!!lv||!!avisoD),temL:!!lv,status:lv?rotuloDe(lv):'',tone:lv?tomDe(lv):'neutral',det:lv?detalheDe(lv):'',
+        valor:lv?brl(lv.valor,true):'',aviso:avisoD,avisoShow:!!avisoD,
+        abrir:()=>lv&&this.setState({drawer:null,page:'faturamento',lancOpen:lv.id,finF:fechado(lv)?'cancelados':'todos',finMsg:''})};
+      return {
+        finKpis:[{label:'Recebido em setembro',value:brl(rec),icon:'arrow-down-left',foot:'Dinheiro que já entrou'},
+          {label:'Pago em setembro',value:brl(pag),icon:'arrow-up-right',foot:'Despesas já pagas'},
+          {label:'A receber',value:brl(soma(aRec)),icon:'hourglass',foot:pl(aRec.length,'lançamento','lançamentos')+(venc(aRec)?' · '+pl(venc(aRec),'vencido','vencidos'):'')},
+          {label:'A pagar',value:brl(soma(aPag)),icon:'calendar-clock',foot:pl(aPag.length,'lançamento','lançamentos')+(venc(aPag)?' · '+pl(venc(aPag),'vencido','vencidos'):'')}],
+        finSobra:'Sobra de setembro até agora: '+brl(rec-pag)+' (recebido menos pago)',
+        finTabs:[{id:'todos',label:'Todos',count:conta.todos},{id:'receber',label:'A receber',count:conta.receber},{id:'pagar',label:'A pagar',count:conta.pagar},
+          {id:'feitos',label:'Recebidos e pagos',count:conta.feitos},{id:'cancelados',label:'Cancelados',count:conta.cancelados}],
+        finF:F,onFinF:id=>this.setState({finF:id,finMsg:''}),finRows,finVazio:!finRows.length,
+        finVazioTxt:F==='cancelados'?'Nenhum lançamento cancelado.':F==='receber'?'Nada a receber.':F==='pagar'?'Nada a pagar.':'Nenhum lançamento aqui.',
+        finMsg:s.finMsg,finMsgShow:!!s.finMsg,finMsgFechar:()=>this.setState({finMsg:''}),
+        abrirNovoLanc:()=>this.setState({fl:{modo:'novo',tipo:'receita',desc:'',valor:'',cat:CATS_FIN.receita[0],venc:'2026-09-22',forma:'PIX',jaPago:false},flErr:{},finMsg:''}),
+        lancShow:!!lo&&!s.fb&&!s.fe&&!s.fc&&!s.fl,ld,lancFechar:()=>this.setState({lancOpen:null,finMsg:''}),
+        ...flVals,...fbVals,...feVals,...fcVals,...rvVals,finD
       };
     })();
 
@@ -4033,7 +4538,7 @@ class Component extends DCLogic {
       const at=s.at, u=f.uid&&equipeDe(c).find(x=>x.id===f.uid), nome=u?u.nome:'', primeiro=String(nome).split(' ')[0];
       const setAt=k=>e=>{const v=e.target.value;this.setState(x=>({at:{...x.at,[k]:v},atErr:{...x.atErr,[k]:undefined}}));};
       const fechar=(msg)=>this.setState({atFor:null,at:null,atErr:{},accAba:'acesso',...(msg?{accDlgMsg:msg}:{})});
-      const registrar=(icon,titulo)=>this.setState(x=>({atend:{...x.atend,[c.slug]:[{quando:'22/09 às 10:14',por:'Administrador Nortiq',icon,titulo,
+      const registrar=(icon,titulo)=>this.setState(x=>({atend:{...x.atend,[c.slug]:[{quando:'22/09 às 10:14',por:x.adminNome,icon,titulo,
         sub:'Pedido '+(at.canal==='WhatsApp'?'pelo WhatsApp':at.canal==='Ligação'?'por ligação':'por e-mail')+(at.conf?' · confirmado: '+at.conf.charAt(0).toLowerCase()+at.conf.slice(1):'')+(String(at.obs||'').trim()?' · '+String(at.obs).trim():'')},...(x.atend[c.slug]||[])]}}));
       const emailOk=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||'').trim());
       const D={
@@ -4143,7 +4648,7 @@ class Component extends DCLogic {
           if(pagos.includes(pg.mes)) err.geral='A mensalidade de '+mesMin(pg.mes)+' já está registrada como paga.';
           if(Object.keys(err).length) return this.setState({pgErr:err});
           const data=brData(pg.data);
-          const novo={id:'p'+Date.now(),mes:pg.mes,valor,data,meio:pg.meio,por:'Administrador Nortiq',obs:String(pg.obs||'').trim()};
+          const novo={id:'p'+Date.now(),mes:pg.mes,valor,data,meio:pg.meio,por:s.adminNome,obs:String(pg.obs||'').trim()};
           const patch={pags:[novo,...pags]};
           if(ag) Object.assign(patch,{status:'Convite enviado',nota:pg.meio+' em '+data+' · senha ainda não criada',pago:data});
           else if(atraso) Object.assign(patch,{status:'Em dia',nota:pg.meio+' em '+data+' · registrado'});
@@ -4158,7 +4663,7 @@ class Component extends DCLogic {
           const motivo=String(pg.motivo||'').trim();
           if(motivo.length<3) return this.setState({pgErr:{motivo:'Conte o motivo do estorno.'}});
           const volta=pag.mes==='Setembro de 2026'&&a.status==='Em dia';
-          upd({pags:pags.map(p=>p.id===pag.id?{...p,estornado:true,estMotivo:motivo,estData:'22/09',estPor:'Administrador Nortiq'}:p),
+          upd({pags:pags.map(p=>p.id===pag.id?{...p,estornado:true,estMotivo:motivo,estData:'22/09',estPor:s.adminNome}:p),
             ...(volta?{status:'Em atraso',nota:'Pagamento de setembro estornado'}:{})});
           fechar('Pagamento estornado. O registro continua no histórico com o motivo.'+(volta?' A mensalidade de setembro voltou a ficar em aberto.':''));
         };
@@ -4404,7 +4909,7 @@ class Component extends DCLogic {
       const PAGINAS_DONO=['faturamento','metas','relatorios','plano'];
       return {
         // papel do usuário
-        userName:admin?'Administrador Nortiq':eu.nome,userInitials:admin?'NT':eu.ini,userRole:admin?'Operações · Nortiq':(func?'Funcionária':'Proprietário'),
+        userName:admin?s.adminNome:eu.nome,userInitials:admin?iniciais(s.adminNome):eu.ini,userRole:admin?'Operações · Nortiq':(func?'Funcionária':'Proprietário'),
         saudacao:'Bom dia, '+primeiro(eu.nome),
         kpis:func?kpis.filter(k=>k.label!=='Receita do mês'):kpis,
         showMetaCard:!func,
@@ -4435,9 +4940,9 @@ class Component extends DCLogic {
         pausadoTexto:func?'Há uma pendência no pagamento da assinatura. Os dados estão guardados. Fale com o dono da loja: assim que ele resolver, tudo volta a funcionar.'
                          :'A mensalidade de setembro venceu em 06/09, há 16 dias. Os dados da loja estão guardados e nada foi apagado. Assim que o pagamento for confirmado, tudo volta a funcionar na hora.',
         // configurações
-        cfgTabs:admin?[{id:'seguranca',label:'Segurança da conta'}]:func?[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'}]
+        cfgTabs:admin?[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança da conta'}]:func?[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'}]
                     :[{id:'perfil',label:'Perfil'},{id:'seguranca',label:'Segurança'},{id:'equipe',label:'Equipe'},{id:'conta',label:'Dados da loja'}],
-        cfgTab:s.cfgTab,cfgPerfil:s.cfgTab==='perfil',cfgSeg:s.cfgTab==='seguranca',cfgEquipe:s.cfgTab==='equipe'&&!func,cfgConta:s.cfgTab==='conta'&&!func,
+        cfgTab:s.cfgTab,cfgPerfil:!admin&&s.cfgTab==='perfil',cfgAPerfil:admin&&s.cfgTab==='perfil',cfgSeg:s.cfgTab==='seguranca',cfgEquipe:s.cfgTab==='equipe'&&!func,cfgConta:s.cfgTab==='conta'&&!func,
         onCfgTab:id=>this.setState({cfgTab:id,profileSaved:false,eqMsg:'',sgMsg:''}),
         // equipe
         eqRows,eqMsg:s.eqMsg,eqMsgShow:!!s.eqMsg,eqResumo:eq.filter(u=>u.status!=='desativado').length+' de '+eq.length+' pessoas com acesso',
@@ -4499,10 +5004,10 @@ class Component extends DCLogic {
         // menu do usuário
         userMenu:!!s.userMenu,toggleUserMenu:()=>this.setState(x=>({userMenu:!x.userMenu,notifOpen:false})),closeUserMenu:()=>this.setState({userMenu:false}),
         userEmail:admin?ADMIN_EMAIL:eu.email,userMenuLoja:true,userMenuTop:mobile?'64px':'70px',userMenuRight:mobile?'8px':'24px',
-        irMinhaConta:()=>this.setState(admin?{apage:'a-seguranca',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}:{page:'config',cfgTab:'perfil',userMenu:false,drawer:null,menuOpen:false}),
+        irMinhaConta:()=>this.setState(admin?{apage:'a-seguranca',cfgTab:'perfil',userMenu:false,drawer:null,menuOpen:false}:{page:'config',cfgTab:'perfil',userMenu:false,drawer:null,menuOpen:false}),
         irSeguranca:()=>this.setState(admin?{apage:'a-seguranca',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}:{page:'config',cfgTab:'seguranca',userMenu:false,drawer:null,menuOpen:false}),
         sairMenu:()=>this.setState(admin?{view:'alogin',al:{...AL0(),aviso:'Você saiu da administração.'},alDemo:'normal',userMenu:false,drawer:null,menuOpen:false}:{view:'login',userMenu:false,drawer:null,menuOpen:false}),
-        menuMinhaConta:!admin,
+        menuMinhaConta:true,
         // login e protótipo
         loginEmail:s.loginFor?((s.accs.find(a=>a.slug===s.loginFor)||{}).email||('contato@'+s.loginFor+'.com.br')):(s.papel==='funcionario'?'camila@casadoaquecedor.com.br':'rogerio@casadoaquecedor.com.br'),
         loginDemo:ld,loginDemoOptions:LOGIN_DEMOS,assinDemo:s.assin,assinDemoOptions:ASSIN_DEMOS,papelDemo:s.papel,papelDemoOptions:PAPEL_DEMOS,
@@ -4626,6 +5131,8 @@ class Component extends DCLogic {
       ...lojaVals,
       ...supVals,
       ...alVals,
+      ...aPerfilVals,
+      ...finVals,
       ...estVals,
       ...notifVals,
       ...cancelVals,
@@ -4635,14 +5142,14 @@ class Component extends DCLogic {
       asidePos:mobile?'absolute':'relative',asideTx:mobile&&!s.menuOpen?'translateX(-100%)':'none',asideVis:mobile&&!s.menuOpen?'hidden':'visible',asideShadow:mobile&&s.menuOpen?'var(--shadow-xl)':'none',
       openMenu:()=>this.setState({menuOpen:true}),closeMenu:()=>this.setState({menuOpen:false}),
       barY:mobile&&s.barHidden?'-100%':'0',searchW:mobile?'100%':'320px',cardHeadPad:mobile?'14px 16px':'16px 20px',mainPad:mobile?'76px 16px 24px':'24px',onMainScroll:e=>this.onMainScroll(e),
-      userName:admin?'Administrador Nortiq':'Rogério Tavares',userInitials:admin?'NT':'RT',
+      userName:admin?s.adminNome:'Rogério Tavares',userInitials:admin?iniciais(s.adminNome):'RT',
       brandSub:admin?'Administração':'Casa do Aquecedor',navGroups,
       accountName:admin?'Equipe Nortiq':'Casa do Aquecedor',accountSub:admin?'Acesso administrativo':PLANO.nome,accountIcon:admin?'shield':'store',
       toggleSide:()=>this.setState({collapsed:expanded}),toggleLabel:expanded?'Recolher menu':'Expandir menu',toggleIcon:expanded?'panel-left-close':'panel-left-open',
       logout:()=>this.setState(admin?{view:'alogin',al:{...AL0(),aviso:'Você saiu da administração.'},alDemo:'normal',drawer:null,menuOpen:false,userMenu:false}:{view:'login',drawer:null,menuOpen:false}),
       loginLoja:()=>this.setState({view:'loja',page:'inicio',loginNotice:'',loginFor:null}),loginAdmin:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({view:'admin',apage:'a-geral'});},
       pageTitle:(TITLES[page]||[''])[0],pageSub:(TITLES[page]||['',''])[1],
-      user:admin?{name:'Administrador Nortiq',role:'Operações · Nortiq',initials:'NT'}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
+      user:admin?{name:s.adminNome,role:'Operações · Nortiq',initials:iniciais(s.adminNome)}:{name:'Rogério Tavares',role:'Proprietário',initials:'RT'},
       isInicio:!admin&&page==='inicio',isOrcamentos:!admin&&page==='orcamentos',isClientes:!admin&&page==='clientes',isEstoque:!admin&&page==='estoque',isTarefas:!admin&&page==='tarefas',isAgenda:!admin&&page==='agenda',
       isFaturamento:!admin&&page==='faturamento',isMetas:!admin&&page==='metas',isRelatorios:!admin&&page==='relatorios',isConfig:!admin&&page==='config',isPlano:!admin&&page==='plano',
       isAGeral:admin&&page==='a-geral',isAContas:admin&&page==='a-contas',isAPlanos:admin&&page==='a-planos',isAAvisos:admin&&page==='a-avisos',
@@ -4661,8 +5168,6 @@ class Component extends DCLogic {
       cliF:s.cliF,onCliF:id=>this.setState({cliF:id}),cliQ:s.cliQ,onCliQ:e=>this.setState({cliQ:e.target.value}),cliRows,cliEmpty:cliRows.length===0,
       taskTabs:[{id:'pend',label:'Pendentes',count:pend.length},{id:'done',label:'Concluídas',count:s.tasks.length-pend.length}],taskF:s.taskF,onTaskF:id=>this.setState({taskF:id}),taskGroups,taskEmpty:taskGroups.length===0,
       gcal:s.gcal,toggleGcal:v=>this.setState({gcal:v}),gcalSub:s.gcal?'Conectada · rogerio@casadoaquecedor.com.br':'Desconectada',
-      finKpis:[{label:'Receitas',value:brl(receita),icon:'arrow-down-left',foot:'1 a 22 de setembro'},{label:'Despesas',value:brl(despesa),icon:'arrow-up-right',foot:'Estoque, equipe e custos fixos'},{label:'Sobra no mês',value:brl(receita-despesa),icon:'wallet',foot:'Receitas menos despesas'}],
-      finTabs:[{id:'todos',label:'Todos'},{id:'in',label:'Receitas'},{id:'out',label:'Despesas'}],finF:s.finF,onFinF:id=>this.setState({finF:id}),finRows,
       cfgTabs:[{id:'perfil',label:'Perfil'},{id:'conta',label:'Dados da loja'}],cfgTab:s.cfgTab,onCfgTab:id=>this.setState({cfgTab:id,profileSaved:false}),
       cfgPerfil:s.cfgTab==='perfil',cfgConta:s.cfgTab==='conta',fullRow:{gridColumn:'1 / -1'},
       saveProfile:()=>this.setState({profileSaved:true}),profileSaved:s.profileSaved,
