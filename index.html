@@ -72,10 +72,19 @@
             <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--surface-sunken); color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="archive" size="{{ 22 }}" hint-size="22px,22px"></x-import></span>
             <div style="display:grid; gap:8px">
               <span style="font:var(--type-title); color:var(--text-strong)">Assinatura encerrada</span>
-              <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">A assinatura da Casa do Aquecedor terminou em 30/09. Os dados da loja continuam guardados. Para voltar a usar, fale com a equipe Nortiq.</span>
+              <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">A assinatura da Casa do Aquecedor terminou em 30/09. Os dados da loja continuam guardados até 29/12. Para voltar a usar, fale com a equipe Nortiq.</span>
             </div>
+            <sc-if value="{{ encCopiaShow }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+                <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="mail" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                <span>Pedido recebido. O link para baixar a cópia dos dados vai para o e-mail do dono da loja e vale 7 dias.</span>
+              </div>
+            </sc-if>
             <div style="display:grid; gap:10px">
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" icon="message-circle" onClick="{{ falarReativar }}" hint-size="100%,52px">Falar com a Nortiq</x-import>
+              <sc-if value="{{ encCopiaPode }}" hint-placeholder-val="{{ true }}">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" full-width="{{ true }}" icon="download" onClick="{{ encCopiaPedir }}" hint-size="100%,44px">Pedir cópia dos dados</x-import>
+              </sc-if>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" full-width="{{ true }}" onClick="{{ voltarLoginNormal }}" hint-size="100%,40px">Voltar</x-import>
             </div>
           </div>
@@ -86,6 +95,7 @@
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-login" label="Situação do login" options="{{ loginDemoOptions }}" value="{{ loginDemo }}" onChange="{{ onLoginDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-papel" label="Entrar como" options="{{ papelDemoOptions }}" value="{{ papelDemo }}" onChange="{{ onPapelDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-assin" label="Assinatura da loja" options="{{ assinDemoOptions }}" value="{{ assinDemo }}" onChange="{{ onAssinDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-cobr" label="Como a loja paga" options="{{ cobrDemoOptions }}" value="{{ cobrDemo }}" onChange="{{ onCobrDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
       </div>
       <div style="display:flex; justify-content:center; gap:6px; font:var(--type-caption); color:var(--text-muted)">
         <span>Equipe Nortiq?</span>
@@ -1300,7 +1310,8 @@
             </sc-if>
 
             <sc-if value="{{ cfgConta }}" hint-placeholder-val="{{ false }}">
-              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" style="max-width:760px" hint-size="100%,420px">
+              <div style="display:grid; gap:16px; max-width:760px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,420px">
                 <div style="display:grid; gap:18px">
                   <div style="display:grid; gap:4px">
                     <span style="font:var(--type-section); color:var(--text-strong)">Dados da loja</span>
@@ -1314,9 +1325,48 @@
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" default-value="Av. Andrômeda, 1.520 · Jardim Satélite · São José dos Campos/SP" full-width="{{ true }}" wrapper-style="{{ fullRow }}" hint-size="100%,70px"></x-import>
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço de acesso" value="casadoaquecedor" suffix=".nortiq.com.br" read-only="{{ true }}" hint="Só a sua equipe entra por aqui" full-width="{{ true }}" wrapper-style="{{ fullRow }}" hint-size="100%,90px"></x-import>
                   </div>
-                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveProfile }}" style="justify-self:start" hint-size="140px,44px">Salvar alterações</x-import>
+                  <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveProfile }}" hint-size="140px,44px">Salvar alterações</x-import></div>
                 </div>
               </x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 24 }}" hint-size="100%,300px">
+                <div style="display:grid; gap:16px">
+                  <div style="display:flex; gap:14px; align-items:flex-start">
+                    <span style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:40px; height:40px; border-radius:50%; background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="download" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                    <div style="display:grid; gap:4px; min-width:0">
+                      <span style="font:var(--type-section); color:var(--text-strong)">Exportar os dados da loja</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Baixe uma cópia de tudo o que a loja tem no Nortiq, em planilhas que abrem no Excel e no Google Planilhas. Serve como cópia de segurança sua e para levar os dados se um dia precisar.</span>
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-wrap:wrap; gap:8px">
+                    <sc-for list="{{ expItens }}" as="i" hint-placeholder-count="6">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="neutral" hint-size="140px,24px">{{ i }}</x-import>
+                    </sc-for>
+                  </div>
+                  <sc-if value="{{ expPreparando }}" hint-placeholder-val="{{ false }}">
+                    <div role="status" style="display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+                      <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="clock" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                      <span>Preparando o arquivo. Pode continuar usando o sistema: avisamos no sino e por e-mail quando ficar pronto.</span>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ expPronto }}" hint-placeholder-val="{{ false }}">
+                    <div role="status" style="display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; justify-content:space-between; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg)">
+                      <div style="display:grid; gap:2px; min-width:0; flex:1 1 260px">
+                        <span style="font:var(--type-ui); font-weight:700; word-break:break-word">Arquivo pronto · {{ expArquivo }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-body); line-height:1.5">{{ expPrazo }}</span>
+                      </div>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" size="sm" icon="download" onClick="{{ expBaixar }}" hint-size="110px,34px">Baixar</x-import>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ expBaixadoShow }}" hint-placeholder-val="{{ false }}">
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Protótipo: aqui o navegador baixa o arquivo .zip com uma planilha para cada assunto.</span>
+                  </sc-if>
+                  <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px">
+                    <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="download" onClick="{{ expPedir }}" loading="{{ expPreparando }}" hint-size="170px,44px">{{ expBtnTxt }}</x-import></div>
+                    <span style="flex:1 1 240px; font:var(--type-caption); color:var(--text-muted); line-height:1.5">Só o dono pode exportar. O link também vai para o seu e-mail e vale 7 dias.</span>
+                  </div>
+                </div>
+              </x-import>
+              </div>
             </sc-if>
           </div>
         </sc-if>
@@ -1551,7 +1601,7 @@
                   </div>
                   <div style="display:grid; gap:8px; font:var(--type-ui); color:var(--gray-200)">
                     <span>{{ mpProxLinha }}</span>
-                    <span>Forma de pagamento: PIX ou boleto, enviado por e-mail e WhatsApp</span>
+                    <span>{{ mpFormaTxt }}</span>
                   </div>
                   <sc-if value="{{ mpPodePagar }}" hint-placeholder-val="{{ true }}">
                   <div style="display:flex; gap:8px; flex-wrap:wrap">
@@ -1612,7 +1662,7 @@
 
             <div style="display:flex; gap:10px; align-items:flex-start; font:var(--type-caption); color:var(--text-muted); line-height:1.5">
               <span style="display:inline-flex; color:var(--status-success-fg); margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
-              <span>Os pagamentos são feitos na página segura {{ gwNomeDe }}. O Nortiq não recebe nem guarda os dados do seu cartão ou da sua conta.</span>
+              <span>{{ mpRodape }}</span>
             </div>
           </div>
         </sc-if>
@@ -1636,7 +1686,7 @@
               <div style="overflow-x:auto">
                 <div style="min-width:720px">
                   <sc-for list="{{ charges }}" as="c" hint-placeholder-count="6">
-                    <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr) 150px; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
+                    <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr) 190px; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
                       <div style="display:grid; min-width:0">
                         <span style="font-weight:600; color:var(--text-strong)">{{ c.nome }}</span>
                         <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ c.fatura }}</span>
@@ -1650,6 +1700,9 @@
                         </sc-if>
                         <sc-if value="{{ c.reminded }}" hint-placeholder-val="{{ false }}">
                           <span style="font:var(--type-caption); color:var(--text-muted)">Reenviada agora</span>
+                        </sc-if>
+                        <sc-if value="{{ c.canRegistrar }}" hint-placeholder-val="{{ false }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="circle-check" onClick="{{ c.registrar }}" hint-size="180px,34px">Registrar pagamento</x-import>
                         </sc-if>
                       </div>
                     </div>
@@ -1692,7 +1745,7 @@
                       <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ a.tone }}" dot="{{ true }}" size="sm" hint-size="100px,20px">{{ a.status }}</x-import>
                       <span style="font:var(--type-caption); color:var(--text-subtle)">{{ a.nota }}</span>
                     </div>
-                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ a.cidade }} · {{ a.mensal }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ a.cidade }} · {{ a.mensal }} · {{ a.cobrTxt }}</span>
                   </div>
                 </sc-for>
               </x-import>
@@ -1701,17 +1754,20 @@
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,520px">
               <div style="overflow-x:auto">
                 <div style="min-width:900px">
-                  <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) 80px minmax(0,1fr) minmax(0,1.3fr); gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
+                  <div style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) minmax(0,1.1fr) 72px minmax(0,0.9fr) minmax(190px,1.4fr); gap:16px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">
                     <span>Conta</span><span>Cidade</span><span>Mensalidade</span><span style="text-align:right">Usuários</span><span>Cliente desde</span><span>Situação</span>
                   </div>
                   <sc-for list="{{ accRows }}" as="a" hint-placeholder-count="10">
-                    <div onClick="{{ a.open }}" style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) minmax(0,1fr) 80px minmax(0,1fr) minmax(0,1.3fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px; cursor:pointer" style-hover="background:var(--surface-hover)">
+                    <div onClick="{{ a.open }}" style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) minmax(0,1.1fr) 72px minmax(0,0.9fr) minmax(190px,1.4fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px; cursor:pointer" style-hover="background:var(--surface-hover)">
                       <div style="display:grid; min-width:0">
                         <span style="font-weight:600; color:var(--text-strong)">{{ a.nome }}</span>
                         <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ a.slug }}.nortiq.com.br</span>
                       </div>
                       <span style="color:var(--text-body)">{{ a.cidade }}</span>
-                      <span style="color:var(--text-body); font-variant-numeric:tabular-nums">{{ a.mensal }}</span>
+                      <div style="display:grid; gap:2px; min-width:0">
+                        <span style="color:var(--text-body); font-variant-numeric:tabular-nums">{{ a.mensal }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-subtle)">{{ a.cobrTxt }}</span>
+                      </div>
                       <span style="text-align:right; color:var(--text-body); font-variant-numeric:tabular-nums">{{ a.users }}</span>
                       <span style="color:var(--text-muted)">{{ a.desde }}</span>
                       <div style="display:grid; gap:2px; justify-items:start">
@@ -2274,7 +2330,11 @@
 
         <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted); padding-top:4px">Assinatura · {{ planoNome }} · {{ planoPrecoFmt }}/mês</span>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px">
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="na-cobranca" label="Primeira cobrança" options="{{ naCobrOptions }}" value="{{ na.cobranca }}" onChange="{{ naOn.cobranca }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <div style="grid-column:1 / -1"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="na-forma" label="Como a loja paga" options="{{ naFormaOptions }}" value="{{ na.forma }}" onChange="{{ naOn.forma }}" full-width="{{ true }}" hint-size="100%,70px"></x-import></div>
+          <sc-if value="{{ naIsDireto }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="na-meio" label="Forma combinada" options="{{ naMeioOptions }}" value="{{ na.meio }}" onChange="{{ naOn.meio }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          </sc-if>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="na-cobranca" label="Primeira mensalidade" options="{{ naCobrOptions }}" value="{{ na.cobranca }}" onChange="{{ naOn.cobranca }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
           <sc-if value="{{ naIsCupom }}" hint-placeholder-val="{{ false }}">
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="na-cupom" label="Código do cupom" placeholder="Ex.: PARCEIRO30" value="{{ na.cupom }}" onChange="{{ naOn.cupom }}" error="{{ naErr.cupom }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
           </sc-if>
@@ -2323,14 +2383,17 @@
 
   <!-- FICHA DA CONTA ASSINANTE -->
   <sc-if value="{{ showAcc }}" hint-placeholder-val="{{ false }}">
-    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ ac.nome }}" description="{{ ac.sub }}" width="{{ 560 }}" onClose="{{ closeAcc }}" hint-size="100%,100%">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ ac.nome }}" description="{{ ac.sub }}" width="{{ 600 }}" onClose="{{ closeAcc }}" hint-size="100%,100%">
       <div style="display:grid; gap:16px">
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" items="{{ sp.abas }}" active="{{ sp.aba }}" onSelect="{{ sp.onAba }}" hint-size="100%,44px"></x-import>
         <sc-if value="{{ ac.msgShow }}" hint-placeholder-val="{{ false }}">
           <div role="status" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
             <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
             <span>{{ ac.msg }}</span>
           </div>
         </sc-if>
+        <sc-if value="{{ sp.abaResumo }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid; gap:16px">
         <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
           <sc-for list="{{ ac.linhas }}" as="l" hint-placeholder-count="4">
             <div style="display:flex; justify-content:space-between; gap:12px; padding:10px 14px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
@@ -2339,6 +2402,32 @@
             </div>
           </sc-for>
         </div>
+        <sc-if value="{{ ac.podeAlterarForma }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; justify-content:flex-end; margin-top:-8px">
+            <a href="#" onClick="{{ ac.alterarForma }}" style="font:var(--type-caption); font-weight:600">Alterar forma de cobrança</a>
+          </div>
+        </sc-if>
+        <sc-if value="{{ ac.pagsShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:8px">
+            <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Pagamentos registrados</span>
+            <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+              <sc-for list="{{ ac.pags }}" as="p" hint-placeholder-count="2">
+                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px 12px; padding:10px 14px; border-bottom:1px solid var(--border-subtle)">
+                  <div style="display:grid; gap:2px; min-width:0; flex:1 1 240px">
+                    <span style="font:var(--type-ui); font-weight:600; color:{{ p.fg }}; text-decoration:{{ p.risco }}">{{ p.mes }} · {{ p.valorFmt }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.45">{{ p.linha }}</span>
+                  </div>
+                  <sc-if value="{{ p.podeEstornar }}" hint-placeholder-val="{{ false }}">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" size="sm" onClick="{{ p.estornar }}" hint-size="90px,34px">Estornar</x-import>
+                  </sc-if>
+                  <sc-if value="{{ p.estornadoShow }}" hint-placeholder-val="{{ false }}">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="neutral" size="sm" hint-size="80px,20px">Estornado</x-import>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
         <div style="display:grid; gap:0">
           <sc-if value="{{ ac.cancelShow }}" hint-placeholder-val="{{ false }}">
             <div style="display:grid; gap:8px; margin-bottom:16px; padding:14px 16px; border-radius:var(--radius-md); background:{{ ac.cancelBg }}">
@@ -2365,11 +2454,143 @@
             </div>
           </sc-for>
         </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ sp.abaAcesso }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:14px">
+            <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--surface-sunken); color:var(--text-body); font:var(--type-caption); line-height:1.5">
+              <span style="display:inline-flex; margin-top:1px; color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+              <span>A equipe Nortiq vê só quem tem acesso à loja e ajuda a entrar. Clientes, orçamentos, estoque e faturamento da loja não aparecem aqui. Cada ação fica registrada em Atendimentos.</span>
+            </div>
+            <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+              <sc-for list="{{ sp.pessoas }}" as="u" hint-placeholder-count="3">
+                <div style="display:grid; gap:10px; padding:12px 14px; border-bottom:1px solid var(--border-subtle)">
+                  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px 12px; flex-wrap:wrap">
+                    <div style="display:grid; gap:2px; min-width:0; flex:1 1 220px">
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ u.nome }}</span>
+                      <span style="font:var(--type-caption); color:var(--text-muted); word-break:break-all">{{ u.email }}</span>
+                      <span style="font:var(--type-caption); color:{{ u.infoFg }}; line-height:1.45">{{ u.info }}</span>
+                    </div>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ u.papelTone }}" size="sm" hint-size="80px,20px">{{ u.papelTxt }}</x-import>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ u.statusTone }}" dot="{{ true }}" size="sm" hint-size="100px,20px">{{ u.statusTxt }}</x-import>
+                    </div>
+                  </div>
+                  <sc-if value="{{ u.temAcoes }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex; gap:6px; flex-wrap:wrap">
+                      <sc-for list="{{ u.acoes }}" as="b" hint-placeholder-count="3">
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ b.variant }}" size="sm" icon="{{ b.icon }}" onClick="{{ b.go }}" hint-size="170px,34px">{{ b.label }}</x-import>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ sp.podeNovoDono }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:10px 16px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+                <div style="display:grid; gap:2px; min-width:0; flex:1 1 240px">
+                  <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">A loja mudou de dono?</span>
+                  <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.45">Convide a nova pessoa como dona. Quem já tem acesso continua até a loja desativar.</span>
+                </div>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="user-plus" onClick="{{ sp.convidarDono }}" hint-size="170px,34px">Convidar novo dono</x-import>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sp.abaHist }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:0">
+            <sc-if value="{{ sp.histVazio }}" hint-placeholder-val="{{ false }}">
+              <span style="font:var(--type-caption); color:var(--text-muted); padding:8px 0">Nenhum atendimento registrado nesta conta.</span>
+            </sc-if>
+            <sc-for list="{{ sp.hist }}" as="h" hint-placeholder-count="2">
+              <div style="display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border-subtle)">
+                <span style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:30px; height:30px; border-radius:50%; background:var(--navy-100); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ h.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+                <div style="display:grid; gap:2px; min-width:0">
+                  <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); word-break:break-word">{{ h.titulo }}</span>
+                  <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.45">{{ h.quando }} · {{ h.por }} · {{ h.sub }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
         <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <sc-if value="{{ sp.abaResumo }}" hint-placeholder-val="{{ true }}">
           <sc-for list="{{ ac.acoes }}" as="b" hint-placeholder-count="2">
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ b.variant }}" icon="{{ b.icon }}" onClick="{{ b.go }}" hint-size="180px,44px">{{ b.label }}</x-import>
           </sc-for>
+          </sc-if>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeAcc }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- PAGAMENTO DIRETO: REGISTRAR, ESTORNAR, FORMA DE COBRANÇA (painel Nortiq) -->
+  <sc-if value="{{ pgShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ pgTitulo }}" description="{{ pgDesc }}" width="{{ 540 }}" onClose="{{ pgFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <sc-if value="{{ pgIsReg }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="pg-mes" label="Mensalidade de" options="{{ pgMesOptions }}" value="{{ pg.mes }}" onChange="{{ pgOn.mes }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pg-valor" label="Valor recebido" prefix="R$" inputMode="decimal" value="{{ pg.valor }}" onChange="{{ pgOn.valor }}" error="{{ pgErr.valor }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pg-data" type="date" label="Recebido em" value="{{ pg.data }}" onChange="{{ pgOn.data }}" error="{{ pgErr.data }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="pg-meio" label="Forma" options="{{ pgMeioOptions }}" value="{{ pg.meio }}" onChange="{{ pgOn.meio }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          </div>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pg-obs" label="Observação (opcional)" placeholder="Ex.: comprovante recebido no WhatsApp" value="{{ pg.obs }}" onChange="{{ pgOn.obs }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </sc-if>
+        <sc-if value="{{ pgIsEst }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="pg-motivo" label="Motivo do estorno" placeholder="Ex.: registrado na conta errada" value="{{ pg.motivo }}" onChange="{{ pgOn.motivo }}" error="{{ pgErr.motivo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </sc-if>
+        <sc-if value="{{ pgIsForma }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
+            <div style="grid-column:1 / -1"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="pg-forma" label="Como a loja paga" options="{{ pgFormaOptions }}" value="{{ pg.forma }}" onChange="{{ pgOn.forma }}" full-width="{{ true }}" hint-size="100%,70px"></x-import></div>
+            <sc-if value="{{ pgFormaDireto }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="pg-meio2" label="Forma combinada" options="{{ pgMeioOptions }}" value="{{ pg.meio }}" onChange="{{ pgOn.meio }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ pgErrGeralShow }}" hint-placeholder-val="{{ false }}">
+          <span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg)">{{ pgErrGeral }}</span>
+        </sc-if>
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+          <span>{{ pgInfo }}</span>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ pgFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ pgBtnVariant }}" onClick="{{ pgSalvar }}" hint-size="200px,44px">{{ pgBtnTxt }}</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- ATENDIMENTO (painel Nortiq): nova senha, liberar login, desconectar, trocar e-mail, convites -->
+  <sc-if value="{{ atShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ atTitulo }}" description="{{ atDesc }}" width="{{ 520 }}" onClose="{{ atFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); line-height:1.5">
+          <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+          <span>{{ atInfo }}</span>
+        </div>
+        <sc-if value="{{ atPedeNome }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="at-nome" label="Nome do novo dono" value="{{ at.nome }}" onChange="{{ atOn.nome }}" error="{{ atErr.nome }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </sc-if>
+        <sc-if value="{{ atPedeEmail }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="at-email" type="email" icon="mail" label="{{ atEmailLabel }}" value="{{ at.email }}" onChange="{{ atOn.email }}" error="{{ atErr.email }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </sc-if>
+        <sc-if value="{{ atPedeConf }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="at-conf" label="Como você confirmou que o pedido é do dono da loja?" options="{{ atConfOptions }}" value="{{ at.conf }}" onChange="{{ atOn.conf }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <sc-if value="{{ atConfErrShow }}" hint-placeholder-val="{{ false }}">
+            <span role="alert" style="font:var(--type-caption); font-weight:600; color:var(--status-danger-fg); margin-top:-8px">{{ atConfErr }}</span>
+          </sc-if>
+        </sc-if>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="at-canal" label="Como o cliente pediu" options="{{ atCanalOptions }}" value="{{ at.canal }}" onChange="{{ atOn.canal }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="at-obs" label="Observação (opcional)" placeholder="Ex.: trocou de celular" value="{{ at.obs }}" onChange="{{ atOn.obs }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ atFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ atBtnVariant }}" onClick="{{ atSalvar }}" hint-size="180px,44px">{{ atBtn }}</x-import>
         </div>
       </div>
     </x-import>
@@ -2476,6 +2697,34 @@
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon-right="arrow-up-right" onClick="{{ ao.abrirRef }}" hint-size="180px,44px">{{ ao.refLabel }}</x-import>
           </sc-if>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ closeAgOpen }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- PAGAR POR PIX (loja com pagamento direto para a Nortiq) -->
+  <sc-if value="{{ pixShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Pagar por Pix" description="{{ pixDesc }}" width="{{ 480 }}" onClose="{{ pixFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:16px">
+        <div style="display:grid; gap:6px; padding:14px 16px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+          <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted)">Chave Pix (e-mail)</span>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap">
+            <span style="font:var(--type-mono); font-size:15px; color:var(--text-strong); word-break:break-all">{{ pixChave }}</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="copy" onClick="{{ pixCopiar }}" hint-size="140px,34px">{{ pixCopiarTxt }}</x-import>
+          </div>
+          <span style="font:var(--type-caption); color:var(--text-muted)">Favorecido: {{ pixFavorecido }} · Valor: R$ 79,90</span>
+        </div>
+        <div style="display:grid; gap:10px">
+          <sc-for list="{{ pixPassos }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex; gap:10px; align-items:flex-start; font:var(--type-ui); color:var(--text-body); line-height:1.5">
+              <span style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:22px; height:22px; border-radius:50%; background:var(--navy-100); color:var(--navy-600); font:var(--type-caption); font-weight:700">{{ p.n }}</span>
+              <span>{{ p.txt }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ pixFechar }}" hint-size="100px,44px">Fechar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="message-circle" onClick="{{ pixWhats }}" hint-size="220px,44px">Enviar comprovante</x-import>
         </div>
       </div>
     </x-import>
@@ -2636,7 +2885,7 @@ const GATEWAY={nome:'Asaas',linkPagamento:''};
 // go: tela da loja ('agenda', 'relatorios'...) ou ficha ['orc', id] / ['cli', id]
 const NOTIF_TIPOS={agenda:['Agenda','calendar-check','var(--navy-100)','var(--navy-600)'],retorno:['Tarefas','clock','var(--status-warning-bg)','var(--status-warning-fg)'],
   manut:['Clientes','wrench','var(--status-info-bg)','var(--status-info-fg)'],fatura:['Meu plano','receipt','var(--gray-100)','var(--gray-700)'],
-  estoque:['Estoque','package-open','var(--status-danger-bg)','var(--status-danger-fg)'],nortiq:['Equipe Nortiq','sparkles','var(--navy-500)','#fff']};
+  estoque:['Estoque','package-open','var(--status-danger-bg)','var(--status-danger-fg)'],dados:['Dados da loja','download','var(--status-success-bg)','var(--status-success-fg)'],nortiq:['Equipe Nortiq','sparkles','var(--navy-500)','#fff']};
 const NOTIFS0=[
  {id:'n1',tipo:'agenda',titulo:'Instalação amanhã às 08:00',texto:'Márcio Pinheiro · Pressurizador Rowa Press 20 · técnico Alan',quando:'há 10 min',lida:false,go:['orc','ORC-0403']},
  {id:'n2',tipo:'nortiq',titulo:'Novidade: relatórios em PDF',texto:'Monte o relatório do mês com a logo da loja em Gestão, Relatórios.',quando:'hoje, 09:12',lida:false,go:'relatorios'},
@@ -2868,16 +3117,37 @@ const ACCOUNTS=[
  {nome:'Aquece Vale Aquecedores',slug:'aquecevale',cidade:'Taubaté/SP',users:1,desde:'09/2026',status:'Aguardando pagamento',nota:'Cobrança enviada em 21/09',dono:'Sérgio Almeida',email:'sergio@aquecevale.com.br',tel:'(12) 99112-3344',criada:'21/09'},
  {nome:'Hidrotec Jacareí',slug:'hidrotecjacarei',cidade:'Jacareí/SP',users:1,desde:'09/2026',status:'Convite enviado',nota:'Pago em 21/09 · senha ainda não criada',dono:'Patrícia Rocha',email:'patricia@hidrotec.com.br',tel:'(12) 98877-6655',criada:'20/09',pago:'21/09'},
  {nome:'Casa do Aquecedor',slug:'casadoaquecedor',cidade:'São José dos Campos/SP',users:3,desde:'03/2025',status:'Em dia',nota:'Pago em 01/09',dono:'Rogério Tavares',email:'rogerio@casadoaquecedor.com.br',tel:'(12) 99640-2218'},
- {nome:'Hidráulica Bom Jesus',slug:'hidraulicabomjesus',cidade:'Campinas/SP',users:1,desde:'07/2025',status:'Em dia',nota:'Pago em 09/09'},
- {nome:'Aquece Sul Aquecedores',slug:'aquecesul',cidade:'Curitiba/PR',users:4,desde:'11/2024',status:'Em atraso',nota:'12 dias · 2º aviso enviado'},
+ {nome:'Hidráulica Bom Jesus',slug:'hidraulicabomjesus',cidade:'Campinas/SP',users:1,desde:'07/2025',status:'Em dia',nota:'Pix em 09/09 · registrado',dono:'Antônio Bezerra',email:'antonio@bomjesushidraulica.com.br',tel:'(19) 99731-4410',
+  forma:'direto',meio:'Pix',venc:'09',pags:[{id:'p2',mes:'Setembro de 2026',valor:79.9,data:'09/09',meio:'Pix',por:'Helena Duarte',obs:'Comprovante recebido no WhatsApp'},{id:'p1',mes:'Agosto de 2026',valor:79.9,data:'08/08',meio:'Pix',por:'Helena Duarte',obs:''}]},
+ {nome:'Aquece Sul Aquecedores',slug:'aquecesul',cidade:'Curitiba/PR',users:4,desde:'11/2024',status:'Em atraso',nota:'12 dias · 2º aviso enviado',dono:'Fernando Lima',email:'fernando@aquecesul.com.br',tel:'(41) 99812-3040',
+  equipe:[{id:'as1',nome:'Fernando Lima',email:'fernando@aquecesul.com.br',papel:'dono',status:'ativo',info:'Último acesso ontem, 17:20'},
+   {id:'as2',nome:'Juliana Prates',email:'juliana@aquecesul.com.br',papel:'funcionario',status:'ativo',bloqueado:'10:45',info:'Último acesso em 19/09'},
+   {id:'as3',nome:'Diego Ramos',email:'diego@aquecesul.com.br',papel:'funcionario',status:'ativo',info:'Último acesso hoje, 08:02'},
+   {id:'as4',nome:'Paulo Sérgio',email:'paulo@aquecesul.com.br',papel:'funcionario',status:'desativado',info:'Desativado pela loja em 10/07'}]},
  {nome:'Solar Minas',slug:'solarminas',cidade:'Belo Horizonte/MG',users:9,desde:'02/2025',status:'Em dia',nota:'Pago em 05/09'},
  {nome:'Ponto do Encanador',slug:'pontodoencanador',cidade:'Sorocaba/SP',users:1,desde:'09/2026',status:'Em dia',nota:'Pago em 15/09'},
  {nome:'Termo Center',slug:'termocenter',cidade:'Porto Alegre/RS',users:5,desde:'06/2025',status:'Em dia',nota:'Pago em 10/09'},
- {nome:'Casa das Bombas',slug:'casadasbombas',cidade:'Ribeirão Preto/SP',users:1,desde:'01/2026',status:'Em atraso',nota:'4 dias'},
+ {nome:'Casa das Bombas',slug:'casadasbombas',cidade:'Ribeirão Preto/SP',users:1,desde:'01/2026',status:'Em atraso',nota:'4 dias · pagamento direto',dono:'Wagner Pires',email:'wagner@casadasbombas.com.br',tel:'(16) 99208-7713',
+  forma:'direto',meio:'Transferência',venc:'18',pags:[{id:'p3',mes:'Agosto de 2026',valor:79.9,data:'19/08',meio:'Transferência',por:'Helena Duarte',obs:''}]},
  {nome:'Aquecedores Litoral',slug:'aquecedoreslitoral',cidade:'Santos/SP',users:7,desde:'08/2025',status:'Em dia',nota:'Pago em 02/09'},
  {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',users:2,desde:'09/2026',status:'Em dia',nota:'Pago em 18/09'},
  {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
 ];
+// Atendimento pelo painel Nortiq: ajuda a entrar sem ver os dados da loja. Cada ação fica registrada.
+const CANAIS_PEDIDO=['WhatsApp','Ligação','E-mail'];
+const CONFIRMA_DONO=['Liguei para o WhatsApp cadastrado da loja','Conferi o CNPJ e o nome do responsável','Outra forma (descrevo na observação)'];
+const ATEND0={
+ casadoaquecedor:[{quando:'15/09 às 16:20',por:'Helena Duarte',icon:'key-round',titulo:'Link de nova senha enviado para Camila Duarte',sub:'Pedido pelo WhatsApp'}],
+ aquecesul:[{quando:'02/09 às 09:12',por:'Helena Duarte',icon:'log-out',titulo:'Paulo Sérgio desconectado de todos os aparelhos',sub:'Pedido por ligação · celular da loja perdido'}]
+};
+// Como a loja paga a assinatura: pelo Asaas (cobrança automática) ou direto com a Nortiq (Pix, transferência, dinheiro...).
+// Na cobrança direta nada passa pelo Asaas: a equipe Nortiq registra cada pagamento recebido na ficha da conta.
+const MEIOS_DIRETO=['Pix','Transferência','Dinheiro','Outra forma'];
+const FORMA_OPTS=[{value:'asaas',label:'Pelo Asaas (cobrança automática)'},{value:'direto',label:'Direto com a Nortiq (Pix, transferência, dinheiro…)'}];
+// Protótipo: a chave Pix real da Nortiq fica na configuração da plataforma.
+const PIX_NORTIQ={chave:'financeiro@nortiq.com.br',favorecido:'Nortiq Tecnologia'};
+const MESES_REG=['Setembro de 2026','Outubro de 2026','Novembro de 2026','Dezembro de 2026'];
+const brData=iso=>{const m=String(iso||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?m[3]+'/'+m[2]:'';};
 const ACC_TONE={'Em dia':'success','Em atraso':'danger','Cancelada':'neutral','Aguardando pagamento':'warning','Convite enviado':'info','Cancelamento pedido':'warning'};
 // Cancelamento automático: o botão da loja encerra a assinatura no Asaas na hora (sem cobranças futuras).
 // false = modo reserva, em que a loja só PEDE e a equipe Nortiq confirma pelo painel.
@@ -2887,7 +3157,7 @@ const CANCEL_MOTIVOS=['Está caro para a minha loja','Não estou usando o sistem
 const ACESSO_ATE='30/09', DADOS_ATE='29/12', DIAS_DADOS=90, WA_NORTIQ='5511934727720';
 const abrirWhats=(numero,texto)=>window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(texto),'_blank','noopener');
 const slugOf=n=>String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,30);
-const emptyNa=()=>({nome:'',razao:'',doc:'',cidade:'',slug:'',slugTouched:false,dono:'',email:'',tel:'',cobranca:'agora',cupom:''});
+const emptyNa=()=>({nome:'',razao:'',doc:'',cidade:'',slug:'',slugTouched:false,dono:'',email:'',tel:'',forma:'asaas',meio:'Pix',cobranca:'agora',cupom:''});
 // Plano único por enquanto. Planos extras (IA, WhatsApp integrado) ficam para o futuro.
 const PLANO={nome:'Plano Nortiq',preco:79.9,itens:['Clientes sem limite','Orçamentos do pedido à instalação','Avisos de manutenção e garantia','Mensagens prontas para WhatsApp','Tarefas com Google Agenda','Faturamento e metas']};
 const LOJAS_PAGANTES=128, EM_ATRASO=9;
@@ -2933,7 +3203,7 @@ class Component extends DCLogic {
     loseFor:null,lf:{motivo:'',nota:''},lfErr:'',gwNote:null,
     notifs:NOTIFS0.map(n=>({...n})),notifOpen:false,notifF:'todas',avisos:AVISOS0.map(a=>({...a})),av:emptyAv(),avErr:{},avMsg:'',
     estq:ESTOQUE0.map(p=>({...p})),estF:'todos',estQ:'',showProd:false,pf:null,pfErr:{},pfEdit:null,estMsg:'',showImp:false,im:null,estUltImp:'15/09',
-    accs:ACCOUNTS.map(a=>({...a})),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
+    accs:ACCOUNTS.map(a=>({...a})),pgFor:null,pgModo:null,pgPag:null,pg:null,pgErr:{},pixFor:null,pixCopiada:false,expSt:null,expBaixado:false,accAba:'resumo',atFor:null,at:null,atErr:{},atend:JSON.parse(JSON.stringify(ATEND0)),showCancel:false,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:'',showNewAcc:false,na:null,naErr:{},accOpen:null,accDlgMsg:'',mailFor:null,senhaFor:null,pw1:'',pw2:'',pwTry:false,loginFor:null,loginNotice:'',
     rsEmail:'',rsErr:'',rsEnviando:false,rsEnviado:false,rsMail:false,rsVencido:false,rsSalvando:false,
     papel:'dono',assin:'em_dia',loginDemo:'normal',userMenu:false,siteSlug:'',siteErr:'',
     equipe:EQUIPE0.map(u=>({...u})),eqDlg:null,eqForm:{},eqErr:{},eqMsg:'',
@@ -2980,7 +3250,16 @@ class Component extends DCLogic {
       return {agRef:isoOf(n),agSel:isoOf(n),agMsg:''};});
   }
   openAgNew(dataIso){ this.setState(s=>({showAgNew:true,afErr:{},agMsg:'',af:{tipo:'Visita técnica',cli:'',data:dataIso||s.agSel,ini:'09:00',fim:'10:00',tec:'jefferson',end:'',google:s.gcal}})); }
+  // Cobrança direta (painel Nortiq): registrar pagamento, estornar e alterar a forma de cobrança.
+  abrirPg(a,modo,pag){
+    const pagos=(a.pags||[]).filter(p=>!p.estornado).map(p=>p.mes);
+    const mes=MESES_REG.find(m=>!pagos.includes(m))||MESES_REG[0];
+    this.setState({pgFor:a.slug,pgModo:modo,pgPag:pag?pag.id:null,pgErr:{},
+      pg:{mes,valor:'79,90',data:'2026-09-22',meio:a.meio||'Pix',obs:'',motivo:'',forma:a.forma==='direto'?'asaas':'direto'}});
+  }
   goGateway(acao){
+    const loja=this.state.accs.find(a=>a.slug==='casadoaquecedor');
+    if(loja&&loja.forma==='direto'&&/^pagar /.test(acao)) return this.setState({pixFor:acao.slice(6),pixCopiada:false});
     if(GATEWAY.linkPagamento){ window.open(GATEWAY.linkPagamento,'_blank','noopener'); }
     else this.setState({gwNote:acao});
   }
@@ -3031,8 +3310,11 @@ class Component extends DCLogic {
     const semAcesso=func&&!PAGINAS_FUNCIONARIO.includes(page);
     const bloqueado=!admin&&assin==='pausado'&&(func||page!=='plano');
     const atrasoTxt=assin==='atraso'?'Venceu em 17/09 · em atraso há 5 dias':'Venceu em 06/09 · em atraso há 16 dias';
-    const ajustaFaturas=lista=>assin==='em_dia'?lista:lista.map(f=>f.mes==='Setembro de 2026'?{...f,data:atrasoTxt,status:'Em atraso',tone:'danger',btnLabel:'Pagar',btnVariant:'primary',
-      temAcao:true,acao:()=>this.goGateway('pagar a mensalidade de setembro em atraso (R$ 79,90)')}:f);
+    const lojaDireta=!admin&&((s.accs.find(a=>a.slug==='casadoaquecedor')||{}).forma==='direto');
+    const ajustaFaturas=lista=>(assin==='em_dia'?lista:lista.map(f=>f.mes==='Setembro de 2026'?{...f,data:atrasoTxt,status:'Em atraso',tone:'danger',btnLabel:'Pagar',btnVariant:'primary',
+      temAcao:true,acao:()=>this.goGateway('pagar a mensalidade de setembro em atraso (R$ 79,90)')}:f))
+      .map(f=>!lojaDireta?f:f.status==='Paga'?{...f,data:f.data.replace(/ · (PIX|boleto)$/,'')+' · Pix · confirmada pela Nortiq',temAcao:false}
+        :f.status==='Em aberto'?{...f,data:f.data.replace('PIX ou boleto','Pix direto para a Nortiq')}:f);
     const orcs=s.orcs;
     const openStages=['solicitado','enviado','negociando'];
     const openO=orcs.filter(o=>openStages.includes(o.stage));
@@ -3100,10 +3382,12 @@ class Component extends DCLogic {
 
     // Admin
     const aq=s.accQ.trim().toLowerCase();
-    const accRows=s.accs.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status],mensal:a.status==='Cancelada'?'—':a.gratisAte?'Grátis até '+a.gratisAte:brl(PLANO.preco,true),open:()=>this.setState({accOpen:a.slug,accDlgMsg:''})}));
+    const accRows=s.accs.filter(a=>s.accF==='todas'||a.status===s.accF).filter(a=>!aq||(a.nome+a.cidade).toLowerCase().includes(aq)).map(a=>({...a,users:String(a.users),tone:ACC_TONE[a.status],mensal:a.status==='Cancelada'?'—':a.gratisAte?'Grátis até '+a.gratisAte:brl(PLANO.preco,true),cobrTxt:a.forma==='direto'?'Direto · '+a.meio:'Asaas',open:()=>this.setState({accOpen:a.slug,accDlgMsg:'',accAba:'resumo'})}));
     const charges=s.accs.filter(a=>a.status==='Em dia'||a.status==='Em atraso'||a.status==='Cancelamento pedido').slice(0,8).map((a,i)=>{const st=a.status==='Em atraso'?'Em atraso':'Pago';const r=!!s.reminded[a.slug];
-      return {nome:a.nome,cidade:a.cidade,fatura:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
-        canRemind:st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}}))};});
+      const dir=a.forma==='direto';
+      return {nome:a.nome,cidade:a.cidade,fatura:dir?'Pagamento direto · '+a.meio:'FAT-2609-'+String(118+i*7).padStart(4,'0'),valor:brl(PLANO.preco,true),status:st,tone:ACC_TONE[a.status==='Em dia'?'Em dia':a.status],
+        canRemind:!dir&&st==='Em atraso'&&!r,reminded:r,remind:()=>this.setState(x=>({reminded:{...x.reminded,[a.slug]:true}})),
+        canRegistrar:dir&&st==='Em atraso',registrar:()=>{this.setState({accOpen:a.slug,accDlgMsg:''});this.abrirPg(a,'registrar');}};});
     // Meu plano: situação da assinatura da loja e cancelamento
     const cancelVals=(()=>{
       const loja=s.accs.find(a=>a.slug==='casadoaquecedor')||{status:'Em dia'};
@@ -3117,7 +3401,8 @@ class Component extends DCLogic {
                {label:'Falar pelo WhatsApp',variant:'secondary',icon:'message-circle',go:whatsNortiq('Olá! Sou da Casa do Aquecedor e quero falar sobre o cancelamento da assinatura.')}]};
       else if(cancelada) banner={bg:'var(--surface-sunken)',fg:'var(--text-strong)',icon:'info',titulo:'Assinatura cancelada',
         texto:'Você pode usar o sistema até '+ACESSO_ATE+', fim do período já pago. Não haverá novas cobranças. Seus dados ficam guardados até '+DADOS_ATE+', caso você queira voltar.',
-        acoes:[CANCELAMENTO_AUTOMATICO?{label:'Reativar assinatura',variant:'primary',icon:'arrow-left',go:()=>{upd({status:'Em dia',nota:'Reativada em 22/09',cancel:null});this.setState({mpMsg:'Assinatura reativada. Que bom ter você de volta!'});}}
+        acoes:[{label:'Exportar dados',variant:'secondary',icon:'download',go:()=>this.setState({page:'config',cfgTab:'conta',drawer:null})},
+               CANCELAMENTO_AUTOMATICO?{label:'Reativar assinatura',variant:'primary',icon:'arrow-left',go:()=>{upd({status:'Em dia',nota:'Reativada em 22/09',cancel:null});this.setState({mpMsg:'Assinatura reativada. Que bom ter você de volta!'});}}
                                      :{label:'Quero reativar',variant:'primary',icon:'message-circle',go:whatsNortiq('Olá! Sou da Casa do Aquecedor e quero reativar a assinatura do Nortiq.')}]};
       else if(s.mpMsg) banner={bg:'var(--status-success-bg)',fg:'var(--status-success-fg)',icon:'circle-check',titulo:s.mpMsg,texto:'',acoes:[]};
       const cf=s.cf;
@@ -3129,7 +3414,7 @@ class Component extends DCLogic {
         showCancel:s.showCancel,openCancel:()=>this.setState({showCancel:true,cf:{motivo:'',detalhe:''},cfErr:'',mpMsg:''}),closeCancel:()=>this.setState({showCancel:false}),
         cf,cfErr:s.cfErr,cfErrShow:!!s.cfErr,cfOn:{motivo:setCf('motivo'),detalhe:setCf('detalhe')},
         cfMotivoOptions:[{value:'',label:'Escolha o motivo'},...CANCEL_MOTIVOS.map(m=>({value:m,label:m}))],
-        cfInfo:[{icon:'calendar',txt:'Seu acesso continua até '+ACESSO_ATE+', fim do período já pago.'},{icon:'receipt',txt:'A fatura de outubro não será cobrada.'},{icon:'shield-check',txt:'Seus dados ficam guardados por '+DIAS_DADOS+' dias depois disso, caso você queira voltar.'},
+        cfInfo:[{icon:'download',txt:'Antes de sair, se quiser, baixe uma cópia dos dados em Configurações, Dados da loja.'},{icon:'calendar',txt:'Seu acesso continua até '+ACESSO_ATE+', fim do período já pago.'},{icon:'receipt',txt:'A fatura de outubro não será cobrada.'},{icon:'shield-check',txt:'Seus dados ficam guardados por '+DIAS_DADOS+' dias depois disso, caso você queira voltar.'},
           ...(CANCELAMENTO_AUTOMATICO?[]:[{icon:'mail',txt:'A equipe Nortiq confirma o cancelamento e avisa você por e-mail.'}])],
         cfConfirmarTxt:CANCELAMENTO_AUTOMATICO?'Cancelar assinatura':'Pedir cancelamento',
         cfWhats:whatsNortiq('Olá! Sou da Casa do Aquecedor e estou pensando em cancelar a assinatura. Podemos conversar?'),
@@ -3310,8 +3595,9 @@ class Component extends DCLogic {
 
     // Contas assinantes: cadastro, etapas do acesso, convite e criação de senha
     const accVals=(()=>{
-      const na=s.na||emptyNa(), cupom=na.cobranca==='cupom';
+      const na=s.na||emptyNa(), cupom=na.cobranca==='cupom', direto=na.forma==='direto';
       const setNa=k=>e=>{const v=e.target.value; this.setState(x=>{const n={...x.na,[k]:v};
+        if(k==='forma') n.cobranca=v==='direto'?'recebido':'agora';
         if(k==='nome'&&!x.na.slugTouched) n.slug=slugOf(v);
         if(k==='slug'){n.slug=String(v).toLowerCase().replace(/[^a-z0-9]/g,'');n.slugTouched=true;}
         return {na:n,naErr:{...x.naErr,[k]:undefined}};});};
@@ -3321,21 +3607,25 @@ class Component extends DCLogic {
       let ac={linhas:[],etapas:[],acoes:[]};
       const a=s.accOpen&&accBy(s.accOpen);
       if(a){
-        const ag=a.status==='Aguardando pagamento', cv=a.status==='Convite enviado', ativa=!ag&&!cv;
+        const ag=a.status==='Aguardando pagamento', cv=a.status==='Convite enviado', ativa=!ag&&!cv, dir=a.forma==='direto', cancelada=a.status==='Cancelada';
         const done={icon:'check',bg:'var(--status-success-bg)',fg:'var(--status-success-fg)',tfg:'var(--text-strong)',linha:'var(--status-success-border)'};
         const cur={icon:'clock',bg:'var(--status-warning-bg)',fg:'var(--status-warning-fg)',tfg:'var(--text-strong)',linha:'var(--border-subtle)'};
         const todo={icon:'minus',bg:'var(--surface-sunken)',fg:'var(--text-disabled)',tfg:'var(--text-muted)',linha:'var(--border-subtle)'};
         const email=a.email||'e-mail do dono';
         const etapas=[
           {...done,titulo:'Conta cadastrada',sub:a.criada?'Cadastro feito pela equipe Nortiq em '+a.criada+'.':'Cadastro feito pela equipe Nortiq.'},
-          {...(ag?cur:done),titulo:a.cupom?'Cupom de parceiro aplicado':'Pagamento confirmado',
-            sub:a.cupom?'Cupom '+a.cupom+': 30 dias grátis. A primeira cobrança vence em '+a.gratisAte+'.':ag?'Aguardando o pagamento da primeira mensalidade pelo Asaas (PIX, boleto ou cartão).':'Pagamento confirmado pelo Asaas'+(a.pago?' em '+a.pago:'')+'.'},
+          {...(ag?cur:done),titulo:a.cupom?'Cupom de parceiro aplicado':dir?(ag?'Aguardando o primeiro pagamento':'Pagamento registrado'):'Pagamento confirmado',
+            sub:a.cupom?'Cupom '+a.cupom+': 30 dias grátis. A primeira cobrança vence em '+a.gratisAte+'.'
+              :dir?(ag?'Pagamento direto com a Nortiq ('+a.meio+'). Quando receber, use Registrar pagamento.':'Pagamento direto ('+a.meio+')'+(a.pago?' recebido em '+a.pago:'')+', registrado pela equipe Nortiq.')
+              :ag?'Aguardando o pagamento da primeira mensalidade pelo Asaas (PIX, boleto ou cartão).':'Pagamento confirmado pelo Asaas'+(a.pago?' em '+a.pago:'')+'.'},
           {...(ag?todo:cv?cur:done),titulo:'Convite enviado',sub:ag?'Sai sozinho assim que o pagamento for confirmado.':'E-mail para criar a senha enviado para '+email+'.'},
           {...(ativa?done:todo),titulo:'Senha criada',sub:ativa?'O dono já entra no CRM com a própria senha.':'Acontece quando o dono clica no link do e-mail.'}
         ];
         etapas[etapas.length-1].linha='transparent';
         const acoes=[];
-        if(ag){
+        const abrirPg=(modo,pag)=>()=>this.abrirPg(a,modo,pag);
+        if(dir&&!cancelada) acoes.push({label:'Registrar pagamento',variant:ag||a.status==='Em atraso'?'primary':'secondary',icon:'circle-check',go:abrirPg('registrar')});
+        if(ag&&!dir){
           acoes.push({label:'Reenviar cobrança',variant:'secondary',icon:'send',go:()=>this.setState({accDlgMsg:'Cobrança reenviada para '+email+' e para o WhatsApp '+(a.tel||'')+'.'})});
           acoes.push({label:'Simular pagamento (protótipo)',variant:'secondary',icon:'circle-check',go:()=>{upd(a.slug,{status:'Convite enviado',nota:'Pago em 22/09 · senha ainda não criada',pago:'22/09'});this.setState({accDlgMsg:'Pagamento confirmado pelo Asaas. O convite para criar a senha foi enviado para '+email+'.'});}});
         }
@@ -3351,11 +3641,19 @@ class Component extends DCLogic {
           acoes.push({label:'Ver e-mail do convite',variant:'primary',icon:'mail',go:()=>this.setState({mailFor:a.slug})});
         }
         const cc=a.cancel;
+        const pags=(a.pags||[]), ultimo=pags.find(p=>!p.estornado);
         ac={nome:a.nome,sub:a.slug+'.nortiq.com.br · '+a.status,msg:s.accDlgMsg,msgShow:!!s.accDlgMsg,etapas,acoes,
+          podeAlterarForma:!cancelada,alterarForma:e=>{e&&e.preventDefault&&e.preventDefault();this.abrirPg(a,'forma');},
+          pagsShow:dir&&pags.length>0,
+          pags:pags.map(p=>({...p,valorFmt:brl(p.valor,true),estornadoShow:!!p.estornado,podeEstornar:!p.estornado&&p===ultimo,
+            fg:p.estornado?'var(--text-muted)':'var(--text-strong)',risco:p.estornado?'line-through':'none',
+            linha:p.estornado?'Estornado em '+p.estData+' por '+p.estPor+' · '+p.estMotivo:p.meio+' em '+p.data+' · registrado por '+p.por+(p.obs?' · '+p.obs:''),
+            estornar:()=>this.abrirPg(a,'estornar',p)})),
           cancelShow:!!cc&&(pedido||a.status==='Cancelada'),cancelTitulo:pedido?'Pedido de cancelamento':'Assinatura cancelada pela loja',
           cancelBg:pedido?'var(--status-warning-bg)':'var(--surface-sunken)',cancelFg:pedido?'var(--status-warning-fg)':'var(--text-strong)',
           cancelLinhas:cc?[{k:'Motivo',v:cc.motivo},{k:'Detalhe',v:cc.detalhe||'—'},{k:pedido?'Pedido em':'Acesso até',v:pedido?cc.data:ACESSO_ATE},...(pedido?[]:[{k:'Dados guardados até',v:DADOS_ATE}])]:[],
-          linhas:[{k:'Responsável',v:a.dono||'—'},{k:'E-mail',v:a.email||'—'},{k:'WhatsApp',v:a.tel||'—'},{k:'Cidade',v:a.cidade},{k:'Mensalidade',v:a.status==='Cancelada'?'Encerrada, sem novas cobranças':a.gratisAte?'Grátis até '+a.gratisAte+', depois '+brl(PLANO.preco,true):brl(PLANO.preco,true)}]};
+          linhas:[{k:'Responsável',v:a.dono||'—'},{k:'E-mail',v:a.email||'—'},{k:'WhatsApp',v:a.tel||'—'},{k:'Cidade',v:a.cidade},{k:'Mensalidade',v:a.status==='Cancelada'?'Encerrada, sem novas cobranças':a.gratisAte?'Grátis até '+a.gratisAte+', depois '+brl(PLANO.preco,true):brl(PLANO.preco,true)},
+            {k:'Cobrança',v:dir?'Direto com a Nortiq · '+a.meio+(a.venc?' · vence todo dia '+a.venc:''):'Pelo Asaas (automática)'}]};
       }
       // e-mail
       const m=s.mailFor&&accBy(s.mailFor);
@@ -3377,10 +3675,16 @@ class Component extends DCLogic {
         accSearchW:mobile?'100%':'260px',
         openNewAcc:()=>this.setState({showNewAcc:true,na:emptyNa(),naErr:{}}),closeNewAcc:()=>this.setState({showNewAcc:false}),showNewAcc:s.showNewAcc,
         na,naErr:s.naErr,naIsCupom:cupom,
-        naOn:{nome:setNa('nome'),razao:setNa('razao'),doc:setNa('doc'),cidade:setNa('cidade'),slug:setNa('slug'),dono:setNa('dono'),email:setNa('email'),tel:setNa('tel'),cobranca:setNa('cobranca'),cupom:setNa('cupom')},
-        naCobrOptions:[{value:'agora',label:'Cobrar agora (link do Asaas)'},{value:'cupom',label:'Cupom de parceiro (30 dias grátis)'}],
-        naProximo:cupom?'O convite para criar a senha sai agora, por e-mail. A primeira cobrança de '+brl(PLANO.preco,true)+' vence em 30 dias.':'Enviamos a cobrança de '+brl(PLANO.preco,true)+' por e-mail e WhatsApp. Assim que o pagamento for confirmado, o dono recebe o convite para criar a senha.',
-        naSaveLabel:cupom?'Cadastrar e enviar convite':'Cadastrar e enviar cobrança',
+        naOn:{nome:setNa('nome'),razao:setNa('razao'),doc:setNa('doc'),cidade:setNa('cidade'),slug:setNa('slug'),dono:setNa('dono'),email:setNa('email'),tel:setNa('tel'),forma:setNa('forma'),meio:setNa('meio'),cobranca:setNa('cobranca'),cupom:setNa('cupom')},
+        naFormaOptions:FORMA_OPTS,naMeioOptions:MEIOS_DIRETO.map(m=>({value:m,label:m})),naIsDireto:direto,
+        naCobrOptions:direto?[{value:'recebido',label:'Já recebi (registrar agora)'},{value:'depois',label:'Vou receber depois'},{value:'cupom',label:'Cupom de parceiro (30 dias grátis)'}]
+          :[{value:'agora',label:'Cobrar agora (link do Asaas)'},{value:'cupom',label:'Cupom de parceiro (30 dias grátis)'}],
+        naProximo:direto
+          ?(cupom?'O convite para criar a senha sai agora, por e-mail. A primeira mensalidade vence em 30 dias; quando receber, registre o pagamento na ficha da conta.'
+            :na.cobranca==='recebido'?'A primeira mensalidade fica registrada como paga hoje ('+na.meio+') e o convite para criar a senha sai agora, por e-mail. As próximas vencem todo dia 22; quando receber, registre o pagamento na ficha da conta.'
+            :'A conta fica aguardando o pagamento. Quando receber, abra a ficha da conta e use Registrar pagamento: o convite para criar a senha sai na hora.')+' Nada é cobrado pelo Asaas.'
+          :cupom?'O convite para criar a senha sai agora, por e-mail. A primeira cobrança de '+brl(PLANO.preco,true)+' vence em 30 dias.':'Enviamos a cobrança de '+brl(PLANO.preco,true)+' por e-mail e WhatsApp. Assim que o pagamento for confirmado, o dono recebe o convite para criar a senha.',
+        naSaveLabel:cupom||(direto&&na.cobranca==='recebido')?'Cadastrar e enviar convite':direto?'Cadastrar conta':'Cadastrar e enviar cobrança',
         saveNewAcc:()=>{
           const err={}, t=x=>String(x||'').trim();
           if(!t(na.nome)) err.nome='Falta o nome da loja.';
@@ -3393,17 +3697,212 @@ class Component extends DCLogic {
           if(t(na.tel).replace(/\D/g,'').length<10) err.tel='Confira o WhatsApp com DDD.';
           if(cupom&&!t(na.cupom)) err.cupom='Falta o código do cupom.';
           if(Object.keys(err).length) return this.setState({naErr:err});
+          const recebido=direto&&na.cobranca==='recebido', convite=cupom||recebido;
           const nova={nome:t(na.nome),slug:na.slug,cidade:t(na.cidade),users:1,desde:'09/2026',dono:t(na.dono),email:t(na.email),tel:t(na.tel),criada:'22/09',
-            status:cupom?'Convite enviado':'Aguardando pagamento',nota:cupom?'Cupom '+t(na.cupom).toUpperCase()+' · senha ainda não criada':'Cobrança enviada em 22/09',
-            cupom:cupom?t(na.cupom).toUpperCase():'',gratisAte:cupom?'22/10':''};
+            status:convite?'Convite enviado':'Aguardando pagamento',
+            nota:cupom?'Cupom '+t(na.cupom).toUpperCase()+' · senha ainda não criada':recebido?na.meio+' em 22/09 · senha ainda não criada':direto?'Aguardando pagamento direto ('+na.meio+')':'Cobrança enviada em 22/09',
+            cupom:cupom?t(na.cupom).toUpperCase():'',gratisAte:cupom?'22/10':'',
+            forma:na.forma,meio:direto?na.meio:'',venc:direto?'22':'',pago:recebido?'22/09':'',
+            pags:recebido?[{id:'p'+Date.now(),mes:'Setembro de 2026',valor:PLANO.preco,data:'22/09',meio:na.meio,por:'Helena Duarte',obs:'Registrado no cadastro da conta'}]:[]};
           this.setState(x=>({accs:[nova,...x.accs],showNewAcc:false,accF:'todas',accQ:'',accOpen:nova.slug,
-            accDlgMsg:cupom?'Conta criada. O convite para criar a senha foi enviado para '+nova.email+'.':'Conta criada. A cobrança de '+brl(PLANO.preco,true)+' foi enviada para '+nova.email+' e para o WhatsApp '+nova.tel+'.'}));
+            accDlgMsg:convite?'Conta criada. '+(recebido?'Pagamento de setembro registrado ('+na.meio+'). ':'')+'O convite para criar a senha foi enviado para '+nova.email+'.'
+              :direto?'Conta criada. Quando receber o pagamento, use Registrar pagamento: o convite para criar a senha sai na hora.'
+              :'Conta criada. A cobrança de '+brl(PLANO.preco,true)+' foi enviada para '+nova.email+' e para o WhatsApp '+nova.tel+'.'}));
         },
-        showAcc:!!a,ac,closeAcc:()=>this.setState({accOpen:null,accDlgMsg:''}),
+        showAcc:!!a&&!s.pgFor&&!s.atFor,ac,closeAcc:()=>this.setState({accOpen:null,accDlgMsg:'',accAba:'resumo'}),
         showMail:!!m,ml,closeMail:()=>this.setState({mailFor:null}),
         sn,
         loginSlug:lf?lf.slug:'casadoaquecedor',loginEmail:lf?lf.email:'rogerio@casadoaquecedor.com.br',loginNotice:s.loginNotice,loginNoticeShow:!!s.loginNotice
       };
+    })();
+
+    // Atendimento (painel Nortiq): quem tem acesso à loja e ações para ajudar a entrar
+    const supVals=(()=>{
+      const a=s.accOpen&&s.accs.find(x=>x.slug===s.accOpen);
+      const equipeDe=c=>c.slug==='casadoaquecedor'?s.equipe
+        :(c.equipe||[{id:c.slug+'-d',nome:c.dono||'Responsável da loja',email:c.email||('contato@'+c.slug+'.com.br'),papel:'dono',
+          status:c.status==='Aguardando pagamento'?'aguardando':c.status==='Convite enviado'?'convite':'ativo',
+          info:c.status==='Aguardando pagamento'?'O convite sai quando o pagamento for confirmado':c.status==='Convite enviado'?'Convite enviado · senha ainda não criada':'Último acesso esta semana'}]);
+      const setEquipe=(c,fn)=>this.setState(x=>c.slug==='casadoaquecedor'?{equipe:fn(x.equipe)}
+        :{accs:x.accs.map(y=>y.slug===c.slug?{...y,equipe:fn(equipeDe(y))}:y)});
+      const abrir=(acao,u)=>()=>this.setState({atFor:{slug:a.slug,uid:u?u.id:null,acao},at:{canal:'WhatsApp',obs:'',email:'',nome:'',conf:''},atErr:{}});
+      const abas=[{id:'resumo',label:'Resumo'},{id:'acesso',label:'Acesso e suporte'},{id:'hist',label:'Atendimentos'}];
+      let sp={abas,aba:s.accAba,onAba:id=>this.setState({accAba:id,accDlgMsg:''}),abaResumo:s.accAba==='resumo',abaAcesso:s.accAba==='acesso',abaHist:s.accAba==='hist',pessoas:[],hist:[],histVazio:true,podeNovoDono:false};
+      if(a){
+        const encerrada=a.status==='Cancelada';
+        const TONE={ativo:'success',convite:'info',desativado:'neutral',aguardando:'warning'};
+        const TXT={ativo:'Ativo',convite:'Convite enviado',desativado:'Desativado',aguardando:'Aguardando pagamento'};
+        sp.pessoas=equipeDe(a).map(u=>{
+          const acoes=[];
+          if(!encerrada&&u.status==='ativo'){
+            if(u.bloqueado) acoes.push({label:'Liberar login',variant:'primary',icon:'lock-open',go:abrir('liberar',u)});
+            acoes.push({label:u.aguardaSenha?'Reenviar link para criar a senha':'Enviar link de nova senha',variant:'secondary',icon:'key-round',go:abrir('senha',u)});
+            if(u.papel==='dono') acoes.push({label:'Trocar e-mail de acesso',variant:'secondary',icon:'mail',go:abrir('email',u)});
+            acoes.push({label:'Desconectar dos aparelhos',variant:'ghost',icon:'log-out',go:abrir('desconectar',u)});
+          }
+          if(!encerrada&&u.status==='convite') acoes.push({label:'Reenviar convite',variant:'secondary',icon:'send',go:abrir('convite',u)});
+          const info=u.bloqueado?'Login bloqueado por tentativas erradas até '+u.bloqueado:u.status==='desativado'?(u.info||'Desativado pela loja')+' · só o dono da loja reativa':u.info;
+          return {...u,papelTxt:u.papel==='dono'?'Dono':'Funcionário',papelTone:u.papel==='dono'?'info':'neutral',
+            statusTxt:u.bloqueado?'Login bloqueado':u.aguardaSenha&&u.status==='ativo'?'Aguardando nova senha':TXT[u.status]||u.status,
+            statusTone:u.bloqueado?'danger':u.aguardaSenha&&u.status==='ativo'?'warning':TONE[u.status]||'neutral',info,infoFg:u.bloqueado?'var(--status-danger-fg)':'var(--text-muted)',acoes,temAcoes:acoes.length>0};
+        });
+        sp.hist=(s.atend[a.slug]||[]);sp.histVazio=!sp.hist.length;
+        sp.podeNovoDono=!encerrada&&a.status!=='Aguardando pagamento';
+        sp.convidarDono=abrir('novodono',null);
+        sp.abas=abas.map(b=>b.id==='hist'&&sp.hist.length?{...b,count:sp.hist.length}:b);
+      }
+      // janela de atendimento
+      const f=s.atFor, c=f&&s.accs.find(x=>x.slug===f.slug);
+      if(!c||!s.at) return {sp,atShow:false};
+      const at=s.at, u=f.uid&&equipeDe(c).find(x=>x.id===f.uid), nome=u?u.nome:'', primeiro=String(nome).split(' ')[0];
+      const setAt=k=>e=>{const v=e.target.value;this.setState(x=>({at:{...x.at,[k]:v},atErr:{...x.atErr,[k]:undefined}}));};
+      const fechar=(msg)=>this.setState({atFor:null,at:null,atErr:{},accAba:'acesso',...(msg?{accDlgMsg:msg}:{})});
+      const registrar=(icon,titulo)=>this.setState(x=>({atend:{...x.atend,[c.slug]:[{quando:'22/09 às 10:14',por:'Helena Duarte',icon,titulo,
+        sub:'Pedido '+(at.canal==='WhatsApp'?'pelo WhatsApp':at.canal==='Ligação'?'por ligação':'por e-mail')+(at.conf?' · confirmado: '+at.conf.charAt(0).toLowerCase()+at.conf.slice(1):'')+(String(at.obs||'').trim()?' · '+String(at.obs).trim():'')},...(x.atend[c.slug]||[])]}}));
+      const emailOk=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||'').trim());
+      const D={
+        senha:{titulo:'Enviar link de nova senha',btn:'Enviar link',variant:'primary',
+          info:'Enviamos para '+(u&&u.email)+' um link para criar uma nova senha. O link vale 1 hora e só funciona uma vez. A senha atual continua valendo até '+primeiro+' criar a nova. A equipe Nortiq não vê nem escolhe a senha.',
+          ok:()=>{setEquipe(c,l=>l.map(x=>x.id===u.id&&x.aguardaSenha?{...x,info:'Novo link para criar a senha enviado em 22/09'}:x));registrar('key-round','Link de nova senha enviado para '+nome);return 'Link enviado para '+u.email+'. Vale 1 hora e só funciona uma vez.';}},
+        liberar:{titulo:'Liberar o login',btn:'Liberar login',variant:'primary',
+          info:'As tentativas erradas são zeradas e '+primeiro+' pode tentar entrar de novo agora. Se a pessoa não lembra a senha, envie também o link de nova senha.',
+          ok:()=>{setEquipe(c,l=>l.map(x=>x.id===u.id?{...x,bloqueado:null,info:'Login liberado pela equipe Nortiq agora'}:x));registrar('lock-open','Login liberado para '+nome);return primeiro+' já pode tentar entrar de novo.';}},
+        desconectar:{titulo:'Desconectar de todos os aparelhos',btn:'Desconectar',variant:'danger',
+          info:primeiro+' sai do sistema em todos os aparelhos, na hora. Use quando um celular ou computador foi perdido, roubado ou ficou com outra pessoa. Para voltar, basta entrar com o e-mail e a senha.',
+          ok:()=>{setEquipe(c,l=>l.map(x=>x.id===u.id?{...x,info:'Desconectado de todos os aparelhos agora'}:x));registrar('log-out',nome+' desconectado de todos os aparelhos');return nome+' saiu do sistema em todos os aparelhos.';}},
+        convite:{titulo:'Reenviar convite',btn:'Reenviar convite',variant:'primary',
+          info:'Um convite novo vai para '+(u&&u.email)+' e vale 48 horas. O link anterior deixa de valer.',
+          ok:()=>{setEquipe(c,l=>l.map(x=>x.id===u.id?{...x,info:'Convite reenviado em 22/09 · vale até 24/09'}:x));registrar('send','Convite reenviado para '+nome);return 'Convite reenviado para '+u.email+'.';}},
+        email:{titulo:'Trocar e-mail de acesso',btn:'Trocar e-mail',variant:'primary',pedeEmail:true,pedeConf:true,
+          info:'Use quando o dono perdeu o acesso ao e-mail. O e-mail antigo recebe um aviso da troca, a senha antiga deixa de valer e o novo e-mail recebe o link para criar a senha. '+primeiro+' sai de todos os aparelhos.',
+          valida:()=>{const e={};const em=String(at.email||'').trim().toLowerCase();
+            if(!emailOk(em)) e.email='Confira o novo e-mail.';
+            else if(em===String(u.email).toLowerCase()) e.email='É o mesmo e-mail de hoje.';
+            else if(equipeDe(c).some(x=>x.id!==u.id&&x.status!=='desativado'&&String(x.email).toLowerCase()===em)) e.email='Esse e-mail já é de outra pessoa da equipe.';
+            if(!at.conf) e.conf='Escolha como você confirmou o pedido com o dono.';
+            return e;},
+          ok:()=>{const em=String(at.email).trim().toLowerCase(), antigo=u.email;
+            setEquipe(c,l=>l.map(x=>x.id===u.id?{...x,email:em,aguardaSenha:true,info:'E-mail trocado pela Nortiq em 22/09 · link para criar a senha enviado'}:x));
+            if(c.email===antigo) this.setState(x=>({accs:x.accs.map(y=>y.slug===c.slug?{...y,email:em}:y)}));
+            registrar('mail','E-mail de acesso de '+nome+' trocado: '+antigo+' → '+em);
+            return 'E-mail trocado. O link para criar a nova senha foi para '+em+' e o e-mail antigo recebeu um aviso. '+primeiro+' saiu de todos os aparelhos.';}},
+        novodono:{titulo:'Convidar novo dono',btn:'Enviar convite',variant:'primary',pedeNome:true,pedeEmail:true,pedeConf:true,
+          info:'Use quando a loja mudou de dono ou quando ninguém da loja consegue mais entrar. A pessoa recebe o convite como dono (vale 48 horas). Quem já tem acesso continua até a própria loja desativar.',
+          valida:()=>{const e={};const em=String(at.email||'').trim().toLowerCase();
+            if(String(at.nome||'').trim().length<3) e.nome='Falta o nome da pessoa.';
+            if(!emailOk(em)) e.email='Confira o e-mail.';
+            else if(equipeDe(c).some(x=>x.status!=='desativado'&&String(x.email).toLowerCase()===em)) e.email='Essa pessoa já faz parte da equipe.';
+            if(!at.conf) e.conf='Escolha como você confirmou o pedido com o dono.';
+            return e;},
+          ok:()=>{const em=String(at.email).trim().toLowerCase(), nm=String(at.nome).trim();
+            setEquipe(c,l=>[...l,{id:'n'+Date.now(),nome:nm,email:em,papel:'dono',status:'convite',info:'Convite de dono enviado pela Nortiq em 22/09 · vale até 24/09',tarefas:0}]);
+            registrar('user-plus','Convite de dono enviado para '+nm+' ('+em+')');
+            return 'Convite de dono enviado para '+em+'. Quando '+nm.split(' ')[0]+' criar a senha, pode desativar quem não faz mais parte da loja.';}}
+      };
+      const d=D[f.acao];
+      return {sp,atShow:true,atTitulo:d.titulo,atDesc:(u?nome+' · ':'')+c.nome,atInfo:d.info,atBtn:d.btn,atBtnVariant:d.variant,
+        atPedeNome:!!d.pedeNome,atPedeEmail:!!d.pedeEmail,atPedeConf:!!d.pedeConf,atEmailLabel:f.acao==='email'?'Novo e-mail de acesso':'E-mail da pessoa',
+        at,atErr:s.atErr,atConfErr:s.atErr.conf||'',atConfErrShow:!!s.atErr.conf,
+        atOn:{canal:setAt('canal'),obs:setAt('obs'),email:setAt('email'),nome:setAt('nome'),conf:setAt('conf')},
+        atCanalOptions:CANAIS_PEDIDO.map(x=>({value:x,label:x})),atConfOptions:[{value:'',label:'Escolha'},...CONFIRMA_DONO.map(x=>({value:x,label:x}))],
+        atFechar:()=>fechar(),
+        atSalvar:()=>{const e=d.valida?d.valida():{}; if(Object.keys(e).length) return this.setState({atErr:e}); fechar(d.ok());}};
+    })();
+
+    // Loja com pagamento direto (Pix para a Nortiq) e exportação dos dados da loja
+    const lojaVals=(()=>{
+      const gw=GATEWAY.nome?'do '+GATEWAY.nome:'do nosso parceiro de pagamentos';
+      const pedirExp=()=>{
+        if(s.expSt==='preparando') return;
+        this.setState({expSt:'preparando',expBaixado:false});
+        setTimeout(()=>this.setState(x=>({expSt:'pronto',notifs:[{id:'nexp'+Date.now(),tipo:'dados',titulo:'Cópia dos dados pronta',texto:'O arquivo com os dados da loja está pronto para baixar. O link vale até 29/09.',quando:'agora',lida:false,go:'config'},...x.notifs]})),1800);
+      };
+      return {
+        mpFormaTxt:lojaDireta?'Forma de pagamento: Pix direto para a Nortiq':'Forma de pagamento: PIX ou boleto, enviado por e-mail e WhatsApp',
+        mpRodape:lojaDireta?'O pagamento vai direto para a conta da Nortiq, pela chave Pix. Depois de pagar, envie o comprovante pelo WhatsApp: a equipe confirma e a fatura aparece como paga aqui.'
+          :'Os pagamentos são feitos na página segura '+gw+'. O Nortiq não recebe nem guarda os dados do seu cartão ou da sua conta.',
+        pixShow:!!s.pixFor,pixDesc:s.pixFor?'Para pagar '+s.pixFor+'.':'',pixChave:PIX_NORTIQ.chave,pixFavorecido:PIX_NORTIQ.favorecido,
+        pixCopiarTxt:s.pixCopiada?'Chave copiada':'Copiar chave',
+        pixCopiar:()=>{try{navigator.clipboard&&navigator.clipboard.writeText(PIX_NORTIQ.chave).catch(()=>{});}catch(e){} this.setState({pixCopiada:true});},
+        pixPassos:[{n:'1',txt:'Abra o app do seu banco e pague com a chave Pix acima.'},{n:'2',txt:'Envie o comprovante pelo WhatsApp da Nortiq.'},{n:'3',txt:'A equipe confirma o recebimento e a fatura aparece como paga aqui, normalmente no mesmo dia útil.'}],
+        pixWhats:()=>abrirWhats(WA_NORTIQ,'Olá! Sou da Casa do Aquecedor e acabei de pagar '+(s.pixFor||'a mensalidade')+' pelo Pix. Segue o comprovante.'),
+        pixFechar:()=>this.setState({pixFor:null,pixCopiada:false}),
+        expItens:['Clientes e equipamentos','Orçamentos e etapas','Agenda e tarefas','Estoque e movimentações','Faturamento','Metas','Equipe (sem senhas)'],
+        expPreparando:s.expSt==='preparando',expPronto:s.expSt==='pronto',expBaixadoShow:s.expSt==='pronto'&&s.expBaixado,
+        expBtnTxt:s.expSt==='preparando'?'Preparando…':s.expSt==='pronto'?'Exportar de novo':'Exportar dados',
+        expArquivo:'casadoaquecedor-dados-2026-09-22.zip · 2,4 MB',
+        expPrazo:'Gerado hoje às 10:14. O link vale até 29/09 e também foi enviado para rogerio@casadoaquecedor.com.br.',
+        expPedir:pedirExp,expBaixar:()=>this.setState({expBaixado:true}),
+        cobrDemo:(s.accs.find(a=>a.slug==='casadoaquecedor')||{}).forma||'asaas',
+        cobrDemoOptions:[{value:'asaas',label:'Pelo Asaas (automática)'},{value:'direto',label:'Direto com a Nortiq (Pix)'}],
+        onCobrDemo:e=>{const v=e.target.value;this.setState(x=>({accs:x.accs.map(a=>a.slug==='casadoaquecedor'?{...a,forma:v,meio:v==='direto'?'Pix':'',venc:'01'}:a)}));},
+        encCopiaShow:!!s.encCopia,encCopiaPode:!s.encCopia,encCopiaPedir:()=>this.setState({encCopia:true})
+      };
+    })();
+
+    // Cobrança direta: janela de registrar pagamento, estornar e alterar a forma de cobrança
+    const pgVals=(()=>{
+      const a=s.pgFor&&s.accs.find(x=>x.slug===s.pgFor);
+      if(!a||!s.pg) return {pgShow:false};
+      const pg=s.pg, modo=s.pgModo, pags=a.pags||[], pag=pags.find(p=>p.id===s.pgPag);
+      const upd=patch=>this.setState(x=>({accs:x.accs.map(c=>c.slug===a.slug?{...c,...patch}:c)}));
+      const fechar=msg=>this.setState({pgFor:null,pgModo:null,pgPag:null,pg:null,pgErr:{},...(msg?{accDlgMsg:msg}:{})});
+      const setPg=k=>e=>{const v=e.target.value;this.setState(x=>({pg:{...x.pg,[k]:v},pgErr:{...x.pgErr,[k]:undefined,geral:undefined}}));};
+      const valor=Number(String(pg.valor).replace(/\./g,'').replace(',','.'));
+      const mesMin=m=>String(m).split(' ')[0].toLowerCase();
+      const ag=a.status==='Aguardando pagamento', atraso=a.status==='Em atraso', dir=a.forma==='direto';
+      const pagos=pags.filter(p=>!p.estornado).map(p=>p.mes);
+      let titulo='',desc='',info='',btn='',variant='primary',salvar=()=>{};
+      if(modo==='registrar'){
+        titulo='Registrar pagamento'; desc=a.nome+' · pagamento feito direto para a Nortiq'; btn='Registrar pagamento';
+        info=ag?'Ao registrar, o convite para criar a senha sai na hora para '+(a.email||'o e-mail do dono')+'.'
+          :atraso?'Ao registrar, a loja volta a ficar em dia e o acesso é liberado na hora.'
+          :'O pagamento aparece como pago no Meu plano da loja.';
+        if(valor>0&&Math.abs(valor-PLANO.preco)>0.001) info+=' Atenção: o valor é diferente da mensalidade ('+brl(PLANO.preco,true)+'). Confira antes de registrar.';
+        salvar=()=>{
+          const err={};
+          if(!(valor>0)) err.valor='Informe o valor recebido.';
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(pg.data)) err.data='Informe a data do recebimento.';
+          else if(pg.data>'2026-09-22') err.data='A data não pode ser depois de hoje (22/09).';
+          if(pagos.includes(pg.mes)) err.geral='A mensalidade de '+mesMin(pg.mes)+' já está registrada como paga.';
+          if(Object.keys(err).length) return this.setState({pgErr:err});
+          const data=brData(pg.data);
+          const novo={id:'p'+Date.now(),mes:pg.mes,valor,data,meio:pg.meio,por:'Helena Duarte',obs:String(pg.obs||'').trim()};
+          const patch={pags:[novo,...pags]};
+          if(ag) Object.assign(patch,{status:'Convite enviado',nota:pg.meio+' em '+data+' · senha ainda não criada',pago:data});
+          else if(atraso) Object.assign(patch,{status:'Em dia',nota:pg.meio+' em '+data+' · registrado'});
+          else if(a.status==='Em dia') patch.nota=pg.meio+' em '+data+' · registrado';
+          upd(patch);
+          fechar('Pagamento de '+mesMin(pg.mes)+' registrado ('+pg.meio+', '+data+').'+(ag?' O convite para criar a senha foi enviado para '+a.email+'.':'')+(atraso?' A loja voltou a ficar em dia e o acesso foi liberado na hora.':''));
+        };
+      } else if(modo==='estornar'&&pag){
+        titulo='Estornar pagamento'; desc=pag.mes+' · '+brl(pag.valor,true)+' · '+pag.meio+' em '+pag.data; btn='Estornar pagamento'; variant='danger';
+        info='Nada é apagado: o registro fica no histórico como estornado, com o motivo. Se a mensalidade ficar em aberto, o prazo de atraso volta a contar.';
+        salvar=()=>{
+          const motivo=String(pg.motivo||'').trim();
+          if(motivo.length<3) return this.setState({pgErr:{motivo:'Conte o motivo do estorno.'}});
+          const volta=pag.mes==='Setembro de 2026'&&a.status==='Em dia';
+          upd({pags:pags.map(p=>p.id===pag.id?{...p,estornado:true,estMotivo:motivo,estData:'22/09',estPor:'Helena Duarte'}:p),
+            ...(volta?{status:'Em atraso',nota:'Pagamento de setembro estornado'}:{})});
+          fechar('Pagamento estornado. O registro continua no histórico com o motivo.'+(volta?' A mensalidade de setembro voltou a ficar em aberto.':''));
+        };
+      } else if(modo==='forma'){
+        const paraDireto=pg.forma==='direto';
+        titulo='Alterar forma de cobrança'; desc=a.nome+' · hoje: '+(dir?'direto com a Nortiq ('+a.meio+')':'pelo Asaas'); btn='Salvar';
+        info=paraDireto?'A assinatura no Asaas é encerrada e a loja deixa de receber cobranças automáticas. As próximas mensalidades são registradas aqui, quando você receber.'
+          :'Criamos a assinatura no Asaas. A próxima mensalidade é cobrada automaticamente no vencimento, por e-mail e WhatsApp. Os pagamentos já registrados continuam no histórico.';
+        salvar=()=>{
+          if(pg.forma===(a.forma||'asaas')) return this.setState({pgErr:{geral:'A loja já paga desse jeito. Escolha a outra forma.'}});
+          upd({forma:pg.forma,meio:paraDireto?pg.meio:a.meio,venc:a.venc||'01'});
+          fechar(paraDireto?'Cobrança alterada para pagamento direto ('+pg.meio+'). A assinatura no Asaas foi encerrada e a loja não recebe mais cobranças automáticas.'
+            :'Cobrança alterada para o Asaas. A próxima mensalidade será cobrada automaticamente no vencimento, por e-mail e WhatsApp.');
+        };
+      }
+      return {pgShow:true,pgTitulo:titulo,pgDesc:desc,pgInfo:info,pgBtnTxt:btn,pgBtnVariant:variant,pgSalvar:salvar,pgFechar:()=>fechar(),
+        pg,pgErr:s.pgErr,pgErrGeral:s.pgErr.geral||'',pgErrGeralShow:!!s.pgErr.geral,
+        pgIsReg:modo==='registrar',pgIsEst:modo==='estornar',pgIsForma:modo==='forma',pgFormaDireto:pg.forma==='direto',
+        pgOn:{mes:setPg('mes'),valor:setPg('valor'),data:setPg('data'),meio:setPg('meio'),obs:setPg('obs'),motivo:setPg('motivo'),forma:setPg('forma')},
+        pgMesOptions:MESES_REG.map(m=>({value:m,label:m+(pagos.includes(m)?' · já paga':'')})),pgMeioOptions:MEIOS_DIRETO.map(m=>({value:m,label:m})),pgFormaOptions:FORMA_OPTS};
     })();
 
     // Relatórios
@@ -3845,6 +4344,9 @@ class Component extends DCLogic {
       ...agVals,
       ...rpVals,
       ...accVals,
+      ...pgVals,
+      ...lojaVals,
+      ...supVals,
       ...estVals,
       ...notifVals,
       ...cancelVals,

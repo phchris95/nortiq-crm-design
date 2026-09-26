@@ -6,8 +6,11 @@ Protótipo navegável (só a parte visual) do **Nortiq CRM**, sistema por assina
 
 ## O que tem no protótipo
 - **Login** por loja (cada loja com seu endereço próprio), com **Esqueci minha senha**
-- **Loja:** Início, Orçamentos (funil), Clientes (equipamentos, garantia e manutenção), Tarefas, Faturamento, Metas, Configurações
-- **Administração Nortiq:** Visão geral, Contas assinantes, Planos
+- **Loja:** Início, Orçamentos (funil), Clientes (equipamentos, garantia e manutenção), Tarefas, Faturamento, Metas, Meu plano, Configurações (perfil, segurança, equipe, dados da loja e exportação dos dados)
+- **Dono e funcionário:** o funcionário vê só o atendimento (sem faturamento, metas, plano e equipe)
+- **Administração Nortiq:** Visão geral, Contas assinantes (cobrança pelo Asaas ou pagamento direto por Pix, transferência ou dinheiro, e atendimento para ajudar a loja a entrar), Notificações, Plano
+
+Para ver outras situações, use o quadro **"Protótipo · ver outras situações"** embaixo do login: situação do login, entrar como dono ou funcionária, assinatura em dia, em atraso ou pausada e como a loja paga.
 
 Os dados são de exemplo (loja fictícia "Casa do Aquecedor"). Banco de dados e back-end ainda não foram feitos.
 

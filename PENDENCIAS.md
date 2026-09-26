@@ -20,6 +20,16 @@ Para ver cada situação no protótipo, use o painel "Protótipo · ver outras s
 - **Situações do login:** entrada pelo site (Área do CRM, a pessoa digita o endereço da loja), loja não encontrada, e-mail ou senha incorretos (mensagem única), muitas tentativas (espera até um horário), usuário desativado, sessão expirada e assinatura encerrada.
 - **Pagamento em atraso:** faixa de aviso durante os 15 dias de tolerância. Depois, tela "Acesso pausado": o dono só consegue abrir Meu plano para pagar; o funcionário vê que precisa falar com o dono. Meu plano mostra a mensalidade em atraso com o botão de pagar.
 
+## Etapa 2 do design: pagamento direto, exportação e atendimento (feito em 26/09)
+
+- **Pagamento fora do Asaas** (painel Nortiq): ao cadastrar a loja, escolher "Pelo Asaas" ou "Direto com a Nortiq" (Pix, transferência, dinheiro ou outra forma). Na ficha da loja: **Registrar pagamento** (mês, valor, data e forma), histórico dos pagamentos com quem registrou, **Estornar** com motivo (o registro fica riscado, nunca some) e **Alterar forma de cobrança**. A regra de atraso (15 dias) vale igual para as duas formas. Na loja, o Meu plano mostra a chave Pix da Nortiq e o botão para enviar o comprovante pelo WhatsApp.
+- **Exportar os dados da loja** (Configurações, Dados da loja, só o dono): arquivo .zip com uma planilha por assunto. O link vale 7 dias e também vai por e-mail. Lembrado na janela de cancelamento e no aviso de assinatura cancelada; na assinatura encerrada dá para pedir a cópia por e-mail.
+- **Atendimento pelo painel Nortiq** (ficha da loja, abas Resumo, Acesso e suporte, Atendimentos): enviar link de nova senha, liberar login bloqueado por tentativas, desconectar de todos os aparelhos, trocar o e-mail de acesso do dono (pede como o pedido foi confirmado), reenviar convite e convidar novo dono. Cada ação fica registrada. A equipe Nortiq vê só quem tem acesso à loja, nunca clientes, orçamentos, estoque ou faturamento.
+
+### Decisões de 26/09
+- **Cópia de segurança:** cópias automáticas do Neon (voltar o banco a qualquer momento dos últimos dias) + botão "Exportar dados" para a loja. Cópia semanal separada por loja fica para depois.
+- **Assinatura paga fora do Asaas:** permitida; a equipe Nortiq registra cada pagamento no painel.
+
 ## Falta desenhar para a primeira versão
 
 Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
@@ -27,7 +37,7 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 ### Acesso e conta
 1. ~~Equipe~~, ~~Segurança da conta~~, ~~Erros do login~~, ~~Sessão expirada~~ e ~~Pagamento em atraso~~: feitos na etapa 1 (acima).
 2. **Técnicos da agenda** (nome e cor): cadastrar na Equipe ou na Agenda.
-3. **Administração Nortiq:** login próprio (admin.nortiq.com.br) com recuperação de senha. Tirar o link "Equipe Nortiq? Acessar a administração" do login das lojas, que existe só no protótipo.
+3. **Login da administração Nortiq:** endereço próprio, e-mail e senha, recuperação de senha e verificação em duas etapas (código no celular), já que o painel troca e-mail de dono e registra pagamentos. Tirar o link "Equipe Nortiq? Acessar a administração" do login das lojas, que existe só no protótipo.
 
 ### Dados do dia a dia
 4. **Clientes:** novo cliente, editar, excluir (com confirmação; a ficha some da lista e o histórico fica guardado), adicionar equipamento, registrar manutenção feita.
@@ -60,7 +70,8 @@ O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o ca
 ## Pode ficar para depois
 
 - Listas configuráveis pela loja (origens, formas de pagamento, motivos de perda, categorias).
-- Exportar os dados da loja (LGPD e cancelamento).
+- Cópia semanal separada por loja no armazenamento de arquivos (além das cópias do Neon).
+- Pedido de ajuda enviado de dentro do CRM (hoje o pedido chega pelo WhatsApp).
 - Histórico de alterações visível para o dono.
 - Permissões personalizadas por funcionário.
 - Configurações da plataforma no painel Nortiq (dias de tolerância do atraso) e cadastro de cupons.
