@@ -684,7 +684,7 @@
                   <div style="display:grid; margin-top:8px">
                     <sc-for list="{{ todayTasks }}" as="t" hint-placeholder-count="4">
                       <div style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; padding:10px 0; border-top:1px solid var(--border-subtle)">
-                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ t.t }}" description="{{ t.sub }}" checked="{{ t.done }}" onChange="{{ t.toggle }}" hint-size="100%,44px"></x-import>
+                        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ t.t }}" description="{{ t.desc }}" checked="{{ t.done }}" onChange="{{ t.toggle }}" hint-size="100%,44px"></x-import>
                         <span style="font:var(--type-caption); color:var(--text-subtle); white-space:nowrap">{{ t.when }}</span>
                       </div>
                     </sc-for>
@@ -980,7 +980,18 @@
         <sc-if value="{{ isTarefas }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start">
             <div style="display:grid; gap:16px; flex:2 1 460px; min-width:0">
-              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ taskTabs }}" active="{{ taskF }}" onSelect="{{ onTaskF }}" hint-size="300px,40px"></x-import>
+              <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ taskTabs }}" active="{{ taskF }}" onSelect="{{ onTaskF }}" hint-size="300px,40px"></x-import>
+                <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ novaTarefa }}" hint-size="150px,44px">Nova tarefa</x-import></div>
+              </div>
+              <sc-if value="{{ taskMsgShow }}" hint-placeholder-val="{{ false }}">
+                <div role="status" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600">
+                  <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                  <span style="flex:1 1 200px">{{ taskMsgTxt }}</span>
+                  <sc-if value="{{ taskMsgDesfazer }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="undo-2" onClick="{{ taskDesfazer }}" hint-size="110px,34px">Desfazer</x-import></sc-if>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="x" label="Fechar aviso" variant="ghost" size="sm" onClick="{{ taskMsgFechar }}" hint-size="34px,34px"></x-import>
+                </div>
+              </sc-if>
               <sc-for list="{{ taskGroups }}" as="g" hint-placeholder-count="3">
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,200px">
                   <div style="display:grid; gap:4px">
@@ -990,14 +1001,17 @@
                     </div>
                     <div style="display:grid; margin-top:6px">
                       <sc-for list="{{ g.items }}" as="t" hint-placeholder-count="3">
-                        <div style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; padding:10px 0; border-top:1px solid var(--border-subtle)">
-                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ t.t }}" description="{{ t.sub }}" checked="{{ t.done }}" onChange="{{ t.toggle }}" hint-size="100%,44px"></x-import>
-                          <div style="display:flex; align-items:center; gap:8px">
+                        <div style="display:flex; flex-wrap:wrap; gap:4px 12px; align-items:center; padding:10px 0; border-top:1px solid var(--border-subtle)">
+                          <div style="flex:1 1 240px; min-width:0"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ t.t }}" description="{{ t.desc }}" checked="{{ t.done }}" onChange="{{ t.toggle }}" hint-size="100%,44px"></x-import></div>
+                          <div style="display:flex; align-items:center; gap:6px; margin-left:auto">
                             <sc-if value="{{ t.cal }}" hint-placeholder-val="{{ false }}">
                               <span title="Na Google Agenda" style="display:inline-flex; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar-check" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
                             </sc-if>
                             <span style="font:var(--type-caption); color:{{ t.whenColor }}; white-space:nowrap; font-weight:600">{{ t.when }}</span>
-                            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="chevron-right" label="Abrir" variant="ghost" size="sm" onClick="{{ t.open }}" hint-size="34px,34px"></x-import>
+                            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="pencil" label="Editar tarefa" variant="ghost" size="sm" onClick="{{ t.editar }}" hint-size="34px,34px"></x-import>
+                            <sc-if value="{{ t.temRef }}" hint-placeholder-val="{{ true }}">
+                              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="chevron-right" label="Abrir cliente ou orçamento" variant="ghost" size="sm" onClick="{{ t.open }}" hint-size="34px,34px"></x-import>
+                            </sc-if>
                           </div>
                         </div>
                       </sc-for>
@@ -1056,6 +1070,7 @@
               </div>
               <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ agTabs }}" active="{{ agView }}" onSelect="{{ onAgView }}" hint-size="220px,40px"></x-import>
+                <sc-if value="{{ tcPode }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="hard-hat" onClick="{{ tcAbrir }}" hint-size="130px,44px">Técnicos</x-import></sc-if>
                 <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ openAgNew }}" hint-size="190px,44px">Novo agendamento</x-import>
               </div>
             </div>
@@ -1090,7 +1105,7 @@
                       <span style="align-self:{{ agNumAlign }}; display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px; padding:0 4px; border-radius:var(--radius-pill); font:var(--type-caption); font-weight:600; color:{{ c.numFg }}; background:{{ c.numBg }}; font-variant-numeric:tabular-nums">{{ c.num }}</span>
                       <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
                         <sc-for list="{{ c.chips }}" as="e" hint-placeholder-count="2">
-                          <button type="button" onClick="{{ e.open }}" title="{{ e.hora }} · {{ e.titulo }}" style="display:block; width:100%; text-align:left; padding:2px 6px; border:none; border-left:3px solid {{ e.cor }}; border-radius:4px; background:{{ e.bg }}; font:var(--type-caption); font-size:12px; color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer">{{ e.chip }}</button>
+                          <button type="button" onClick="{{ e.open }}" title="{{ e.hora }} · {{ e.titulo }}" style="display:block; width:100%; text-align:left; padding:2px 6px; border:none; border-left:3px solid {{ e.cor }}; border-radius:4px; background:{{ e.bg }}; font:var(--type-caption); font-size:12px; color:var(--text-strong); text-decoration:{{ e.deco }}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer">{{ e.chip }}</button>
                         </sc-for>
                         <sc-if value="{{ c.hasMore }}" hint-placeholder-val="{{ false }}">
                           <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-muted); padding-left:4px">{{ c.more }}</span>
@@ -1119,7 +1134,7 @@
                           <span style="border-radius:2px; background:{{ e.cor }}"></span>
                           <span style="display:grid; gap:1px; min-width:0">
                             <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.hora }} · {{ e.tipo }}</span>
-                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ e.titulo }}</span>
+                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); text-decoration:{{ e.deco }}">{{ e.titulo }}</span>
                             <span style="font:var(--type-caption); color:var(--text-muted)">{{ e.sub }}</span>
                           </span>
                         </button>
@@ -1157,11 +1172,11 @@
                           <sc-for list="{{ col.evs }}" as="e" hint-placeholder-count="2">
                             <button type="button" onClick="{{ e.open }}" title="{{ e.hora }} · {{ e.titulo }}" style="position:absolute; top:{{ e.top }}; height:{{ e.h }}; left:{{ e.left }}; width:{{ e.w }}; box-sizing:border-box; overflow:hidden; display:grid; align-content:start; gap:1px; padding:{{ e.pad }}; border:none; border-left:3px solid {{ e.cor }}; border-radius:6px; background:{{ e.bg }}; text-align:left; cursor:pointer; font:inherit">
                               <sc-if value="{{ e.curto }}" hint-placeholder-val="{{ false }}">
-                                <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis"><span style="color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.ini }}</span> {{ e.titulo }}</span>
+                                <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-strong); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-decoration:{{ e.deco }}"><span style="color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.marca }}{{ e.ini }}</span> {{ e.titulo }}</span>
                               </sc-if>
                               <sc-if value="{{ e.longo }}" hint-placeholder-val="{{ true }}">
-                                <span style="font:var(--type-caption); font-size:11px; font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.hora }}</span>
-                                <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-strong); line-height:1.25">{{ e.titulo }}</span>
+                                <span style="font:var(--type-caption); font-size:11px; font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.marca }}{{ e.hora }}</span>
+                                <span style="font:var(--type-caption); font-size:12px; font-weight:600; color:var(--text-strong); line-height:1.25; text-decoration:{{ e.deco }}">{{ e.titulo }}</span>
                                 <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted)">{{ e.tecNome }}</span>
                               </sc-if>
                             </button>
@@ -1190,7 +1205,7 @@
                           <span style="border-radius:2px; background:{{ e.cor }}"></span>
                           <span style="display:grid; gap:1px; min-width:0">
                             <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums">{{ e.hora }} · {{ e.tipo }}</span>
-                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ e.titulo }}</span>
+                            <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); text-decoration:{{ e.deco }}">{{ e.titulo }}</span>
                             <span style="font:var(--type-caption); color:var(--text-muted)">{{ e.sub }}</span>
                           </span>
                         </button>
@@ -2987,16 +3002,25 @@
 
   <!-- NOVO AGENDAMENTO -->
   <sc-if value="{{ showAgNew }}" hint-placeholder-val="{{ false }}">
-    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo agendamento" description="Marque uma visita, instalação ou retorno. Fica salvo na agenda do CRM." width="{{ 620 }}" onClose="{{ closeAgNew }}" hint-size="100%,100%">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ afTitulo }}" description="{{ afDesc }}" width="{{ 620 }}" onClose="{{ closeAgNew }}" hint-size="100%,100%">
       <div style="display:grid; gap:14px">
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px">
+        <sc-if value="{{ afExclShow }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="archive" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 220px">{{ afExclTxt }}</span>
+            <sc-if value="{{ afPodeRestaurar }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="rotate-ccw" onClick="{{ afRestaurar }}" hint-size="150px,34px">Restaurar ficha</x-import></sc-if>
+            <sc-if value="{{ afSoDono }}" hint-placeholder-val="{{ false }}"><span style="flex:1 1 100%; font-weight:400">Só o dono da loja pode restaurar a ficha.</span></sc-if>
+          </div>
+        </sc-if>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; align-items:start">
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="ag-tipo" label="Tipo" options="{{ agTipoOptions }}" value="{{ af.tipo }}" onChange="{{ afOn.tipo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-cli" label="Cliente" placeholder="Nome do cliente" value="{{ af.cli }}" onChange="{{ afOn.cli }}" error="{{ afErr.cli }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-data" label="Data" type="date" value="{{ af.data }}" onChange="{{ afOn.data }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-cli" label="Cliente" placeholder="Nome do cliente" list="ag-clientes" value="{{ af.cli }}" onChange="{{ afOn.cli }}" error="{{ afErr.cli }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-data" label="Data" type="date" value="{{ af.data }}" onChange="{{ afOn.data }}" error="{{ afErr.data }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="ag-tec" label="Técnico" options="{{ agTecOptions }}" value="{{ af.tec }}" onChange="{{ afOn.tec }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-ini" label="Começa às" type="time" value="{{ af.ini }}" onChange="{{ afOn.ini }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-fim" label="Termina às" type="time" value="{{ af.fim }}" onChange="{{ afOn.fim }}" error="{{ afErr.fim }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
         </div>
+        <datalist id="ag-clientes"><sc-for list="{{ afCliOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}"></option></sc-for></datalist>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-end" label="Endereço" icon="map-pin" value="{{ af.end }}" onChange="{{ afOn.end }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
         <sc-for list="{{ afConflicts }}" as="w" hint-placeholder-count="1">
           <div role="alert" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg); font:var(--type-caption); line-height:1.5">
@@ -3007,7 +3031,7 @@
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Enviar para o Google Agenda (lembrete no celular)" checked="{{ af.google }}" onChange="{{ afOn.google }}" disabled="{{ afGoogleOff }}" hint-size="100%,32px"></x-import>
         <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ closeAgNew }}" hint-size="100px,44px">Cancelar</x-import>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveAgNew }}" hint-size="190px,44px">Salvar agendamento</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveAgNew }}" hint-size="190px,44px">{{ afSalvarTxt }}</x-import>
         </div>
       </div>
     </x-import>
@@ -3020,8 +3044,8 @@
         <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
           <sc-for list="{{ ao.linhas }}" as="l" hint-placeholder-count="4">
             <div style="display:flex; justify-content:space-between; gap:12px; padding:11px 14px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui)">
-              <span style="color:var(--text-muted)">{{ l.k }}</span>
-              <span style="color:var(--text-strong); font-weight:600; text-align:right">{{ l.v }}</span>
+              <span style="flex:0 0 auto; color:var(--text-muted)">{{ l.k }}</span>
+              <span style="min-width:0; color:var(--text-strong); font-weight:600; text-align:right; overflow-wrap:anywhere">{{ l.v }}</span>
             </div>
           </sc-for>
         </div>
@@ -3031,11 +3055,153 @@
             <span>{{ ao.nota }}</span>
           </div>
         </sc-if>
+        <sc-if value="{{ ao.avisoShow }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg); font:var(--type-caption); line-height:1.5">
+            <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="clock-alert" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+            <span>{{ ao.aviso }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ ao.temAcoes }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-wrap:wrap; gap:8px">
+            <sc-for list="{{ ao.acoes }}" as="a" hint-placeholder-count="3">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="{{ a.variant }}" size="sm" icon="{{ a.icon }}" onClick="{{ a.go }}" hint-size="150px,34px">{{ a.label }}</x-import>
+            </sc-for>
+          </div>
+        </sc-if>
         <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
           <sc-if value="{{ ao.hasRef }}" hint-placeholder-val="{{ false }}">
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon-right="arrow-up-right" onClick="{{ ao.abrirRef }}" hint-size="180px,44px">{{ ao.refLabel }}</x-import>
           </sc-if>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ closeAgOpen }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- CANCELAR AGENDAMENTO (com motivo) -->
+  <sc-if value="{{ agCxShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Cancelar este agendamento?" description="{{ agCxResumo }}" width="{{ 500 }}" onClose="{{ agCxFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">{{ agCxTxt }}</span>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ag-motivo" label="Motivo" placeholder="Ex.: o cliente pediu para remarcar" value="{{ agCxMotivo }}" onChange="{{ agCxOn }}" error="{{ agCxErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ agCxFechar }}" hint-size="100px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="calendar-x" onClick="{{ agCxConfirmar }}" hint-size="210px,44px">Cancelar agendamento</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- TÉCNICOS DA AGENDA (só o dono) -->
+  <sc-if value="{{ tcShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Técnicos da agenda" description="Quem faz as visitas e instalações. A cor de cada um aparece na agenda." width="{{ 560 }}" onClose="{{ tcFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <sc-if value="{{ tcMsgShow }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import></span><span>{{ tcMsg }}</span>
+          </div>
+        </sc-if>
+        <div style="display:grid; border-radius:var(--radius-md); box-shadow:var(--ring-card)">
+          <sc-for list="{{ tcLista }}" as="t" hint-placeholder-count="2">
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; padding:12px 14px; border-bottom:1px solid var(--border-subtle)">
+              <span style="flex:0 0 auto; width:14px; height:14px; border-radius:4px; background:{{ t.cor }}; opacity:{{ t.op }}"></span>
+              <div style="display:grid; flex:1 1 150px; min-width:0">
+                <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ t.nome }}</span>
+                <span style="font:var(--type-caption); color:var(--text-muted)">{{ t.info }}</span>
+              </div>
+              <sc-if value="{{ t.inativo }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="neutral" size="sm" hint-size="90px,22px">Desativado</x-import></sc-if>
+              <div style="display:flex; gap:4px">
+                <sc-for list="{{ t.acoes }}" as="a" hint-placeholder-count="2">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" size="sm" onClick="{{ a.go }}" hint-size="90px,34px">{{ a.label }}</x-import>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ tcAddShow }}" hint-placeholder-val="{{ true }}">
+          <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="plus" onClick="{{ tcNovo }}" hint-size="190px,44px">Adicionar técnico</x-import></div>
+        </sc-if>
+        <sc-if value="{{ tcFormShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:12px; padding:14px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+            <span style="font:var(--type-section); color:var(--text-strong)">{{ tcFormTitulo }}</span>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="tc-nome" label="Nome" placeholder="Ex.: Jefferson" value="{{ tcForm.nome }}" onChange="{{ tcOnNome }}" error="{{ tcErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <div role="radiogroup" aria-label="Cor na agenda" style="display:grid; gap:8px">
+              <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted)">Cor na agenda · {{ tcCorNome }}</span>
+              <div style="display:flex; flex-wrap:wrap; gap:12px">
+                <sc-for list="{{ tcCores }}" as="c" hint-placeholder-count="4">
+                  <button type="button" role="radio" aria-checked="{{ c.pressed }}" aria-label="{{ c.nome }}" title="{{ c.nome }}" onClick="{{ c.pick }}" style="width:32px; height:32px; border:none; border-radius:50%; background:{{ c.cor }}; box-shadow:{{ c.ring }}; cursor:pointer"></button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ tcCancelar }}" hint-size="100px,44px">Cancelar</x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ tcSalvar }}" hint-size="110px,44px">Salvar</x-import>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ tcDesShow }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:grid; gap:10px; padding:14px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg)">
+            <span style="font:var(--type-ui); font-weight:700">{{ tcDesTitulo }}</span>
+            <span style="font:var(--type-ui); line-height:1.5">{{ tcDesTxt }}</span>
+            <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ tcCancelar }}" hint-size="100px,44px">Voltar</x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" onClick="{{ tcDesativar }}" hint-size="120px,44px">Desativar</x-import>
+            </div>
+          </div>
+        </sc-if>
+        <div style="display:flex; justify-content:flex-end">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ tcFechar }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- NOVA / EDITAR TAREFA -->
+  <sc-if value="{{ tfShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ tfTitulo }}" description="Um lembrete do que fazer e quando. Aparece em Tarefas e no Início." width="{{ 600 }}" onClose="{{ tfFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="tf-t" label="O que fazer" placeholder="Ex.: ligar para confirmar a instalação" value="{{ tf.t }}" onChange="{{ tfOn.t }}" error="{{ tfErr.t }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; align-items:start">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="tf-data" type="date" label="Dia" value="{{ tf.data }}" onChange="{{ tfOn.data }}" error="{{ tfErr.data }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="tf-hora" type="time" label="Hora (opcional)" value="{{ tf.hora }}" onChange="{{ tfOn.hora }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; align-items:start">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="tf-cli" label="Cliente (opcional)" placeholder="Nome do cliente" list="tf-clientes" value="{{ tf.cli }}" onChange="{{ tfOn.cli }}" error="{{ tfErr.cli }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="tf-resp" label="Quem faz" options="{{ tfRespOptions }}" value="{{ tf.resp }}" onChange="{{ tfOn.resp }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <datalist id="tf-clientes"><sc-for list="{{ tfCliOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}"></option></sc-for></datalist>
+        <sc-if value="{{ tfExclShow }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-warning-bg); color:var(--status-warning-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="archive" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+            <span style="flex:1 1 220px">{{ tfExclTxt }}</span>
+            <sc-if value="{{ tfPodeRestaurar }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="rotate-ccw" onClick="{{ tfRestaurar }}" hint-size="150px,34px">Restaurar ficha</x-import></sc-if>
+            <sc-if value="{{ tfSoDono }}" hint-placeholder-val="{{ false }}"><span style="flex:1 1 100%; font-weight:400">Só o dono da loja pode restaurar a ficha.</span></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ tfTemOrc }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="tf-orc" label="Orçamento (opcional)" options="{{ tfOrcOptions }}" value="{{ tf.orc }}" onChange="{{ tfOn.orc }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </sc-if>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="tf-det" label="Detalhe (opcional)" placeholder="Ex.: pediu desconto à vista" value="{{ tf.det }}" onChange="{{ tfOn.det }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" label="Enviar para o Google Agenda (lembrete no celular)" checked="{{ tfCal }}" onChange="{{ tfOn.cal }}" disabled="{{ tfGoogleOff }}" hint-size="100%,32px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <sc-if value="{{ tfEditando }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-right:auto"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" icon="trash-2" onClick="{{ tfExcluir }}" hint-size="150px,44px">Excluir tarefa</x-import></div>
+          </sc-if>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ tfFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ tfSalvar }}" hint-size="170px,44px">{{ tfSalvarTxt }}</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- EXCLUIR TAREFA -->
+  <sc-if value="{{ txShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Excluir esta tarefa?" width="{{ 460 }}" onClose="{{ txFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">{{ txTxt }}</span>
+        <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ txFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" icon="trash-2" onClick="{{ txExcluir }}" hint-size="160px,44px">Excluir tarefa</x-import>
         </div>
       </div>
     </x-import>
@@ -3690,16 +3856,21 @@ const RP_PERIODOS={mes:['2026-09-01','2026-09-30'],passado:['2026-08-01','2026-0
 // ---------- Agenda ----------
 // Data de referência do protótipo (o "hoje" dos dados de exemplo).
 const HOJE_ISO='2026-09-22';
-const TECNICOS=[{id:'jefferson',nome:'Jefferson',cor:'var(--tech-1, #1F7A6E)',bg:'var(--tech-1-bg, #DDF0EC)'},{id:'alan',nome:'Alan',cor:'var(--tech-2, #7A5AA6)',bg:'var(--tech-2-bg, #EEE8F6)'}];
+// Fim da semana do "hoje" dos dados de exemplo (a semana vai de domingo a sábado).
+const FIM_SEMANA='2026-09-26';
+// Cores dos técnicos na agenda (tokens --tech-1 a --tech-4 do design system; no banco fica o código hex).
+const TEC_CORES=[{n:1,nome:'Verde-azulado',cor:'var(--tech-1, #1F7A6E)',bg:'var(--tech-1-bg, #DDF0EC)',hex:'#1F7A6E'},{n:2,nome:'Roxo',cor:'var(--tech-2, #7A5AA6)',bg:'var(--tech-2-bg, #EEE8F6)',hex:'#7A5AA6'},
+ {n:3,nome:'Terracota',cor:'var(--tech-3, #A8612B)',bg:'var(--tech-3-bg, #F7EADF)',hex:'#A8612B'},{n:4,nome:'Verde-oliva',cor:'var(--tech-4, #4F7A28)',bg:'var(--tech-4-bg, #E8F0DE)',hex:'#4F7A28'}];
+const TECNICOS=[{id:'jefferson',nome:'Jefferson',n:1,cor:TEC_CORES[0].cor,bg:TEC_CORES[0].bg},{id:'alan',nome:'Alan',n:2,cor:TEC_CORES[1].cor,bg:TEC_CORES[1].bg}];
 const LOJA_COR={cor:'var(--agenda-loja, var(--navy-500))',bg:'var(--agenda-loja-bg, var(--navy-100))'};
 const GOOGLE_BG='repeating-linear-gradient(135deg, var(--agenda-google-bg, var(--gray-100)) 0 6px, var(--gray-0) 6px 12px)';
 const GOOGLE_CONTA='rogerio@casadoaquecedor.com.br';
 const AG_TIPOS=['Visita técnica','Instalação','Manutenção','Retorno ao cliente','Outro'];
 // Atendimentos criados no CRM (fonte da verdade). google:true = já enviado para o Google Agenda.
 const AGENDA0=[
- {id:'ag1',tipo:'Instalação',cli:'Vanessa Ribeiro',data:'2026-09-10',ini:'08:00',fim:'11:00',tec:'alan',ref:['orc','ORC-0398'],google:true},
- {id:'ag2',tipo:'Instalação',cli:'Tiago Monteiro',data:'2026-09-12',ini:'08:00',fim:'10:00',tec:'jefferson',ref:['orc','ORC-0401'],google:true},
- {id:'ag3',tipo:'Visita técnica',cli:'Luciana Farias',data:'2026-09-16',ini:'14:00',fim:'15:00',tec:'jefferson',ref:['orc','ORC-0418'],google:true},
+ {id:'ag1',tipo:'Instalação',cli:'Vanessa Ribeiro',data:'2026-09-10',ini:'08:00',fim:'11:00',tec:'alan',ref:['orc','ORC-0398'],google:true,status:'concluido',feito:{data:'10/09',por:'Rogério Tavares'}},
+ {id:'ag2',tipo:'Instalação',cli:'Tiago Monteiro',data:'2026-09-12',ini:'08:00',fim:'10:00',tec:'jefferson',ref:['orc','ORC-0401'],google:true,status:'concluido',feito:{data:'12/09',por:'Rogério Tavares'}},
+ {id:'ag3',tipo:'Visita técnica',cli:'Luciana Farias',data:'2026-09-16',ini:'14:00',fim:'15:00',tec:'jefferson',ref:['orc','ORC-0418'],google:true,status:'concluido',feito:{data:'16/09',por:'Rogério Tavares'}},
  {id:'ag4',tipo:'Retorno ao cliente',cli:'Ricardo Almeida',data:'2026-09-22',ini:'10:00',fim:'10:30',tec:null,ref:['orc','ORC-0421'],google:true},
  {id:'ag5',tipo:'Retorno ao cliente',cli:'Juliana Prado',data:'2026-09-22',ini:'14:00',fim:'14:30',tec:null,ref:['orc','ORC-0431'],google:true},
  {id:'ag6',tipo:'Retorno ao cliente',cli:'Márcio Pinheiro',data:'2026-09-22',ini:'16:00',fim:'16:30',tec:null,ref:['orc','ORC-0403'],google:true},
@@ -3710,7 +3881,8 @@ const AGENDA0=[
  {id:'ag11',tipo:'Instalação',cli:'Restaurante Sabor da Serra',data:'2026-09-26',ini:'07:30',fim:'11:00',tec:'jefferson',ref:['orc','ORC-0405'],google:true},
  {id:'ag12',tipo:'Manutenção',cli:'Marta Oliveira',data:'2026-09-29',ini:'09:00',fim:'10:30',tec:'alan',ref:['cli','c1'],google:false},
  {id:'ag13',tipo:'Visita técnica',cli:'Carlos Mendonça',data:'2026-10-01',ini:'09:00',fim:'10:00',tec:'jefferson',ref:['orc','ORC-0430'],google:false},
- {id:'ag14',tipo:'Manutenção',cli:'Pousada Vale Verde',data:'2026-10-05',ini:'08:00',fim:'12:00',tec:'jefferson',ref:['cli','c3'],google:true}
+ {id:'ag14',tipo:'Manutenção',cli:'Pousada Vale Verde',data:'2026-10-05',ini:'08:00',fim:'12:00',tec:'jefferson',ref:['cli','c3'],google:true},
+ {id:'ag15',tipo:'Retorno ao cliente',cli:'Eduardo Siqueira',data:'2026-09-19',ini:'11:00',fim:'11:30',tec:null,ref:['orc','ORC-0426'],google:true}
 ];
 // Compromissos que vêm do Google Agenda do dono da loja (só leitura no CRM).
 const GOOGLE0=[
@@ -3791,17 +3963,18 @@ const CLIS=[
  {id:'c10',nome:'Ricardo Almeida',tel:'12997751203',bairro:'Vila Ema',end:ORCS[6].end,desde:'setembro de 2026',total:0,ultima:'—',equip:'Interesse: Bosch Therm 4400 F',tipo:'lead',alerta:'Em negociação',atone:'warning',equips:[],
   hist:[{d:'16/09/2026',t:'Orçamento',txt:'Enviado pelo WhatsApp.'},{d:'12/09/2026',t:'Orçamento',txt:'Pedido pelo Instagram (ORC-0421).'}]}
 ];
+// Tarefas: o grupo (atrasadas, hoje, esta semana, mais para frente) sai da data. resp = quem faz (usuário da equipe).
 const TASKS=[
- {id:1,g:'atrasadas',t:'Retornar Eduardo Siqueira sobre o orçamento enviado',sub:'ORC-0426 · Lorenzetti LZ 2000DE · enviado há 4 dias',when:'Venceu 19/09',ref:['orc','ORC-0426'],cal:true},
- {id:2,g:'hoje',t:'Ligar para Ricardo Almeida: pediu desconto à vista',sub:'ORC-0421 · Bosch Therm 4400 F · R$ 3.690',when:'10:00',ref:['orc','ORC-0421'],cal:true},
- {id:3,g:'hoje',t:'Enviar orçamento para Juliana Prado',sub:'ORC-0431 · veio pelo Instagram',when:'14:00',ref:['orc','ORC-0431'],cal:true},
- {id:4,g:'hoje',t:'Confirmar a instalação de amanhã com Márcio Pinheiro',sub:'ORC-0403 · Qua, 23/09 · 08:00',when:'16:00',ref:['orc','ORC-0403'],cal:true},
- {id:5,g:'hoje',t:'Cobrar 1ª parcela do boleto do Restaurante Sabor da Serra',sub:'ORC-0405 · R$ 3.160 · vence 25/09',when:'Hoje',ref:['orc','ORC-0405'],cal:false},
- {id:6,g:'semana',t:'Visita técnica no Condomínio Aquarius',sub:'ORC-0423 · com o síndico Marcos Rezende',when:'Qui, 24/09 · 10:00',ref:['orc','ORC-0423'],cal:true},
- {id:7,g:'semana',t:'Lembrar Marta Oliveira da manutenção anual',sub:'Rinnai REU-E210 · vence 29/09',when:'Sex, 25/09',ref:['cli','c1'],cal:true},
- {id:8,g:'semana',t:'Agendar a instalação de Gustavo Rangel',sub:'ORC-0415 · pagamento confirmado',when:'Sex, 25/09',ref:['orc','ORC-0415'],cal:false},
- {id:9,g:'semana',t:'Enviar orçamento para Fernanda Lopes',sub:'ORC-0424 · Komeco KO 20DI',when:'17/09',ref:['orc','ORC-0424'],cal:false,done:true},
- {id:10,g:'semana',t:'Confirmar pagamento via PIX de Paulo Henrique',sub:'ORC-0409 · R$ 5.260',when:'18/09',ref:['orc','ORC-0409'],cal:false,done:true}
+ {id:1,t:'Retornar Eduardo Siqueira sobre o orçamento enviado',sub:'ORC-0426 · Lorenzetti LZ 2000DE · enviado há 4 dias',data:'2026-09-19',hora:'',resp:'u1',ref:['orc','ORC-0426'],cal:true},
+ {id:2,t:'Ligar para Ricardo Almeida: pediu desconto à vista',sub:'ORC-0421 · Bosch Therm 4400 F · R$ 3.690',data:'2026-09-22',hora:'10:00',resp:'u1',ref:['orc','ORC-0421'],cal:true},
+ {id:3,t:'Enviar orçamento para Juliana Prado',sub:'ORC-0431 · veio pelo Instagram',data:'2026-09-22',hora:'14:00',resp:'u2',ref:['orc','ORC-0431'],cal:true},
+ {id:4,t:'Confirmar a instalação de amanhã com Márcio Pinheiro',sub:'ORC-0403 · Qua, 23/09 · 08:00',data:'2026-09-22',hora:'16:00',resp:'u1',ref:['orc','ORC-0403'],cal:true},
+ {id:5,t:'Cobrar 1ª parcela do boleto do Restaurante Sabor da Serra',sub:'ORC-0405 · R$ 3.160 · vence 25/09',data:'2026-09-22',hora:'',resp:'u1',ref:['orc','ORC-0405'],cal:false},
+ {id:6,t:'Visita técnica no Condomínio Aquarius',sub:'ORC-0423 · com o síndico Marcos Rezende',data:'2026-09-24',hora:'10:00',resp:'u2',ref:['orc','ORC-0423'],cal:true},
+ {id:7,t:'Lembrar Marta Oliveira da manutenção anual',sub:'Rinnai REU-E210 · vence 29/09',data:'2026-09-25',hora:'',resp:'u2',ref:['cli','c1'],cal:true},
+ {id:8,t:'Agendar a instalação de Gustavo Rangel',sub:'ORC-0415 · pagamento confirmado',data:'2026-09-25',hora:'',resp:'u1',ref:['orc','ORC-0415'],cal:false},
+ {id:9,t:'Enviar orçamento para Fernanda Lopes',sub:'ORC-0424 · Komeco KO 20DI',data:'2026-09-17',hora:'',resp:'u2',ref:['orc','ORC-0424'],cal:false,done:true,feito:{data:'17/09',por:'Camila Duarte'}},
+ {id:10,t:'Confirmar pagamento via PIX de Paulo Henrique',sub:'ORC-0409 · R$ 5.260',data:'2026-09-18',hora:'',resp:'u1',ref:['orc','ORC-0409'],cal:false,done:true,feito:{data:'18/09',por:'Rogério Tavares'}}
 ];
 // Faturamento: lançamentos de receita e despesa. A situação vem dos recebimentos/pagamentos (baixas):
 // nada recebido = a receber (ou a pagar), parte = parcial, tudo = recebido (ou pago). Nada é apagado:
@@ -3958,8 +4131,9 @@ class Component extends DCLogic {
     equipe:EQUIPE0.map(u=>({...u})),eqDlg:null,eqForm:{},eqErr:{},eqMsg:'',
     sgPw:{atual:'',nova:'',rep:''},sgTry:false,sgAtualErrado:false,sgErr:'',sgMsg:'',sgSaving:false,sessoes:SESSOES0.map(z=>({...z})),sgConfirm:false,
     rpPer:'mes',rpDe:'2026-09-01',rpAte:'2026-09-30',rpSec:{resumo:true,vendas:true,funil:true,perdas:true,fat:true,inst:false,novos:false},rpEmp:{...LOJA},rpLogo:null,rpLogoErr:'',rpObs:'',rpMsg:'',rpMsgErr:false,rpGen:false,
-    agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true},
-    showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:15,
+    agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({status:'marcado',...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true,cancelados:false},
+    showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:16,agCx:null,agCxErr:'',
+    tecs:TECNICOS.map(t=>({...t,ativo:true})),tcOpen:false,tcForm:null,tcErr:'',tcMsg:'',tf:null,tfErr:{},tx:null,taskMsg:null,
     mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
 
   componentDidMount(){
@@ -4022,7 +4196,13 @@ class Component extends DCLogic {
       else n=addD(d,7*dir);
       return {agRef:isoOf(n),agSel:isoOf(n),agMsg:''};});
   }
-  openAgNew(dataIso){ this.setState(s=>({showAgNew:true,afErr:{},agMsg:'',af:{tipo:'Visita técnica',cli:'',data:dataIso||s.agSel,ini:'09:00',fim:'10:00',tec:'jefferson',end:'',google:s.gcal}})); }
+  openAgNew(dataIso){ this.setState(s=>({showAgNew:true,afErr:{},agMsg:'',af:{id:null,tipo:'Visita técnica',cli:'',data:dataIso||s.agSel,ini:'09:00',fim:'10:00',tec:(s.tecs.find(t=>t.ativo)||{id:'loja'}).id,end:'',google:s.gcal}})); }
+  openAgEdit(e){ this.setState({showAgNew:true,afErr:{},agMsg:'',agOpen:null,af:{id:e.id,tipo:e.tipo,cli:e.cli,data:e.data,ini:e.ini,fim:e.fim,tec:e.tec||'loja',end:e.end||'',google:!!e.google}}); }
+  // Tarefa nova (pre = campos já preenchidos, ex.: vindo da ficha) ou edição de uma tarefa.
+  abrirTarefa(t,pre){ this.setState(s=>{ const eu=s.papel==='funcionario'?'u2':'u1';
+    if(t){ const o=t.ref&&t.ref[0]==='orc'?s.orcs.find(x=>x.id===t.ref[1]):null, c=t.ref&&t.ref[0]==='cli'?s.clis.find(x=>x.id===t.ref[1]):null;
+      return {tf:{id:t.id,t:t.t,det:t.auto?'':String(t.sub||'').replace(/^ORC-\d{4} · /,''),data:t.data,hora:t.hora||'',cli:o?o.cli:c?c.nome:'',orc:o?o.id:'',resp:t.resp||eu,cal:!!t.cal},tfErr:{},taskMsg:null}; }
+    return {tf:{id:null,t:'',det:'',data:HOJE_ISO,hora:'',cli:'',orc:'',resp:eu,cal:s.gcal,...(pre||{})},tfErr:{},taskMsg:null}; }); }
   // Cobrança direta (painel Nortiq): registrar pagamento, estornar e alterar a forma de cobrança.
   abrirPg(a,modo,pag){
     const pagos=(a.pags||[]).filter(p=>!p.estornado).map(p=>p.mes);
@@ -4038,7 +4218,8 @@ class Component extends DCLogic {
   }
   setObj(id,patch){ this.setState(s=>({orcs:s.orcs.map(o=>o.id===id?{...o,...patch}:o)})); }
   openLose(id){ const o=this.state.orcs.find(x=>x.id===id); this.setState({loseFor:id,lf:{motivo:(o&&o.obj)||'',nota:(o&&o.objNota)||''},lfErr:''}); }
-  toggleTask(id){ this.setState(s=>({tasks:s.tasks.map(t=>t.id===id?{...t,done:!t.done}:t)})); }
+  toggleTask(id){ this.setState(s=>{ const por=s.papel==='funcionario'?'Camila Duarte':'Rogério Tavares';
+    return {tasks:s.tasks.map(t=>t.id===id?{...t,done:!t.done,feito:t.done?null:{data:'22/09',por}}:t)}; }); }
   waFor(type,id,tel,msg){
     window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`,'_blank');
     const k=type+':'+id;
@@ -4126,8 +4307,18 @@ class Component extends DCLogic {
       open:()=>this.openDrawer('cli',c.id),wa:()=>this.waFor('cli',c.id,c.tel,this.cliTemplates(c)[0].text)}));
     const weekInst=instO.map(o=>{const [dw,rest]=o.inst.split(', ');const [day,hora]=(rest||'').split(' · ');return {dow:dw,day:(day||'').slice(0,2),hora:hora||'',cli:o.cli,prod:o.prod,open:()=>this.openDrawer('orc',o.id)};});
     const funnel=STAGES.map(st=>{const l=orcs.filter(o=>o.stage===st.id);return {label:st.label,count:String(l.length),total:brl(l.reduce((a,o)=>a+o.valor,0)),go:go('orcamentos')};});
-    const taskItem=t=>({...t,toggle:()=>this.toggleTask(t.id),open:()=>this.openDrawer(t.ref[0],t.ref[1]),whenColor:t.g==='atrasadas'&&!t.done?'var(--status-danger-fg)':'var(--text-subtle)'});
-    const todayTasks=s.tasks.filter(t=>t.g==='hoje'||t.g==='atrasadas').map(taskItem);
+    const euId=s.papel==='funcionario'?'u2':'u1';
+    const grupoT=t=>t.data<HOJE_ISO?'atrasadas':t.data===HOJE_ISO?'hoje':t.data<=FIM_SEMANA?'semana':'depois';
+    const quandoT=t=>{const d=dOf(t.data), dm=pad2(d.getDate())+'/'+pad2(d.getMonth()+1);
+      if(t.done) return 'Feita '+(t.feito?t.feito.data:dm);
+      const g=grupoT(t); if(g==='atrasadas') return 'Venceu '+dm; if(g==='hoje') return t.hora||'Hoje';
+      return DOW3[d.getDay()]+', '+dm+(t.hora?' · '+t.hora:'');};
+    const ordT=(a,b)=>(a.data+(a.hora||'99:99'))<(b.data+(b.hora||'99:99'))?-1:1;
+    const taskItem=t=>{const g=grupoT(t), r=t.resp&&t.resp!==euId?((s.equipe.find(u=>u.id===t.resp)||{}).nome||'').split(' ')[0]:'';
+      return {...t,g,when:quandoT(t),desc:[t.sub,t.done&&t.feito?'Feita por '+t.feito.por.split(' ')[0]:(r?'Responsável: '+r:'')].filter(Boolean).join(' · '),
+        toggle:()=>this.toggleTask(t.id),temRef:!!t.ref,open:()=>t.ref&&this.openDrawer(t.ref[0],t.ref[1]),editar:()=>this.abrirTarefa(t),
+        whenColor:g==='atrasadas'&&!t.done?'var(--status-danger-fg)':'var(--text-subtle)'};};
+    const todayTasks=s.tasks.filter(t=>t.data<=HOJE_ISO&&(!t.done||(t.feito&&t.feito.data==='22/09'))).sort(ordT).map(taskItem);
 
     // Metas
     const falta=Math.max(0,s.meta-receita);
@@ -4149,9 +4340,9 @@ class Component extends DCLogic {
       .map(c=>({...c,...(c.excluido?{alerta:'Excluída em '+c.excluido.data,atone:'neutral'}:this.cliAlert(c)),ini:ini(c.nome),totalFmt:c.total?brl(c.total):'—',linhaMob:[c.bairro,c.total?brl(c.total):''].filter(Boolean).join(' · ')||'Sem compras ainda',open:()=>this.openDrawer('cli',c.id)}));
 
     // Tarefas
-    const shown=s.tasks.filter(t=>s.taskF==='pend'?!t.done:t.done);
-    const taskGroups=(s.taskF==='pend'?[['atrasadas','Atrasadas','var(--status-danger-fg)'],['hoje','Hoje','var(--text-strong)'],['semana','Esta semana','var(--text-strong)']]:[['all','Concluídas','var(--text-strong)']])
-      .map(([k,label,color])=>{const items=shown.filter(t=>k==='all'||t.g===k).map(taskItem);return {label,color,count:String(items.length),items};}).filter(g=>g.items.length);
+    const shown=s.tasks.filter(t=>s.taskF==='pend'?!t.done:t.done).sort(s.taskF==='pend'?ordT:(a,b)=>-ordT(a,b));
+    const taskGroups=(s.taskF==='pend'?[['atrasadas','Atrasadas','var(--status-danger-fg)'],['hoje','Hoje','var(--text-strong)'],['semana','Esta semana','var(--text-strong)'],['depois','Mais para frente','var(--text-strong)']]:[['all','Concluídas','var(--text-strong)']])
+      .map(([k,label,color])=>{const items=shown.filter(t=>k==='all'||grupoT(t)===k).map(taskItem);return {label,color,count:String(items.length),items};}).filter(g=>g.items.length);
 
     // Faturamento
 
@@ -4515,7 +4706,7 @@ class Component extends DCLogic {
       const pendDe=c=>{
         const ids=s.orcs.filter(o=>o.cli===c.nome).map(o=>o.id);
         const orcs=s.orcs.filter(o=>o.cli===c.nome&&ABERTAS.includes(o.stage));
-        const ags=s.agEv.filter(e=>e.data>=hoje&&!e.cancelado&&((e.ref&&e.ref[0]==='cli'&&e.ref[1]===c.id)||(e.ref&&e.ref[0]==='orc'&&ids.includes(e.ref[1]))));
+        const ags=s.agEv.filter(e=>e.status==='marcado'&&((e.ref&&e.ref[0]==='cli'&&e.ref[1]===c.id)||(e.ref&&e.ref[0]==='orc'&&ids.includes(e.ref[1]))));
         const tars=s.tasks.filter(t=>!t.done&&t.ref&&((t.ref[0]==='cli'&&t.ref[1]===c.id)||(t.ref[0]==='orc'&&ids.includes(t.ref[1]))));
         return {orcs,ags,tars,total:orcs.length+ags.length+tars.length};
       };
@@ -4529,6 +4720,7 @@ class Component extends DCLogic {
         podeRestaurar:dono,restaurar:()=>restaurarCli(dc),naoRestauraTxt:'Só o dono da loja pode restaurar a ficha.',
         acoes:[{label:'Editar dados',icon:'pencil',variant:'secondary',go:()=>abrirEditar(dc)},
           {label:'Novo orçamento',icon:'plus',variant:'secondary',go:()=>this.setState({showNew:true,nf:{...emptyNf(),cli:dc.nome,tel:fmtTel(dc.tel),end:dc.end||''},nfErr:{}})},
+          {label:'Nova tarefa',icon:'list-plus',variant:'secondary',go:()=>this.abrirTarefa(null,{cli:dc.nome})},
           ...(dono?[{label:'Excluir cliente',icon:'trash-2',variant:'ghost',go:()=>this.setState({cx:{id:dc.id,ver:false},cliMsg:null})}]:[])],
         msgShow:!!(s.cliMsg&&s.cliMsg.id===dc.id&&!s.cliMsg.desfazer),msg:s.cliMsg?s.cliMsg.txt:'',
         equips:(dc.equips||[]).map((e,i)=>({...e,podeManut:!dc.excluido,registrar:()=>this.setState({mt:{cli:dc.id,i,data:hoje,txt:'',valor:'',lancar:true},mtErr:{},cliMsg:null})})),
@@ -4627,6 +4819,7 @@ class Component extends DCLogic {
       const lancAtivo=id=>s.lanc.find(l=>l.orc===id&&!['cancelado','estornado'].includes(l.status));
       const dO=s.drawer&&s.drawer.type==='orc'&&s.orcs.find(o=>o.id===s.drawer.id);
       const orD=dO?{acoes:[{label:'Editar orçamento',icon:'pencil',variant:'secondary',go:()=>this.setState({oe:{id:dO.id,prod:dO.prod,valor:String(dO.valor).replace('.',','),pag:dO.pag,end:dO.end||'',obs:dO.obs||''},oeErr:{},orcMsg:null})},
+          {label:'Nova tarefa',icon:'list-plus',variant:'secondary',go:()=>this.abrirTarefa(null,{cli:dO.cli,orc:dO.id})},
           ...(dono?[{label:'Excluir',icon:'trash-2',variant:'ghost',go:()=>this.setState({ox:{id:dO.id},orcMsg:null})}]:[])],
         msgShow:!!(s.orcMsg&&s.orcMsg.id===dO.id&&!s.orcMsg.desfazer),msg:s.orcMsg?s.orcMsg.txt:''}:{acoes:[]};
       const oe=s.oe, oeO=oe&&s.orcs.find(o=>o.id===oe.id);
@@ -4651,7 +4844,7 @@ class Component extends DCLogic {
       let oxVals={oxShow:false};
       if(oxO){
         const la=lancAtivo(oxO.id), pago=la?pagoDe(la):0, bloq=pago>0;
-        const ags=s.agEv.filter(e=>e.data>=hoje&&!e.cancelado&&e.ref&&e.ref[0]==='orc'&&e.ref[1]===oxO.id);
+        const ags=s.agEv.filter(e=>e.status==='marcado'&&e.ref&&e.ref[0]==='orc'&&e.ref[1]===oxO.id);
         const tars=s.tasks.filter(t=>!t.done&&t.ref&&t.ref[0]==='orc'&&t.ref[1]===oxO.id);
         const pend=!bloq&&ags.length+tars.length>0;
         const partes=[ags.length?pl(ags.length,'agendamento marcado','agendamentos marcados'):'',tars.length?pl(tars.length,'tarefa pendente','tarefas pendentes'):''].filter(Boolean);
@@ -4687,6 +4880,53 @@ class Component extends DCLogic {
         nfExclShow:!!nfExcl,nfExclTxt:'Esta ficha foi excluída. Restaure a ficha para usá-la de novo.',nfPodeRestaurar:dono,
         nfRestaurar:()=>{ if(!nfExcl) return; restaurarCli(nfExcl);
           this.setState(x=>({nf:{...x.nf,cli:nfExcl.nome,tel:x.nf.tel||fmtTel(nfExcl.tel),end:x.nf.end||nfExcl.end||''}})); }};
+    })();
+
+    // Tarefas: nova, editar e excluir (com desfazer)
+    const tkVals=(()=>{
+      const dono=s.papel!=='funcionario', euU=dono?'u1':'u2', eu=dono?'Rogério Tavares':'Camila Duarte';
+      const tf=s.tf, norm=v=>String(v||'').trim().toLowerCase();
+      const cliAtivo=n=>s.clis.find(c=>!c.excluido&&norm(c.nome)===norm(n));
+      const cliExcl=n=>!cliAtivo(n)&&s.clis.find(c=>c.excluido&&norm(c.nome)===norm(n));
+      const curto=p=>String(p||'').replace('Aquecedor a gás ','');
+      let v={tfShow:false};
+      if(tf){
+        const ca=cliAtivo(tf.cli), ce=norm(tf.cli)?cliExcl(tf.cli):null;
+        const orcsCli=norm(tf.cli)&&!ce?s.orcs.filter(o=>norm(o.cli)===norm(tf.cli)):[];
+        const setT=k=>e=>{const val=e&&e.target?(e.target.type==='checkbox'?e.target.checked:e.target.value):e;
+          this.setState(x=>({tf:{...x.tf,[k]:val,...(k==='cli'?{orc:''}:{})},tfErr:{...x.tfErr,[k]:undefined}}));};
+        v={tfShow:true,tf,tfErr:s.tfErr,tfTitulo:tf.id?'Editar tarefa':'Nova tarefa',tfEditando:!!tf.id,tfSalvarTxt:tf.id?'Salvar alterações':'Criar tarefa',
+          tfCliOptions:[...new Set([...s.clis.filter(c=>!c.excluido).map(c=>c.nome),...s.orcs.map(o=>o.cli)])],
+          tfTemOrc:orcsCli.length>0,tfOrcOptions:[{value:'',label:'Nenhum (só o cliente)'},...orcsCli.map(o=>({value:o.id,label:o.id+' · '+curto(o.prod)}))],
+          tfRespOptions:s.equipe.filter(u=>u.status==='ativo'||u.id===tf.resp).map(u=>({value:u.id,label:u.nome+(u.id===euU?' (você)':u.status!=='ativo'?' (desativado)':'')})),
+          tfGoogleOff:!s.gcal,tfCal:!!tf.cal&&s.gcal,
+          tfExclShow:!!ce,tfExclTxt:'Esta ficha foi excluída. Restaure a ficha para usá-la de novo.',tfPodeRestaurar:dono,tfSoDono:!dono,
+          tfRestaurar:()=>{ if(!ce) return; this.setState(x=>({clis:x.clis.map(c=>c.id===ce.id?{...c,excluido:null}:c),tfErr:{...x.tfErr,cli:undefined}})); },
+          tfOn:{t:setT('t'),det:setT('det'),data:setT('data'),hora:setT('hora'),cli:setT('cli'),orc:setT('orc'),resp:setT('resp'),cal:setT('cal')},
+          tfFechar:()=>this.setState({tf:null,tfErr:{}}),
+          tfExcluir:()=>this.setState({tx:tf.id}),
+          tfSalvar:()=>{ const err={}, titulo=String(tf.t||'').trim();
+            if(titulo.length<3) err.t='Escreva o que precisa ser feito.';
+            if(!/^\d{4}-\d{2}-\d{2}$/.test(tf.data||'')) err.data='Informe o dia.';
+            if(ce) err.cli='Esta ficha foi excluída.';
+            if(Object.keys(err).length) return this.setState({tfErr:err});
+            const o=tf.orc&&s.orcs.find(x=>x.id===tf.orc);
+            const ref=o?['orc',o.id]:ca?['cli',ca.id]:null, det=String(tf.det||'').trim();
+            const dados={t:titulo,data:tf.data,hora:tf.hora||'',resp:tf.resp,ref,cal:!!tf.cal&&s.gcal,sub:o?o.id+' · '+(det||curto(o.prod)):(det||String(tf.cli||'').trim()),auto:!det};
+            const resp=((s.equipe.find(u=>u.id===tf.resp)||{}).nome||'').split(' ')[0], quando=brData(tf.data)+(tf.hora?' às '+tf.hora:'');
+            if(tf.id){ this.setState(x=>({tasks:x.tasks.map(t=>t.id===tf.id?{...t,...dados}:t),tf:null,tfErr:{},taskMsg:{txt:'Tarefa salva.'+(dados.cal?' A Google Agenda também foi atualizada.':'')}})); return; }
+            const txt='Tarefa criada para '+(tf.resp===euU?'você':resp)+', '+quando+'.'+(dados.cal?' Ela também vai para a Google Agenda.':'');
+            this.setState(x=>({tasks:[...x.tasks,{id:Date.now(),done:false,...dados,criada:{data:'22/09',por:eu}}],tf:null,tfErr:{},taskMsg:{txt},taskF:'pend',
+              ...(x.drawer&&x.drawer.type==='orc'?{orcMsg:{id:x.drawer.id,txt}}:{}),...(x.drawer&&x.drawer.type==='cli'?{cliMsg:{id:x.drawer.id,txt}}:{})})); }};
+      }
+      const txT=s.tx&&s.tasks.find(t=>t.id===s.tx);
+      const txV=txT?{txShow:true,txTxt:'"'+txT.t+'" sai da lista de tarefas. Dá para desfazer logo depois.'+(txT.cal?' Também sai da Google Agenda.':''),
+        txFechar:()=>this.setState({tx:null}),
+        txExcluir:()=>this.setState(x=>({tasks:x.tasks.filter(t=>t.id!==txT.id),tx:null,tf:null,taskMsg:{txt:'Tarefa excluída.',desfazer:txT}}))}:{txShow:false};
+      return {...v,...txV,novaTarefa:()=>this.abrirTarefa(null),
+        taskMsgShow:!!s.taskMsg,taskMsgTxt:s.taskMsg?s.taskMsg.txt:'',taskMsgDesfazer:!!(s.taskMsg&&s.taskMsg.desfazer),
+        taskDesfazer:()=>{const t=s.taskMsg&&s.taskMsg.desfazer; if(t) this.setState(x=>({tasks:[...x.tasks,t],taskMsg:{txt:'A tarefa voltou para a lista.'}}));},
+        taskMsgFechar:()=>this.setState({taskMsg:null})};
     })();
 
     // Faturamento: lista, situação, recebimentos, cancelamento, estorno e reabrir venda com dinheiro recebido
@@ -5141,8 +5381,8 @@ class Component extends DCLogic {
       const perdas=Object.entries(cont).sort((x,y)=>y[1]-x[1]).map(([k,n])=>({k,v:n===1?'1 orçamento':n+' orçamentos'}));
       const cats={}; fin.forEach(f=>{cats[f[2]]=(cats[f[2]]||0)+f[4];});
       const fat=Object.entries(cats).sort((x,y)=>y[1]-x[1]).map(([k,v])=>({k,v:(v<0?'− ':'+ ')+brl(Math.abs(v),true)}));
-      const inst=s.agEv.filter(e=>(e.tipo==='Instalação'||e.tipo==='Manutenção')&&inP(e.data)).sort((x,y)=>x.data<y.data?-1:1)
-        .map(e=>{const d=dOf(e.data);return {k:pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+' · '+e.tipo+' · '+e.cli,v:e.data<=HOJE_ISO?'Feita':'Agendada'};});
+      const inst=s.agEv.filter(e=>(e.tipo==='Instalação'||e.tipo==='Manutenção')&&e.status!=='cancelado'&&inP(e.data)).sort((x,y)=>x.data<y.data?-1:1)
+        .map(e=>{const d=dOf(e.data);return {k:pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+' · '+e.tipo+' · '+e.cli,v:e.status==='concluido'?'Feita':'Agendada'};});
       const desdeIso=t=>{const m=String(t).split(' de ');const i=MESES.indexOf(m[0]);return i<0?'':m[1]+'-'+pad2(i+1)+'-01';};
       const novos=s.clis.filter(c=>{const d=desdeIso(c.desde);return d&&d>=a.slice(0,8)+'01'&&d<=b;}).map(c=>({k:c.nome+(c.bairro?' · '+c.bairro:''),v:c.tipo==='lead'?'Interessado':'Cliente'}));
       const periodoTxt=s.rpDe&&s.rpAte?(s.rpDe===s.rpAte?fmtD(s.rpDe):'De '+fmtD(s.rpDe)+' a '+fmtD(s.rpAte)):'Período incompleto';
@@ -5184,13 +5424,17 @@ class Component extends DCLogic {
     // Agenda
     const agVals=(()=>{
       const mob=mobile, ref=dOf(s.agRef), hoje=HOJE_ISO;
-      const tecOf=id=>TECNICOS.find(t=>t.id===id);
+      const tecs=s.tecs, tecOf=id=>tecs.find(t=>t.id===id);
+      const dono=s.papel!=='funcionario', euNome=dono?'Rogério Tavares':'Camila Duarte';
+      const pl=(n,um,varios)=>n+' '+(n===1?um:varios);
       const ftime=(a,b)=>a+' às '+b;
-      const crm=s.agEv.filter(e=>e.tec?s.agF[e.tec]!==false:s.agF.loja).map(e=>{const t=tecOf(e.tec)||null, c=t||LOJA_COR;
-        const tipoTxt=e.tipo, sub=(t?'Técnico: '+t.nome:'Com você (loja)')+(e.google?' · no Google Agenda':'');
-        return {...e,origem:'crm',titulo:e.cli,tipoTxt,cor:c.cor,bg:c.bg,tecNome:t?t.nome:'Você',sub,chip:e.ini+' '+e.cli};});
+      const verCanc=s.agF.cancelados===true;
+      const crm=s.agEv.filter(e=>(e.status!=='cancelado'||verCanc)&&(e.tec?s.agF[e.tec]!==false:s.agF.loja)).map(e=>{const t=tecOf(e.tec)||null, canc=e.status==='cancelado', feito=e.status==='concluido';
+        const c=canc?{cor:'var(--gray-400)',bg:'var(--surface-sunken)'}:(t||LOJA_COR);
+        const tipoTxt=(canc?'Cancelado · ':feito?'Feito · ':'')+e.tipo, sub=(t?'Técnico: '+t.nome+(t.ativo?'':' (desativado)'):'Com você (loja)')+(e.google&&!canc?' · no Google Agenda':'');
+        return {...e,origem:'crm',titulo:e.cli,tipoTxt,cor:c.cor,bg:c.bg,deco:canc?'line-through':'none',marca:feito?'✓ ':'',tecNome:t?t.nome:'Você',sub,chip:(feito?'✓ ':'')+e.ini+' '+e.cli};});
       const gg=(s.gIn&&s.agF.google)?GOOGLE0.map(g=>{const t=s.gTitles?g.titulo:'Ocupado';
-        return {...g,origem:'google',titulo:t,tipoTxt:'Google Agenda',cli:'',cor:'var(--agenda-google, var(--gray-400))',bg:GOOGLE_BG,tecNome:'Google Agenda',sub:'Compromisso do Google Agenda',chip:g.ini+' '+t};}):[];
+        return {...g,origem:'google',titulo:t,tipoTxt:'Google Agenda',cli:'',cor:'var(--agenda-google, var(--gray-400))',bg:GOOGLE_BG,deco:'none',marca:'',tecNome:'Google Agenda',sub:'Compromisso do Google Agenda',chip:g.ini+' '+t};}):[];
       const all=[...crm,...gg].map(e=>({...e,hora:ftime(e.ini,e.fim),tipo:e.tipoTxt,open:()=>this.setState({agOpen:{origem:e.origem,id:e.id}})}));
       const byDay=iso=>all.filter(e=>e.data===iso).sort((a,b)=>minOf(a.ini)-minOf(b.ini));
       const label=(()=>{
@@ -5227,15 +5471,21 @@ class Component extends DCLogic {
         return {nome:cap(MESES[m]),total:total===1?'1 agendamento':total+' agendamentos',days,ring:m===dOf(hoje).getMonth()&&ref.getFullYear()===dOf(hoje).getFullYear()?'0 0 0 2px var(--navy-500)':'var(--ring-card)',
           open:()=>this.setState({agView:'mes',agRef:isoOf(f),agSel:isoOf(f)})};});
       // legenda / filtros
-      const leg=[...TECNICOS.map(t=>({id:t.id,label:t.nome,swatch:t.cor})),{id:'loja',label:'Você (loja)',swatch:LOJA_COR.cor},...(s.gIn?[{id:'google',label:'Google Agenda',swatch:GOOGLE_BG}]:[])]
+      const leg=[...tecs.filter(t=>t.ativo||s.agEv.some(e=>e.tec===t.id&&e.status==='marcado')).map(t=>({id:t.id,label:t.nome+(t.ativo?'':' (desativado)'),swatch:t.cor})),{id:'loja',label:'Você (loja)',swatch:LOJA_COR.cor},...(s.gIn?[{id:'google',label:'Google Agenda',swatch:GOOGLE_BG}]:[])]
         .map(l=>{const on=s.agF[l.id]!==false; return {...l,op:on?1:0.25,fg:on?'var(--text-strong)':'var(--text-disabled)',pressed:String(on),toggle:()=>this.setState(x=>({agF:{...x.agF,[l.id]:!on}}))};});
+      const nCanc=s.agEv.filter(e=>e.status==='cancelado').length;
+      if(nCanc) leg.push({id:'cancelados',label:'Cancelados ('+nCanc+')',swatch:'var(--gray-300)',op:verCanc?1:0.25,fg:verCanc?'var(--text-strong)':'var(--text-disabled)',pressed:String(verCanc),
+        toggle:()=>this.setState(x=>({agF:{...x.agF,cancelados:!verCanc}}))});
       // novo agendamento
       const af=s.af||{}; const conflicts=[];
       if(s.showAgNew&&af.data&&af.ini&&af.fim&&minOf(af.fim)>minOf(af.ini)){
         const a=minOf(af.ini), b=minOf(af.fim), ov=e=>e.data===af.data&&minOf(e.ini)<b&&a<minOf(e.fim);
         if(s.gIn) GOOGLE0.filter(ov).forEach(g=>conflicts.push('Nesse horário você tem um compromisso no Google Agenda ('+g.ini+' às '+g.fim+(s.gTitles?': '+g.titulo:'')+').'));
-        if(af.tec&&af.tec!=='loja') s.agEv.filter(e=>e.tec===af.tec&&ov(e)).forEach(e=>conflicts.push((tecOf(af.tec)||{}).nome+' já tem '+e.tipo.toLowerCase()+' com '+e.cli+' das '+e.ini+' às '+e.fim+'.'));
+        if(af.tec&&af.tec!=='loja') s.agEv.filter(e=>e.id!==af.id&&e.status!=='cancelado'&&e.tec===af.tec&&ov(e)).forEach(e=>conflicts.push((tecOf(af.tec)||{}).nome+' já tem '+e.tipo.toLowerCase()+' com '+e.cli+' das '+e.ini+' às '+e.fim+'.'));
       }
+      const normA=v=>String(v||'').trim().toLowerCase();
+      const afCliAtivo=s.showAgNew&&s.clis.find(c=>!c.excluido&&normA(c.nome)===normA(af.cli));
+      const afCliExcl=s.showAgNew&&normA(af.cli)&&!afCliAtivo&&s.clis.find(c=>c.excluido&&normA(c.nome)===normA(af.cli));
       const setAf=k=>ev=>{const v=(ev&&ev.target)?ev.target.value:ev; this.setState(x=>({af:{...x.af,[k]:v},afErr:{...x.afErr,[k]:undefined}}));};
       // detalhe
       let ao={linhas:[]};
@@ -5244,17 +5494,70 @@ class Component extends DCLogic {
         if(e){ const d=dOf(e.data), quando=DOW3[d.getDay()]+', '+pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+' · '+e.ini+' às '+e.fim;
           if(e.origem==='google'){
             ao={titulo:s.gTitles?e.titulo:'Ocupado',tipo:'Compromisso do Google Agenda',linhas:[{k:'Quando',v:quando},{k:'Agenda',v:GOOGLE_CONTA}],hasNota:true,
-              nota:s.gTitles?'Este compromisso vem do Google Agenda. Para mudar, edite lá no Google.':'Os detalhes deste compromisso ficam só no Google Agenda.',hasRef:false};
+              nota:s.gTitles?'Este compromisso vem do Google Agenda. Para mudar, edite lá no Google.':'Os detalhes deste compromisso ficam só no Google Agenda.',hasRef:false,acoes:[],temAcoes:false,avisoShow:false};
           } else {
-            const t=tecOf(e.tec), o=e.ref&&e.ref[0]==='orc'?orcs.find(x=>x.id===e.ref[1]):null, c=e.ref&&e.ref[0]==='cli'?s.clis.find(x=>x.id===e.ref[1]):null;
-            const end=e.end||(o&&o.end)||(c&&c.end)||'A combinar';
-            ao={titulo:e.cli,tipo:e.tipo+(o?' · '+o.id:''),linhas:[{k:'Quando',v:quando},{k:'Técnico',v:t?t.nome:'Com você (loja)'},{k:'Endereço',v:end},{k:'Google Agenda',v:e.google?'Enviado para '+GOOGLE_CONTA:'Não enviado'}],
-              hasNota:!!o,nota:o?o.prod:'',hasRef:!!(o||c),refLabel:o?'Abrir orçamento':'Ver ficha do cliente',
+            const t=tecOf(e.tec), o=e.ref&&e.ref[0]==='orc'?s.orcs.find(x=>x.id===e.ref[1]):null, c=e.ref&&e.ref[0]==='cli'?s.clis.find(x=>x.id===e.ref[1]):null;
+            const end=e.end||(o&&o.end)||(c&&c.end)||'A combinar', st=e.status||'marcado';
+            const concluir=()=>{ const extra=e.tipo==='Instalação'&&o&&o.stage==='agendada'?' O '+o.id+' continua em Instalação agendada: abra o orçamento para mover para Concluído.'
+                :e.tipo==='Manutenção'&&c&&(c.equips||[]).length?' Para anotar o que foi feito no equipamento, use Registrar manutenção na ficha de '+c.nome+'.':'';
+              this.setState(x=>({agEv:x.agEv.map(y=>y.id===e.id?{...y,status:'concluido',feito:{data:'22/09',por:euNome}}:y),agOpen:null,agMsg:'Agendamento marcado como feito.'+extra})); };
+            const acoes=st==='marcado'?[{label:'Editar',icon:'pencil',variant:'secondary',go:()=>this.openAgEdit(e)},
+                ...(e.data<=hoje?[{label:'Marcar como feito',icon:'circle-check',variant:'secondary',go:concluir}]:[]),
+                {label:'Cancelar agendamento',icon:'calendar-x',variant:'ghost',go:()=>this.setState({agCx:{id:e.id,motivo:''},agCxErr:''})}]
+              :st==='concluido'?[{label:'Desmarcar como feito',icon:'undo-2',variant:'ghost',go:()=>this.setState(x=>({agEv:x.agEv.map(y=>y.id===e.id?{...y,status:'marcado',feito:null}:y),agOpen:null,agMsg:'O agendamento voltou para marcado.'}))}]:[];
+            ao={titulo:e.cli,tipo:e.tipo+(o?' · '+o.id:''),
+              linhas:[{k:'Quando',v:quando},{k:'Técnico',v:t?t.nome+(t.ativo?'':' (desativado)'):'Com você (loja)'},{k:'Endereço',v:end},
+                {k:'Situação',v:st==='concluido'?'Feito'+(e.feito?' em '+e.feito.data+' por '+e.feito.por:''):st==='cancelado'?'Cancelado'+(e.cancel?' em '+e.cancel.data+' por '+e.cancel.por:''):'Marcado'},
+                ...(st==='cancelado'&&e.cancel?[{k:'Motivo',v:e.cancel.motivo}]:[]),
+                ...(st!=='cancelado'?[{k:'Google Agenda',v:e.google?'Enviado para '+GOOGLE_CONTA:'Não enviado'}]:[])],
+              hasNota:!!o,nota:o?o.prod:'',hasRef:!!(o||c),refLabel:o?'Abrir orçamento':'Ver ficha do cliente',acoes,temAcoes:acoes.length>0,
+              avisoShow:st==='marcado'&&e.data<hoje,aviso:'Este agendamento já passou. Marque como feito ou cancele, para a agenda ficar em dia.',
               abrirRef:()=>{this.setState({agOpen:null}); if(o) this.openDrawer('orc',o.id); else if(c) this.openDrawer('cli',c.id);}};
           }
         }
       }
-      return {
+      // cancelar agendamento (com motivo)
+      const cxE=s.agCx&&s.agEv.find(e=>e.id===s.agCx.id);
+      let agCxV={agCxShow:false};
+      if(cxE){ const t=tecOf(cxE.tec), d=dOf(cxE.data);
+        agCxV={agCxShow:true,agCxResumo:cxE.tipo+' · '+cxE.cli+' · '+DOW3[d.getDay()]+', '+pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+' · '+cxE.ini+' às '+cxE.fim+(t?' · '+t.nome:''),
+          agCxTxt:'O agendamento sai da agenda e fica guardado com o motivo (para ver, ligue Cancelados em Mostrar).'+(cxE.google?' Também sai do Google Agenda.':''),
+          agCxMotivo:s.agCx.motivo,agCxErr:s.agCxErr,agCxOn:e=>this.setState({agCx:{...s.agCx,motivo:e.target.value},agCxErr:''}),
+          agCxFechar:()=>this.setState({agCx:null,agCxErr:''}),
+          agCxConfirmar:()=>{ const m=String(s.agCx.motivo||'').trim(); if(m.length<3) return this.setState({agCxErr:'Escreva o motivo do cancelamento.'});
+            const orcInst=cxE.ref&&cxE.ref[0]==='orc'&&cxE.tipo==='Instalação'?cxE.ref[1]:null;
+            this.setState(x=>({agEv:x.agEv.map(y=>y.id===cxE.id?{...y,status:'cancelado',cancel:{data:'22/09',por:euNome,motivo:m}}:y),
+              orcs:orcInst?x.orcs.map(o=>o.id===orcInst?{...o,inst:'A definir'}:o):x.orcs,agCx:null,agCxErr:'',agOpen:null,
+              agMsg:'Agendamento cancelado e guardado com o motivo.'+(orcInst?' Para remarcar a instalação do '+orcInst+', use Novo agendamento.':'')})); }};
+      }
+      // técnicos (só o dono cadastra, edita e desativa)
+      const futuros=id=>s.agEv.filter(e=>e.tec===id&&e.status==='marcado'&&e.data>=hoje).length;
+      const tf2=s.tcForm, tcAlvo=tf2&&tf2.id&&tecs.find(t=>t.id===tf2.id), usadas=tecs.filter(t=>t.ativo).map(t=>t.n);
+      const tcV={tcPode:dono,tcAbrir:()=>this.setState({tcOpen:true,tcForm:null,tcErr:'',tcMsg:'',agMsg:''}),tcShow:!!s.tcOpen&&dono,
+        tcLista:tecs.map(t=>({...t,inativo:!t.ativo,op:t.ativo?1:0.4,info:(n=>n?pl(n,'agendamento marcado','agendamentos marcados'):'Nenhum agendamento marcado')(futuros(t.id)),
+          acoes:t.ativo?[{label:'Editar',go:()=>this.setState({tcForm:{modo:'editar',id:t.id,nome:t.nome,n:t.n},tcErr:'',tcMsg:''})},{label:'Desativar',go:()=>this.setState({tcForm:{modo:'desativar',id:t.id},tcErr:'',tcMsg:''})}]
+            :[{label:'Reativar',go:()=>this.setState(x=>({tecs:x.tecs.map(y=>y.id===t.id?{...y,ativo:true}:y),tcForm:null,tcMsg:t.nome+' voltou para a escolha do técnico.'}))}]})),
+        tcMsg:s.tcMsg,tcMsgShow:!!s.tcMsg,tcAddShow:!tf2,
+        tcFormShow:!!tf2&&(tf2.modo==='novo'||tf2.modo==='editar'),tcDesShow:!!tf2&&tf2.modo==='desativar'&&!!tcAlvo,
+        tcForm:tf2||{},tcErr:s.tcErr,tcFormTitulo:tf2&&tf2.modo==='editar'?'Editar técnico':'Novo técnico',
+        tcCores:TEC_CORES.map(c=>{const sel=!!tf2&&tf2.n===c.n; return {...c,pressed:String(sel),ring:sel?'0 0 0 3px var(--surface-card), 0 0 0 5px '+c.cor:'none',pick:()=>this.setState(x=>({tcForm:{...x.tcForm,n:c.n}}))};}),
+        tcCorNome:tf2?((TEC_CORES.find(c=>c.n===tf2.n)||{}).nome||''):'',
+        tcOnNome:e=>this.setState({tcForm:{...s.tcForm,nome:e.target.value},tcErr:''}),
+        tcNovo:()=>this.setState({tcForm:{modo:'novo',nome:'',n:(TEC_CORES.find(c=>!usadas.includes(c.n))||TEC_CORES[0]).n},tcErr:'',tcMsg:''}),
+        tcCancelar:()=>this.setState({tcForm:null,tcErr:''}),
+        tcSalvar:()=>{ const nome=String(tf2.nome||'').trim();
+          if(nome.length<2) return this.setState({tcErr:'Escreva o nome do técnico.'});
+          if(tecs.some(t=>t.ativo&&t.id!==tf2.id&&t.nome.toLowerCase()===nome.toLowerCase())) return this.setState({tcErr:'Já existe um técnico ativo com esse nome.'});
+          const c=TEC_CORES.find(x=>x.n===tf2.n)||TEC_CORES[0];
+          if(tf2.modo==='editar') return this.setState(x=>({tecs:x.tecs.map(t=>t.id===tf2.id?{...t,nome,n:c.n,cor:c.cor,bg:c.bg}:t),tcForm:null,tcMsg:'Técnico atualizado. A agenda já mostra o nome e a cor novos.'}));
+          const id='tec'+Date.now();
+          this.setState(x=>({tecs:[...x.tecs,{id,nome,n:c.n,cor:c.cor,bg:c.bg,ativo:true}],tcForm:null,tcMsg:nome+' foi adicionado e já aparece na escolha do técnico.'})); },
+        tcDesTitulo:tcAlvo?'Desativar '+tcAlvo.nome+'?':'',
+        tcDesTxt:tcAlvo?(futuros(tcAlvo.id)?tcAlvo.nome+' tem '+pl(futuros(tcAlvo.id),'agendamento marcado','agendamentos marcados')+'. Eles continuam na agenda com o nome dele; se precisar, troque o técnico em cada um. ':'')
+          +tcAlvo.nome+' deixa de aparecer na escolha do técnico. Dá para reativar depois.':'',
+        tcDesativar:()=>tcAlvo&&this.setState(x=>({tecs:x.tecs.map(t=>t.id===tcAlvo.id?{...t,ativo:false}:t),tcForm:null,tcMsg:tcAlvo.nome+' foi desativado.'})),
+        tcFechar:()=>this.setState({tcOpen:false,tcForm:null,tcErr:'',tcMsg:''})};
+      return {...agCxV,...tcV,
         agView:s.agView,agTabs:[{id:'mes',label:'Mês'},{id:'semana',label:'Semana'},{id:'ano',label:'Ano'}],onAgView:id=>this.setState({agView:id,agMsg:''}),
         agLabel:label,agPrev:()=>this.agShift(-1),agNext:()=>this.agShift(1),agToday:()=>this.setState({agRef:hoje,agSel:hoje,agMsg:''}),
         agIsMes:s.agView==='mes',agIsSemanaGrade:s.agView==='semana'&&!mob,agIsSemanaLista:s.agView==='semana'&&mob,agIsAno:s.agView==='ano',
@@ -5266,14 +5569,27 @@ class Component extends DCLogic {
         agMsg:s.agMsg,agMsgShow:!!s.agMsg,
         openAgNew:()=>this.openAgNew(),openAgNewSel:()=>this.openAgNew(s.agSel),closeAgNew:()=>this.setState({showAgNew:false}),showAgNew:s.showAgNew,
         af:{...af,google:!!af.google&&s.gcal},afErr:s.afErr,afConflicts:conflicts,afGoogleOff:!s.gcal,
+        afTitulo:af.id?'Editar agendamento':'Novo agendamento',afDesc:af.id?'Mude o dia, o horário, o técnico ou o endereço.':'Marque uma visita, instalação ou retorno. Fica salvo na agenda do CRM.',
+        afSalvarTxt:af.id?'Salvar alterações':'Salvar agendamento',afCliOptions:[...new Set([...s.clis.filter(c=>!c.excluido).map(c=>c.nome),...s.orcs.map(o=>o.cli)])],
+        afExclShow:!!afCliExcl,afExclTxt:'Esta ficha foi excluída. Restaure a ficha para usá-la de novo.',afPodeRestaurar:dono,afSoDono:!dono,
+        afRestaurar:()=>{ if(!afCliExcl) return; this.setState(x=>({clis:x.clis.map(c=>c.id===afCliExcl.id?{...c,excluido:null}:c),af:{...x.af,end:x.af.end||afCliExcl.end||''},afErr:{...x.afErr,cli:undefined}})); },
         afOn:{tipo:setAf('tipo'),cli:setAf('cli'),data:setAf('data'),ini:setAf('ini'),fim:setAf('fim'),tec:setAf('tec'),end:setAf('end'),google:setAf('google')},
-        agTipoOptions:AG_TIPOS,agTecOptions:[...TECNICOS.map(t=>({value:t.id,label:t.nome})),{value:'loja',label:'Sem técnico (eu mesmo)'}],
+        agTipoOptions:AG_TIPOS,agTecOptions:[...tecs.filter(t=>t.ativo||t.id===af.tec).map(t=>({value:t.id,label:t.nome+(t.ativo?'':' (desativado)')})),{value:'loja',label:'Sem técnico (eu mesmo)'}],
         saveAgNew:()=>{
-          const err={}; if(!String(af.cli||'').trim()) err.cli='Falta preencher o cliente.'; if(!(minOf(af.fim)>minOf(af.ini))) err.fim='O fim precisa ser depois do começo.';
+          const err={}; if(!String(af.cli||'').trim()) err.cli='Falta preencher o cliente.'; else if(afCliExcl) err.cli='Esta ficha foi excluída.';
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(af.data||'')) err.data='Informe a data.';
+          if(!(minOf(af.fim)>minOf(af.ini))) err.fim='O fim precisa ser depois do começo.';
           if(Object.keys(err).length) return this.setState({afErr:err});
-          const vaiGoogle=!!af.google&&s.gcal, id='ag'+s.agSeq;
-          const ev={id,tipo:af.tipo,cli:af.cli.trim(),data:af.data,ini:af.ini,fim:af.fim,tec:af.tec==='loja'?null:af.tec,end:String(af.end||'').trim(),google:vaiGoogle};
-          this.setState(x=>({agEv:[...x.agEv,ev],agSeq:x.agSeq+1,showAgNew:false,agRef:af.data,agSel:af.data,
+          const vaiGoogle=!!af.google&&s.gcal, antigo=af.id&&s.agEv.find(e=>e.id===af.id);
+          const ref=antigo&&antigo.ref&&antigo.ref[0]==='orc'?antigo.ref:(afCliAtivo?['cli',afCliAtivo.id]:null);
+          const dados={tipo:af.tipo,cli:af.cli.trim(),data:af.data,ini:af.ini,fim:af.fim,tec:af.tec==='loja'?null:af.tec,end:String(af.end||'').trim(),google:vaiGoogle,ref};
+          const d=dOf(af.data), instTxt=DOW3[d.getDay()]+', '+pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+' · '+af.ini;
+          const orcInst=ref&&ref[0]==='orc'&&af.tipo==='Instalação'?ref[1]:null;
+          const orcsUpd=x=>orcInst?x.orcs.map(o=>o.id===orcInst?{...o,inst:instTxt}:o):x.orcs;
+          if(antigo) return this.setState(x=>({agEv:x.agEv.map(e=>e.id===antigo.id?{...e,...dados}:e),orcs:orcsUpd(x),showAgNew:false,af:null,agRef:af.data,agSel:af.data,
+            agMsg:'Agendamento atualizado'+(vaiGoogle?' e alterado no Google Agenda.':'.')+(orcInst&&(antigo.data!==af.data||antigo.ini!==af.ini)?' A instalação no '+orcInst+' também mudou para '+instTxt+'.':'')}));
+          const id='ag'+s.agSeq;
+          this.setState(x=>({agEv:[...x.agEv,{id,status:'marcado',...dados}],agSeq:x.agSeq+1,showAgNew:false,agRef:af.data,agSel:af.data,
             agMsg:vaiGoogle?'Agendamento salvo e enviado para o Google Agenda de '+GOOGLE_CONTA+'.':'Agendamento salvo na agenda do CRM.'}));
         },
         showAgOpen:!!s.agOpen&&!!ao.titulo,ao,closeAgOpen:()=>this.setState({agOpen:null})
@@ -5288,7 +5604,7 @@ class Component extends DCLogic {
                    :{nome:'Rogério Tavares',funcao:'Proprietário',email:'rogerio@casadoaquecedor.com.br',tel:'(12) 99640-2218',ini:'RT',papel:'Dono',emailDica:'É com ele que você entra no sistema'};
 
       // ---------- equipe ----------
-      const eq=s.equipe;
+      const eq=s.equipe.map(u=>({...u,tarefas:s.tasks.filter(t=>!t.done&&t.resp===u.id).length}));
       const donosAtivos=eq.filter(u=>u.papel==='dono'&&u.status==='ativo');
       const upd=(id,patch)=>this.setState(x=>({equipe:x.equipe.map(u=>u.id===id?{...u,...patch}:u)}));
       const ST={ativo:['Ativo','success'],convite:['Convite enviado','info'],desativado:['Desativado','neutral']};
@@ -5418,6 +5734,7 @@ class Component extends DCLogic {
           if(alvo.tarefas>0&&!f.para) return this.setState({eqErr:{para:'Escolha quem fica com as tarefas.'}});
           const para=eq.find(u=>u.id===f.para);
           this.setState(x=>({equipe:x.equipe.map(u=>u.id===alvo.id?{...u,status:'desativado',info:'Desativado agora',tarefas:0}:(para&&u.id===para.id?{...u,tarefas:u.tarefas+alvo.tarefas}:u)),eqDlg:null,
+            tasks:para?x.tasks.map(t=>!t.done&&t.resp===alvo.id?{...t,resp:para.id}:t):x.tasks,
             eqMsg:'O acesso de '+alvo.nome+' foi desativado e encerrado em todos os aparelhos.'+(para?' As '+alvo.tarefas+' tarefas pendentes passaram para '+para.nome+'.':'')}));
         },
         // segurança
@@ -5570,7 +5887,7 @@ class Component extends DCLogic {
       ...alVals,
       ...aPerfilVals,
       ...finVals,
-      ...crVals,
+      ...crVals,...tkVals,
       ...estVals,
       ...notifVals,
       ...cancelVals,

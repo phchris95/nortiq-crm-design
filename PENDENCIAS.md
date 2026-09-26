@@ -60,9 +60,18 @@ Para ver cada situação no protótipo, use o painel "Protótipo · ver outras s
 - **Editar orçamento:** produto, valor, forma de pagamento, endereço e observações. Se já for venda, o lançamento do Faturamento acompanha o valor novo, sem ficar menor que o já recebido.
 - **Excluir orçamento** (só o dono): com dinheiro recebido, pede o estorno antes ("Ver no Faturamento"); com agendamento marcado ou tarefa pendente, mostra "Antes de excluir…" com a lista; sem nada disso, confirma e cancela o lançamento a receber. Tem **Desfazer**; se for venda, volta com um lançamento a receber novo.
 - **Mensagem de WhatsApp** para cliente sem compra: "Primeiro contato" ou "Orçamento" no lugar de "Pós-venda".
-- Cancelar agendamento chega na etapa da Agenda (item 7). Até lá, a lista de pendências leva direto para o dia na Agenda.
 
-### Decisões de 26/09
+## Etapa 6 do design: Tarefas e Agenda (feito em 26/09)
+
+- **Nova tarefa** (em Tarefas e nas fichas de cliente e de orçamento): o que fazer, dia, hora (opcional), cliente, orçamento, quem faz e envio para a Google Agenda. As tarefas se organizam sozinhas pela data: Atrasadas, Hoje, Esta semana e Mais para frente.
+- **Editar e excluir tarefa:** o lápis em cada linha abre a tarefa; excluir pede confirmação e tem **Desfazer**. A lista mostra quem é o responsável quando não é você, e a concluída mostra quem concluiu.
+- **Desativar usuário da equipe:** as tarefas pendentes dele passam de verdade para a pessoa escolhida.
+- **Agenda, detalhe do agendamento:** Editar (dia, horário, técnico, endereço), **Marcar como feito** (só no dia ou depois; dá para desmarcar) e **Cancelar agendamento** com motivo. O cancelado sai da agenda e fica guardado; o botão **Cancelados** em "Mostrar" traz de volta, riscado. Agendamento que já passou e ficou sem registro mostra o aviso "Marque como feito ou cancele".
+- **Instalação ligada a orçamento:** mudar o dia atualiza a data de instalação no orçamento; cancelar deixa "A definir".
+- **Técnicos** (botão na Agenda, só o dono): adicionar, editar nome e cor (4 cores do design system), desativar (os agendamentos marcados continuam, com aviso) e reativar. Técnico desativado some da escolha do técnico.
+- **Ficha excluída** no novo agendamento ou na nova tarefa: mesma mensagem da etapa 5, com Restaurar ficha.
+- As travas de exclusão de cliente e de orçamento passam a contar todo agendamento marcado, como no banco. Os agendamentos antigos de exemplo foram marcados como feitos.
+
 - **Cópia de segurança:** cópias automáticas do Neon (voltar o banco a qualquer momento dos últimos dias) + botão "Exportar dados" para a loja. Cópia semanal separada por loja fica para depois.
 - **Assinatura paga fora do Asaas:** permitida; a equipe Nortiq registra cada pagamento no painel.
 
@@ -72,14 +81,14 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 
 ### Acesso e conta
 1. ~~Equipe~~, ~~Segurança da conta~~, ~~Erros do login~~, ~~Sessão expirada~~ e ~~Pagamento em atraso~~: feitos na etapa 1 (acima).
-2. **Técnicos da agenda** (nome e cor): cadastrar na Equipe ou na Agenda.
+2. ~~Técnicos da agenda~~: feito na etapa 6 (acima).
 3. ~~Login da administração Nortiq~~: feito na etapa 3 (acima).
 
 ### Dados do dia a dia
 4. ~~Clientes~~: feito na etapa 5 (acima).
 5. ~~Orçamentos~~: feito na etapa 5 (acima).
-6. **Tarefas:** nova tarefa, editar, excluir.
-7. **Agenda:** editar, concluir e cancelar agendamento (com confirmação no cancelamento).
+6. ~~Tarefas~~: feito na etapa 6 (acima).
+7. ~~Agenda~~: feito na etapa 6 (acima).
 8. **Estoque:** histórico de movimentações do produto; registrar entrada, saída, perda, devolução e ajuste; desativar produto em vez de excluir.
 
 ### Faturamento
