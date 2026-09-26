@@ -36,6 +36,18 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 15. **Erros gerais:** sem conexão, erro inesperado ("Não foi possível salvar. Tente de novo.") e página não encontrada.
 16. **Loja nova, sem dados:** estados vazios de Início, Orçamentos, Clientes, Estoque (sugerindo importar a planilha), Faturamento, Agenda e Metas (definir a primeira meta).
 
+### Mensagens das travas de exclusão (decidido em 26/09)
+O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
+
+| Situação | Mensagem | Botões |
+|---|---|---|
+| Excluir cliente com pendências | **Antes de excluir Marta Oliveira.** Ainda há 1 orçamento em negociação, 1 agendamento marcado e 2 tarefas pendentes com este cliente. Encerre ou cancele esses itens e tente de novo. | Ver pendências · Fechar |
+| Excluir cliente sem pendências | **Excluir Marta Oliveira?** A ficha sai da lista de clientes. Orçamentos, lançamentos e histórico continuam guardados, e a ficha pode ser restaurada. | Excluir cliente · Cancelar |
+| Usar cliente excluído (novo orçamento, tarefa ou agendamento) | Esta ficha foi excluída. Restaure a ficha para usá-la de novo. | Restaurar ficha · Cancelar |
+| Desativar usuário com tarefas | **Alan Souza tem 3 tarefas pendentes.** Escolha quem fica com elas antes de desativar. | Campo "Passar para" · Passar tarefas e desativar · Cancelar |
+| Desativar usuário sem tarefas | **Desativar Alan Souza?** Ele sai do sistema na hora, em todos os aparelhos. O que ele fez continua registrado, e você pode reativar depois. | Desativar · Cancelar |
+| Produto ou técnico desativado | Não aparecem nas listas de escolha. Se o orçamento ou agendamento antigo já usa um deles, ele continua lá, com a marca "desativado". | — |
+
 ## Pode ficar para depois
 
 - Listas configuráveis pela loja (origens, formas de pagamento, motivos de perda, categorias).
