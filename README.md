@@ -13,7 +13,7 @@ Protótipo navegável (só a parte visual) do **Nortiq CRM**, sistema por assina
 
 Para ver outras situações, use o quadro **"Protótipo · ver outras situações"** embaixo do login: situação do login, entrar como dono ou funcionária, estado das telas (loja nova, carregando, sem conexão, erros), assinatura em dia, em atraso ou pausada, como a loja paga e o botão **Ir para o login da administração** (no protótipo, qualquer senha e qualquer código de 6 números funcionam).
 
-Os dados são de exemplo (loja fictícia "Casa do Aquecedor"). O banco de dados fica em um repositório separado e privado; a API ainda não foi feita.
+Os dados são de exemplo (loja fictícia "Casa do Aquecedor"). O banco de dados, a API e as telas de verdade ficam em um repositório separado e privado. Já estão ligados ao banco: o login da loja e da administração, **Orçamentos** e **Clientes**; as outras telas vão sendo ligadas uma a uma, seguindo este protótipo.
 
 ## Arquivos
 - `index.html` — telas e dados de exemplo

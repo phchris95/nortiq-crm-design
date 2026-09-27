@@ -137,6 +137,18 @@ Ordem sugerida: primeiro o que impede a loja de usar o sistema no dia a dia.
 
 Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a API.
 
+## Sistema de verdade (repositório privado da API)
+
+- **Login** da loja e da administração: ligado ao banco (27/09).
+- **Orçamentos e Clientes** ligados ao banco (27/09): funil, novo orçamento, ficha com etapas, objeção, produtos, perdido com motivo, excluir e restaurar; lista de clientes com abas e busca, ficha, novo, editar, excluir e restaurar; registro de contatos pelo WhatsApp.
+- Pequenas diferenças em relação ao protótipo, decididas ao ligar as telas:
+  - No novo orçamento, o nome do cliente e o produto **sugerem** fichas e produtos do estoque enquanto a pessoa digita (no protótipo o produto era uma lista fixa).
+  - Na comunicação, além de "Abrir no WhatsApp", um botão **"Só anotar"** para registrar ligação, visita ou conversa na loja.
+  - A ficha do orçamento ganhou o quadro **Histórico do orçamento** (quem mudou a etapa e quando).
+  - No funil, a objeção não aparece mais nos cartões de venda fechada, instalação agendada e concluído.
+  - No celular, a barra de etapas mostra "Etapa 4 de 6 · Venda fechada" em vez dos seis nomes apertados.
+- Próximas partes a ligar: estoque, tarefas, agenda (com equipamentos e manutenções), faturamento, metas, relatórios, configurações e equipe, o Início com os números do dia e o painel da administração.
+
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
 
