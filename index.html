@@ -2137,7 +2137,7 @@
           <div style="display:grid; gap:16px">
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
               <sc-for list="{{ adminKpis }}" as="k" hint-placeholder-count="4">
-                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" delta="{{ k.delta }}" tone="{{ k.tone }}" hint-size="100%,132px"></x-import>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" delta="{{ k.delta }}" tone="{{ k.tone }}" onClick="{{ k.go }}" hint-size="100%,132px"></x-import>
               </sc-for>
             </div>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,360px">
@@ -2245,6 +2245,108 @@
               </div>
             </x-import>
             </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- ADMIN · RECEITAS: assinaturas do CRM e outros serviços (sites, automações, agentes de IA) -->
+        <sc-if value="{{ isAReceitas }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:16px">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:16px">
+              <sc-for list="{{ recKpis }}" as="k" hint-placeholder-count="4">
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" footnote="{{ k.foot }}" tone="{{ k.tone }}" hint-size="100%,132px"></x-import>
+              </sc-for>
+            </div>
+            <sc-if value="{{ recMsgShow }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="display:flex; align-items:center; gap:10px 12px; padding:12px 14px; border-radius:var(--radius-md); background:var(--status-success-bg); color:var(--status-success-fg); font:var(--type-ui); font-weight:600; line-height:1.5">
+                <span style="display:inline-flex"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="circle-check" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+                <span style="flex:1 1 240px">{{ recMsg }}</span>
+                <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.IconButton" icon="x" label="Fechar aviso" variant="ghost" size="sm" onClick="{{ recMsgFechar }}" hint-size="34px,34px"></x-import>
+              </div>
+            </sc-if>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap:16px; align-items:start">
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" hint-size="100%,300px">
+                <div style="display:grid; gap:14px">
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">{{ recOrigensTitulo }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Tudo o que foi cobrado no mês, recebido ou não</span>
+                  </div>
+                  <sc-for list="{{ recOrigens }}" as="o" hint-placeholder-count="4">
+                    <div style="display:grid; gap:6px">
+                      <div style="display:flex; align-items:center; gap:8px; font:var(--type-ui)">
+                        <span style="display:inline-flex; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ o.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+                        <span style="flex:1; min-width:0; color:var(--text-strong); font-weight:600">{{ o.nome }}</span>
+                        <span style="color:var(--text-muted); font-variant-numeric:tabular-nums; white-space:nowrap">{{ o.valorFmt }} · {{ o.pct }}</span>
+                      </div>
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.ProgressMeter" value="{{ o.valor }}" max="{{ o.max }}" show-value="{{ false }}" height="{{ 8 }}" hint-size="100%,8px"></x-import>
+                    </div>
+                  </sc-for>
+                </div>
+              </x-import>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,300px">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:{{ cardHeadPad }}; border-bottom:1px solid var(--border-subtle)">
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Contratos mensais</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Serviços cobrados todo mês; a cobrança de cada mês entra sozinha</span>
+                  </div>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="plus" onClick="{{ rnNovoContrato }}" hint-size="140px,34px">Novo contrato</x-import>
+                </div>
+                <sc-if value="{{ recSemContratos }}" hint-placeholder-val="{{ false }}">
+                  <span style="display:block; padding:16px 20px; font:var(--type-caption); color:var(--text-muted)">Nenhum contrato mensal ainda.</span>
+                </sc-if>
+              <sc-for list="{{ recContratos }}" as="c" hint-placeholder-count="2">
+                <div role="button" tabindex="0" onClick="{{ c.abrir }}" style="display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                  <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-50); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ c.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1; min-width:0; display:grid; gap:2px">
+                    <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); overflow-wrap:anywhere">{{ c.cli }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ c.servDesc }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ c.sub }}</span>
+                  </div>
+                  <div style="flex:0 0 auto; display:grid; justify-items:end; gap:4px">
+                    <span style="font:var(--type-ui); font-weight:700; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ c.valorFmt }}</span>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ c.tone }}" dot="{{ true }}" size="sm" hint-size="80px,20px">{{ c.sit }}</x-import>
+                  </div>
+                </div>
+              </sc-for>
+              </x-import>
+            </div>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 0 }}" hint-size="100%,480px">
+              <div style="display:grid; gap:12px; padding:{{ cardHeadPad }}; border-bottom:1px solid var(--border-subtle)">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                  <div style="display:grid; gap:2px">
+                    <span style="font:var(--type-section); color:var(--text-strong)">Lançamentos de serviços</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">Sites, automações, agentes de IA e o que mais a Nortiq vender. As mensalidades do CRM ficam em Contas assinantes.</span>
+                  </div>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap">
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="tags" onClick="{{ servAbrir }}" hint-size="120px,44px">Serviços</x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="plus" onClick="{{ rnNova }}" hint-size="150px,44px">Nova receita</x-import>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Tabs" variant="pill" items="{{ recTabs }}" active="{{ recF }}" onSelect="{{ onRecF }}" hint-size="420px,40px"></x-import>
+                  <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.SearchField" placeholder="Buscar por cliente ou serviço" shortcut="{{ null }}" value="{{ recQ }}" onChange="{{ onRecQ }}" width="{{ searchW }}" hint-size="280px,44px"></x-import>
+                </div>
+              </div>
+              <sc-if value="{{ recVazio }}" hint-placeholder-val="{{ false }}">
+                <span style="display:block; padding:20px; font:var(--type-caption); color:var(--text-muted)">{{ recVazioTxt }}</span>
+              </sc-if>
+              <sc-for list="{{ recRows }}" as="r" hint-placeholder-count="3">
+                <div role="button" tabindex="0" onClick="{{ r.abrir }}" style="display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                  <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-50); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ r.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1; min-width:0; display:grid; gap:2px">
+                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; min-width:0">
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); overflow-wrap:anywhere">{{ r.cli }}</span>
+                      <sc-if value="{{ r.loja }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="info" size="sm" hint-size="90px,20px">Loja do CRM</x-import></sc-if>
+                    </div>
+                    <span style="font:var(--type-caption); color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.servDesc }}</span>
+                    <span style="font:var(--type-caption); color:{{ r.quandoCor }}">{{ r.quando }}</span>
+                  </div>
+                  <div style="flex:0 0 auto; display:grid; justify-items:end; gap:4px">
+                    <span style="font:var(--type-ui); font-weight:700; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.valorFmt }}</span>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ r.tone }}" dot="{{ true }}" size="sm" hint-size="90px,20px">{{ r.sit }}</x-import>
+                  </div>
+                </div>
+              </sc-for>
+            </x-import>
           </div>
         </sc-if>
 
@@ -3196,6 +3298,55 @@
             </sc-for>
           </div>
         </sc-if>
+        <sc-if value="{{ sp.abaServ }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; gap:12px">
+            <sc-if value="{{ acServVazio }}" hint-placeholder-val="{{ false }}">
+              <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Nenhum serviço vendido para esta loja ainda. Sites, automações e agentes de IA lançados aqui entram também em Receitas.</span>
+            </sc-if>
+            <sc-if value="{{ acServTemContratos }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; margin:0 -20px">
+              <span style="padding:0 20px 4px; font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Contratos mensais</span>
+              <sc-for list="{{ acServContratos }}" as="c" hint-placeholder-count="2">
+                <div role="button" tabindex="0" onClick="{{ c.abrir }}" style="display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                  <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-50); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ c.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1; min-width:0; display:grid; gap:2px">
+                    <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); overflow-wrap:anywhere">{{ c.cli }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ c.servDesc }}</span>
+                    <span style="font:var(--type-caption); color:var(--text-muted)">{{ c.sub }}</span>
+                  </div>
+                  <div style="flex:0 0 auto; display:grid; justify-items:end; gap:4px">
+                    <span style="font:var(--type-ui); font-weight:700; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ c.valorFmt }}</span>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ c.tone }}" dot="{{ true }}" size="sm" hint-size="80px,20px">{{ c.sit }}</x-import>
+                  </div>
+                </div>
+              </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ acServTemReceitas }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; margin:0 -20px">
+              <span style="padding:0 20px 4px; font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Lançamentos</span>
+              <sc-for list="{{ acServReceitas }}" as="r" hint-placeholder-count="3">
+                <div role="button" tabindex="0" onClick="{{ r.abrir }}" style="display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                  <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-50); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ r.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1; min-width:0; display:grid; gap:2px">
+                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; min-width:0">
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); overflow-wrap:anywhere">{{ r.cli }}</span>
+                      <sc-if value="{{ r.loja }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="info" size="sm" hint-size="90px,20px">Loja do CRM</x-import></sc-if>
+                    </div>
+                    <span style="font:var(--type-caption); color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.servDesc }}</span>
+                    <span style="font:var(--type-caption); color:{{ r.quandoCor }}">{{ r.quando }}</span>
+                  </div>
+                  <div style="flex:0 0 auto; display:grid; justify-items:end; gap:4px">
+                    <span style="font:var(--type-ui); font-weight:700; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.valorFmt }}</span>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ r.tone }}" dot="{{ true }}" size="sm" hint-size="90px,20px">{{ r.sit }}</x-import>
+                  </div>
+                </div>
+              </sc-for>
+              </div>
+            </sc-if>
+            <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="plus" onClick="{{ acServNova }}" hint-size="230px,40px">Nova receita para esta loja</x-import></div>
+          </div>
+        </sc-if>
         <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px">
           <sc-if value="{{ sp.abaResumo }}" hint-placeholder-val="{{ true }}">
           <sc-for list="{{ ac.acoes }}" as="b" hint-placeholder-count="2">
@@ -4095,6 +4246,231 @@
     </x-import>
   </sc-if>
 
+  <!-- RECEITA DA NORTIQ (detalhe): recebimento, estorno e cancelamento -->
+  <sc-if value="{{ rDetShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ rDetTitulo }}" description="{{ rDetDesc }}" width="{{ 580 }}" onClose="{{ rDetFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:16px">
+        <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ rDetTone }}" dot="{{ true }}" hint-size="100px,24px">{{ rDetSit }}</x-import></div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px 16px">
+          <sc-for list="{{ rDetCampos }}" as="f" hint-placeholder-count="6">
+            <div style="display:grid; gap:2px; min-width:0">
+              <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted)">{{ f.k }}</span>
+              <span style="font:var(--type-ui); color:var(--text-strong); overflow-wrap:anywhere; line-height:1.45">{{ f.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid; gap:8px">
+          <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Histórico</span>
+          <sc-for list="{{ rDetHist }}" as="h" hint-placeholder-count="2">
+            <div style="display:flex; gap:10px; align-items:flex-start; font:var(--type-caption); color:var(--text-body); line-height:1.5">
+              <span style="display:inline-flex; margin-top:1px; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ h.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span>
+              <span style="overflow-wrap:anywhere">{{ h.txt }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <sc-if value="{{ rDetTemContrato }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-right:auto"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" icon="file-signature" onClick="{{ rDetContrato }}" hint-size="140px,44px">Ver contrato</x-import></div>
+          </sc-if>
+          <sc-if value="{{ rDetPodeReceber }}" hint-placeholder-val="{{ true }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" onClick="{{ rDetCancelar }}" hint-size="160px,44px">Cancelar receita</x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="circle-check" onClick="{{ rDetReceber }}" hint-size="210px,44px">Registrar recebimento</x-import>
+          </sc-if>
+          <sc-if value="{{ rDetPodeEstornar }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="undo-2" onClick="{{ rDetEstornar }}" hint-size="200px,44px">Estornar recebimento</x-import>
+          </sc-if>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ rDetFechar }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- CONTRATO MENSAL DE SERVIÇO -->
+  <sc-if value="{{ ctDetShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="{{ ctTitulo }}" description="{{ ctDesc }}" width="{{ 580 }}" onClose="{{ ctFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:16px">
+        <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ ctTone }}" dot="{{ true }}" hint-size="100px,24px">{{ ctSit }}</x-import></div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px 16px">
+          <sc-for list="{{ ctCampos }}" as="f" hint-placeholder-count="6">
+            <div style="display:grid; gap:2px; min-width:0">
+              <span style="font:var(--type-caption); font-weight:600; color:var(--text-muted)">{{ f.k }}</span>
+              <span style="font:var(--type-ui); color:var(--text-strong); overflow-wrap:anywhere; line-height:1.45">{{ f.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid; margin:0 -20px">
+          <span style="padding:0 20px 4px; font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-subtle)">Cobranças deste contrato</span>
+          <sc-if value="{{ ctSemReceitas }}" hint-placeholder-val="{{ false }}">
+            <span style="padding:8px 20px; font:var(--type-caption); color:var(--text-muted)">A primeira cobrança aparece no mês de início.</span>
+          </sc-if>
+          <sc-for list="{{ ctReceitas }}" as="r" hint-placeholder-count="3">
+                <div role="button" tabindex="0" onClick="{{ r.abrir }}" style="display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border-subtle); cursor:pointer" style-hover="background:var(--surface-hover)">
+                  <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); background:var(--navy-50); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ r.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1; min-width:0; display:grid; gap:2px">
+                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; min-width:0">
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); overflow-wrap:anywhere">{{ r.cli }}</span>
+                      <sc-if value="{{ r.loja }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="info" size="sm" hint-size="90px,20px">Loja do CRM</x-import></sc-if>
+                    </div>
+                    <span style="font:var(--type-caption); color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ r.servDesc }}</span>
+                    <span style="font:var(--type-caption); color:{{ r.quandoCor }}">{{ r.quando }}</span>
+                  </div>
+                  <div style="flex:0 0 auto; display:grid; justify-items:end; gap:4px">
+                    <span style="font:var(--type-ui); font-weight:700; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ r.valorFmt }}</span>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ r.tone }}" dot="{{ true }}" size="sm" hint-size="90px,20px">{{ r.sit }}</x-import>
+                  </div>
+                </div>
+              </sc-for>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <sc-if value="{{ ctPodeEncerrar }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-right:auto"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="circle-slash" onClick="{{ ctEncerrar }}" hint-size="170px,44px">Encerrar contrato</x-import></div>
+          </sc-if>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ ctFechar }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- REGISTRAR RECEBIMENTO DE RECEITA -->
+  <sc-if value="{{ rRecShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Registrar recebimento" description="{{ rResumo }}" width="{{ 480 }}" onClose="{{ rRecFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Registre só depois de conferir que o dinheiro entrou. Se errar, dá para estornar (com motivo).</span>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; align-items:start">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rr-data" label="Dia em que recebeu" type="date" value="{{ rRec.data }}" onChange="{{ rRecOn.data }}" error="{{ rRecErr.data }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="rr-forma" label="Forma" options="{{ formasRec }}" value="{{ rRec.forma }}" onChange="{{ rRecOn.forma }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rr-obs" label="Observação (opcional)" placeholder="Ex.: comprovante recebido no WhatsApp" value="{{ rRec.obs }}" onChange="{{ rRecOn.obs }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ rRecFechar }}" hint-size="100px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" icon="circle-check" onClick="{{ rRecSalvar }}" hint-size="150px,44px">Registrar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <sc-if value="{{ rEstShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Estornar recebimento" description="{{ rResumo }}" width="{{ 480 }}" onClose="{{ rEstFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">O recebimento continua no histórico e a receita volta para A receber.</span>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="re-motivo" label="Motivo do estorno" placeholder="Ex.: Pix devolvido ao cliente" value="{{ rEst.motivo }}" onChange="{{ rEstOn }}" error="{{ rEstErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ rEstFechar }}" hint-size="100px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" onClick="{{ rEstSalvar }}" hint-size="170px,44px">Estornar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <sc-if value="{{ rCancShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Cancelar receita" description="{{ rResumo }}" width="{{ 480 }}" onClose="{{ rCancFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">A receita sai de A receber e fica em Canceladas, com o motivo. Nada é apagado.</span>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rc-motivo" label="Motivo do cancelamento" placeholder="Ex.: o cliente desistiu do serviço" value="{{ rCanc.motivo }}" onChange="{{ rCancOn }}" error="{{ rCancErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ rCancFechar }}" hint-size="100px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" onClick="{{ rCancSalvar }}" hint-size="170px,44px">Cancelar receita</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <sc-if value="{{ ctEncShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Encerrar contrato" description="{{ ctDesc }}" width="{{ 480 }}" onClose="{{ ctEncFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Os próximos meses deixam de ser lançados. As cobranças já lançadas continuam na lista; cancele a de algum mês se ela não for mais devida.</span>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="ct-motivo" label="Motivo do encerramento" placeholder="Ex.: o cliente pediu para parar" value="{{ ctEnc.motivo }}" onChange="{{ ctEncOn }}" error="{{ ctEncErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ ctEncFechar }}" hint-size="100px,44px">Voltar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="danger" onClick="{{ ctEncSalvar }}" hint-size="170px,44px">Encerrar contrato</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- NOVA RECEITA (uma vez, em parcelas ou todo mês) -->
+  <sc-if value="{{ rnShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Nova receita" description="Lance o que a Nortiq vendeu além do CRM: site, automação, agente de IA..." width="{{ 620 }}" onClose="{{ rnFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid; gap:6px">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="rn-cli" label="Cliente" options="{{ rnCliOpts }}" value="{{ rn.cli }}" onChange="{{ rnOn.cli }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <sc-if value="{{ rnCliErrShow }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:var(--type-caption); color:var(--status-danger-fg)">{{ rnErr.cli }}</span></sc-if>
+        </div>
+        <sc-if value="{{ rnNovoCli }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; align-items:start; padding:14px; border-radius:var(--radius-md); background:var(--surface-sunken)">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-nome" label="Nome do cliente ou da empresa" value="{{ rn.nome }}" onChange="{{ rnOn.nome }}" error="{{ rnErr.nome }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-whats" label="WhatsApp" placeholder="(12) 99999-0000" inputMode="tel" icon="message-circle" value="{{ rn.whats }}" onChange="{{ rnOn.whats }}" error="{{ rnErr.whats }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-email" label="E-mail (opcional)" type="email" value="{{ rn.email }}" onChange="{{ rnOn.email }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-doc" label="CPF ou CNPJ (opcional)" inputMode="numeric" value="{{ rn.doc }}" onChange="{{ rnOn.doc }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          </div>
+        </sc-if>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; align-items:start">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="rn-serv" label="Serviço" options="{{ rnServOpts }}" value="{{ rn.serv }}" onChange="{{ rnOn.serv }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="rn-modo" label="Como cobrar" options="{{ rnModoOpts }}" value="{{ rn.modo }}" onChange="{{ rnOn.modo }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        </div>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-desc" label="Descrição (opcional)" placeholder="Ex.: site institucional com 5 páginas" value="{{ rn.desc }}" onChange="{{ rnOn.desc }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:14px; align-items:start">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-valor" label="{{ rnValorLabel }}" prefix="R$" inputMode="decimal" placeholder="0,00" value="{{ rn.valor }}" onChange="{{ rnOn.valor }}" error="{{ rnErr.valor }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          <sc-if value="{{ rnUnicaOuParc }}" hint-placeholder-val="{{ true }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-venc" label="{{ rnVencLabel }}" type="date" value="{{ rn.venc }}" onChange="{{ rnOn.venc }}" error="{{ rnErr.venc }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          </sc-if>
+          <sc-if value="{{ rnParc }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-parcelas" label="Parcelas" type="number" inputMode="numeric" value="{{ rn.parcelas }}" onChange="{{ rnOn.parcelas }}" error="{{ rnErr.parcelas }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          </sc-if>
+          <sc-if value="{{ rnMensal }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-dia" label="Dia do vencimento" type="number" inputMode="numeric" value="{{ rn.dia }}" onChange="{{ rnOn.dia }}" error="{{ rnErr.dia }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="rn-inicio" label="Primeiro mês" options="{{ rnMesesOpts }}" value="{{ rn.inicio }}" onChange="{{ rnOn.inicio }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          </sc-if>
+        </div>
+        <sc-if value="{{ rnResumoShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:var(--radius-md); background:var(--status-info-bg); color:var(--status-info-fg); font:var(--type-caption); font-weight:600; line-height:1.5">
+            <span style="display:inline-flex; margin-top:1px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="calendar" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span>{{ rnResumo }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ rnPodeJa }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Checkbox" label="{{ rnJaLabel }}" checked="{{ rn.jaRecebi }}" onChange="{{ rnToggleJa }}" hint-size="100%,32px"></x-import>
+        </sc-if>
+        <sc-if value="{{ rnJaShow }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; align-items:start">
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rn-recdata" label="Dia em que recebeu" type="date" value="{{ rn.recData }}" onChange="{{ rnOn.recData }}" error="{{ rnErr.recData }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="rn-forma" label="Forma" options="{{ formasRec }}" value="{{ rn.forma }}" onChange="{{ rnOn.forma }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+          </div>
+        </sc-if>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ rnFechar }}" hint-size="100px,44px">Cancelar</x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ rnSalvar }}" hint-size="160px,44px">Salvar receita</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
+  <!-- SERVIÇOS OFERECIDOS PELA NORTIQ -->
+  <sc-if value="{{ servDlgShow }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Serviços oferecidos" description="A lista que aparece em Nova receita. Serviço desligado sai da lista, e os lançamentos antigos continuam." width="{{ 520 }}" onClose="{{ servFechar }}" hint-size="100%,100%">
+      <div style="display:grid; gap:14px">
+        <div style="display:grid">
+          <sc-for list="{{ servLista }}" as="x" hint-placeholder-count="5">
+            <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border-subtle)">
+              <span style="flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:var(--radius-sm); background:var(--navy-50); color:var(--navy-600)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="{{ x.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+              <div style="flex:1; min-width:0; display:grid; gap:2px">
+                <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ x.nome }}</span>
+                <span style="font:var(--type-caption); color:var(--text-muted)">{{ x.sub }}</span>
+              </div>
+              <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Switch" checked="{{ x.ativo }}" onChange="{{ x.toggle }}" aria-label="{{ x.nome }}" hint-size="44px,26px"></x-import>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap">
+          <div style="flex:1 1 220px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="sv-nome" label="Serviço novo" placeholder="Ex.: Gestão de redes sociais" value="{{ servNovo }}" onChange="{{ onServNovo }}" error="{{ servErr }}" full-width="{{ true }}" hint-size="100%,70px"></x-import></div>
+          <div style="padding-top:22px"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="plus" onClick="{{ servAdd }}" hint-size="130px,44px">Adicionar</x-import></div>
+        </div>
+        <div style="position:sticky; bottom:-18px; z-index:1; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin:0 -20px -18px; padding:12px 20px 16px; background:var(--surface-card); border-top:1px solid var(--border-subtle)">
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="ghost" onClick="{{ servFechar }}" hint-size="100px,44px">Fechar</x-import>
+        </div>
+      </div>
+    </x-import>
+  </sc-if>
+
   <!-- NOVO ORÇAMENTO -->
   <sc-if value="{{ showNew }}" hint-placeholder-val="{{ false }}">
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="Novo orçamento" description="Anote o pedido agora. Os detalhes podem ser completados depois." width="{{ 620 }}" onClose="{{ closeNew }}" hint-size="100%,100%">
@@ -4516,6 +4892,32 @@ const emptyNa=()=>({nome:'',razao:'',doc:'',cidade:'',slug:'',slugTouched:false,
 // Plano único por enquanto. Planos extras (IA, WhatsApp integrado) ficam para o futuro.
 const PLANO={nome:'Plano Nortiq',preco:79.9,itens:['Clientes sem limite','Orçamentos do pedido à instalação','Avisos de manutenção e garantia','Mensagens prontas para WhatsApp','Tarefas com Google Agenda','Faturamento e metas']};
 const LOJAS_PAGANTES=128, EM_ATRASO=9;
+// ---------- Receitas da Nortiq além do CRM: sites, automações, agentes de IA ----------
+// Lançadas à mão pela equipe. Cliente pode ser uma loja do CRM ("loja:slug") ou outro cliente ("cs:id").
+const SERVICOS0=[{id:'site',nome:'Criação de site',icon:'globe',ativo:true},{id:'manutsite',nome:'Manutenção de site',icon:'wrench',ativo:true},
+ {id:'automacao',nome:'Automação',icon:'workflow',ativo:true},{id:'agente',nome:'Agente de IA',icon:'bot',ativo:true},{id:'consultoria',nome:'Consultoria',icon:'lightbulb',ativo:true}];
+const CLIS_SERV0=[{id:'cs1',nome:'Clínica Sorriso Vale',whats:'(12) 99101-2020',email:'contato@sorrisovale.com.br',doc:''},
+ {id:'cs2',nome:'Auto Peças Paraíba',whats:'(12) 98844-1010',email:'',doc:'12.345.678/0001-90'}];
+const FORMAS_REC=['Pix','Transferência','Boleto','Cartão','Dinheiro'];
+const ADM_NORTIQ='Administrador Nortiq';
+const CONTRATOS0=[
+ {id:'CT-003',cli:'loja:solarminas',serv:'agente',desc:'Agente de IA no WhatsApp',valor:350,dia:10,inicio:'2026-07',criado:'2026-07-02',por:ADM_NORTIQ},
+ {id:'CT-002',cli:'cs:cs1',serv:'manutsite',desc:'Hospedagem e manutenção do site',valor:120,dia:5,inicio:'2026-03',criado:'2026-03-01',por:ADM_NORTIQ},
+ {id:'CT-001',cli:'loja:aquecesul',serv:'automacao',desc:'Automação de mensagens de retorno',valor:200,dia:15,inicio:'2026-01',criado:'2026-01-05',por:ADM_NORTIQ,
+  encerrado:{data:'2026-08-31',motivo:'O cliente pediu para parar no fim de agosto',por:ADM_NORTIQ}}];
+const REC_ADM=(data,forma,obs)=>({data,forma,por:ADM_NORTIQ,obs:obs||''});
+const RECEITAS0=[
+ {id:'R-0018',cli:'loja:solarminas',serv:'agente',desc:'Agente de IA no WhatsApp · setembro',valor:350,venc:'2026-09-10',contrato:'CT-003',rec:REC_ADM('2026-09-10','Pix')},
+ {id:'R-0017',cli:'cs:cs1',serv:'manutsite',desc:'Hospedagem e manutenção do site · setembro',valor:120,venc:'2026-09-05',contrato:'CT-002',rec:REC_ADM('2026-09-06','Boleto')},
+ {id:'R-0016',cli:'loja:casadoaquecedor',serv:'site',desc:'Site da loja',parcela:'1 de 2',valor:900,venc:'2026-09-08',criada:{data:'2026-09-01',por:ADM_NORTIQ},rec:REC_ADM('2026-09-08','Pix','Entrada na assinatura do contrato')},
+ {id:'R-0015',cli:'loja:casadoaquecedor',serv:'site',desc:'Site da loja',parcela:'2 de 2',valor:900,venc:'2026-10-08',criada:{data:'2026-09-01',por:ADM_NORTIQ}},
+ {id:'R-0014',cli:'cs:cs2',serv:'automacao',desc:'Automação de orçamentos pelo WhatsApp',valor:1500,venc:'2026-09-15',criada:{data:'2026-08-28',por:ADM_NORTIQ}},
+ {id:'R-0013',cli:'cs:cs2',serv:'consultoria',desc:'Diagnóstico dos processos da loja',valor:400,venc:'2026-09-02',criada:{data:'2026-08-20',por:ADM_NORTIQ},
+  cancel:{data:'2026-09-03',motivo:'O cliente desistiu antes da primeira reunião',por:ADM_NORTIQ}},
+ {id:'R-0012',cli:'loja:solarminas',serv:'agente',desc:'Agente de IA no WhatsApp · agosto',valor:350,venc:'2026-08-10',contrato:'CT-003',rec:REC_ADM('2026-08-11','Pix')},
+ {id:'R-0011',cli:'loja:aquecesul',serv:'automacao',desc:'Automação de mensagens de retorno · agosto',valor:200,venc:'2026-08-15',contrato:'CT-001',rec:REC_ADM('2026-08-15','Transferência')},
+ {id:'R-0010',cli:'cs:cs1',serv:'site',desc:'Site institucional',valor:2400,venc:'2026-08-20',criada:{data:'2026-08-01',por:ADM_NORTIQ},rec:REC_ADM('2026-08-20','Pix')},
+ {id:'R-0009',cli:'cs:cs1',serv:'manutsite',desc:'Hospedagem e manutenção do site · agosto',valor:120,venc:'2026-08-05',contrato:'CT-002',rec:REC_ADM('2026-08-05','Boleto')}];
 const LOG0={'orc:ORC-0426':[{body:'Olá Eduardo, segue o orçamento ORC-0426: Lorenzetti LZ 2000DE 20 L com instalação, R$ 2.380 em 6× sem juros.',meta:'18/09 · 11:42 · WhatsApp'}],
  'orc:ORC-0421':[{body:'Olá Ricardo, segue o orçamento do Bosch Therm 4400 F com instalação: R$ 3.690 em 10× sem juros.',meta:'16/09 · 09:10 · WhatsApp'},{body:'Cliente respondeu por ligação pedindo desconto à vista.',meta:'19/09 · 17:25 · anotação'}],
  'cli:c3':[{body:'Olá, aqui é da Casa do Aquecedor. A limpeza semestral dos coletores foi feita hoje. Qualquer coisa estamos à disposição.',meta:'05/04 · 16:02 · WhatsApp'}]};
@@ -4573,6 +4975,8 @@ class Component extends DCLogic {
     agView:'semana',agRef:HOJE_ISO,agSel:HOJE_ISO,agEv:AGENDA0.map(e=>({status:'marcado',...e})),gIn:true,gTitles:true,agF:{jefferson:true,alan:true,loja:true,google:true,cancelados:false},
     showAgNew:false,af:null,afErr:{},agOpen:null,agMsg:'',agSeq:16,agCx:null,agCxErr:'',
     tecs:TECNICOS.map(t=>({...t,ativo:true})),tcOpen:false,tcForm:null,tcErr:'',tcMsg:'',tf:null,tfErr:{},tx:null,taskMsg:null,
+    servicos:SERVICOS0.map(x=>({...x})),clisServ:CLIS_SERV0.map(x=>({...x})),contratos:CONTRATOS0.map(x=>({...x})),receitas:RECEITAS0.map(x=>({...x})),rSeq:19,ctSeq:4,
+    recF:'abertas',recQ:'',recMsg:'',rn:null,rnErr:{},rDet:null,rRec:null,rRecErr:{},rEst:null,rEstErr:'',rCanc:null,rCancErr:'',ctDet:null,ctEnc:null,ctEncErr:'',servDlg:false,servNovo:'',servErr:'',
     estadoDemo:'normal',lojaNova:false,ppOculto:false,ppLoja:false,carregandoPg:false,erroTela:null,telasOk:{},salvando:null,salvarErro:null,salvarFalhou:false,conexaoMsg:false,metaRasc:'',metaRascErr:'',
     mobile:typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia(MOBILE_MQ).matches,menuOpen:false,barHidden:false};
 
@@ -4773,7 +5177,7 @@ class Component extends DCLogic {
     const dueClis=s.clis.filter(c=>c.due&&!c.excluido);
 
     const navDef=admin?[
-      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(s.accs.filter(a=>a.status==='Em atraso'||a.status==='Cancelamento pedido').length)},{id:'a-avisos',label:'Notificações',icon:'bell'},{id:'a-planos',label:'Plano',icon:'layers'}]}
+      {label:'Nortiq',items:[{id:'a-geral',label:'Visão geral',icon:'layout-dashboard'},{id:'a-contas',label:'Contas assinantes',icon:'building-2',badge:String(s.accs.filter(a=>a.status==='Em atraso'||a.status==='Cancelamento pedido').length)},{id:'a-receitas',label:'Receitas',icon:'banknote'},{id:'a-avisos',label:'Notificações',icon:'bell'},{id:'a-planos',label:'Plano',icon:'layers'}]}
     ]:[
       {label:'Loja',items:[{id:'inicio',label:'Início',icon:'layout-dashboard'},{id:'orcamentos',label:'Orçamentos',icon:'file-text',badge:String(openO.length)},{id:'clientes',label:'Clientes',icon:'users'},{id:'estoque',label:'Estoque',icon:'package'},{id:'tarefas',label:'Tarefas',icon:'list-checks',badge:String(pend.length)},{id:'agenda',label:'Agenda',icon:'calendar'}]},
       {label:'Gestão',items:[{id:'faturamento',label:'Faturamento',icon:'wallet'},{id:'metas',label:'Metas',icon:'target'},{id:'relatorios',label:'Relatórios',icon:'chart-no-axes-column'},{id:'plano',label:'Meu plano',icon:'credit-card'},{id:'config',label:'Configurações',icon:'settings'}]}
@@ -4784,7 +5188,7 @@ class Component extends DCLogic {
 
     const TITLES={inicio:['Início','Casa do Aquecedor · 22 de setembro'],orcamentos:['Orçamentos','Do pedido à instalação concluída'],clientes:['Clientes','Histórico de compra, instalação e manutenção'],estoque:['Estoque','Produtos, quantidades e importação por planilha'],
       tarefas:['Tarefas','Retornos e compromissos'],agenda:['Agenda','Visitas, instalações e retornos da equipe'],faturamento:['Faturamento','Receitas e despesas · 1 a 30 de setembro'],metas:['Metas','Acompanhamento da meta mensal de vendas'],relatorios:['Relatórios','Monte o relatório em PDF da loja'],plano:['Meu plano','Assinatura, faturas e pagamento'],config:['Configurações','Perfil, segurança, equipe e dados da loja'],
-      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos'],'a-seguranca':['Minha conta','Administração Nortiq · perfil, senha, código do celular e aparelhos']};
+      'a-geral':['Visão geral','Administração Nortiq · setembro de 2026'],'a-contas':['Contas assinantes','Cada loja com sua conta isolada'],'a-receitas':['Receitas','Assinaturas do CRM e outros serviços da Nortiq'],'a-avisos':['Notificações','Avisos da equipe Nortiq para as lojas'],'a-planos':['Plano','Preço e próximos planos'],'a-seguranca':['Minha conta','Administração Nortiq · perfil, senha, código do celular e aparelhos']};
 
     // KPIs
     const heroMaint=(this.props.kpiDestaque ?? 'manutencoes')==='manutencoes';
@@ -5794,8 +6198,8 @@ class Component extends DCLogic {
       const setEquipe=(c,fn)=>this.setState(x=>c.slug==='casadoaquecedor'?{equipe:fn(x.equipe)}
         :{accs:x.accs.map(y=>y.slug===c.slug?{...y,equipe:fn(equipeDe(y))}:y)});
       const abrir=(acao,u)=>()=>this.setState({atFor:{slug:a.slug,uid:u?u.id:null,acao},at:{canal:'WhatsApp',obs:'',email:'',nome:'',conf:''},atErr:{}});
-      const abas=[{id:'resumo',label:'Resumo'},{id:'acesso',label:'Acesso e suporte'},{id:'hist',label:'Atendimentos'}];
-      let sp={abas,aba:s.accAba,onAba:id=>this.setState({accAba:id,accDlgMsg:''}),abaResumo:s.accAba==='resumo',abaAcesso:s.accAba==='acesso',abaHist:s.accAba==='hist',pessoas:[],hist:[],histVazio:true,podeNovoDono:false};
+      const abas=[{id:'resumo',label:'Resumo'},{id:'acesso',label:'Acesso e suporte'},{id:'hist',label:'Atendimentos'},{id:'serv',label:'Serviços'}];
+      let sp={abas,aba:s.accAba,onAba:id=>this.setState({accAba:id,accDlgMsg:''}),abaResumo:s.accAba==='resumo',abaAcesso:s.accAba==='acesso',abaHist:s.accAba==='hist',abaServ:s.accAba==='serv',pessoas:[],hist:[],histVazio:true,podeNovoDono:false};
       if(a){
         const encerrada=a.status==='Cancelada';
         const TONE={ativo:'success',convite:'info',desativado:'neutral',aguardando:'warning'};
@@ -6487,6 +6891,225 @@ class Component extends DCLogic {
 
     const nf=s.nf; const setNf=k=>e=>{const v=e.target.value; this.setState(x=>{const n={...x.nf,[k]:v}; if(k==='prod'){const p=PRODUCTS.find(p=>p[0]===v); if(p) n.valor=String(p[1]);} return {nf:n,nfErr:{...x.nfErr,[k]:undefined}};});};
 
+    // Receitas da Nortiq (administração): assinaturas do CRM e outros serviços (sites, automações, agentes de IA).
+    // Lançadas à mão. Recebimento, estorno e cancelamento sempre registrados, com motivo; nada é apagado.
+    const receitasVals=(()=>{
+      if(!admin) return {};
+      const MES=HOJE_ISO.slice(0,7), eu=s.adminNome, digitos=v=>String(v||'').replace(/\D/g,'');
+      const mesNome=m=>{const n=MESES[+m.slice(5)-1]; return n+' de '+m.slice(0,4);};
+      const Mes=m=>{const t=mesNome(m); return t.charAt(0).toUpperCase()+t.slice(1);};
+      const dataLonga=iso=>brData(iso)+'/'+String(iso).slice(0,4);
+      const serv=id=>s.servicos.find(x=>x.id===id)||{nome:'Serviço',icon:'briefcase-business'};
+      const cliDe=ref=>{ const [t,id]=String(ref||'').split(':');
+        if(t==='loja'){ const a=s.accs.find(x=>x.slug===id)||{}; return {nome:a.nome||id,loja:true,contato:[a.dono,a.tel||a.email].filter(Boolean).join(' · ')}; }
+        const c=s.clisServ.find(x=>x.id===id)||{}; return {nome:c.nome||'Cliente',loja:false,contato:[c.whats,c.email,c.doc].filter(Boolean).join(' · ')}; };
+      const situ=r=>r.cancel?'cancelada':r.rec?'recebida':r.venc<HOJE_ISO?'vencida':'aberta';
+      const SIT={aberta:['A receber','info'],vencida:['Vencida','warning'],recebida:['Recebida','success'],cancelada:['Cancelada','neutral']};
+      const mesDe=iso=>String(iso).slice(0,7);
+      const ativos=s.contratos.filter(c=>!c.encerrado);
+      const crmMrr=LOJAS_PAGANTES*PLANO.preco, crmRec=(LOJAS_PAGANTES-EM_ATRASO)*PLANO.preco, crmAtraso=EM_ATRASO*PLANO.preco;
+      const servMrr=ativos.reduce((a,c)=>a+c.valor,0);
+      const servRec=s.receitas.filter(r=>r.rec&&mesDe(r.rec.data)===MES).reduce((a,r)=>a+r.valor,0);
+      const abertas=s.receitas.filter(r=>['aberta','vencida'].includes(situ(r)));
+      const servAberto=abertas.filter(r=>mesDe(r.venc)<=MES).reduce((a,r)=>a+r.valor,0);
+      const vencidas=abertas.filter(r=>situ(r)==='vencida');
+      const irReceitas=()=>this.setState({apage:'a-receitas',drawer:null,menuOpen:false});
+
+      const linha=r=>{ const c=cliDe(r.cli), sv=serv(r.serv), st=situ(r);
+        return {id:r.id,cli:c.nome,loja:c.loja,icon:sv.icon,servDesc:[sv.nome,r.desc,r.parcela?'parcela '+r.parcela:''].filter(Boolean).join(' · '),
+          valorFmt:brl(r.valor,true),sit:SIT[st][0],tone:SIT[st][1],
+          quando:st==='recebida'?'Recebida em '+brData(r.rec.data):st==='cancelada'?'Cancelada em '+brData(r.cancel.data):(st==='vencida'?'Venceu em ':'Vence em ')+brData(r.venc),
+          quandoCor:st==='vencida'?'var(--status-warning-fg)':'var(--text-muted)',
+          abrir:()=>this.setState({rDet:r.id,ctDet:null,recMsg:''})}; };
+      const contratoLinha=c=>{ const cl=cliDe(c.cli), sv=serv(c.serv);
+        return {id:c.id,cli:cl.nome,loja:cl.loja,icon:sv.icon,servDesc:sv.nome+' · '+c.desc,valorFmt:brl(c.valor,true)+'/mês',
+          sub:c.encerrado?'Encerrado em '+dataLonga(c.encerrado.data):'Todo dia '+c.dia+' · desde '+c.inicio.slice(5)+'/'+c.inicio.slice(0,4),
+          sit:c.encerrado?'Encerrado':'Ativo',tone:c.encerrado?'neutral':'success',abrir:()=>this.setState({ctDet:c.id,recMsg:''})}; };
+
+      // lista de lançamentos
+      const q=s.recQ.trim().toLowerCase();
+      const TAB={abertas:r=>['aberta','vencida'].includes(situ(r)),recebidas:r=>situ(r)==='recebida',todas:()=>true,canceladas:r=>situ(r)==='cancelada'};
+      const ord=(a,b)=>a.venc<b.venc?-1:a.venc>b.venc?1:(a.id<b.id?-1:1);
+      const busca=r=>!q||(cliDe(r.cli).nome+' '+r.desc+' '+serv(r.serv).nome+' '+r.id).toLowerCase().includes(q);
+      const lista=s.receitas.filter(TAB[s.recF]||TAB.abertas).filter(busca).sort(s.recF==='abertas'?ord:(a,b)=>ord(b,a));
+      const recTabs=[['abertas','A receber'],['recebidas','Recebidas'],['todas','Todas'],['canceladas','Canceladas']].map(([id,label])=>({id,label,count:s.receitas.filter(TAB[id]).length}));
+
+      // de onde vem o dinheiro (faturado no mês)
+      const doMes=s.receitas.filter(r=>!r.cancel&&mesDe(r.venc)===MES);
+      const origens=[{nome:'Assinaturas do CRM',icon:'layers',valor:crmMrr},
+        ...s.servicos.map(x=>({nome:x.nome,icon:x.icon,valor:doMes.filter(r=>r.serv===x.id).reduce((a,r)=>a+r.valor,0)})).filter(o=>o.valor>0)];
+      const totO=origens.reduce((a,o)=>a+o.valor,0)||1, maxO=Math.max(1,...origens.map(o=>o.valor));
+
+      // nova receita
+      const novoRn=(cli,modo)=>({cli:cli||'',nome:'',whats:'',email:'',doc:'',serv:(s.servicos.find(x=>x.ativo)||{}).id||'',desc:'',modo:modo||'unica',valor:'',
+        venc:'2026-09-30',parcelas:'2',dia:'10',inicio:'2026-10',jaRecebi:false,forma:'Pix',recData:HOJE_ISO});
+      const addMes=(iso,n)=>{const [y,m,d]=iso.split('-').map(Number); const ult=new Date(y,m+n,0).getDate(); const dt=new Date(y,m-1+n,Math.min(d,ult));
+        return dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate());};
+      const partes=(total,n)=>{const c=Math.round(total*100), base=Math.floor(c/n); return Array.from({length:n},(_,i)=>(i===n-1?c-base*(n-1):base)/100);};
+      const dataOk=v=>/^\d{4}-\d{2}-\d{2}$/.test(v||'');
+      const rn=s.rn;
+      let rnV={rnShow:false};
+      if(rn){
+        const on=k=>e=>{const v=e.target.value; this.setState(x=>({rn:{...x.rn,[k]:v},rnErr:{...x.rnErr,[k]:''}}));};
+        const valorN=numBR(rn.valor), nP=parseInt(rn.parcelas,10), okP=nP>=2&&nP<=12, dia=parseInt(rn.dia,10);
+        let resumo='';
+        if(isFinite(valorN)&&valorN>0){
+          if(rn.modo==='unica'&&dataOk(rn.venc)) resumo=brl(valorN,true)+', com vencimento em '+dataLonga(rn.venc)+'.';
+          if(rn.modo==='parcelas'&&okP&&dataOk(rn.venc)){ const ps=partes(valorN,nP);
+            resumo=nP+' parcelas de '+brl(ps[0],true)+(ps[nP-1]!==ps[0]?' (a última de '+brl(ps[nP-1],true)+')':'')+', de '+dataLonga(rn.venc)+' a '+dataLonga(addMes(rn.venc,nP-1))+'.'; }
+          if(rn.modo==='mensal'&&dia>=1&&dia<=28) resumo=brl(valorN,true)+' todo dia '+dia+', a partir de '+mesNome(rn.inicio)+'. A cobrança de cada mês aparece na lista sozinha.';
+        }
+        const nomeCli=rn.cli==='novo'?String(rn.nome||'').trim():cliDe(rn.cli).nome;
+        rnV={rnShow:true,rn,rnErr:s.rnErr,rnOn:{cli:on('cli'),nome:on('nome'),whats:on('whats'),email:on('email'),doc:on('doc'),serv:on('serv'),desc:on('desc'),modo:on('modo'),
+            valor:on('valor'),venc:on('venc'),parcelas:on('parcelas'),dia:on('dia'),inicio:on('inicio'),forma:on('forma'),recData:on('recData')},
+          rnCliOpts:[{value:'',label:'Escolha o cliente'},...s.accs.filter(a=>a.status!=='Cancelada').map(a=>({value:'loja:'+a.slug,label:a.nome+' (loja do CRM)'})),
+            ...s.clisServ.map(c=>({value:'cs:'+c.id,label:c.nome})),{value:'novo',label:'+ Cliente novo'}],
+          rnServOpts:s.servicos.filter(x=>x.ativo||x.id===rn.serv).map(x=>({value:x.id,label:x.nome})),
+          rnModoOpts:[{value:'unica',label:'Uma vez'},{value:'parcelas',label:'Em parcelas'},{value:'mensal',label:'Todo mês (contrato)'}],
+          rnMesesOpts:['2026-09','2026-10','2026-11','2026-12','2027-01','2027-02'].map(m=>({value:m,label:Mes(m)})),formasRec:FORMAS_REC,
+          rnCliErrShow:!!s.rnErr.cli,rnNovoCli:rn.cli==='novo',rnUnicaOuParc:rn.modo!=='mensal',rnParc:rn.modo==='parcelas',rnMensal:rn.modo==='mensal',
+          rnValorLabel:rn.modo==='parcelas'?'Valor total':rn.modo==='mensal'?'Valor por mês':'Valor',rnVencLabel:rn.modo==='parcelas'?'1º vencimento':'Vencimento',
+          rnResumoShow:!!resumo,rnResumo:resumo,rnPodeJa:rn.modo!=='mensal',rnJaLabel:rn.modo==='parcelas'?'Já recebi a primeira parcela':'Já recebi este valor',
+          rnJaShow:rn.modo!=='mensal'&&!!rn.jaRecebi,
+          rnToggleJa:v=>this.setState(x=>({rn:{...x.rn,jaRecebi:typeof v==='boolean'?v:!x.rn.jaRecebi},rnErr:{...x.rnErr,recData:''}})),
+          rnFechar:()=>this.setState({rn:null,rnErr:{}}),
+          rnSalvar:()=>{
+            const err={};
+            if(!rn.cli) err.cli='Escolha o cliente.';
+            if(rn.cli==='novo'){
+              if(String(rn.nome||'').trim().length<3) err.nome='Escreva o nome do cliente.';
+              const w=digitos(rn.whats), em=String(rn.email||'').trim();
+              if(w&&!(w.length>=10&&w.length<=11)) err.whats='Confira o WhatsApp com DDD.';
+              else if(!w&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) err.whats='Informe o WhatsApp ou o e-mail.';
+            }
+            if(!rn.serv) err.serv='Escolha o serviço.';
+            if(!(isFinite(valorN)&&valorN>0)) err.valor='Informe o valor.';
+            if(rn.modo!=='mensal'&&!dataOk(rn.venc)) err.venc='Informe o vencimento.';
+            if(rn.modo==='parcelas'&&!okP) err.parcelas='De 2 a 12 parcelas.';
+            if(rn.modo==='mensal'&&!(dia>=1&&dia<=28)) err.dia='Use um dia de 1 a 28.';
+            if(rn.modo!=='mensal'&&rn.jaRecebi&&!dataOk(rn.recData)) err.recData='Informe o dia.';
+            if(Object.keys(err).length) return this.setState({rnErr:err});
+            this.setState(x=>{
+              let clisServ=x.clisServ, ref=rn.cli, rSeq=x.rSeq, ctSeq=x.ctSeq, receitas=x.receitas, contratos=x.contratos, msg;
+              if(rn.cli==='novo'){ const id='cs'+Date.now(); ref='cs:'+id;
+                clisServ=[...clisServ,{id,nome:nomeCli,whats:String(rn.whats||'').trim(),email:String(rn.email||'').trim(),doc:String(rn.doc||'').trim()}]; }
+              const nid=()=>'R-'+String(rSeq++).padStart(4,'0'), criada={data:HOJE_ISO,por:eu};
+              const desc=String(rn.desc||'').trim()||serv(rn.serv).nome;
+              if(rn.modo==='mensal'){
+                const cid='CT-'+String(ctSeq++).padStart(3,'0');
+                contratos=[{id:cid,cli:ref,serv:rn.serv,desc,valor:valorN,dia,inicio:rn.inicio,criado:HOJE_ISO,por:eu},...contratos];
+                const jaEste=rn.inicio<=MES;
+                if(jaEste) receitas=[{id:nid(),cli:ref,serv:rn.serv,desc:desc+' · '+MESES[+MES.slice(5)-1],valor:valorN,venc:MES+'-'+pad2(dia),contrato:cid,criada},...receitas];
+                msg='Contrato '+cid+' criado para '+nomeCli+': '+brl(valorN,true)+' todo dia '+dia+'. '+(jaEste?'A cobrança de '+MESES[+MES.slice(5)-1]+' já está na lista.':'A primeira cobrança aparece em '+mesNome(rn.inicio)+'.');
+              } else {
+                const n=rn.modo==='parcelas'?nP:1, ps=n>1?partes(valorN,n):[valorN];
+                const novas=ps.map((v,i)=>({id:nid(),cli:ref,serv:rn.serv,desc,parcela:n>1?(i+1)+' de '+n:'',valor:v,venc:addMes(rn.venc,i),criada,
+                  ...(i===0&&rn.jaRecebi?{rec:{data:rn.recData,forma:rn.forma,por:eu,obs:''}}:{})}));
+                receitas=[...novas.slice().reverse(),...receitas];
+                msg=(n>1?n+' parcelas lançadas ('+novas[0].id+' a '+novas[n-1].id+')':'Receita '+novas[0].id+' lançada')+' para '+nomeCli+'.';
+              }
+              return {clisServ,receitas,contratos,rSeq,ctSeq,rn:null,rnErr:{},recMsg:msg,recF:'abertas',...(x.accOpen?{accDlgMsg:msg}:{})};
+            }); }};
+      }
+
+      // detalhe da receita e ações
+      const rD=s.rDet&&s.receitas.find(r=>r.id===s.rDet);
+      let rDV={rDetShow:false,rRecShow:false,rEstShow:false,rCancShow:false};
+      if(rD){
+        const st=situ(rD), c=cliDe(rD.cli), sv=serv(rD.serv);
+        const upd=(patch,msg)=>this.setState(x=>({receitas:x.receitas.map(r=>r.id===rD.id?{...r,...patch(r)}:r),recMsg:msg,...(x.accOpen?{accDlgMsg:msg}:{})}));
+        const campos=[['Cliente',c.nome+(c.loja?' · loja do CRM':'')],['Contato',c.contato||'—'],['Serviço',sv.nome],['Descrição',rD.desc+(rD.parcela?' · parcela '+rD.parcela:'')],
+          ['Valor',brl(rD.valor,true)],['Vencimento',dataLonga(rD.venc)]].map(([k,v])=>({k,v}));
+        const hist=[{icon:'plus',txt:'Lançada'+(rD.contrato?' pelo contrato '+rD.contrato:'')+(rD.criada?' por '+rD.criada.por+' em '+dataLonga(rD.criada.data):'')},
+          ...(rD.estornos||[]).map(e=>({icon:'undo-2',txt:'Recebimento de '+dataLonga(e.data)+' ('+e.forma+') estornado em '+dataLonga(e.em)+' por '+e.por+'. Motivo: '+e.motivo})),
+          ...(rD.rec?[{icon:'circle-check',txt:'Recebida em '+dataLonga(rD.rec.data)+' por '+rD.rec.forma+'. Registrada por '+rD.rec.por+(rD.rec.obs?'. '+rD.rec.obs:'')}]:[]),
+          ...(rD.cancel?[{icon:'circle-slash',txt:'Cancelada em '+dataLonga(rD.cancel.data)+' por '+rD.cancel.por+'. Motivo: '+rD.cancel.motivo}]:[])];
+        const resumo=rD.id+' · '+c.nome+' · '+brl(rD.valor,true);
+        rDV={rDetShow:true,rDetTitulo:'Receita '+rD.id,rDetDesc:sv.nome+(rD.contrato?' · contrato '+rD.contrato:''),rDetSit:SIT[st][0],rDetTone:SIT[st][1],rDetCampos:campos,rDetHist:hist,
+          rDetPodeReceber:['aberta','vencida'].includes(st),rDetPodeEstornar:st==='recebida',rDetTemContrato:!!rD.contrato,
+          rDetFechar:()=>this.setState({rDet:null,rRec:null,rEst:null,rCanc:null}),
+          rDetReceber:()=>this.setState({rRec:{data:HOJE_ISO,forma:'Pix',obs:''},rRecErr:{}}),
+          rDetEstornar:()=>this.setState({rEst:{motivo:''},rEstErr:''}),
+          rDetCancelar:()=>this.setState({rCanc:{motivo:''},rCancErr:''}),
+          rDetContrato:()=>this.setState({rDet:null,ctDet:rD.contrato}),
+          rRecShow:!!s.rRec,rEstShow:!!s.rEst,rCancShow:!!s.rCanc,rResumo:resumo};
+        if(s.rRec){ const f=s.rRec; const on=k=>e=>{const v=e.target.value; this.setState(x=>({rRec:{...x.rRec,[k]:v},rRecErr:{}}));};
+          Object.assign(rDV,{rRec:f,rRecErr:s.rRecErr,rRecOn:{data:on('data'),forma:on('forma'),obs:on('obs')},formasRec:FORMAS_REC,rRecFechar:()=>this.setState({rRec:null}),
+            rRecSalvar:()=>{ if(!dataOk(f.data)) return this.setState({rRecErr:{data:'Informe o dia em que recebeu.'}});
+              if(f.data>HOJE_ISO) return this.setState({rRecErr:{data:'O dia não pode ser depois de hoje.'}});
+              upd(()=>({rec:{data:f.data,forma:f.forma,por:eu,obs:String(f.obs||'').trim()}}),'Recebimento de '+rD.id+' registrado: '+brl(rD.valor,true)+' por '+f.forma+'.');
+              this.setState({rRec:null}); }}); }
+        if(s.rEst){ const m=String(s.rEst.motivo||'');
+          Object.assign(rDV,{rEst:s.rEst,rEstErr:s.rEstErr,rEstOn:e=>this.setState({rEst:{motivo:e.target.value},rEstErr:''}),rEstFechar:()=>this.setState({rEst:null}),
+            rEstSalvar:()=>{ if(m.trim().length<3) return this.setState({rEstErr:'Conte o motivo do estorno.'});
+              upd(r=>({rec:null,estornos:[...(r.estornos||[]),{...r.rec,em:HOJE_ISO,por:eu,motivo:m.trim()}]}),'Recebimento de '+rD.id+' estornado. A receita voltou para A receber.');
+              this.setState({rEst:null}); }}); }
+        if(s.rCanc){ const m=String(s.rCanc.motivo||'');
+          Object.assign(rDV,{rCanc:s.rCanc,rCancErr:s.rCancErr,rCancOn:e=>this.setState({rCanc:{motivo:e.target.value},rCancErr:''}),rCancFechar:()=>this.setState({rCanc:null}),
+            rCancSalvar:()=>{ if(m.trim().length<3) return this.setState({rCancErr:'Conte o motivo do cancelamento.'});
+              upd(()=>({cancel:{data:HOJE_ISO,motivo:m.trim(),por:eu}}),rD.id+' cancelada. Ela fica em Canceladas, com o motivo.');
+              this.setState({rCanc:null}); }}); }
+      }
+
+      // detalhe do contrato
+      const cD=s.ctDet&&s.contratos.find(c=>c.id===s.ctDet);
+      let ctV={ctDetShow:false,ctEncShow:false};
+      if(cD){ const cl=cliDe(cD.cli), sv=serv(cD.serv);
+        const campos=[['Cliente',cl.nome+(cl.loja?' · loja do CRM':'')],['Contato',cl.contato||'—'],['Serviço',sv.nome],['Descrição',cD.desc],['Valor',brl(cD.valor,true)+' por mês'],
+          ['Vencimento','Todo dia '+cD.dia],['Primeiro mês',Mes(cD.inicio)],['Criado',dataLonga(cD.criado)+' por '+cD.por],
+          ...(cD.encerrado?[['Encerrado',dataLonga(cD.encerrado.data)+' por '+cD.encerrado.por+'. Motivo: '+cD.encerrado.motivo]]:[])].map(([k,v])=>({k,v}));
+        const rs=s.receitas.filter(r=>r.contrato===cD.id).sort((a,b)=>ord(b,a)).map(linha);
+        ctV={ctDetShow:true,ctTitulo:'Contrato '+cD.id,ctDesc:cl.nome+' · '+sv.nome,ctSit:cD.encerrado?'Encerrado':'Ativo',ctTone:cD.encerrado?'neutral':'success',ctCampos:campos,
+          ctReceitas:rs,ctSemReceitas:!rs.length,ctPodeEncerrar:!cD.encerrado,ctFechar:()=>this.setState({ctDet:null,ctEnc:null}),
+          ctEncerrar:()=>this.setState({ctEnc:{motivo:''},ctEncErr:''}),ctEncShow:!!s.ctEnc};
+        if(s.ctEnc){ const m=String(s.ctEnc.motivo||'');
+          Object.assign(ctV,{ctEnc:s.ctEnc,ctEncErr:s.ctEncErr,ctEncOn:e=>this.setState({ctEnc:{motivo:e.target.value},ctEncErr:''}),ctEncFechar:()=>this.setState({ctEnc:null}),
+            ctEncSalvar:()=>{ if(m.trim().length<3) return this.setState({ctEncErr:'Conte o motivo do encerramento.'});
+              const msg='Contrato '+cD.id+' encerrado. Os próximos meses não serão mais lançados.';
+              this.setState(x=>({contratos:x.contratos.map(c=>c.id===cD.id?{...c,encerrado:{data:HOJE_ISO,motivo:m.trim(),por:eu}}:c),ctEnc:null,recMsg:msg,...(x.accOpen?{accDlgMsg:msg}:{})})); }}); }
+      }
+
+      // serviços oferecidos
+      const norm=t=>String(t).normalize('NFD').replace(/[̀-ͯ]/g,'').trim().toLowerCase();
+      const servLista=s.servicos.map(x=>{ const n=s.receitas.filter(r=>r.serv===x.id).length+s.contratos.filter(c=>c.serv===x.id).length;
+        return {...x,sub:(x.ativo?'Aparece em Nova receita':'Desligado: não aparece em Nova receita')+' · '+(n?n+' lançamento(s)':'sem lançamentos'),
+          toggle:()=>this.setState(y=>({servicos:y.servicos.map(z=>z.id===x.id?{...z,ativo:!z.ativo}:z)}))}; });
+
+      // aba Serviços na ficha da conta assinante
+      const aO=s.accOpen&&s.accs.find(x=>x.slug===s.accOpen);
+      const acRec=aO?s.receitas.filter(r=>r.cli==='loja:'+aO.slug).sort((a,b)=>ord(b,a)).map(linha):[];
+      const acCt=aO?s.contratos.filter(c=>c.cli==='loja:'+aO.slug).map(contratoLinha):[];
+
+      return {
+        isAReceitas:page==='a-receitas',
+        recKpis:[
+          {label:'Recebido em '+MESES[+MES.slice(5)-1],value:brl(crmRec+servRec),icon:'banknote',foot:'CRM '+brl(crmRec)+' · serviços '+brl(servRec),tone:'accent'},
+          {label:'A receber',value:brl(crmAtraso+servAberto),icon:'clock',foot:'CRM '+brl(crmAtraso)+' · serviços '+brl(servAberto)+(vencidas.length?' ('+vencidas.length+(vencidas.length>1?' vencidas)':' vencida)'):''),tone:'default'},
+          {label:'Receita mensal recorrente',value:brl(crmMrr+servMrr),icon:'repeat',foot:'CRM '+brl(crmMrr)+' · contratos '+brl(servMrr),tone:'default'},
+          {label:'Contratos de serviço',value:String(ativos.length),icon:'file-signature',foot:ativos.length?'cobrados todo mês':'nenhum ativo',tone:'default'}],
+        recOrigens:origens.map(o=>({...o,valorFmt:brl(o.valor,true),pct:Math.round(o.valor/totO*100)+'%',max:maxO})),recOrigensTitulo:'De onde vem o dinheiro · '+MESES[+MES.slice(5)-1],
+        recContratos:[...ativos,...s.contratos.filter(c=>c.encerrado)].map(contratoLinha),recSemContratos:!s.contratos.length,
+        recTabs,recF:s.recF,onRecF:id=>this.setState({recF:id}),recQ:s.recQ,onRecQ:e=>this.setState({recQ:e.target.value}),
+        recRows:lista.map(linha),recVazio:!lista.length,recVazioTxt:q?'Nada encontrado com "'+s.recQ.trim()+'".':s.recF==='abertas'?'Nada a receber. Tudo em dia.':'Nenhum lançamento aqui.',
+        recMsgShow:!!s.recMsg,recMsg:s.recMsg,recMsgFechar:()=>this.setState({recMsg:''}),
+        rnNova:()=>this.setState({rn:novoRn(''),rnErr:{},recMsg:''}),rnNovoContrato:()=>this.setState({rn:novoRn('','mensal'),rnErr:{},recMsg:''}),
+        ...rnV,...rDV,...ctV,
+        servDlgShow:s.servDlg,servLista,servNovo:s.servNovo,servErr:s.servErr,
+        servAbrir:()=>this.setState({servDlg:true,servNovo:'',servErr:''}),servFechar:()=>this.setState({servDlg:false}),
+        onServNovo:e=>this.setState({servNovo:e.target.value,servErr:''}),
+        servAdd:()=>{ const n=s.servNovo.trim();
+          if(n.length<3) return this.setState({servErr:'Escreva o nome do serviço.'});
+          if(s.servicos.some(x=>norm(x.nome)===norm(n))) return this.setState({servErr:'Já existe um serviço com esse nome.'});
+          this.setState(x=>({servicos:[...x.servicos,{id:'sv'+Date.now(),nome:n,icon:'briefcase-business',ativo:true}],servNovo:''})); },
+        acServReceitas:acRec,acServContratos:acCt,acServVazio:!acRec.length&&!acCt.length,acServTemContratos:acCt.length>0,acServTemReceitas:acRec.length>0,
+        acServNova:()=>aO&&this.setState({rn:novoRn('loja:'+aO.slug),rnErr:{}}),
+        adminKpis:[{label:'Contas ativas',value:'128',icon:'building-2',delta:'+7',foot:'no mês',tone:'accent'},
+          {label:'Receita recorrente',value:brl(crmMrr+servMrr,true),icon:'repeat',foot:'CRM '+brl(crmMrr)+' + serviços '+brl(servMrr),tone:'default',go:irReceitas},
+          {label:'Pagamentos em atraso',value:String(EM_ATRASO),icon:'circle-alert',foot:brl(EM_ATRASO*PLANO.preco,true)+' a receber',tone:'default'},
+          {label:'Cancelamentos',value:'1',icon:'circle-x',foot:'nos últimos 30 dias',tone:'default'}]
+      };
+    })();
+
     // Estados gerais (etapa 8): loja nova sem dados, telas carregando, sem conexão, erro ao salvar, erro ao abrir tela e página não encontrada.
     // No protótipo vêm do seletor "Estado das telas" do login; no sistema real vêm da resposta da API.
     const estadosVals=(()=>{
@@ -6684,7 +7307,8 @@ class Component extends DCLogic {
         this.guardar('orc',nf,()=>this.setState(x=>({orcs:[o,...x.orcs],next:x.next+1,showNew:false,page:'orcamentos',drawer:{type:'orc',id},draft:null,tpl:0,tplAuto:true})));
       },
       ...etapa1Vals,
-      ...estadosVals
+      ...estadosVals,
+      ...receitasVals
     };
   }
 }

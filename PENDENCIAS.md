@@ -94,6 +94,20 @@ No login do protótipo há um seletor novo, **Estado das telas**, para ver cada 
 - **Página não encontrada:** para link errado ou item excluído, com **Voltar para o Início**. Um item de outra loja também cai aqui (o sistema nunca revela que ele existe).
 - Nos cartões do Início, as listas vazias ganharam uma frase ("Nenhuma instalação marcada para esta semana") e o menu não mostra mais o número 0.
 
+## Etapa 9 do design: Receitas da Nortiq além do CRM (feito em 26/09)
+
+No painel da administração, item novo no menu: **Receitas**.
+
+- **Números do mês:** recebido (CRM + serviços), a receber, receita mensal recorrente (assinaturas + contratos) e contratos ativos. A Visão geral passou a somar os contratos na receita recorrente.
+- **De onde vem o dinheiro:** quanto cada origem rendeu no mês (assinaturas do CRM, criação de site, automação, agente de IA...).
+- **Nova receita:** cliente (uma loja do CRM ou outro cliente, cadastrado ali mesmo), serviço, descrição e como cobrar: **uma vez**, **em parcelas** (divide o total e mostra as datas) ou **todo mês** (contrato: valor, dia do vencimento e primeiro mês). Dá para marcar "já recebi".
+- **Lançamentos:** abas A receber (com as vencidas), Recebidas, Todas e Canceladas, e busca. Cada receita abre com o histórico e as ações: registrar recebimento (dia e forma), estornar (com motivo) e cancelar (com motivo). Nada é apagado.
+- **Contratos mensais:** a cobrança de cada mês entra sozinha na lista; encerrar o contrato (com motivo) para os meses seguintes.
+- **Serviços oferecidos:** a lista que aparece em Nova receita; dá para acrescentar e desligar serviços.
+- **Ficha da conta assinante:** aba nova **Serviços**, com o que a Nortiq vendeu para aquela loja e o botão "Nova receita para esta loja".
+- A loja nunca vê essas receitas; elas ficam só no painel da Nortiq.
+- Fica para depois: gerar a cobrança pelo Asaas (link de pagamento) em vez de só registrar, e editar valor ou vencimento de uma receita a receber.
+
 ## Decisões de 26/09
 - **Cópia de segurança:** cópias automáticas do Neon (voltar o banco a qualquer momento dos últimos dias) + botão "Exportar dados" para a loja. Cópia semanal separada por loja fica para depois.
 - **Assinatura paga fora do Asaas:** permitida; a equipe Nortiq registra cada pagamento no painel.
