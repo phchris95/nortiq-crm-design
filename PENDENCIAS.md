@@ -167,7 +167,12 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Com o acesso pausado continuam abertos Configurações e, para o dono, Meu plano.
   - Os primeiros passos do Início ganharam "Convide sua equipe".
   - Fica para depois: cancelamento de loja cobrada pelo Asaas (hoje é com a equipe) e o recibo da fatura paga.
-- Próximas partes a ligar: o painel da administração (cadastrar loja com convite do dono, lista de lojas, registrar Pix, atendimento); depois do lançamento, metas e relatórios.
+- **Painel Nortiq** ligado ao banco (28/09): Visão geral e Contas assinantes.
+  - Nova conta: loja, dono e cobrança direta (Pix, transferência, dinheiro). "Já recebi" registra a primeira mensalidade e manda o convite do dono na hora; "vou receber depois" deixa a conta aguardando, e o convite sai quando o pagamento for registrado. O dia do vencimento é o de hoje (até 28), ou outro escolhido.
+  - Ficha da conta com as abas Resumo (andamento: cadastrada, pagamento, convite, senha criada), Mensalidades (registrar e estornar com motivo), Acesso e suporte (quem entra na loja e as ações de atendimento) e Atendimentos (histórico).
+  - A Nortiq também encerra e reativa a assinatura (a loja é orientada a falar com a equipe quando tem mensalidade atrasada ou quando o acesso já acabou). Mensalidade atrasada acompanha a loja na assinatura nova.
+  - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Receitas, Notificações e Plano do painel continuam "em construção".
+- Próxima etapa: publicar (e-mail, Neon, Render e domínio). Depois do lançamento: metas, relatórios, sino de notificações, Google Agenda, Asaas e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
