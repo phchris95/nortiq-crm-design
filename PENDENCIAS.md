@@ -174,7 +174,14 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Receitas, Notificações e Plano do painel continuam "em construção".
 - **Pronto para publicar** (28/09): e-mail pelo Resend (ou Brevo), banco preparado sozinho a cada deploy (papéis com senhas geradas pelo Render, migrations), rotina diária agendada e o passo a passo no README do repositório da API.
   - Falta fazer (pela equipe Nortiq): domínio no Registro.br com DNS no Cloudflare, projeto no Neon (Virgínia), conta no Resend com o domínio verificado e o Blueprint no Render. Depois: primeiro administrador pelo Shell do Render e a conferência no ar.
-- Depois do lançamento: metas, relatórios, sino de notificações, Google Agenda, Asaas e cupons.
+- **Metas** ligadas ao banco (28/09).
+  - Meta do mês e do próximo (só o dono). Conta o dinheiro que entrou no caixa no mês (recebimentos do Faturamento, menos os estornos), como os números do Faturamento.
+  - Mostra quanto já entrou, a porcentagem, quanto falta, os dias que sobram no mês (contando hoje, sem os domingos) e quanto precisa entrar por dia.
+  - Meses anteriores (desde que a loja começou, até 12) com "bateu" ou "não bateu", e de onde veio a receita do mês por categoria.
+  - Salvar 0 tira a meta. Meses que já passaram não mudam.
+  - Os primeiros passos do Início ganharam "Defina a meta do mês"; o Início convida a definir a meta e o bloco da meta tem "Detalhes".
+  - Diferença do protótipo: "dias úteis" virou "dias restantes" (segunda a sábado), porque as lojas abrem aos sábados.
+- Depois do lançamento: relatórios, sino de notificações, Google Agenda, Asaas e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
