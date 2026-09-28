@@ -158,7 +158,16 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Reabrir uma venda com dinheiro recebido: o dono escolhe manter o lançamento ou registrar o estorno (como no protótipo); o funcionário vê que é decisão do dono.
   - Início: números do dia, manutenções e garantias vencendo (com "Avisar" pelo WhatsApp), meta do mês (quando houver), instalações da semana, funil e retornos de hoje. Loja nova vê os primeiros passos (produtos, primeiro cliente, primeiro orçamento); os passos de dados da loja, equipe e meta entram junto com as Configurações e as Metas.
   - Fica para depois: o sino de notificações e o "Conversão do mês" comparado ao mês anterior.
-- Próximas partes a ligar: configurações e equipe, Meu plano e o painel da administração; depois do lançamento, metas e relatórios.
+- **Configurações e Meu plano** ligados ao banco (28/09).
+  - Configurações: Perfil (nome, função, WhatsApp), Segurança (trocar a senha, aparelhos conectados, sair dos outros), Equipe (convite por e-mail, reenviar ou cancelar convite, papel, desativar passando as tarefas, reativar) e Dados da loja. Cada aba tem endereço próprio; o menu da conta ganhou "Minha conta" e "Segurança".
+  - CNPJ, cidade e endereço de acesso só mudam pela equipe Nortiq (aparecem para leitura).
+  - Cópia dos dados: o arquivo .zip (uma planilha por assunto) é montado na hora e baixado direto, em vez de "preparando… avisamos por e-mail". O pedido com link por 7 dias fica para quando houver lojas grandes.
+  - Meu plano: faturas, "Pagar" com QR code do Pix, código copia e cola (já com o valor e a identificação da loja) e a chave Pix da Nortiq; "Enviar comprovante" abre o WhatsApp da Nortiq. A equipe registra o Pix no painel e a fatura fica paga.
+  - Cancelar pela própria loja (com motivo): o acesso continua até o fim do período pago e as mensalidades futuras deixam de ser cobradas. Reativar antes do fim do acesso traz de volta as mesmas condições e as mensalidades tiradas. Com mensalidade atrasada, ou depois que o acesso acabou, a reativação é com a equipe Nortiq.
+  - Com o acesso pausado continuam abertos Configurações e, para o dono, Meu plano.
+  - Os primeiros passos do Início ganharam "Convide sua equipe".
+  - Fica para depois: cancelamento de loja cobrada pelo Asaas (hoje é com a equipe) e o recibo da fatura paga.
+- Próximas partes a ligar: o painel da administração (cadastrar loja com convite do dono, lista de lojas, registrar Pix, atendimento); depois do lançamento, metas e relatórios.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
