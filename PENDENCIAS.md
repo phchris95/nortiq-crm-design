@@ -205,6 +205,12 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Equipe: mostra "2 de 3 pessoas do plano Básico". Convites pendentes contam. Cheio, o botão de convidar fica bloqueado e aparece "Ver os planos".
   - Metas e Relatórios aparecem no menu com a etiqueta "Profissional"; no Básico, abrem uma explicação com "Ver os planos".
   - Painel Nortiq: a nova conta escolhe o plano e mensal ou anual; a lista e a ficha mostram o plano.
+- **Relatórios em PDF** (28/09), no plano Profissional, só para o dono.
+  - Período: Este mês, Mês passado, Últimos 3 meses ou Personalizado (até um ano).
+  - Sete seções para marcar: resumo (recebido, pago, sobra, vendas e a meta do mês), vendas fechadas, orçamentos por etapa, perdas e objeções, faturamento por categoria, instalações e manutenções, clientes novos. A prévia ao lado mostra os mesmos números do PDF.
+  - Cabeçalho com a logo (enviar, trocar ou remover; PNG, JPG ou SVG) e os dados da loja; "Editar dados da loja" leva a Configurações. Observação opcional no rodapé.
+  - "Baixar PDF" gera o arquivo A4 no servidor; "Salvar configuração" guarda as seções e a observação.
+  - Diferença do protótipo: os dados da empresa são editados em Configurações › Dados da loja (no relatório só a logo).
 - Depois do lançamento: sino de notificações, Asaas (cartão recorrente) e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
