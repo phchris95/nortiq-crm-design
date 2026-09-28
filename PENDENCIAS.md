@@ -181,7 +181,15 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Salvar 0 tira a meta. Meses que já passaram não mudam.
   - Os primeiros passos do Início ganharam "Defina a meta do mês"; o Início convida a definir a meta e o bloco da meta tem "Detalhes".
   - Diferença do protótipo: "dias úteis" virou "dias restantes" (segunda a sábado), porque as lojas abrem aos sábados.
-- Depois do lançamento: relatórios, sino de notificações, Google Agenda, Asaas e cupons.
+- **Google Agenda** ligado (28/09).
+  - Cada pessoa (dono ou funcionário) liga a própria conta Google, pela Agenda, pelas Tarefas ou pelo Perfil. O Google só pede a permissão da agenda.
+  - Tarefa marcada "Enviar para o Google Agenda" vai para a agenda de quem faz a tarefa; agendamento, para a de quem ligou o envio. Com hora, lembrete 30 minutos antes; tarefa sem hora fica como compromisso do dia inteiro.
+  - Mudou no CRM, muda no Google; concluída aparece com ✓; cancelou, desligou o envio ou excluiu, sai do Google. Se o Google estiver fora do ar, fica pendente e vai depois, sozinho.
+  - Os compromissos do Google aparecem em cinza na Agenda do CRM, só para ver (com o nome, ou só "Ocupado"). O novo agendamento avisa quando bate com um compromisso do Google.
+  - Desconectar: o Nortiq para de enviar e de mostrar; o que já foi enviado continua no Google. Se a pessoa tirar a permissão lá no Google, a conexão cai e a tela avisa para conectar de novo.
+  - Diferença do protótipo: no protótipo era "a conta Google da loja"; aqui cada pessoa liga a sua (o lembrete chega no celular de quem vai fazer).
+  - Falta fazer (pela equipe Nortiq): o projeto no Google Cloud e a verificação do Google (passo 7 do README da API). Sem isso, a opção simplesmente não aparece para as lojas.
+- Depois do lançamento: relatórios, sino de notificações, Asaas e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
