@@ -196,7 +196,16 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Sem internet: essas telas e o Início abrem com a cópia, e o topo avisa "Sem internet: mostrando os dados de hoje, 14:32". Financeiro, metas, vendas e edições precisam de internet (e avisam).
   - Agendamento e tarefa criados sem internet ficam "aguardando internet" e vão sozinhos quando a conexão volta, uma vez só (a chave do aparelho impede duplicar). Se a loja não aceitar (por exemplo, cliente excluído), aparece o motivo, com "Tentar de novo" e "Descartar".
   - Segurança: a cópia não leva o financeiro nem o preço de custo, vale 7 dias sem internet e é apagada ao sair ou quando a sessão termina (inclusive "desconectar aparelho"). Sair com itens não enviados pergunta antes.
-- Depois do lançamento: relatórios, sino de notificações, Asaas e cupons.
+- **Três planos, mensal ou anual** (28/09).
+  - Básico: até 3 pessoas (o dono e mais 2), com Google Agenda e tudo do dia a dia. R$ 79,90 por mês ou R$ 799 por ano.
+  - Profissional: até 8 pessoas, com Metas e Relatórios em PDF. R$ 129,90 por mês ou R$ 1.299 por ano.
+  - Pro: pessoas sem limite, WhatsApp automático, IA, estoque pela nota fiscal e suporte prioritário. R$ 199,90 ou R$ 1.999. Aparece como "Em breve" e não é vendido até ficar pronto.
+  - Anual: 12 meses pelo preço de 10. A anuidade paga cobre 12 meses (pago até, fim do acesso ao cancelar e a próxima cobrança seguem isso).
+  - Meu plano: "Trocar de plano" mostra os três lado a lado, em mensal ou anual. A troca vale na hora e a próxima cobrança já vem com o valor novo. Com a anuidade paga correndo, a troca é com a equipe Nortiq (acerto da diferença).
+  - Equipe: mostra "2 de 3 pessoas do plano Básico". Convites pendentes contam. Cheio, o botão de convidar fica bloqueado e aparece "Ver os planos".
+  - Metas e Relatórios aparecem no menu com a etiqueta "Profissional"; no Básico, abrem uma explicação com "Ver os planos".
+  - Painel Nortiq: a nova conta escolhe o plano e mensal ou anual; a lista e a ficha mostram o plano.
+- Depois do lançamento: sino de notificações, Asaas (cartão recorrente) e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
