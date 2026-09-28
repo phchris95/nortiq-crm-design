@@ -147,7 +147,12 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - A ficha do orçamento ganhou o quadro **Histórico do orçamento** (quem mudou a etapa e quando).
   - No funil, a objeção não aparece mais nos cartões de venda fechada, instalação agendada e concluído.
   - No celular, a barra de etapas mostra "Etapa 4 de 6 · Venda fechada" em vez dos seis nomes apertados.
-- Próximas partes a ligar: estoque, tarefas, agenda (com equipamentos e manutenções), faturamento, metas, relatórios, configurações e equipe, o Início com os números do dia e o painel da administração.
+- **Estoque, Tarefas e Agenda** ligados ao banco (28/09), com os equipamentos e a manutenção na ficha do cliente e a importação de planilha (Excel .xlsx ou CSV).
+  - A planilha é lida no próprio navegador (sem serviço de fora). O formato antigo do Excel (.xls) pede para salvar como .xlsx ou CSV.
+  - Fichas de cliente e orçamento ganharam "Nova tarefa" e "Agendar"; o orçamento mostra a instalação marcada.
+  - A Agenda tem as visões Semana e Mês; a visão Ano ficou para depois.
+  - Fica para depois: ligação com o Google Agenda (trazer e enviar compromissos).
+- Próximas partes a ligar: faturamento, metas, relatórios, configurações e equipe, o Início com os números do dia e o painel da administração.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
