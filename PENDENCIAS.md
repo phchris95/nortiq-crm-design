@@ -173,7 +173,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - A Nortiq também encerra e reativa a assinatura (a loja é orientada a falar com a equipe quando tem mensalidade atrasada ou quando o acesso já acabou). Mensalidade atrasada acompanha a loja na assinatura nova.
   - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Receitas, Notificações e Plano do painel continuam "em construção".
 - **Pronto para publicar** (28/09): e-mail pelo Resend (ou Brevo), banco preparado sozinho a cada deploy (papéis com senhas geradas pelo Render, migrations), rotina diária agendada e o passo a passo no README do repositório da API.
-  - Falta fazer (Philipe): domínio no Registro.br com DNS no Cloudflare, projeto no Neon (Virgínia), conta no Resend com o domínio verificado e o Blueprint no Render. Depois: primeiro administrador pelo Shell do Render e a conferência no ar.
+  - Falta fazer (pela equipe Nortiq): domínio no Registro.br com DNS no Cloudflare, projeto no Neon (Virgínia), conta no Resend com o domínio verificado e o Blueprint no Render. Depois: primeiro administrador pelo Shell do Render e a conferência no ar.
 - Depois do lançamento: metas, relatórios, sino de notificações, Google Agenda, Asaas e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
