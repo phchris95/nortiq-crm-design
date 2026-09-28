@@ -189,6 +189,12 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Desconectar: o Nortiq para de enviar e de mostrar; o que já foi enviado continua no Google. Se a pessoa tirar a permissão lá no Google, a conexão cai e a tela avisa para conectar de novo.
   - Diferença do protótipo: no protótipo era "a conta Google da loja"; aqui cada pessoa liga a sua (o lembrete chega no celular de quem vai fazer).
   - Falta fazer (pela equipe Nortiq): o projeto no Google Cloud e a verificação do Google (passo 7 do README da API). Sem isso, a opção simplesmente não aparece para as lojas.
+- **Uso sem internet** (28/09).
+  - O sistema da loja instala como aplicativo no celular e no computador (Android: "Instalar app"; iPhone: "Adicionar à Tela de Início"; computador: ícone na barra de endereço) e abre sem internet.
+  - O aparelho guarda uma cópia do estoque, dos clientes (com endereço e equipamentos), da agenda (do mês passado até 4 meses à frente) e das tarefas pendentes. A cópia se atualiza sozinha depois de cada mudança, ao abrir e a cada 15 minutos; dá para atualizar na hora pelo Perfil.
+  - Sem internet: essas telas e o Início abrem com a cópia, e o topo avisa "Sem internet: mostrando os dados de hoje, 14:32". Financeiro, metas, vendas e edições precisam de internet (e avisam).
+  - Agendamento e tarefa criados sem internet ficam "aguardando internet" e vão sozinhos quando a conexão volta, uma vez só (a chave do aparelho impede duplicar). Se a loja não aceitar (por exemplo, cliente excluído), aparece o motivo, com "Tentar de novo" e "Descartar".
+  - Segurança: a cópia não leva o financeiro nem o preço de custo, vale 7 dias sem internet e é apagada ao sair ou quando a sessão termina (inclusive "desconectar aparelho"). Sair com itens não enviados pergunta antes.
 - Depois do lançamento: relatórios, sino de notificações, Asaas e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
