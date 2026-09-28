@@ -188,6 +188,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Os compromissos do Google aparecem em cinza na Agenda do CRM, só para ver (com o nome, ou só "Ocupado"). O novo agendamento avisa quando bate com um compromisso do Google.
   - Desconectar: o Nortiq para de enviar e de mostrar; o que já foi enviado continua no Google. Se a pessoa tirar a permissão lá no Google, a conexão cai e a tela avisa para conectar de novo.
   - Diferença do protótipo: no protótipo era "a conta Google da loja"; aqui cada pessoa liga a sua (o lembrete chega no celular de quem vai fazer).
+  - Técnico ligado a uma pessoa da equipe (Agenda › Técnicos › Editar › "Pessoa da equipe"): os agendamentos dele marcados para o Google vão para o Google Agenda dessa pessoa, com lembrete no celular dela. Sem pessoa ligada (ou sem Google conectado), vão para quem ligou o envio. Trocar a pessoa move os agendamentos de agenda sozinho.
   - Falta fazer (pela equipe Nortiq): o projeto no Google Cloud e a verificação do Google (passo 7 do README da API). Sem isso, a opção simplesmente não aparece para as lojas.
 - **Uso sem internet** (28/09).
   - O sistema da loja instala como aplicativo no celular e no computador (Android: "Instalar app"; iPhone: "Adicionar à Tela de Início"; computador: ícone na barra de endereço) e abre sem internet.
