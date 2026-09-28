@@ -152,7 +152,13 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Fichas de cliente e orçamento ganharam "Nova tarefa" e "Agendar"; o orçamento mostra a instalação marcada.
   - A Agenda tem as visões Semana e Mês; a visão Ano ficou para depois.
   - Fica para depois: ligação com o Google Agenda (trazer e enviar compromissos).
-- Próximas partes a ligar: faturamento, metas, relatórios, configurações e equipe, o Início com os números do dia e o painel da administração.
+- **Faturamento e Início** ligados ao banco (28/09).
+  - Faturamento: números do mês pelo caixa (o que entrou e saiu de fato, com os estornos descontados), lançamentos com abas e busca, recebimento parcial ou total, estorno e cancelamento com motivo.
+  - A venda fechada entra sozinha no Faturamento, ainda sem data de vencimento; aparece como "sem data" até alguém editar.
+  - Reabrir uma venda com dinheiro recebido: o dono escolhe manter o lançamento ou registrar o estorno (como no protótipo); o funcionário vê que é decisão do dono.
+  - Início: números do dia, manutenções e garantias vencendo (com "Avisar" pelo WhatsApp), meta do mês (quando houver), instalações da semana, funil e retornos de hoje. Loja nova vê os primeiros passos (produtos, primeiro cliente, primeiro orçamento); os passos de dados da loja, equipe e meta entram junto com as Configurações e as Metas.
+  - Fica para depois: o sino de notificações e o "Conversão do mês" comparado ao mês anterior.
+- Próximas partes a ligar: configurações e equipe, Meu plano e o painel da administração; depois do lançamento, metas e relatórios.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
