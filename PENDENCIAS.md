@@ -217,7 +217,13 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Mensagens prontas (até 5) com {empresa} e {cidade}. "Enviar mensagem" mostra o texto já com o nome e a cidade da empresa (dá para ajustar) e abre o WhatsApp Web na conversa; você só aperta enviar. O lead vira "Contatado" com a data do último contato.
   - Falta fazer (pela equipe Nortiq): ativar a Places API (New) no Google Cloud e colocar a chave no Render (passo 7 do README da API). O Google cobra por busca depois da cota gratuita; o painel limita a 200 buscas por dia.
   - Depois: envio automático pela API oficial do WhatsApp (o ambiente já está preparado).
-- Depois do lançamento: sino de notificações, Asaas (cartão recorrente e cobrança internacional) e cupons.
+- **Site nortiq.com.br** (29/09), na pasta `site/` do repositório da API, publicado pelo Render como site estático.
+  - Vitrine com as telas do sistema, destaques, funcionalidades, planos (mensal e anual, Pro "em breve"), como começar, dúvidas e WhatsApp com mensagem pronta.
+  - **Entrar**: a pessoa digita o endereço da loja e vai direto para `sualoja.nortiq.com.br/entrar` (o navegador lembra o último endereço).
+  - Páginas de **privacidade** e **termos de uso**, exigidas pelo Google para liberar o Google Agenda.
+  - Falta preencher (antes de publicar): razão social, CNPJ e cidade do foro (marcados em amarelo nas duas páginas) e criar o e-mail `contato@nortiq.com.br`.
+- **Tudo o que falta é externo** (passo a passo no README da API): domínio no Registro.br com DNS no Cloudflare, banco no Neon, e-mail no Resend, Blueprint no Render (lojas, administração, rotina diária e site), primeiro administrador, projeto no Google Cloud (Google Agenda e Places API) e a verificação do Google.
+- Depois do lançamento: sino de notificações, Asaas (cartão recorrente e cobrança internacional), cupons, WhatsApp oficial na prospecção e a exclusão automática dos dados 90 dias depois do fim do acesso (hoje a exclusão é feita a pedido).
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
