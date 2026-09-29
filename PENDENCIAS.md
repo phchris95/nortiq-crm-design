@@ -171,7 +171,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Nova conta: loja, dono e cobrança direta (Pix, transferência, dinheiro). "Já recebi" registra a primeira mensalidade e manda o convite do dono na hora; "vou receber depois" deixa a conta aguardando, e o convite sai quando o pagamento for registrado. O dia do vencimento é o de hoje (até 28), ou outro escolhido.
   - Ficha da conta com as abas Resumo (andamento: cadastrada, pagamento, convite, senha criada), Mensalidades (registrar e estornar com motivo), Acesso e suporte (quem entra na loja e as ações de atendimento) e Atendimentos (histórico).
   - A Nortiq também encerra e reativa a assinatura (a loja é orientada a falar com a equipe quando tem mensalidade atrasada ou quando o acesso já acabou). Mensalidade atrasada acompanha a loja na assinatura nova.
-  - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Receitas, Notificações e Plano do painel continuam "em construção".
+  - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Receitas e Plano do painel continuam "em construção" (Notificações ficou pronto em 29/09).
 - **Pronto para publicar** (28/09): e-mail pelo Resend (ou Brevo), banco preparado sozinho a cada deploy (papéis com senhas geradas pelo Render, migrations), rotina diária agendada e o passo a passo no README do repositório da API.
   - Falta fazer (pela equipe Nortiq): domínio no Registro.br com DNS no Cloudflare, projeto no Neon (Virgínia), conta no Resend com o domínio verificado e o Blueprint no Render. Depois: primeiro administrador pelo Shell do Render e a conferência no ar.
 - **Metas** ligadas ao banco (28/09).
@@ -222,8 +222,18 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - **Entrar**: a pessoa digita o endereço da loja e vai direto para `sualoja.nortiq.com.br/entrar` (o navegador lembra o último endereço).
   - Páginas de **privacidade** e **termos de uso**, exigidas pelo Google para liberar o Google Agenda.
   - Falta preencher (antes de publicar): razão social, CNPJ e cidade do foro (marcados em amarelo nas duas páginas) e criar o e-mail `contato@nortiq.com.br`.
+- **Sino de notificações** (29/09), no topo do sistema da loja.
+  - O sistema avisa sozinho, sem repetir: agenda de amanhã ("Instalação amanhã às 08:00"), tarefa do dia (para o responsável), orçamento enviado há 3 dias sem resposta, manutenção vencendo em até 7 dias, garantia terminando em até 15 dias, produto que zerou ou ficou abaixo do mínimo depois de uma saída, e a mensalidade (disponível, vence hoje, em atraso, pagamento recebido).
+  - Cada pessoa vê só a parte do sistema que abre: a mensalidade só o dono vê; a tarefa, só o responsável. A leitura é de cada pessoa. Abas Todas e Não lidas, "Marcar todas como lidas"; tocar abre o orçamento, o cliente ou a tela certa.
+  - Painel Nortiq › Notificações: enviar um aviso para todas as lojas, só as em atraso ou as escolhidas, com a tela que abre ao tocar, prévia e e-mail opcional para o dono. A lista das enviadas mostra quantas lojas já abriram. Cobrança abre sempre Meu plano e só o dono vê.
+- **Exclusão dos dados 90 dias depois do fim do acesso** (29/09).
+  - Com a assinatura encerrada (cancelada e passado o período pago), só o dono entra, para baixar a cópia dos dados. A tela mostra até quando os dados ficam guardados; o sino e Meu plano também.
+  - A rotina diária manda e-mail ao dono quando o acesso termina, 30 e 7 dias antes, e quando os dados são apagados (uma vez cada).
+  - Passados 90 dias, apaga de vez clientes, orçamentos, estoque, agenda, tarefas, financeiro, metas, notificações, a equipe e o histórico desses dados. Ficam o cadastro da loja, a assinatura, as faturas, os pagamentos, os atendimentos e os registros de acesso.
+  - Painel Nortiq: a conta mostra "dados guardados até" ou "dados apagados em". Reativar uma loja apagada: ela volta vazia, com as listas padrão; é preciso convidar o dono de novo.
+  - Privacidade, termos e dúvidas do site atualizados com essa regra.
 - **Tudo o que falta é externo** (passo a passo no README da API): domínio no Registro.br com DNS no Cloudflare, banco no Neon, e-mail no Resend, Blueprint no Render (lojas, administração, rotina diária e site), primeiro administrador, projeto no Google Cloud (Google Agenda e Places API) e a verificação do Google.
-- Depois do lançamento: sino de notificações, Asaas (cartão recorrente e cobrança internacional), cupons, WhatsApp oficial na prospecção e a exclusão automática dos dados 90 dias depois do fim do acesso (hoje a exclusão é feita a pedido).
+- Depois do lançamento: Asaas (cartão recorrente e cobrança internacional), cupons de parceiros, WhatsApp oficial na prospecção e o plano Pro.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
