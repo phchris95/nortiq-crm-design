@@ -211,7 +211,13 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Cabeçalho com a logo (enviar, trocar ou remover; PNG, JPG ou SVG) e os dados da loja; "Editar dados da loja" leva a Configurações. Observação opcional no rodapé.
   - "Baixar PDF" gera o arquivo A4 no servidor; "Salvar configuração" guarda as seções e a observação.
   - Diferença do protótipo: os dados da empresa são editados em Configurações › Dados da loja (no relatório só a logo).
-- Depois do lançamento: sino de notificações, Asaas (cartão recorrente) e cupons.
+- **Painel Nortiq: Mapa de assinantes e Prospecção** (29/09), só para o administrador principal (quem instalou a administração; os convidados não veem).
+  - Mapa: Brasil por estado e mundo por país, com a cor mais forte onde há mais lojas. Clicar num estado mostra as cidades e as lojas (com link para a ficha). Filtros por situação (ativas, em dia, em atraso, aguardando, todas) e por plano. As lojas passam a ter país (hoje todas do Brasil), pronto para quando a cobrança aceitar outros países.
+  - Prospecção: busca empresas no Google ("loja de aquecedores" em "Taubaté SP"), com telefone, site, endereço, nota e link do Google Maps. "Salvar lead" guarda na lista; a lista tem situação (novo, contatado, interessado, negociando, virou cliente, descartado), anotação e excluir (quando a empresa pede para não ser contatada).
+  - Mensagens prontas (até 5) com {empresa} e {cidade}. "Enviar mensagem" mostra o texto já com o nome e a cidade da empresa (dá para ajustar) e abre o WhatsApp Web na conversa; você só aperta enviar. O lead vira "Contatado" com a data do último contato.
+  - Falta fazer (pela equipe Nortiq): ativar a Places API (New) no Google Cloud e colocar a chave no Render (passo 7 do README da API). O Google cobra por busca depois da cota gratuita; o painel limita a 200 buscas por dia.
+  - Depois: envio automático pela API oficial do WhatsApp (o ambiente já está preparado).
+- Depois do lançamento: sino de notificações, Asaas (cartão recorrente e cobrança internacional) e cupons.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
 O banco recusa estas ações; as telas precisam explicar o motivo e mostrar o caminho. Textos propostos:
