@@ -1746,7 +1746,7 @@
                       </sc-for>
                     </div>
                     <sc-if value="{{ sgTemOutras }}" hint-placeholder-val="{{ true }}">
-                      <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="log-out" onClick="{{ sgSairTodos }}" hint-size="260px,44px">Sair de todos os outros aparelhos</x-import></div>
+                      <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" icon="log-out" onClick="{{ sgSairTodos }}" hint-size="260px,44px">Sair dos outros aparelhos</x-import></div>
                     </sc-if>
                     <sc-if value="{{ sgSoEste }}" hint-placeholder-val="{{ false }}">
                       <span style="font:var(--type-caption); color:var(--text-muted)">Só este aparelho está conectado.</span>
@@ -2214,6 +2214,34 @@
                 </div>
                 <a href="#" onClick="{{ goAContas }}" style="font:var(--type-caption); font-weight:600">Todas as contas</a>
               </div>
+              <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+                <sc-for list="{{ charges }}" as="c" hint-placeholder-count="6">
+                  <div style="display:grid; gap:8px; padding:14px 16px; border-bottom:1px solid var(--border-subtle)">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px">
+                      <div style="display:grid; min-width:0">
+                        <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ c.nome }}</span>
+                        <span style="font:var(--type-caption); color:var(--text-muted)">{{ c.cidade }} · {{ c.fatura }}</span>
+                      </div>
+                      <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong); font-variant-numeric:tabular-nums; white-space:nowrap">{{ c.valor }}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap">
+                      <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Badge" tone="{{ c.tone }}" dot="{{ true }}" size="sm" hint-size="100px,20px">{{ c.status }}</x-import>
+                      <div style="display:flex; justify-content:flex-end">
+                        <sc-if value="{{ c.canRemind }}" hint-placeholder-val="{{ false }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="send" onClick="{{ c.remind }}" hint-size="130px,34px">Reenviar</x-import>
+                        </sc-if>
+                        <sc-if value="{{ c.reminded }}" hint-placeholder-val="{{ false }}">
+                          <span style="font:var(--type-caption); color:var(--text-muted)">Reenviada agora</span>
+                        </sc-if>
+                        <sc-if value="{{ c.canRegistrar }}" hint-placeholder-val="{{ false }}">
+                          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="circle-check" onClick="{{ c.registrar }}" hint-size="180px,34px">Registrar pagamento</x-import>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </sc-if>
+              <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
               <div style="overflow-x:auto">
                 <div style="min-width:720px">
                   <sc-for list="{{ charges }}" as="c" hint-placeholder-count="6">
@@ -2240,6 +2268,7 @@
                   </sc-for>
                 </div>
               </div>
+              </sc-if>
             </x-import>
           </div>
         </sc-if>
