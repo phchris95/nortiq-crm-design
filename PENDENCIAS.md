@@ -171,7 +171,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Nova conta: loja, dono e cobrança direta (Pix, transferência, dinheiro). "Já recebi" registra a primeira mensalidade e manda o convite do dono na hora; "vou receber depois" deixa a conta aguardando, e o convite sai quando o pagamento for registrado. O dia do vencimento é o de hoje (até 28), ou outro escolhido.
   - Ficha da conta com as abas Resumo (andamento: cadastrada, pagamento, convite, senha criada), Mensalidades (registrar e estornar com motivo), Acesso e suporte (quem entra na loja e as ações de atendimento) e Atendimentos (histórico).
   - A Nortiq também encerra e reativa a assinatura (a loja é orientada a falar com a equipe quando tem mensalidade atrasada ou quando o acesso já acabou). Mensalidade atrasada acompanha a loja na assinatura nova.
-  - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Receitas e Plano do painel continuam "em construção" (Notificações ficou pronto em 29/09).
+  - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Plano do painel continua "em construção" (Notificações ficou pronto em 29/09 e Receitas em 01/10).
 - **Pronto para publicar** (28/09): e-mail pelo Resend (ou Brevo), banco preparado sozinho a cada deploy (papéis com senhas geradas pelo Render, migrations), rotina diária agendada e o passo a passo no README do repositório da API.
   - Falta fazer (pela equipe Nortiq): domínio na GoDaddy com DNS e e-mail contato@ no Cloudflare, projeto no Neon (Virgínia), conta no Resend com o domínio verificado e o Blueprint no Render. Depois: primeiro administrador pelo Shell do Render e a conferência no ar.
 - **Metas** ligadas ao banco (28/09).
@@ -237,6 +237,14 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Para cada setor, o dono escolhe o nível em cada parte do sistema: orçamentos, clientes, estoque (consulta sem custo, ou cadastra e movimenta com custo), tarefas, agenda, faturamento, metas e relatórios. Ex.: Vendas confere o estoque para ver o que falta; Estoque e compras mexe no estoque, mas não cria orçamento.
   - Sempre só do dono: excluir orçamentos e clientes, importar planilha, estornar e cancelar no faturamento, definir metas, a equipe, Meu plano e os dados da loja.
   - A lista da equipe fica separada por setor, com a cor de cada um; convite e "Papel e setor" mostram o que a pessoa vai ver. A mudança vale na próxima tela que a pessoa abrir; o topo mostra o setor de quem está usando.
+- **Receitas no painel Nortiq** (01/10), igual ao protótipo.
+  - Números do mês: recebido (CRM e serviços), a receber (com as vencidas), receita mensal recorrente (assinaturas e contratos) e contratos ativos; e de onde vem o dinheiro no mês.
+  - Nova receita: cliente (loja do CRM ou cliente de fora, cadastrado ali mesmo), serviço e como cobrar: uma vez, em parcelas (o total é dividido sem perder centavo, um mês depois do outro) ou todo mês por contrato (a cobrança de cada mês entra sozinha, pela rotina diária e ao abrir a tela, sem repetir). "Já recebi" registra a receita, ou a primeira parcela.
+  - Cada receita abre com o contato do cliente, o histórico e as ações: registrar recebimento (sempre o valor todo; dia e forma), estornar e cancelar com motivo. O contrato mostra as cobranças dele e pode ser encerrado com motivo. Nada é apagado.
+  - Serviços oferecidos: acrescentar e desligar (desligado sai de Nova receita; o que já foi lançado continua).
+  - Ficha da conta assinante: aba Serviços com o que a Nortiq vendeu para aquela loja e "Nova receita".
+  - No celular tudo vira lista: nada rola para o lado (conferido no teste automático).
+  - Fica para depois: cobrar pelo Asaas (link de pagamento) em vez de só registrar, e editar valor ou vencimento de uma receita a receber.
 - **Protótipo atualizado** (01/10) com o que o sistema ganhou depois de 27/09: setores da equipe, os três planos (Trocar de plano e a etiqueta "Profissional" no Básico), Google Agenda e Usar sem internet no Perfil, e, no painel Nortiq, Planos, Mapa de assinantes e Prospecção.
 - **Tudo o que falta é externo** (passo a passo no README da API): domínio na GoDaddy com DNS e e-mail contato@ no Cloudflare, banco no Neon, e-mail no Resend, Blueprint no Render (lojas, administração, rotina diária e site), primeiro administrador, projeto no Google Cloud (Google Agenda e Places API) e a verificação do Google.
 - Depois do lançamento: Asaas (cartão recorrente e cobrança internacional), cupons de parceiros, WhatsApp oficial na prospecção e o plano Pro.
