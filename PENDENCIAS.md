@@ -173,7 +173,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - A Nortiq também encerra e reativa a assinatura (a loja é orientada a falar com a equipe quando tem mensalidade atrasada ou quando o acesso já acabou). Mensalidade atrasada acompanha a loja na assinatura nova.
   - Diferenças do protótipo: sem cupom de parceiro, sem "Alterar forma de cobrança" e sem Asaas por enquanto (todas as lojas começam no Pix direto). Receitas e Plano do painel continuam "em construção" (Notificações ficou pronto em 29/09).
 - **Pronto para publicar** (28/09): e-mail pelo Resend (ou Brevo), banco preparado sozinho a cada deploy (papéis com senhas geradas pelo Render, migrations), rotina diária agendada e o passo a passo no README do repositório da API.
-  - Falta fazer (pela equipe Nortiq): domínio no Registro.br com DNS no Cloudflare, projeto no Neon (Virgínia), conta no Resend com o domínio verificado e o Blueprint no Render. Depois: primeiro administrador pelo Shell do Render e a conferência no ar.
+  - Falta fazer (pela equipe Nortiq): domínio na GoDaddy com DNS e e-mail contato@ no Cloudflare, projeto no Neon (Virgínia), conta no Resend com o domínio verificado e o Blueprint no Render. Depois: primeiro administrador pelo Shell do Render e a conferência no ar.
 - **Metas** ligadas ao banco (28/09).
   - Meta do mês e do próximo (só o dono). Conta o dinheiro que entrou no caixa no mês (recebimentos do Faturamento, menos os estornos), como os números do Faturamento.
   - Mostra quanto já entrou, a porcentagem, quanto falta, os dias que sobram no mês (contando hoje, sem os domingos) e quanto precisa entrar por dia.
@@ -238,7 +238,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Sempre só do dono: excluir orçamentos e clientes, importar planilha, estornar e cancelar no faturamento, definir metas, a equipe, Meu plano e os dados da loja.
   - A lista da equipe fica separada por setor, com a cor de cada um; convite e "Papel e setor" mostram o que a pessoa vai ver. A mudança vale na próxima tela que a pessoa abrir; o topo mostra o setor de quem está usando.
 - **Protótipo atualizado** (01/10) com o que o sistema ganhou depois de 27/09: setores da equipe, os três planos (Trocar de plano e a etiqueta "Profissional" no Básico), Google Agenda e Usar sem internet no Perfil, e, no painel Nortiq, Planos, Mapa de assinantes e Prospecção.
-- **Tudo o que falta é externo** (passo a passo no README da API): domínio no Registro.br com DNS no Cloudflare, banco no Neon, e-mail no Resend, Blueprint no Render (lojas, administração, rotina diária e site), primeiro administrador, projeto no Google Cloud (Google Agenda e Places API) e a verificação do Google.
+- **Tudo o que falta é externo** (passo a passo no README da API): domínio na GoDaddy com DNS e e-mail contato@ no Cloudflare, banco no Neon, e-mail no Resend, Blueprint no Render (lojas, administração, rotina diária e site), primeiro administrador, projeto no Google Cloud (Google Agenda e Places API) e a verificação do Google.
 - Depois do lançamento: Asaas (cartão recorrente e cobrança internacional), cupons de parceiros, WhatsApp oficial na prospecção e o plano Pro.
 
 ### Mensagens das travas de exclusão (decidido em 26/09)
