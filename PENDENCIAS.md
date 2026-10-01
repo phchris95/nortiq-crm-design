@@ -215,7 +215,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Mapa: Brasil por estado e mundo por país, com a cor mais forte onde há mais lojas. Clicar num estado mostra as cidades e as lojas (com link para a ficha). Filtros por situação (ativas, em dia, em atraso, aguardando, todas) e por plano. As lojas passam a ter país (hoje todas do Brasil), pronto para quando a cobrança aceitar outros países.
   - Prospecção: busca empresas no Google ("loja de aquecedores" em "Taubaté SP"), com telefone, site, endereço, nota e link do Google Maps. "Salvar lead" guarda na lista; a lista tem situação (novo, contatado, interessado, negociando, virou cliente, descartado), anotação e excluir (quando a empresa pede para não ser contatada).
   - Mensagens prontas (até 5) com {empresa} e {cidade}. "Enviar mensagem" mostra o texto já com o nome e a cidade da empresa (dá para ajustar) e abre o WhatsApp Web na conversa; você só aperta enviar. O lead vira "Contatado" com a data do último contato.
-  - Falta fazer (pela equipe Nortiq): ativar a Places API (New) no Google Cloud e colocar a chave no Render (passo 7 do README da API). O Google cobra por busca depois da cota gratuita; o painel limita a 200 buscas por dia.
+  - Falta fazer (pela equipe Nortiq): ativar a Places API (New) no Google Cloud e colocar a chave no Render (passo 7 do README da API). O Google cobra por busca depois da cota gratuita; o painel limita a 200 buscas por dia e para em 900 no mês (abaixo da cota grátis), sem chamar o Google.
   - Depois: envio automático pela API oficial do WhatsApp (o ambiente já está preparado).
 - **Site nortiq.com.br** (29/09), na pasta `site/` do repositório da API, publicado pelo Render como site estático.
   - Vitrine com as telas do sistema, destaques, funcionalidades, planos (mensal e anual, Pro "em breve"), como começar, dúvidas e WhatsApp com mensagem pronta.
@@ -232,6 +232,11 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Passados 90 dias, apaga de vez clientes, orçamentos, estoque, agenda, tarefas, financeiro, metas, notificações, a equipe e o histórico desses dados. Ficam o cadastro da loja, a assinatura, as faturas, os pagamentos, os atendimentos e os registros de acesso.
   - Painel Nortiq: a conta mostra "dados guardados até" ou "dados apagados em". Reativar uma loja apagada: ela volta vazia, com as listas padrão; é preciso convidar o dono de novo.
   - Privacidade, termos e dúvidas do site atualizados com essa regra.
+- **Setores da equipe** (01/10), em Configurações › Equipe.
+  - Cada funcionário fica num setor, com uma cor. A loja começa com Vendas (azul), Técnicos de campo (verde), Estoque e compras (laranja) e Administrativo (roxo); o dono muda, cria outros (até 12) e exclui os vazios.
+  - Para cada setor, o dono escolhe o nível em cada parte do sistema: orçamentos, clientes, estoque (consulta sem custo, ou cadastra e movimenta com custo), tarefas, agenda, faturamento, metas e relatórios. Ex.: Vendas confere o estoque para ver o que falta; Estoque e compras mexe no estoque, mas não cria orçamento.
+  - Sempre só do dono: excluir orçamentos e clientes, importar planilha, estornar e cancelar no faturamento, definir metas, a equipe, Meu plano e os dados da loja.
+  - A lista da equipe fica separada por setor, com a cor de cada um; convite e "Papel e setor" mostram o que a pessoa vai ver. A mudança vale na próxima tela que a pessoa abrir; o topo mostra o setor de quem está usando.
 - **Tudo o que falta é externo** (passo a passo no README da API): domínio no Registro.br com DNS no Cloudflare, banco no Neon, e-mail no Resend, Blueprint no Render (lojas, administração, rotina diária e site), primeiro administrador, projeto no Google Cloud (Google Agenda e Places API) e a verificação do Google.
 - Depois do lançamento: Asaas (cartão recorrente e cobrança internacional), cupons de parceiros, WhatsApp oficial na prospecção e o plano Pro.
 
