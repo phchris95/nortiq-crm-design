@@ -237,6 +237,7 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Para cada setor, o dono escolhe o nível em cada parte do sistema: orçamentos, clientes, estoque (consulta sem custo, ou cadastra e movimenta com custo), tarefas, agenda, faturamento, metas e relatórios. Ex.: Vendas confere o estoque para ver o que falta; Estoque e compras mexe no estoque, mas não cria orçamento.
   - Sempre só do dono: excluir orçamentos e clientes, importar planilha, estornar e cancelar no faturamento, definir metas, a equipe, Meu plano e os dados da loja.
   - A lista da equipe fica separada por setor, com a cor de cada um; convite e "Papel e setor" mostram o que a pessoa vai ver. A mudança vale na próxima tela que a pessoa abrir; o topo mostra o setor de quem está usando.
+- **Protótipo atualizado** (01/10) com o que o sistema ganhou depois de 27/09: setores da equipe, os três planos (Trocar de plano e a etiqueta "Profissional" no Básico), Google Agenda e Usar sem internet no Perfil, e, no painel Nortiq, Planos, Mapa de assinantes e Prospecção.
 - **Tudo o que falta é externo** (passo a passo no README da API): domínio no Registro.br com DNS no Cloudflare, banco no Neon, e-mail no Resend, Blueprint no Render (lojas, administração, rotina diária e site), primeiro administrador, projeto no Google Cloud (Google Agenda e Places API) e a verificação do Google.
 - Depois do lançamento: Asaas (cartão recorrente e cobrança internacional), cupons de parceiros, WhatsApp oficial na prospecção e o plano Pro.
 
