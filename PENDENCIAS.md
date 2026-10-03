@@ -28,7 +28,7 @@ Para ver cada situação no protótipo, use o painel "Protótipo · ver outras s
 
 ## Etapa 3 do design: login da administração Nortiq (feito em 26/09)
 
-- **Endereço próprio** (admin.nortiq.com.br). O link "Equipe Nortiq? Acessar a administração" saiu do login das lojas; no protótipo, o atalho fica no quadro "Protótipo · ver outras situações".
+- **Endereço próprio** (admin.nortiqtec.com.br). O link "Equipe Nortiq? Acessar a administração" saiu do login das lojas; no protótipo, o atalho fica no quadro "Protótipo · ver outras situações".
 - **Entrada em duas etapas:** e-mail e senha, depois o código de 6 números do aplicativo autenticador do celular (Google Authenticator ou Microsoft Authenticator). Perdeu o celular? Entra com um dos 10 códigos de recuperação, e cada um funciona uma vez.
 - **Primeiro acesso pelo convite** (3 passos): criar a senha (pelo menos 12 caracteres e 1 número), ativar o código do celular pelo QR code e guardar os códigos de recuperação.
 - **Esqueci minha senha** da administração, com mensagem que não revela se o e-mail existe. O código do celular continua sendo pedido depois da senha nova.
@@ -217,11 +217,11 @@ Com isso, todo o desenho da primeira versão está pronto. O próximo passo é a
   - Mensagens prontas (até 5) com {empresa} e {cidade}. "Enviar mensagem" mostra o texto já com o nome e a cidade da empresa (dá para ajustar) e abre o WhatsApp Web na conversa; você só aperta enviar. O lead vira "Contatado" com a data do último contato.
   - Falta fazer (pela equipe Nortiq): ativar a Places API (New) no Google Cloud e colocar a chave no Render (passo 7 do README da API). O Google cobra por busca depois da cota gratuita; o painel limita a 200 buscas por dia e para em 900 no mês (abaixo da cota grátis), sem chamar o Google.
   - Depois: envio automático pela API oficial do WhatsApp (o ambiente já está preparado).
-- **Site nortiq.com.br** (29/09), na pasta `site/` do repositório da API, publicado pelo Render como site estático.
+- **Site nortiqtec.com.br** (29/09), na pasta `site/` do repositório da API, publicado pelo Render como site estático.
   - Vitrine com as telas do sistema, destaques, funcionalidades, planos (mensal e anual, Pro "em breve"), como começar, dúvidas e WhatsApp com mensagem pronta.
-  - **Entrar**: a pessoa digita o endereço da loja e vai direto para `sualoja.nortiq.com.br/entrar` (o navegador lembra o último endereço).
+  - **Entrar**: a pessoa digita o endereço da loja e vai direto para `sualoja.nortiqtec.com.br/entrar` (o navegador lembra o último endereço).
   - Páginas de **privacidade** e **termos de uso**, exigidas pelo Google para liberar o Google Agenda.
-  - Falta preencher (antes de publicar): razão social, CNPJ e cidade do foro (marcados em amarelo nas duas páginas) e criar o e-mail `contato@nortiq.com.br`.
+  - Falta preencher (antes de publicar): razão social, CNPJ e cidade do foro (marcados em amarelo nas duas páginas) e criar o e-mail `contato@nortiqtec.com.br`.
 - **Sino de notificações** (29/09), no topo do sistema da loja.
   - O sistema avisa sozinho, sem repetir: agenda de amanhã ("Instalação amanhã às 08:00"), tarefa do dia (para o responsável), orçamento enviado há 3 dias sem resposta, manutenção vencendo em até 7 dias, garantia terminando em até 15 dias, produto que zerou ou ficou abaixo do mínimo depois de uma saída, e a mensalidade (disponível, vence hoje, em atraso, pagamento recebido).
   - Cada pessoa vê só a parte do sistema que abre: a mensalidade só o dono vê; a tarefa, só o responsável. A leitura é de cada pessoa. Abas Todas e Não lidas, "Marcar todas como lidas"; tocar abre o orçamento, o cliente ou a tela certa.

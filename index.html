@@ -48,7 +48,7 @@
               <span>{{ loginBanner.txt }}</span>
             </div>
           </sc-if>
-          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="{{ loginSlug }}" suffix=".nortiq.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+          <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="{{ loginSlug }}" suffix=".nortiqtec.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="E-mail" value="{{ loginEmail }}" icon="mail" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Senha" type="password" value="nortiq2026" icon="lock" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <a href="#" onClick="{{ goEsqueci }}" style="justify-self:end; margin-top:-8px; font:var(--type-caption); font-weight:600">Esqueci minha senha</a>
@@ -62,7 +62,7 @@
               <span style="font:var(--type-title); color:var(--text-strong)">Qual é o endereço da sua loja?</span>
               <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">É o endereço que chegou no e-mail de boas-vindas. Depois do primeiro acesso, o navegador lembra.</span>
             </div>
-            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="site-slug" label="Endereço da loja" value="{{ siteSlug }}" onChange="{{ onSiteSlug }}" error="{{ siteErr }}" suffix=".nortiq.com.br" placeholder="nomedaloja" auto-complete="off" full-width="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="site-slug" label="Endereço da loja" value="{{ siteSlug }}" onChange="{{ onSiteSlug }}" error="{{ siteErr }}" suffix=".nortiqtec.com.br" placeholder="nomedaloja" auto-complete="off" full-width="{{ true }}" hint-size="100%,70px"></x-import>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" onClick="{{ irLoja }}" hint-size="100%,52px">Continuar</x-import>
             <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Não sabe o endereço? Pergunte ao dono da loja. Se você é o dono, procure o e-mail "Sua conta Nortiq está pronta".</span>
           </div>
@@ -98,7 +98,7 @@
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-assin" label="Assinatura da loja" options="{{ assinDemoOptions }}" value="{{ assinDemo }}" onChange="{{ onAssinDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Select" id="demo-cobr" label="Como a loja paga" options="{{ cobrDemoOptions }}" value="{{ cobrDemo }}" onChange="{{ onCobrDemo }}" size="sm" full-width="{{ true }}" hint-size="100%,60px"></x-import>
         <div style="display:grid; gap:6px; padding-top:10px; border-top:1px dashed var(--border-default)">
-          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">A equipe Nortiq entra por outro endereço (admin.nortiq.com.br), que não aparece para as lojas.</span>
+          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">A equipe Nortiq entra por outro endereço (admin.nortiqtec.com.br), que não aparece para as lojas.</span>
           <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" variant="secondary" size="sm" icon="shield-check" onClick="{{ irLoginAdmin }}" hint-size="240px,34px">Ir para o login da administração</x-import></div>
         </div>
       </div>
@@ -117,7 +117,7 @@
         <div style="display:grid; gap:16px">
           <div style="display:grid; gap:4px">
             <span style="font:var(--type-title); color:var(--text-strong)">Crie sua senha</span>
-            <span style="font:var(--type-caption); color:var(--text-muted)">{{ sn.loja }} · {{ sn.slug }}.nortiq.com.br</span>
+            <span style="font:var(--type-caption); color:var(--text-muted)">{{ sn.loja }} · {{ sn.slug }}.nortiqtec.com.br</span>
           </div>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="sn-email" label="E-mail de acesso" value="{{ sn.email }}" icon="mail" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="sn-pw1" label="Nova senha" type="password" value="{{ sn.pw1 }}" onChange="{{ sn.onPw1 }}" icon="lock" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
@@ -144,7 +144,7 @@
   </div>
 </sc-if>
 
-<!-- LOGIN DA ADMINISTRAÇÃO NORTIQ (admin.nortiq.com.br) -->
+<!-- LOGIN DA ADMINISTRAÇÃO NORTIQ (admin.nortiqtec.com.br) -->
 <sc-if value="{{ isALogin }}" hint-placeholder-val="{{ false }}">
   <div style="min-height:100vh; display:grid; place-items:center; padding:24px 16px; background:var(--surface-app); font-family:var(--font-sans)">
     <div style="width:100%; max-width:440px; display:grid; gap:24px">
@@ -153,7 +153,7 @@
           <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy-500)"><img src="logo.png" alt="" width="32" height="32" style="display:block"></span>
           <span style="font-family:var(--font-display); font-weight:700; font-size:26px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
         </div>
-        <span style="display:inline-flex; align-items:center; gap:6px; font:var(--type-caption); font-weight:600; color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 14 }}" hint-size="14px,14px"></x-import>Administração · admin.nortiq.com.br</span>
+        <span style="display:inline-flex; align-items:center; gap:6px; font:var(--type-caption); font-weight:600; color:var(--text-muted)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="shield-check" size="{{ 14 }}" hint-size="14px,14px"></x-import>Administração · admin.nortiqtec.com.br</span>
       </div>
       <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Card" padding="{{ 28 }}" hint-size="100%,420px">
         <div style="display:grid; gap:18px">
@@ -303,7 +303,7 @@
               <span style="font:var(--type-title); color:var(--text-strong)">Esqueceu a senha?</span>
               <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.5">Informe o e-mail que você usa para entrar. Vamos enviar um link para criar uma nova senha.</span>
             </div>
-            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="{{ loginSlug }}" suffix=".nortiq.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
+            <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" value="{{ loginSlug }}" suffix=".nortiqtec.com.br" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rs-email" label="E-mail" type="email" value="{{ rs.email }}" onChange="{{ rs.onEmail }}" error="{{ rs.emailErr }}" icon="mail" auto-complete="email" full-width="{{ true }}" hint-size="100%,70px"></x-import>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" full-width="{{ true }}" size="lg" loading="{{ rs.enviando }}" onClick="{{ rs.enviar }}" hint-size="100%,52px">{{ rs.enviarTxt }}</x-import>
           </div>
@@ -345,7 +345,7 @@
       <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="E-mail de redefinição" description="Assim a pessoa recebe o link para criar uma nova senha." width="{{ 600 }}" onClose="{{ rs.fecharEmail }}" hint-size="600px,560px">
         <div style="display:grid; gap:0; border-radius:var(--radius-md); box-shadow:var(--ring-card); overflow:hidden">
           <div style="display:grid; gap:4px; padding:12px 16px; background:var(--surface-sunken); font:var(--type-caption); color:var(--text-muted); overflow-wrap:anywhere">
-            <span><span style="font-weight:600; color:var(--text-body)">De:</span> Nortiq &lt;nao-responda@nortiq.com.br&gt;</span>
+            <span><span style="font-weight:600; color:var(--text-body)">De:</span> Nortiq &lt;nao-responda@nortiqtec.com.br&gt;</span>
             <span><span style="font-weight:600; color:var(--text-body)">Para:</span> {{ rs.email }}</span>
             <span><span style="font-weight:600; color:var(--text-body)">Assunto:</span> Crie uma nova senha para entrar no Nortiq</span>
           </div>
@@ -355,7 +355,7 @@
               <span style="font-family:var(--font-display); font-weight:700; font-size:18px; letter-spacing:-0.03em; color:var(--text-strong)">Nortiq</span>
             </div>
             <span style="font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--text-strong)">Olá, Rogério</span>
-            <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Recebemos um pedido para criar uma nova senha na conta da <span style="font-weight:600">Casa do Aquecedor</span> ({{ loginSlug }}.nortiq.com.br). Use o botão abaixo.</span>
+            <span style="font:var(--type-body); color:var(--text-body); line-height:1.6">Recebemos um pedido para criar uma nova senha na conta da <span style="font-weight:600">Casa do Aquecedor</span> ({{ loginSlug }}.nortiqtec.com.br). Use o botão abaixo.</span>
             <div>
               <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" size="lg" onClick="{{ rs.abrirLink }}" hint-size="220px,52px">Criar nova senha</x-import>
             </div>
@@ -384,7 +384,7 @@
           <div style="display:grid; gap:16px">
             <div style="display:grid; gap:4px">
               <span style="font:var(--type-title); color:var(--text-strong)">Crie uma nova senha</span>
-              <span style="font:var(--type-caption); color:var(--text-muted)">Casa do Aquecedor · {{ loginSlug }}.nortiq.com.br</span>
+              <span style="font:var(--type-caption); color:var(--text-muted)">Casa do Aquecedor · {{ loginSlug }}.nortiqtec.com.br</span>
             </div>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rd-email" label="E-mail de acesso" value="{{ rs.email }}" icon="mail" full-width="{{ true }}" read-only="{{ true }}" hint-size="100%,70px"></x-import>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="rd-pw1" label="Nova senha" type="password" value="{{ sn.pw1 }}" onChange="{{ sn.onPw1 }}" icon="lock" auto-complete="new-password" full-width="{{ true }}" hint-size="100%,70px"></x-import>
@@ -1853,7 +1853,7 @@
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="CNPJ" default-value="34.218.907/0001-52" full-width="{{ true }}" hint-size="100%,70px"></x-import>
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Instagram" default-value="@casadoaquecedor.sjc" icon="instagram" full-width="{{ true }}" hint-size="100%,70px"></x-import>
                     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço da loja" default-value="Av. Andrômeda, 1.520 · Jardim Satélite · São José dos Campos/SP" full-width="{{ true }}" wrapper-style="{{ fullRow }}" hint-size="100%,70px"></x-import>
-                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço de acesso" value="casadoaquecedor" suffix=".nortiq.com.br" read-only="{{ true }}" hint="Só a sua equipe entra por aqui" full-width="{{ true }}" wrapper-style="{{ fullRow }}" hint-size="100%,90px"></x-import>
+                    <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" label="Endereço de acesso" value="casadoaquecedor" suffix=".nortiqtec.com.br" read-only="{{ true }}" hint="Só a sua equipe entra por aqui" full-width="{{ true }}" wrapper-style="{{ fullRow }}" hint-size="100%,90px"></x-import>
                   </div>
                   <div><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" onClick="{{ saveProfile }}" hint-size="140px,44px">Salvar alterações</x-import></div>
                 </div>
@@ -2297,7 +2297,7 @@
                     <div style="display:flex; justify-content:space-between; align-items:center; gap:10px">
                       <div style="display:grid; min-width:0">
                         <span style="font:var(--type-ui); font-weight:600; color:var(--text-strong)">{{ a.nome }}</span>
-                        <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle); overflow:hidden; text-overflow:ellipsis">{{ a.slug }}.nortiq.com.br</span>
+                        <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle); overflow:hidden; text-overflow:ellipsis">{{ a.slug }}.nortiqtec.com.br</span>
                       </div>
                       <span style="display:inline-flex; color:var(--text-subtle)"><x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Icon" name="chevron-right" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
                     </div>
@@ -2321,7 +2321,7 @@
                     <div onClick="{{ a.open }}" style="display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) minmax(0,1.1fr) 72px minmax(0,0.9fr) minmax(190px,1.4fr); gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border-subtle); font:var(--type-ui); min-height:44px; cursor:pointer" style-hover="background:var(--surface-hover)">
                       <div style="display:grid; min-width:0">
                         <span style="font-weight:600; color:var(--text-strong)">{{ a.nome }}</span>
-                        <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ a.slug }}.nortiq.com.br</span>
+                        <span style="font:var(--type-mono); font-size:12px; color:var(--text-subtle)">{{ a.slug }}.nortiqtec.com.br</span>
                       </div>
                       <span style="color:var(--text-body)">{{ a.cidade }}</span>
                       <div style="display:grid; gap:2px; min-width:0">
@@ -3365,7 +3365,7 @@
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="na-doc" label="CNPJ ou CPF" value="{{ na.doc }}" onChange="{{ naOn.doc }}" error="{{ naErr.doc }}" hint="Necessário para gerar a cobrança" full-width="{{ true }}" hint-size="100%,90px"></x-import>
           <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="na-cidade" label="Cidade/UF" placeholder="Ex.: Taubaté/SP" value="{{ na.cidade }}" onChange="{{ naOn.cidade }}" error="{{ naErr.cidade }}" full-width="{{ true }}" hint-size="100%,70px"></x-import>
         </div>
-        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="na-slug" label="Endereço de acesso" value="{{ na.slug }}" onChange="{{ naOn.slug }}" suffix=".nortiq.com.br" error="{{ naErr.slug }}" hint="Só letras minúsculas e números. Preenchido a partir do nome." full-width="{{ true }}" hint-size="100%,90px"></x-import>
+        <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Input" id="na-slug" label="Endereço de acesso" value="{{ na.slug }}" onChange="{{ naOn.slug }}" suffix=".nortiqtec.com.br" error="{{ naErr.slug }}" hint="Só letras minúsculas e números. Preenchido a partir do nome." full-width="{{ true }}" hint-size="100%,90px"></x-import>
 
         <span style="font:var(--type-overline); letter-spacing:var(--tracking-caps); text-transform:uppercase; color:var(--text-muted); padding-top:4px">Responsável</span>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px">
@@ -3716,7 +3716,7 @@
     <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Dialog" title="E-mail do convite" description="Assim o dono da loja recebe o convite." width="{{ 600 }}" onClose="{{ closeMail }}" hint-size="100%,100%">
       <div style="display:grid; gap:0; border-radius:var(--radius-md); box-shadow:var(--ring-card); overflow:hidden">
         <div style="display:grid; gap:4px; padding:12px 16px; background:var(--surface-sunken); font:var(--type-caption); color:var(--text-muted)">
-          <span><span style="font-weight:600; color:var(--text-body)">De:</span> Nortiq &lt;nao-responda@nortiq.com.br&gt;</span>
+          <span><span style="font-weight:600; color:var(--text-body)">De:</span> Nortiq &lt;nao-responda@nortiqtec.com.br&gt;</span>
           <span><span style="font-weight:600; color:var(--text-body)">Para:</span> {{ ml.para }}</span>
           <span><span style="font-weight:600; color:var(--text-body)">Assunto:</span> {{ ml.assunto }}</span>
         </div>
@@ -3730,7 +3730,7 @@
           <div>
             <x-import component-from-global-scope="NortiqDesignSystem_5a3b8e.Button" size="lg" onClick="{{ ml.criar }}" hint-size="220px,52px">Criar minha senha</x-import>
           </div>
-          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.6">O link vale por 48 horas e só funciona uma vez. Depois de criar a senha, entre sempre por <span style="font-weight:600; color:var(--text-body)">{{ ml.slug }}.nortiq.com.br</span>.</span>
+          <span style="font:var(--type-caption); color:var(--text-muted); line-height:1.6">O link vale por 48 horas e só funciona uma vez. Depois de criar a senha, entre sempre por <span style="font-weight:600; color:var(--text-body)">{{ ml.slug }}.nortiqtec.com.br</span>.</span>
           <span style="font:var(--type-caption); font-size:11px; color:var(--text-muted); line-height:1.6; padding-top:12px; border-top:1px solid var(--border-subtle)">Você recebeu este e-mail porque sua loja foi cadastrada no Nortiq. Se não reconhece este cadastro, ignore esta mensagem.</span>
         </div>
       </div>
@@ -5263,7 +5263,7 @@ const ACCOUNTS=[
  {nome:'Hidro Norte Materiais',slug:'hidronorte',cidade:'Uberlândia/MG',users:2,desde:'09/2026',status:'Em dia',nota:'Pago em 18/09'},
  {nome:'AquaFort Hidráulica',slug:'aquafort',cidade:'Goiânia/GO',users:1,desde:'04/2025',status:'Cancelada',nota:'Cancelou em 31/08'}
 ];
-// Login da administração Nortiq (admin.nortiq.com.br): senha + código do aplicativo autenticador.
+// Login da administração Nortiq (admin.nortiqtec.com.br): senha + código do aplicativo autenticador.
 const ADMIN_EMAIL='nortiqtec@gmail.com';
 const ALOGIN_DEMOS=[{value:'normal',label:'Entrar normalmente'},{value:'senha',label:'Senha incorreta'},{value:'codigo',label:'Código do celular incorreto'},
  {value:'tentativas',label:'Muitas tentativas'},{value:'primeiro',label:'Primeiro acesso (link do convite)'}];
@@ -5281,7 +5281,7 @@ const ATEND0={
 const MEIOS_DIRETO=['Pix','Transferência','Dinheiro','Outra forma'];
 const FORMA_OPTS=[{value:'asaas',label:'Pelo Asaas (cobrança automática)'},{value:'direto',label:'Direto com a Nortiq (Pix, transferência, dinheiro…)'}];
 // Protótipo: a chave Pix real da Nortiq fica na configuração da plataforma.
-const PIX_NORTIQ={chave:'financeiro@nortiq.com.br',favorecido:'Nortiq Tecnologia'};
+const PIX_NORTIQ={chave:'financeiro@nortiqtec.com.br',favorecido:'Nortiq Tecnologia'};
 const MESES_REG=['Setembro de 2026','Outubro de 2026','Novembro de 2026','Dezembro de 2026'];
 const brData=iso=>{const m=String(iso||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?m[3]+'/'+m[2]:'';};
 const ACC_TONE={'Em dia':'success','Em atraso':'danger','Cancelada':'neutral','Aguardando pagamento':'warning','Convite enviado':'info','Cancelamento pedido':'warning'};
@@ -6058,7 +6058,7 @@ class Component extends DCLogic {
         }
         const cc=a.cancel;
         const pags=(a.pags||[]), ultimo=pags.find(p=>!p.estornado);
-        ac={nome:a.nome,sub:a.slug+'.nortiq.com.br · '+a.status,msg:s.accDlgMsg,msgShow:!!s.accDlgMsg,etapas,acoes,
+        ac={nome:a.nome,sub:a.slug+'.nortiqtec.com.br · '+a.status,msg:s.accDlgMsg,msgShow:!!s.accDlgMsg,etapas,acoes,
           podeAlterarForma:!cancelada,alterarForma:e=>{e&&e.preventDefault&&e.preventDefault();this.abrirPg(a,'forma');},
           pagsShow:dir&&pags.length>0,
           pags:pags.map(p=>({...p,valorFmt:brl(p.valor,true),estornadoShow:!!p.estornado,podeEstornar:!p.estornado&&p===ultimo,
@@ -7842,7 +7842,7 @@ class Component extends DCLogic {
         erroTelaShow:erroTela,erroTelaNome:NOMES[page]||'esta tela',erroTelaCodigo:codigoErro,
         telaDeNovo:()=>this.irPara(page,null,true),
         falarNortiqErro:()=>abrirWhats(WA_NORTIQ,'Olá! Sou da Casa do Aquecedor. Não consegui abrir '+(NOMES[page]||'uma tela')+' no Nortiq. Código do erro: '+codigoErro+'.'),
-        naoEncShow:naoEnc,naoEncEndereco:'casadoaquecedor.nortiq.com.br/orcamentos/ORC-9999',irOrcamentos:go('orcamentos'),
+        naoEncShow:naoEnc,naoEncEndereco:'casadoaquecedor.nortiqtec.com.br/orcamentos/ORC-9999',irOrcamentos:go('orcamentos'),
         ...(nova&&!s.gIn&&!s.gcal?{gSyncSub:'Ainda não conectada. Ligue uma das opções abaixo para conectar a conta Google da loja.'}:{}),
         pageTitle:naoEnc?'Página não encontrada':e1.pageTitle,pageSub:naoEnc?'Casa do Aquecedor':e1.pageSub,
         vazioShow:troca,vazioCompShow:!!vz&&!!vz.compacto,vazio:vz||{botoes:[]},
