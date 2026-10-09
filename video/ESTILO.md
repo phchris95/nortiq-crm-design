@@ -11,6 +11,8 @@ Este é o estilo aprovado em 03/10/2026 para os vídeos de apresentação do Nor
 | `renderizar.sh` | Confere, renderiza e finaliza as duas versões em `finais/`. |
 | `finalizar.sh` | Ajusta o volume final do som para -16 LUFS. |
 | `finais/` | Os vídeos prontos e a comparação com a primeira versão. |
+| `portfolio-salure-9x16/` | Vídeo de site entregue para cliente (Salure), com a gravação do site numa janela de navegador. |
+| `captura/` | Gravador de sites quadro a quadro (computador e celular), para os vídeos de portfólio. |
 
 ## Identidade (não mudar)
 
@@ -78,6 +80,16 @@ Este é o estilo aprovado em 03/10/2026 para os vídeos de apresentação do Nor
   - **Distribuição:** o texto fica em cima (até y 700) e a tela embaixo (y 735 a 1600), com letras e cartões maiores.
   - **Ajustes:** o funil mostra três etapas, e o celular da agenda sobe por baixo.
   - **Primeiros segundos:** no primeiro quadro a marca já aparece, e a frase da abertura está inteira antes de 1 s.
+
+## Vídeo de site entregue (portfólio)
+
+Para mostrar no Instagram um site feito para um cliente. O primeiro é o da Salure (`portfolio-salure-9x16/`, 22,8 s), feito em 09/10/2026.
+
+- **Modelo:** em cima, a assinatura (selo, "Nortiq" e "Novo site no ar"), o título com o nome do cliente em azul e uma frase sobre o projeto. No meio, uma janela de navegador (960 × 600, 16:10) com o endereço do site e a gravação dele rodando. Embaixo, três recursos do site, que acendem quando aparecem na gravação, e "Criado pela Nortiq · nortiqtec.com.br".
+- **Tempos (108 BPM):** abertura no painel azul até 2,222 s, com a página inicial do site subindo por baixo; o modelo com a gravação até 20,0 s (8 compassos); encerramento "Seu negócio também pode ter um site assim." com `nortiqtec.com.br` até 22,778 s. A trilha dessa duração sai do `trilha/trilha_portfolio.py`.
+- **Gravação do site:** com o `captura/` (veja o começo de cada arquivo). Ele grava quadro a quadro com o relógio da página controlado, então a rolagem, as animações e o vídeo do site saem lisos. O computador grava em 1280 × 800 e sai em 1440 × 900; o celular grava em 390 × 845 e sai em 852 × 1846. Os cliques aparecem com o cursor do próprio site ou com um toque dourado.
+- **Na composição:** a seção do modelo fica sem `data-start` (o `<video>` tem o próprio tempo e o `data-media-start` diz de onde a gravação começa). Os cliques do som caem nos cliques da gravação: tempo do vídeo = tempo da gravação + 1,522 s.
+- **Renderizar:** dentro da pasta, `$HF check` e `$HF render -o renders/nortiq-portfolio-salure-9x16.mp4`, depois `bash video/finalizar.sh` para `finais/`.
 
 ## Como montar um vídeo novo
 
