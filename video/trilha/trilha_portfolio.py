@@ -277,7 +277,7 @@ L = highpass(L, 30)
 R = highpass(R, 30)
 # Fade de saída no fim da cauda.
 fade = np.ones(N)
-f0 = int(14.9 * SR)
+f0 = int((DUR - 1.1) * SR)
 fade[f0:] = np.linspace(1, 0, N - f0) ** 1.6
 L *= fade
 R *= fade

@@ -12,6 +12,7 @@ Este é o estilo aprovado em 03/10/2026 para os vídeos de apresentação do Nor
 | `finalizar.sh` | Ajusta o volume final do som para -16 LUFS. |
 | `finais/` | Os vídeos prontos e a comparação com a primeira versão. |
 | `portfolio-salure-9x16/` | Vídeo de site entregue para cliente (Salure), com a gravação do site numa janela de navegador. |
+| `portfolio-salure-curto-9x16/` | A versão curta desse vídeo (13,3 s), para Reels curto e destaques. |
 | `captura/` | Gravador de sites quadro a quadro (computador e celular), para os vídeos de portfólio. |
 
 ## Identidade (não mudar)
@@ -89,7 +90,9 @@ Para mostrar no Instagram um site feito para um cliente. O primeiro é o da Salu
 - **Tempos (108 BPM):** abertura no painel azul até 2,222 s, com a página inicial do site subindo por baixo; o modelo com a gravação até 20,0 s (8 compassos); encerramento "Seu negócio também pode ter um site assim." com `nortiqtec.com.br` até 22,778 s. A trilha dessa duração sai do `trilha/trilha_portfolio.py`.
 - **Gravação do site:** com o `captura/` (veja o começo de cada arquivo). Ele grava quadro a quadro com o relógio da página controlado, então a rolagem, as animações e o vídeo do site saem lisos. O computador grava em 1280 × 800 e sai em 1440 × 900; o celular grava em 390 × 845 e sai em 852 × 1846. Os cliques aparecem com o cursor do próprio site ou com um toque dourado.
 - **Na composição:** a seção do modelo fica sem `data-start` (o `<video>` tem o próprio tempo e o `data-media-start` diz de onde a gravação começa). Os cliques do som caem nos cliques da gravação: tempo do vídeo = tempo da gravação + 1,522 s.
-- **Renderizar:** dentro da pasta, `$HF check` e `$HF render -o renders/nortiq-portfolio-salure-9x16.mp4`, depois `bash video/finalizar.sh` para `finais/`.
+- **Versão curta (Reels curto e destaques):** `portfolio-salure-curto-9x16/`, 13,3 s em 6 compassos. Mostra a página inicial e, depois da cortina do próprio site, o Monte sua unha; o encerramento entra em 11,111 s. Trilha em `trilha/trilha_portfolio_curto.py`.
+- **Renderizar:** dentro da pasta, `$HF check` e `$HF render -o renders/nortiq-<pasta>.mp4`, depois `bash video/finalizar.sh` para `finais/`.
+- **Trilha de outra duração:** o fim da música começa 1,1 s antes do fim (`DUR - 1.1`); não deixe um tempo fixo, senão a música abaixa antes da hora.
 
 ## Como montar um vídeo novo
 
